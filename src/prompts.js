@@ -75,6 +75,9 @@ module.exports = function () {
       name: 'criticalCss.preload',
       type: 'list',
       required: true,
+      when: (answers) => {
+        return answers.criticalCss.enable
+      },
       message:
         'Preload strategy:',
       choices: [
