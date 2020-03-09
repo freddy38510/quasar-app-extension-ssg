@@ -11,5 +11,5 @@ module.exports = function (api) {
 
   api.render('./templates', {})
 
-  // api.onExitLog('')
+  api.onExitLog('You can now add routes to generate by editing "src-ssg/routes.js" then run "quasar build -m ssr"')
 }
