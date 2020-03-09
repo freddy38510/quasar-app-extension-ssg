@@ -33,6 +33,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.1.2",
     "html-minifier": "^4.0.0",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "rimraf": "^3.0.2"
   }
 }
