@@ -31,7 +31,7 @@ class Generator {
 
     this.ssr = ssr
 
-    this.routes = require(api.resolve.app('src-static/routes.js'))()
+    this.routes = require(api.resolve.app('src-ssg/routes.js'))()
 
     this.rendererOptions = this.setRendererOptions(api, quasarConf)
 
@@ -42,7 +42,7 @@ class Generator {
   }
 
   setRendererOptions (api, quasarConf) {
-    const rendererOptions = require(api.resolve.app('src-static/rendererOptions.js'))()
+    const rendererOptions = require(api.resolve.app('src-ssg/rendererOptions.js'))()
 
     if (rendererOptions.clientManifest && typeof rendererOptions.clientManifest === 'function') {
       const clientManifest = require(`${quasarConf.build.distDir}/vue-ssr-client-manifest.json`)

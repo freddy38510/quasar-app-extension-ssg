@@ -1,5 +1,5 @@
 {
-  "name": "quasar-app-extension-static",
+  "name": "quasar-app-extension-ssg",
   "version": "0.0.1",
   "description": "Generate a static app from your universal app (ssr mode)",
   "author": "freddy38510 <freddyescobar@hotmail.fr>",
