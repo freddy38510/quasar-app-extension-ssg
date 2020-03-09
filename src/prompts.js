@@ -42,6 +42,13 @@
 module.exports = function () {
   return [
     {
+      name: 'enable',
+      type: 'confirm',
+      message: 'Enable SSG:',
+      required: true,
+      default: true
+    },
+    {
       name: 'fallback.enable',
       type: 'confirm',
       message: 'Enable SPA Fallback:',
