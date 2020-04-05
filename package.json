@@ -25,7 +25,7 @@
     "copy-webpack-plugin": "^5.1.1",
     "critters-webpack-plugin": "https://github.com/freddy38510/critters.git",
     "eslint": "^6.8.0",
-    "eslint-loader": "^3.0.3",
+    "eslint-loader": "4.0.0",
     "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
@@ -33,7 +33,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.1.2",
     "html-minifier": "^4.0.0",
-    "mkdirp": "^0.5.1",
+    "mkdirp": "1.0.4",
     "rimraf": "^3.0.2"
   }
 }
