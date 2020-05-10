@@ -19,6 +19,7 @@ If you're interested in assisting with testing or development, you can get start
     quasar ext add ssg
     ````
     You might want to say no to using critter; there may be an issue with that option.
+1. Configure your quasar app to use the `vueRouterMode: 'history'` rather than `hash` in `quasar.conf.js`.
 1. If you don't have a second page defined in `src/router/routes.js`, do so now, e.g.,
     ````javascript
     const routes = [
