@@ -3,50 +3,50 @@
 ## Warning
 This extension for Quasar is an early-stage extension and under active development. Use at your own risk.
 
-## Development/Testing
+## How to use
 If you're interested in assisting with testing or development, you can get started using the following steps:
 
 1. cd into your quasar directory or run
     ````bash
     quasar create test-ext && cd test-ext
     ````
-1. Install a couple dependencies:
+1. Add the app extension dependency:
     ````bash
-    yarn add --dev https://github.com/freddy38510/quasar-app-extension-ssg critters-webpack-plugin
+    yarn add --dev https://github.com/freddy38510/quasar-app-extension-ssg
     ````
-1. Manually add the extension:
+1. Install the app extension:
     ````bash
-    quasar ext add ssg
+    quasar ext invoke ssg
     ````
-    You might want to say no to using critter; there may be an issue with that option.
 1. Configure your quasar app to use the `vueRouterMode: 'history'` rather than `hash` in `quasar.conf.js`.
-1. If you don't have a second page defined in `src/router/routes.js`, do so now, e.g.,
-    ````javascript
-    const routes = [
-      {
-        path: '/',
-        component: () => import('layouts/MainLayout.vue'),
-        children: [
-          { path: '', component: () => import('pages/Index.vue') },
-          { path: 'test', component: () => import('pages/Test.vue') }
-        ]
-      }
-    ]
-    ````
-1. Modify `src-ssg/routes.js` to include your routes, e.g.,
+1. Optionnaly create a route for catching 404 since your website will operate as a SPA for subsequent navigations, e.g.,
+```javascript
+// src/router/routes.js
+{ path: '*', component: () => import('pages/error404.vue') }
+```
+1. Edit `src-ssg/routes.js` to define the routes you want to be generated for statics webpages, e.g.,
     ````javascript
     module.exports = function () {
-     return ['/', '/test']
+     return ['/', '/about', '/users', '/users/1', '/users/2']
     }
     ````
-1. Run build using the SSR mode (we're discussing a separte command specifically for this extension):
+1. Build your website with static pages ready for production:
     ````bash
-    quasar build -m ssr
+    quasar ssg build
     ````
-1. Take a look at the `dist/ssr/www` directory and notice that you have, e.g., `test/index.html` there. Test by running a static server at that location
+    or
+    
+    ````bash
+    quasar build -m ssr --static
+    ````
+1. The output built with all pages and assets is located at './dist/ssr/www' by default. Test it by running a static server at that location
+    ````bash
+    quasar serve dist/ssr/www/
+    ````
+    or
+    
     ````bash
     npx http-server dist/ssr/www/
     ````
-    and browse to the routes you added above.
  
  ## Better docs coming soon; contributions welcome!
