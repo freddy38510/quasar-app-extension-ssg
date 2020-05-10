@@ -19,11 +19,11 @@ If you're interested in assisting with testing or development, you can get start
     quasar ext invoke ssg
     ````
 1. Configure your quasar app to use the `vueRouterMode: 'history'` rather than `hash` in `quasar.conf.js`.
-1. Optionnaly create a route for catching 404 since your website will operate as a SPA for subsequent navigations, e.g.,
-```javascript
-// src/router/routes.js
-{ path: '*', component: () => import('pages/error404.vue') }
-```
+1. Optionnaly create a route for catching 404 since your website will operate as a SPA for subsequent navigations, e.g:
+    ```javascript
+    // src/router/routes.js
+    { path: '*', component: () => import('pages/error404.vue') }
+    ```
 1. Edit `src-ssg/routes.js` to define the routes you want to be generated for statics webpages, e.g.,
     ````javascript
     module.exports = function () {
