@@ -7,65 +7,72 @@
  */
 
 const Generator = require('./generator.js')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const execa = require('execa')
+const args = require('minimist')(process.argv.slice(2), { boolean: 'static' })
 
 async function runAfter (api, { quasarConf }) {
   await new Generator(api, quasarConf).generate()
 }
 
-function injectFallback (cfg, api, quasarConf) {
+function injectSpaFallback (chain, api, quasarConf) {
   const { extend } = require(api.resolve.app('node_modules/quasar'))
 
-  const injectHtml = require(api.resolve.app('node_modules/@quasar/app/lib/webpack/inject.html'))
+  const injectHtml = require(api.resolve.app(
+    'node_modules/@quasar/app/lib/webpack/inject.html.js'
+  ))
 
-  const newConf = {
+  const cfg = extend(true, {}, quasarConf, {
     build: {
       htmlFilename: api.prompts.fallback.filename,
       distDir: quasarConf.build.distDir + '/www'
     }
-  }
+  })
 
-  let conf = {}
+  injectHtml(chain, cfg)
 
-  conf = extend(true, conf, quasarConf, newConf)
-
-  injectHtml(cfg, conf)
-
-  if (conf.ssr.pwa) {
-    const HtmlPwaPlugin = require(api.resolve.app('node_modules/@quasar/app/lib/webpack/pwa/plugin.html-pwa')).plugin
-    cfg.plugin('html-pwa')
-      .use(HtmlPwaPlugin, [conf])
+  if (quasarConf.ssr.pwa) {
+    const HtmlPwaPlugin = require(api.resolve.app(
+      'node_modules/@quasar/app/lib/webpack/pwa/plugin.html-pwa'
+    )).plugin
+    chain.plugin('html-pwa').use(HtmlPwaPlugin, [cfg])
   }
 }
 
 module.exports = function (api) {
-  if (api.ctx.prod && api.ctx.mode.ssr && api.prompts.enable) {
+  api.registerCommand('build', () => {
+    execa('quasar', ['build', '-m', 'ssr', '--static'],
+      {
+        cwd: api.resolve.app('.'),
+        stdio: 'inherit'
+      }
+    )
+  })
+
+  if (api.ctx.prod && api.ctx.mode.ssr && args.static) {
     let quasarConf = {}
 
-    api.extendQuasarConf((conf, api) => {
+    api.extendQuasarConf((conf, _api) => {
       quasarConf = conf
 
       conf.boot.push({ server: false, path: 'bodyClasses' })
     })
 
     api.chainWebpack((cfg, { isClient }, api) => {
-      if (isClient) {
-        if (api.prompts.fallback.enable) {
-          injectFallback(cfg, api, quasarConf)
-        }
+      if (isClient && api.prompts.fallback.enable) {
+        injectSpaFallback(cfg, api, quasarConf)
       }
     })
 
     api.chainWebpackWebserver((cfg) => {
-      const CopyWebpackPlugin = require('copy-webpack-plugin')
-
       const copyArray = []
 
       copyArray.push({
-        from: api.resolve.app('.quasar/ssr-config.js'), to: `${quasarConf.build.distDir}/ssr.js`
+        from: api.resolve.app('.quasar/ssr-config.js'),
+        to: `${quasarConf.build.distDir}/ssr.js`
       })
 
-      cfg.plugin('copy-webpack')
-        .use(CopyWebpackPlugin, [copyArray])
+      cfg.plugin('copy-webpack').use(CopyWebpackPlugin, [copyArray])
     })
 
     api.afterBuild(runAfter)
