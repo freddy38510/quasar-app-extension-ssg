@@ -31,12 +31,14 @@ function injectSpaFallback (chain, api, quasarConf) {
 
   injectHtml(chain, cfg)
 
-  if (quasarConf.ssr.pwa) {
-    const HtmlPwaPlugin = require(api.resolve.app(
-      'node_modules/@quasar/app/lib/webpack/pwa/plugin.html-pwa'
-    )).plugin
-    chain.plugin('html-pwa').use(HtmlPwaPlugin, [cfg])
-  }
+  /* Is it really needed ?
+    if (quasarConf.ssr.pwa) {
+      const HtmlPwaPlugin = require(api.resolve.app(
+        'node_modules/@quasar/app/lib/webpack/pwa/plugin.html-pwa'
+      )).plugin
+      chain.plugin('html-pwa').use(HtmlPwaPlugin, [cfg])
+    }
+    */
 }
 
 module.exports = function (api) {
@@ -55,6 +57,8 @@ module.exports = function (api) {
     api.extendQuasarConf((conf, _api) => {
       quasarConf = conf
 
+      // Client takeover to set body classes (desktop/mobile, etc) initially set by the server.
+      // The server side is blind about browser, platform, screen, etc.
       conf.boot.push({ server: false, path: 'bodyClasses' })
     })
 

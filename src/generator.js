@@ -1,11 +1,25 @@
 const fs = require('fs')
 const mkdirp = require('mkdirp')
 const Critters = require('critters-webpack-plugin')
+const { green, red } = require('chalk')
 
 class Generator {
   constructor (api, quasarConf) {
+    const banner = `Extension(${api.extId}) ·`
+
+    const logBanner = green(banner)
+    const warnBanner = red(banner)
+
+    const logger = {
+      log: function (msg) {
+        console.log(msg ? ` ${logBanner} ${msg}` : '')
+      },
+      warn: function (msg) {
+        console.warn(msg ? ` ${warnBanner} ⚠️  ${msg}` : '')
+      }
+    }
+
     const ssr = require(`${quasarConf.build.distDir}/ssr.js`)
-    const log = require(api.resolve.app('node_modules/@quasar/app/lib/helpers/logger'))
 
     this.api = api
 
@@ -17,12 +31,10 @@ class Generator {
       // bodyClasses: 'body--dark',
       logger: {
         info: function (msg) {
-          const info = log('app:build')
-          return info(`Extension(${api.extId}): ${msg}`)
+          return logger.log(msg)
         },
         warn: function (msg) {
-          const warn = log('app:build', 'yellow')
-          return warn(`⚠️  Extension(${api.extId}): ${msg}`)
+          return logger.warn(msg)
         }
       }
     }) : false
@@ -35,10 +47,7 @@ class Generator {
 
     this.rendererOptions = this.setRendererOptions(api, quasarConf)
 
-    this.logger = {
-      log: log('app:build'),
-      warn: log('app:build', 'red')
-    }
+    this.logger = logger
   }
 
   setRendererOptions (api, quasarConf) {
@@ -66,12 +75,12 @@ class Generator {
   async generate () {
     try {
       for (const route of this.routes) {
-        this.logger.log(`Extension(${this.api.extId}): Generating route ${route}...`)
+        this.logger.log(`Generating route ${route}...`)
 
         let html = await this.render(route)
 
         if (this.critters) {
-          this.logger.log(`Extension(${this.api.extId}): Inlining critical Css for route ${route}...`)
+          this.logger.log(`Inlining critical Css for route ${route}...`)
 
           html = await this.critters.process(html)
         }
@@ -80,7 +89,7 @@ class Generator {
       }
 
       if (this.critters && this.api.prompts.fallback.enable) {
-        this.logger.log(`Extension(${this.api.extId}): Inlining critical Css for fallback...`)
+        this.logger.log('Inlining critical Css for fallback...')
 
         let fallbackHtml = await this.critters.readFile(this.ssr.resolveWWW(this.api.prompts.fallback.filename))
 
@@ -89,7 +98,7 @@ class Generator {
         this.fileWriter(this.ssr.resolveWWW(''), this.api.prompts.fallback.filename, fallbackHtml)
       }
     } catch (error) {
-      this.logger.warn(`Extension(${this.api.extId}): ${error}`)
+      this.logger.warn(error)
     }
   }
 

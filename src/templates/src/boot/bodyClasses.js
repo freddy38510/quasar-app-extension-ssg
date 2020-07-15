@@ -7,10 +7,10 @@ function getMobilePlatform (is) {
   if (is.android === true) return 'android'
 }
 
-function getBodyClasses ({ is, has, within }, cfg) {
+function getBodyClasses ({ is }, cfg) {
   const cls = [
-    is.desktop === true ? 'desktop' : 'mobile',
-    `${has.touch === false ? 'no-' : ''}touch`
+    is.desktop === true ? 'desktop' : 'mobile'
+    // `${has.touch === false ? 'no-' : ''}touch`
   ]
 
   if (is.mobile === true) {
@@ -36,8 +36,6 @@ function getBodyClasses ({ is, has, within }, cfg) {
     cls.push('bex')
   }
 
-  // within.iframe === true && cls.push('within-iframe') // done client side by the framework
-
   return cls
 }
 
@@ -50,9 +48,5 @@ export default ({ app }) => {
     } else {
       document.body.classList.add.apply(document.body.classList, cls)
     }
-
-    // if (!client.is.desktop && document.body.classList.contains('desktop')) {
-    // document.body.classList.remove('desktop')
-    // }
   })
 }
