@@ -22,7 +22,7 @@
   "dependencies": {
     "copy-webpack-plugin": "^5.1.1",
     "critters-webpack-plugin": "https://github.com/freddy38510/critters.git",
-    "execa": "^4.0.1",
+    "execa": "^4.0.3",
     "html-minifier": "^4.0.0",
     "minimist": "^1.2.5",
     "mkdirp": "1.0.4",
@@ -31,12 +31,12 @@
   "devDependencies": {
     "@vue/eslint-config-standard": "^5.1.0",
     "babel-eslint": "^10.0.3",
-    "eslint": "^6.8.0",
-    "eslint-loader": "4.0.0",
-    "eslint-plugin-import": "^2.20.0",
+    "eslint": "^7.4.0",
+    "eslint-loader": "4.0.2",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-quasar": "^1.0.0-alpha.18",
+    "eslint-plugin-quasar": "^1.0.0",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.1.2"
   }
