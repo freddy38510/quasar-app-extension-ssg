@@ -35,7 +35,7 @@ module.exports = async function build (api, quasarConfig, ctx, extensionRunner) 
   const regenerateTypesFeatureFlags = appRequire('@quasar/app/lib/helpers/types-feature-flags', api.appDir)
 
   const generator = new Generator(quasarConfig)
-  const webpackConfig = quasarConfig.getWebpackConfig() // await require('./webpack')(buildConfig, api)
+  const webpackConfig = quasarConfig.getWebpackConfig()
   const buildConfig = quasarConfig.getBuildConfig()
 
   regenerateTypesFeatureFlags(buildConfig)
