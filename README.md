@@ -145,7 +145,7 @@ Type: `Number`
 
 Default: `10`
 
-The generation of routes are concurrent, ssg.concurrency specifies the amount of routes that run in one thread.
+The generation of routes are concurrent, `ssg.concurrency` specifies the amount of routes that run in one thread.
 
 ### `interval`
 
