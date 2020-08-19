@@ -104,15 +104,15 @@ quasar ssg serve <dist-folder>
 - `--key, -K [path]`: Path to SSL key file (Optional).
 - `--proxy <file.js>`: Proxy specific requests defined in file. File must export Array ({ path, rule }). "rule" is defined at: <https://github.com/chimurai/http-proxy-middleware>.
 
-```javascript
-module.exports = [
-  {
-    path: "/api",
-    rule: { target: "http://www.example.org" },
-  },
-];
-// will be transformed into app.use(path, httpProxyMiddleware(rule))
-```
+  ```javascript
+  module.exports = [
+    {
+      path: "/api",
+      rule: { target: "http://www.example.org" },
+    },
+  ];
+  // will be transformed into app.use(path, httpProxyMiddleware(rule))
+  ```
 
 - `--cors`: Enable CORS for all requests.
 - `--help, -h`: Display usage instructions.
