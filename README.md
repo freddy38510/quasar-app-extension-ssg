@@ -142,7 +142,7 @@ quasar ssg serve <dist-folder>
 You can pass options with `ssg` key in `/quasar.conf.js`.
 
 ```javascript
-// quasar-config.js
+// quasar.conf.js
 
 module.exports = function (/* ctx */) {
   return {
@@ -194,7 +194,7 @@ ssg: {
 With a `Function` which returns a `Promise`:
 
 ```javascript
-// quasar-config.js
+// quasar.conf.js
 
 const axios = require('axios')
 
@@ -220,7 +220,7 @@ module.exports = function (/* ctx */) {
 With a `Function` which returns a `callback(err, params)`:
 
 ```javascript
-// quasar-config.js
+// quasar.conf.js
 
 const axios = require('axios')
 
@@ -352,7 +352,7 @@ Can use async/await or directly return a Promise.
 Example to generate critical CSS, inline it, and defer CSS with [Critical](https://github.com/addyosmani/critical):
 
 ```javascript
-// quasar-conf.js
+// quasar.conf.js
 
 const critical = require('critical')
 const fs = require("fs-extra");
@@ -402,7 +402,7 @@ Quasar is using `workbox-webpack-plugin` to generate a complete service worker a
 This means that all generated pages could not be precached when webpack is compiling because they do not exist yet at this time.
 To fix this issue, the extension uses `workbox-build` replacing the `workbox-webpack-plugin` after all pages have been generated.
 
-Consequently, when PWA is enabled in Quasar, you should passing options from [workbox-build](https://developers.google.com/web/tools/workbox/modules/workbox-build) in the key `workboxOptions` in `quasar-conf.js` instead of options from [workbox-webpack-plugin](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-webpack-plugin). All others PWA options are valids and used following [Quasar documentation](https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa#Quasar.conf.js).
+Consequently, when PWA is enabled in Quasar, you should passing options from [workbox-build](https://developers.google.com/web/tools/workbox/modules/workbox-build) in the key `workboxOptions` in `quasar.conf.js` instead of options from [workbox-webpack-plugin](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-webpack-plugin). All others PWA options are valids and used following [Quasar documentation](https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa#Quasar.conf.js).
 
 ### About Cache Feature
 
