@@ -2,7 +2,7 @@
 
 A Quasar app extension to generate static site AKA [JAMstack](https://jamstack.org).
 
-[Installing](#installing) | [Uninstalling](#uninstalling) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [About cache feature](#about-cache-feature)
+[Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [About cache feature](#about-cache-feature)
 
 ## Installing
 
@@ -30,6 +30,22 @@ Then uninstall it:
 
 ```bash
 quasar ext uninvoke ssg
+```
+
+## Upgrading
+
+To upgrade the extension, run this command from your quasar project folder:
+
+```bash
+yarn upgrade quasar-app-extension-ssg
+```
+
+If you are upgrading this extension from the old [v0.0.1](https://github.com/freddy38510/quasar-app-extension-ssg/tree/v0.0.1), you probably need to clean the extension from the yarn global cache, before upgrading it.
+
+```bash
+yarn cache clean quasar-app-extension-ssg
+
+yarn upgrade quasar-app-extension-ssg
 ```
 
 ## Developing
