@@ -82,7 +82,7 @@ quasar ssg generate
 
 ### Serve
 
-This extension provides a command to create a server for testing your static site localy:
+This extension provides a command to create a server for testing your static site locally:
 
 ```bash
 quasar ssg serve <dist-folder>
