@@ -88,6 +88,8 @@ This extension provides a command to create a server for testing your static sit
 quasar ssg serve <dist-folder>
 ```
 
+> Notes: This server is based on the [Quasar cli server](https://github.com/quasarframework/quasar/blob/dev/cli/bin/quasar-serve) adapted for static site. It handles SPA or PWA fallback.
+
 #### Serve Options
 
 - `--port, -p`: Port to use (default: 4000).
