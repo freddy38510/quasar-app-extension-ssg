@@ -22,16 +22,16 @@ quasar ext invoke ssg
 
 ## Uninstalling
 
-Remove the App Extension from your Quasar project:
-
-```bash
-yarn remove https://github.com/freddy38510/quasar-app-extension-ssg
-```
-
-Then uninstall it:
+Uninstall the App Extension:
 
 ```bash
 quasar ext uninvoke ssg
+```
+
+Then remove it from your Quasar project:
+
+```bash
+yarn remove quasar-app-extension-ssg
 ```
 
 ## Upgrading
