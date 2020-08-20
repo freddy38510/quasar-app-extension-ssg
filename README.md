@@ -2,7 +2,7 @@
 
 A [Quasar](https://quasar.dev/) App Extension to generate static site AKA [JAMstack](https://jamstack.org).
 
-This project was created to fill this [Feature Request](https://github.com/quasarframework/quasar/issues/2299) on Quasar.
+This project was created to fill this [Feature Request](https://github.com/quasarframework/quasar/issues/2299) from Quasar.
 
 [Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [Infos](#infos)
 
