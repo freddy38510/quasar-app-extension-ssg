@@ -127,10 +127,10 @@ quasar ssg serve <dist-folder>
   ```javascript
   module.exports = [
     {
-      path: "/api",
-      rule: { target: "http://www.example.org" },
+      path: '/api',
+      rule: { target: 'http://www.example.org' },
     },
-  ];
+  ]
   // will be transformed into app.use(path, httpProxyMiddleware(rule))
   ```
 
@@ -153,8 +153,8 @@ module.exports = function (/* ctx */) {
     },
 
     // ...
-  };
-};
+  }
+}
 ```
 
 See all availables options below:
@@ -187,7 +187,7 @@ Example:
 
 ```javascript
 ssg: {
-  routes: ["/", "/about", "/users", "/users/someone"];
+  routes: ['/', '/about', '/users', '/users/someone']
 }
 ```
 
@@ -196,7 +196,7 @@ With a `Function` which returns a `Promise`:
 ```javascript
 // quasar-config.js
 
-const axios = require("axios");
+const axios = require('axios')
 
 module.exports = function (/* ctx */) {
   return {
@@ -204,17 +204,17 @@ module.exports = function (/* ctx */) {
 
     ssg: {
       routes() {
-        return axios.get("https://my-api/users").then((res) => {
+        return axios.get('https://my-api/users').then((res) => {
           return res.data.map((user) => {
-            return "/users/" + user.id;
-          });
-        });
+            return '/users/' + user.id
+          })
+        })
       },
     },
 
     // ...
-  };
-};
+  }
+}
 ```
 
 With a `Function` which returns a `callback(err, params)`:
@@ -222,7 +222,7 @@ With a `Function` which returns a `callback(err, params)`:
 ```javascript
 // quasar-config.js
 
-const axios = require("axios");
+const axios = require('axios')
 
 module.exports = function (/* ctx */) {
   return {
@@ -231,20 +231,20 @@ module.exports = function (/* ctx */) {
     ssg: {
       routes(callback) {
         axios
-          .get("https://my-api/users")
+          .get('https://my-api/users')
           .then((res) => {
             const routes = res.data.map((user) => {
-              return "/users/" + user.id;
-            });
-            callback(null, routes);
+              return '/users/' + user.id
+            })
+            callback(null, routes)
           })
-          .catch(callback);
+          .catch(callback)
       },
     },
 
     // ...
-  };
-};
+  }
+}
 ```
 
 ### `buildDir`
@@ -292,7 +292,7 @@ This option is used to avoid re-building when no tracked file has been changed.
   ```javascript
   ssg: {
     cache: {
-      ignore: ["renovate.json"]; // ignore changes applied on this file
+      ignore: ['renovate.json'] // ignore changes applied on this file
     }
   }
   ```
@@ -303,7 +303,7 @@ This option is used to avoid re-building when no tracked file has been changed.
   ssg: {
     cache: {
       ignore: (defaultIgnore) =>
-        defaultIgnore.push("renovate.json") && defaultIgnore;
+        defaultIgnore.push('renovate.json') && defaultIgnore
     }
   }
   ```
