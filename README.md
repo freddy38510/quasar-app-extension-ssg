@@ -395,6 +395,15 @@ This Extension is using a boot file called [`body-classes.js`](https://github.co
 
 This is necessary because the server used to prerender pages can't know the platform (desktop or mobile, etc) of the client at build time.
 
+### About PWA
+
+Quasar is using `workbox-webpack-plugin` to generate a complete service worker and a list of assets to precache that is injected into a service worker file.
+
+This means that all generated pages could not be precached when webpack is compiling because they do not exist yet at this time.
+To fix this issue, the extension uses `workbox-build` replacing the `workbox-webpack-plugin` after all pages have been generated.
+
+Consequently, when PWA is enabled in Quasar, you should passing options from [workbox-build](https://developers.google.com/web/tools/workbox/modules/workbox-build) in the key `workboxOptions` in `quasar-conf.js` instead of options from [workbox-webpack-plugin](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-webpack-plugin). All others PWA options are valids and used following [Quasar documentation](https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa#Quasar.conf.js).
+
 ### About Cache Feature
 
 The cache mechanism to avoid rebuilding the app when this is not necessary is heavily inspired by [Nuxt](https://nuxtjs.org).
