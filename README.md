@@ -1,6 +1,6 @@
 # Static Site Generator App Extension for Quasar, the Vue.js Framework
 
-A Quasar app extension to generate static site AKA [JAMstack](https://jamstack.org).
+A [Quasar](https://quasar.dev/) app extension to generate static site AKA [JAMstack](https://jamstack.org).
 
 [Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [About cache feature](#about-cache-feature)
 
