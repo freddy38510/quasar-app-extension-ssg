@@ -2,7 +2,7 @@
 
 A [Quasar](https://quasar.dev/) app extension to generate static site AKA [JAMstack](https://jamstack.org).
 
-[Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [About cache feature](#about-cache-feature)
+[Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [Infos](#infos)
 
 ## Installing
 
@@ -384,6 +384,14 @@ module.exports = function (/* ctx */) {
   }
 }
 ```
+
+## Infos
+
+### About Boot File
+
+This Extension is using a boot file called [`body-classes.js`](https://github.com/freddy38510/quasar-app-extension-ssg/blob/master/src/boot/body-classes.js), only at client-side, to set platform classes to `<body>` tag like [Quasar does it](https://github.com/quasarframework/quasar/blob/dev/ui/src/body.js) originally.
+
+This is necessary because the server used to prerender pages can't know the platform (desktop or mobile, etc) of the client at build time.
 
 ### About Cache Feature
 
