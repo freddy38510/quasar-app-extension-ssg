@@ -1,7 +1,7 @@
 const { cyanBright } = require('chalk')
 const fs = require('fs').promises
 const minify = require('html-minifier').minify
-const { join, normalize } = require('path')
+const path = require('path')
 const { log, warn, fatal } = require('./../helpers/logger')
 const promisifyRoutes = require('./../helpers/promisify-routes')
 
@@ -45,7 +45,7 @@ class Generator {
           .map(async (route) => {
             await new Promise(resolve => setTimeout(resolve, (n++ * this.options.interval) || 0))
 
-            log(`${cyanBright(join(route, 'index.html'))} => Generating...`)
+            log(`${cyanBright(path.posix.join(route, 'index.html'))} => Generating...`)
 
             await this.generate(route)
           })
@@ -58,7 +58,7 @@ class Generator {
       let html = await this.render(route)
 
       if (typeof this.options.onRouteRendered === 'function') {
-        log(`${cyanBright(join(route, 'index.html'))} => Running onRouteRendered hook...`)
+        log(`${cyanBright(path.posix.join(route, 'index.html'))} => Running onRouteRendered hook...`)
 
         html = await this.options.onRouteRendered(html, route, this.options.__distDir)
       }
@@ -67,7 +67,7 @@ class Generator {
         html = minify(html, this.options.minify)
       }
 
-      await this.fileWriter(join(this.options.__distDir, route), 'index.html', html)
+      await this.fileWriter(path.join(this.options.__distDir, route), 'index.html', html)
     } catch (error) {
       warn(error.stack || error)
 
@@ -76,9 +76,9 @@ class Generator {
   }
 
   async fileWriter (targetDirectory, filename, content) {
-    await fs.mkdir(normalize(targetDirectory), { recursive: true })
+    await fs.mkdir(path.normalize(targetDirectory), { recursive: true })
 
-    await fs.writeFile(join(targetDirectory, filename), content)
+    await fs.writeFile(path.join(targetDirectory, filename), content)
   }
 
   render (route) {

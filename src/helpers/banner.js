@@ -1,6 +1,6 @@
 /* eslint-disable no-void */
 const { green, grey, underline } = require('chalk')
-const { relative } = require('path')
+const path = require('path')
 const appRequire = require('./app-require')
 
 module.exports.build = function (api, ctx, cmd, details) {
@@ -44,7 +44,7 @@ module.exports.generate = function (options) {
   if (!options) {
     banner += ' ================== Generate =================='
   } else {
-    const relativeDistDir = relative('', options.__distDir)
+    const relativeDistDir = path.posix.relative('', options.__distDir)
 
     banner += ` ${underline('Generation succeeded')}\n`
     banner += `

@@ -81,7 +81,7 @@ const glob = require('glob')
 
 const root = getAbsolutePath(argv._[0] || '.')
 const resolve = p => path.resolve(root, p)
-const prefixPath = path.join('/', argv['prefix-path'])
+const prefixPath = path.posix.join('/', argv['prefix-path'])
 
 function getAbsolutePath (pathParam) {
   return path.isAbsolute(pathParam)
@@ -138,7 +138,7 @@ if (argv.gzip) {
 
 const serviceWorkerFile = resolve('service-worker.js')
 if (fs.existsSync(serviceWorkerFile)) {
-  app.use(path.join(prefixPath, 'service-worker.js'), serve('service-worker.js'))
+  app.use(path.posix.join(prefixPath, 'service-worker.js'), serve('service-worker.js'))
 }
 
 app.use(prefixPath, serve('.', true))
@@ -146,7 +146,7 @@ app.use(prefixPath, serve('.', true))
 const fallbackFile = glob.sync(resolve('./*.html'), { ignore: resolve('./index.html') })[0]
 if (fallbackFile) {
   app.use(prefixPath, (req, res, next) => {
-    const ext = path.extname(req.url) || '.html'
+    const ext = path.posix.extname(req.url) || '.html'
 
     if (ext !== '.html') {
       return next()
