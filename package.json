@@ -21,6 +21,11 @@
     "npm": ">= 5.6.0",
     "yarn": ">= 1.6.0"
   },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -60,6 +65,7 @@
     "@commitlint/config-conventional": "^9.1.2",
     "@vue/eslint-config-standard": "^5.1.0",
     "babel-eslint": "^10.0.3",
+    "cz-conventional-changelog": "3.2.0",
     "eslint": "^6.8.0",
     "eslint-loader": "4.0.2",
     "eslint-plugin-import": "^2.22.0",
