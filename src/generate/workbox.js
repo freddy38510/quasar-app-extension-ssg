@@ -58,6 +58,9 @@ module.exports = async function (api, quasarConf) {
   if (pluginMode === 'GenerateSW') {
     if (opts.navigateFallback === false) {
       delete opts.navigateFallback
+    } else {
+      opts.navigateFallbackDenylist = opts.navigateFallbackDenylist || []
+      opts.navigateFallbackDenylist.push(/service-worker\.js$/, /workbox-(.)*\.js$/)
     }
   }
 
