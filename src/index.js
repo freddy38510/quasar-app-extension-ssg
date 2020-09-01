@@ -27,9 +27,7 @@ const extendQuasarConf = function extendQuasarConf (conf, api) {
   }, conf.ssg ? conf.ssg : {})
 
   // Set SSG distDir
-  if (!conf.build.distDir) {
-    conf.ssg.__distDir = join(api.appDir, 'dist', 'ssg')
-  }
+  conf.ssg.__distDir = conf.build.distDir || join(api.appDir, 'dist', 'ssg')
 
   if (!isAbsolute(conf.ssg.__distDir)) {
     conf.ssg.__distDir = join(api.appDir, conf.ssg.__distDir)
