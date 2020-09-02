@@ -22,6 +22,17 @@ Then install it:
 quasar ext invoke ssg
 ```
 
+### Prompts
+
+- `add scripts into your package.json?`: Extends your package.json by adding scripts.
+
+  ```javascript
+  scripts: {
+    'build:ssg': 'quasar ssg generate',
+    'serve:ssg': 'quasar ssg serve dist/ssg'
+  }
+  ```
+
 ## Uninstalling
 
 Uninstall the App Extension:
