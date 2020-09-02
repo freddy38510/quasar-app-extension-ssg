@@ -9,5 +9,18 @@ module.exports = function (api) {
 
   api.compatibleWith('@quasar/app', '^1.5.0||^2.0.0')
 
-  api.onExitLog('See https://github.com/freddy38510/quasar-app-extension-ssg/#configuration to configure the extension then run "$ quasar ssg generate"')
+  let command = '$ quasar ssg generate'
+
+  if (api.prompts.scripts) {
+    command = '$ yarn build:ssg'
+
+    api.extendPackageJson({
+      scripts: {
+        'build:ssg': 'quasar ssg generate',
+        'serve:ssg': 'quasar ssg serve dist/ssg/public'
+      }
+    })
+  }
+
+  api.onExitLog(`See https://github.com/freddy38510/quasar-app-extension-ssg/#configuration to configure the extension then run "${command}"`)
 }

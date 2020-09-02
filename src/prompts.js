@@ -40,5 +40,13 @@
  */
 
 module.exports = function () {
-  return []
+  return [
+    {
+      name: 'scripts',
+      type: 'confirm',
+      message:
+        'add scripts into your package.json?',
+      default: true
+    }
+  ]
 }
