@@ -17,7 +17,7 @@ module.exports = function (api) {
     api.extendPackageJson({
       scripts: {
         'build:ssg': 'quasar ssg generate',
-        'serve:ssg': 'quasar ssg serve dist/ssg/public'
+        'serve:ssg': 'quasar ssg serve dist/ssg'
       }
     })
   }
