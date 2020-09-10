@@ -1,8 +1,8 @@
-const { cyanBright } = require('chalk')
 const fs = require('fs').promises
 const minify = require('html-minifier').minify
+const { Listr } = require('listr2')
 const path = require('path')
-const { log, warn, fatal } = require('./../helpers/logger')
+const { warn, fatal, routeBanner } = require('./../helpers/logger')
 const promisifyRoutes = require('./../helpers/promisify-routes')
 
 class Generator {
@@ -37,48 +37,60 @@ class Generator {
   async generateAll () {
     const routes = await this.initRoutes()
 
-    while (routes.length) {
-      let n = 0
-      await Promise.all(
+    let n = 0
+
+    try {
+      await new Listr(
         routes
-          .splice(0, this.options.concurrency)
-          .map(async (route) => {
-            await new Promise(resolve => setTimeout(resolve, (n++ * this.options.interval) || 0))
+          .map((route) => {
+            return {
+              title: routeBanner(route, 'Generating route...'),
+              task: async () => {
+                await new Promise(resolve => setTimeout(resolve, (n++ * this.options.interval) || 0))
 
-            log(`${cyanBright(path.posix.join(route, 'index.html'))} => Generating...`)
-
-            await this.generate(route)
-          })
-      )
+                await this.generate(route)
+              },
+              options: { persistentOutput: true }
+            }
+          }),
+        {
+          concurrent: this.options.concurrency,
+          rendererOptions: {
+            collapse: false,
+            collapseErrors: false,
+            exitOnError: true,
+            showTimer: true
+          }
+        }
+      ).run()
+    } catch (e) {
+      warn(e.stack || e)
+      process.exit(0)
     }
   }
 
   async generate (route) {
-    try {
-      let html = await this.render(route)
+    let html = await this.render(route)
 
-      if (typeof this.options.onRouteRendered === 'function') {
-        log(`${cyanBright(path.posix.join(route, 'index.html'))} => Running onRouteRendered hook...`)
-
-        html = await this.options.onRouteRendered(html, route, this.options.__distDir)
-      }
-
-      if (this.options.minify !== false) {
-        html = minify(html, this.options.minify)
-      }
-
-      await this.fileWriter(path.join(this.options.__distDir, route), 'index.html', html)
-    } catch (error) {
-      warn(error.stack || error)
-
-      warn(`Could not generate route: "${route}"`)
+    if (typeof this.options.onRouteRendered === 'function') {
+      html = await this.options.onRouteRendered(html, route, this.options.__distDir)
     }
+
+    if (this.options.minify !== false) {
+      html = minify(html, this.options.minify)
+    }
+
+    await this.fileWriter(path.join(this.options.__distDir, route, 'index.html'), html)
   }
 
-  async fileWriter (targetDirectory, filename, content) {
-    await fs.mkdir(path.normalize(targetDirectory), { recursive: true })
+  async fileWriter (route, content) {
+    try {
+      await fs.mkdir(path.dirname(route), { recursive: true })
 
-    await fs.writeFile(path.join(targetDirectory, filename), content)
+      await fs.writeFile(route, content)
+    } catch (error) {
+      warn(error.stack || error)
+    }
   }
 
   render (route) {

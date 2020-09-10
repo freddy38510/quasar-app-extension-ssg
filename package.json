@@ -51,6 +51,7 @@
     "html-minifier": "4.0.0",
     "http-proxy-middleware": "1.0.5",
     "https": "1.0.0",
+    "listr2": "^3.0.1",
     "minimist": "1.2.5",
     "open": "7.2.1",
     "pify": "5.0.0",

@@ -1,4 +1,4 @@
-const { green, red } = require('chalk')
+const { green, red, cyanBright } = require('chalk')
 
 const banner = 'Extension(ssg) ·'
 
@@ -16,4 +16,8 @@ module.exports.warn = function (msg) {
 module.exports.fatal = function (msg) {
   console.error(msg ? ` ${warnBanner} ⚠️  ${msg}` : '')
   process.exit(1)
+}
+
+module.exports.routeBanner = function (route, msg) {
+  return msg ? ` ${logBanner} ${msg} ${cyanBright(route)}` : ''
 }
