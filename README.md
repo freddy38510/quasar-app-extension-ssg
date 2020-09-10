@@ -33,6 +33,8 @@ quasar ext invoke ssg
   }
   ```
 
+- `inline critical CSS?`: Use a fork of [Critters](https://github.com/freddy38510/critters/tree/standalone) to generate critical CSS, inline it and lazy load stylesheets for each route generated.
+
 ## Uninstalling
 
 Uninstall the App Extension:
