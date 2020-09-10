@@ -364,50 +364,6 @@ Can use async/await or directly return a Promise.
 
 > Note: `files` parameter is an `Array` of all generated routes paths + filenames (including the fallback file).
 
-Example to generate critical CSS, inline it, and defer CSS with [Critical](https://github.com/addyosmani/critical):
-
-```javascript
-// quasar.conf.js
-
-const critical = require('critical')
-
-module.exports = function (/* ctx */) {
-  return {
-    // ...
-
-    ssg: {
-      afterGenerate: async (files, distDir) => {
-        await Promise.all(
-          files.map(async (file) => {
-            const { html } = await critical.generate({
-              inline: true, // Inline critical-path CSS using filamentgroup's loadCSS.
-              src: file,
-              base: distDir,
-              target: {
-                html: file
-              },
-              ignore: {
-                atrule: ["@font-face"],
-                decl: (node, value) => /url\(/.test(value),
-              },
-              penthouse: {
-                blockJSRequests: true // set it to false if your CSS is dynamically injected
-              }
-            });
-          })
-        );
-      };
-    },
-
-    // ...
-  }
-}
-```
-
-> Note: In this example, `Critical` will open files in parallel in different tabs in the same browser, for performance reasons. If you need to run many pages however your machine will at some point (~ 10 pages) start running out of resources (causing crashes, errors and/or slowdown).
->
-> In this case, it will be better to setup a **queue**.
-
 ## Infos
 
 ### About Boot File
