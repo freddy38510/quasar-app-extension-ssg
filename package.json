@@ -58,6 +58,7 @@
     "pify": "5.0.0",
     "route-cache": "0.4.5",
     "selfsigned": "1.10.7",
+    "semver": "7.3.2",
     "upath": "1.2.0",
     "webpack-merge": "5.1.4",
     "workbox-build": "5.1.4"

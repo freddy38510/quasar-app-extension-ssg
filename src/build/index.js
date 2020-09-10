@@ -4,6 +4,7 @@ const pify = require('pify')
 const appRequire = require('../helpers/app-require')
 const banner = require('./../helpers/banner').build
 const { log, warn } = require('./../helpers/logger')
+const semverGte = require('semver/functions/gte')
 
 function splitConfig (webpackConfig) {
   return [
@@ -35,8 +36,11 @@ module.exports = async function build (api, quasarConfig, ctx, extensionRunner) 
   const regenerateTypesFeatureFlags = appRequire('@quasar/app/lib/helpers/types-feature-flags', api.appDir)
 
   const generator = new Generator(quasarConfig)
-  const webpackConfig = quasarConfig.getWebpackConfig()
-  const buildConfig = quasarConfig.getBuildConfig()
+
+  const isVersionUp = semverGte(api.getPackageVersion('@quasar/app'), '2.1.0')
+
+  const webpackConfig = isVersionUp ? quasarConfig.quasarConf : quasarConfig.getWebpackConfig()
+  const buildConfig = isVersionUp ? quasarConfig.webpackConf : quasarConfig.getBuildConfig()
 
   regenerateTypesFeatureFlags(buildConfig)
 

@@ -5,9 +5,11 @@ const upath = require('upath')
 const build = require('./')
 const { log } = require('./../helpers/logger')
 const { snapshot, compareSnapshots } = require('./snapshot')
+const semverGte = require('semver/functions/gte')
 
 module.exports = async function ensureBuild (api, quasarConfig, ctx, extensionRunner, forceBuild = false) {
-  const quasarConf = quasarConfig.getBuildConfig()
+  const isVersionUp = semverGte(api.getPackageVersion('@quasar/app'), '2.1.0')
+  const quasarConf = isVersionUp ? quasarConfig.quasarConf : quasarConfig.getBuildConfig()
   const options = quasarConf.ssg
 
   if (options.cache === false || forceBuild) {

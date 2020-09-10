@@ -9,6 +9,7 @@ const parseArgs = require('minimist')
 const appRequire = require('./../helpers/app-require')
 const { fatal } = require('./../helpers/logger')
 const ensureBuild = require('../build/ensureBuild')
+const semverGte = require('semver/functions/gte')
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -36,7 +37,8 @@ if (argv.help) {
 }
 
 module.exports = async function run (api) {
-  const QuasarConfig = appRequire('@quasar/app/lib/quasar-config', api.appDir)
+  const isVersionUp = semverGte(api.getPackageVersion('@quasar/app'), '2.1.0')
+  const QuasarConfig = appRequire(isVersionUp ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir)
   const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir)
   const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir)
 
@@ -65,5 +67,5 @@ module.exports = async function run (api) {
 
   await ensureBuild(api, quasarConfig, ctx, extensionRunner, argv['force-build'])
 
-  await require('./../generate')(api, quasarConfig.getBuildConfig())
+  await require('./../generate')(api, isVersionUp ? quasarConfig.quasarConf : quasarConfig.getBuildConfig())
 }
