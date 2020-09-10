@@ -43,6 +43,7 @@
     "copy-webpack-plugin": "6.0.4",
     "cors": "2.8.5",
     "crc": "3.8.0",
+    "critters": "https://github.com/freddy38510/critters.git#standalone",
     "destr": "1.0.0",
     "execa": "4.0.3",
     "express": "4.17.1",

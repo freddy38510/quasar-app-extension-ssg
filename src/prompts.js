@@ -47,6 +47,13 @@ module.exports = function () {
       message:
         'add scripts into your package.json?',
       default: true
+    },
+    {
+      name: 'criticalCss',
+      type: 'confirm',
+      message:
+        'inline critical CSS?',
+      default: true
     }
   ]
 }

@@ -1,8 +1,9 @@
+const Critters = require('critters')
 const fs = require('fs').promises
 const minify = require('html-minifier').minify
 const { Listr } = require('listr2')
 const path = require('path')
-const { warn, fatal, routeBanner } = require('./../helpers/logger')
+const { log, warn, fatal, routeBanner } = require('./../helpers/logger')
 const promisifyRoutes = require('./../helpers/promisify-routes')
 
 class Generator {
@@ -17,7 +18,10 @@ class Generator {
 
     this.options = {
       ...quasarConf.ssg,
-      minify: quasarConf.build.minify
+      minify: quasarConf.build.minify,
+      build: {
+        publicPath: quasarConf.build.publicPath
+      }
     }
   }
 
@@ -45,10 +49,10 @@ class Generator {
           .map((route) => {
             return {
               title: routeBanner(route, 'Generating route...'),
-              task: async () => {
+              task: async (_ctx, task) => {
                 await new Promise(resolve => setTimeout(resolve, (n++ * this.options.interval) || 0))
 
-                await this.generate(route)
+                await this.generate(route, task)
               },
               options: { persistentOutput: true }
             }
@@ -69,8 +73,12 @@ class Generator {
     }
   }
 
-  async generate (route) {
+  async generate (route, task) {
     let html = await this.render(route)
+
+    if (this.api.prompts.criticalCss) {
+      html = await this.inlineCriticalCss(html, task)
+    }
 
     if (typeof this.options.onRouteRendered === 'function') {
       html = await this.options.onRouteRendered(html, route, this.options.__distDir)
@@ -107,6 +115,29 @@ class Generator {
         resolve(html)
       })
     })
+  }
+
+  async inlineCriticalCss (html, task = null) {
+    const loggerFn = (level) => {
+      if (task === null) {
+        return (msg) => { level(msg) }
+      }
+
+      return (msg) => { task.output = msg }
+    }
+
+    const critters = new Critters({
+      path: this.options.__distDir,
+      publicPath: this.options.build.publicPath,
+      logger: {
+        log: loggerFn(log),
+        info: loggerFn(log),
+        warn: loggerFn(warn),
+        error: loggerFn(warn)
+      }
+    })
+
+    return await critters.process(html)
   }
 }
 

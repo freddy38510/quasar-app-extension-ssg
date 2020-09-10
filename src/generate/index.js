@@ -6,9 +6,11 @@ const banner = require('./../helpers/banner').generate
 const { log, warn } = require('../helpers/logger')
 
 module.exports = async (api, quasarConf) => {
-  banner()
-
   const { add, clean } = appRequire('@quasar/app/lib/artifacts', api.appDir)
+
+  const generator = new Generator(api, quasarConf)
+
+  banner()
 
   clean(quasarConf.ssg.__distDir)
 
@@ -16,7 +18,23 @@ module.exports = async (api, quasarConf) => {
 
   await fs.copy(join(quasarConf.build.distDir, 'www'), quasarConf.ssg.__distDir)
 
-  await new Generator(api, quasarConf).generateAll()
+  if (api.prompts.criticalCss) {
+    try {
+      log('Inlining critical CSS for fallback...')
+
+      const fallbackFile = join(quasarConf.ssg.__distDir, quasarConf.ssg.fallback)
+
+      let fallbackHtml = await fs.readFile(fallbackFile, 'utf-8')
+
+      fallbackHtml = await generator.inlineCriticalCss(fallbackHtml)
+
+      await fs.writeFile(fallbackFile, fallbackHtml)
+    } catch (error) {
+      warn(error.stack || error)
+    }
+  }
+
+  await generator.generateAll()
 
   if (quasarConf.ctx.mode.pwa) {
     const buildWorkbox = require('./workbox.js')
@@ -40,6 +58,7 @@ module.exports = async (api, quasarConf) => {
 
     try {
       log('Running afterGenerate hook...')
+
       await quasarConf.ssg.afterGenerate(files, quasarConf.ssg.__distDir)
     } catch (error) {
       warn(error)
