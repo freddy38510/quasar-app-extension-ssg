@@ -1,7 +1,7 @@
 /* eslint-disable no-void */
 const chalk = require('chalk')
 const pify = require('pify')
-const appRequire = require('../helpers/app-require')
+const appRequire = require('./../helpers/app-require')
 const banner = require('./../helpers/banner').build
 const { log, warn } = require('./../helpers/logger')
 const semverGte = require('semver/functions/gte')
@@ -39,8 +39,8 @@ module.exports = async function build (api, quasarConfig, ctx, extensionRunner) 
 
   const isVersionUp = semverGte(api.getPackageVersion('@quasar/app'), '2.1.0')
 
-  const webpackConfig = isVersionUp ? quasarConfig.quasarConf : quasarConfig.getWebpackConfig()
-  const buildConfig = isVersionUp ? quasarConfig.webpackConf : quasarConfig.getBuildConfig()
+  const webpackConfig = isVersionUp ? quasarConfig.webpackConf : quasarConfig.getWebpackConfig()
+  const buildConfig = isVersionUp ? quasarConfig.quasarConf : quasarConfig.getBuildConfig()
 
   regenerateTypesFeatureFlags(buildConfig)
 
