@@ -117,15 +117,15 @@ const chainWebpack = function ({ isClient, isServer }, chain, api, quasarConf) {
 }
 
 module.exports = function (api) {
-  api.registerCommand('generate', () => {
+  api.registerCommand('generate', () =>
     require('./bin/ssg-generate')(api)
-  })
+  )
 
-  api.registerCommand('inspect', () => {
+  api.registerCommand('inspect', () =>
     require('./bin/inspect')(api)
-  })
+  )
 
-  api.registerCommand('serve', () => require('./bin/server'))
+  api.registerCommand('serve', () => require('./bin/server')(api))
 
   // Make sure we are running from command "quasar ssg"
   if (api.ctx.prod && api.ctx.mode.ssr && process.argv[2] === 'ssg') {
