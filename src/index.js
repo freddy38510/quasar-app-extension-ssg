@@ -121,6 +121,10 @@ module.exports = function (api) {
     require('./bin/ssg-generate')(api)
   })
 
+  api.registerCommand('inspect', () => {
+    require('./bin/inspect')(api)
+  })
+
   api.registerCommand('serve', () => require('./bin/server'))
 
   // Make sure we are running from command "quasar ssg"
