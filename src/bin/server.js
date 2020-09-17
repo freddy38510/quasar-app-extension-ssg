@@ -196,9 +196,9 @@ module.exports = (api) => {
     }
     file = require(file)
 
-    const { createProxyMiddleware } = appRequire('http-proxy-middleware', api.appDir)
+    const proxy = appRequire('http-proxy-middleware', api.appDir)
     file.forEach(entry => {
-      app.use(entry.path, createProxyMiddleware(entry.rule))
+      app.use(entry.path, proxy(entry.rule))
     })
   }
 
