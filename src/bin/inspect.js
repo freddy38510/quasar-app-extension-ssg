@@ -25,9 +25,8 @@ if (argv.help) {
     Inspect Quasar generated Webpack config
 
   Usage
-    $ quasar inspect
-    $ quasar inspect -c build
-    $ quasar inspect -m electron -p 'module.rules'
+    $ quasar ssg inspect
+    $ quasar ssg inspect -p 'module.rules'
 
   Options
     --depth, -d      Number of levels deep (default: 5)
