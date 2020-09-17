@@ -40,7 +40,6 @@
     "chalk": "4.1.0",
     "ci-info": "2.0.0",
     "compression": "1.7.4",
-    "copy-webpack-plugin": "6.1.0",
     "cors": "2.8.5",
     "crc": "3.8.0",
     "critters": "https://github.com/freddy38510/critters.git#standalone",
