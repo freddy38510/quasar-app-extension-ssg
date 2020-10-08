@@ -4,7 +4,7 @@ const path = require('path')
 const appRequire = require('./app-require')
 
 module.exports.build = function (api, ctx, cmd, details) {
-  const { getBrowsersBanner } = appRequire('@quasar/app/lib/helpers/browsers-support', api.appDir)
+  const hasBrowsersSupportFile = require('./is-pkg-gte')(api, '@quasar/app', '2.0.0')
   const quasarVersion = api.getPackageVersion('quasar')
   const cliAppVersion = api.getPackageVersion('@quasar/app')
 
@@ -33,7 +33,8 @@ module.exports.build = function (api, ctx, cmd, details) {
 
   console.log(banner + '\n')
 
-  if (!details) {
+  if (!details && hasBrowsersSupportFile) {
+    const { getBrowsersBanner } = appRequire('@quasar/app/lib/helpers/browsers-support', api.appDir)
     console.log(getBrowsersBanner())
   }
 }
