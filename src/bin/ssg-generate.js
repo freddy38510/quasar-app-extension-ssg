@@ -36,8 +36,8 @@ if (argv.help) {
 }
 
 module.exports = async function run (api) {
-  const isVersionBreaking = require('./../helpers/is-version-breaking')(api)
-  const QuasarConfig = appRequire(isVersionBreaking ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir)
+  const hasNewQuasarConf = require('./../helpers/is-pkg-gte')(api, '@quasar/app', '2.0.1')
+  const QuasarConfig = appRequire(hasNewQuasarConf ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir)
   const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir)
   const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir)
 
@@ -66,5 +66,5 @@ module.exports = async function run (api) {
 
   await ensureBuild(api, quasarConfig, ctx, extensionRunner, argv['force-build'])
 
-  await require('./../generate')(api, isVersionBreaking ? quasarConfig.quasarConf : quasarConfig.getBuildConfig())
+  await require('./../generate')(api, hasNewQuasarConf ? quasarConfig.quasarConf : quasarConfig.getBuildConfig())
 }

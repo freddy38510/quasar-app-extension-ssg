@@ -54,9 +54,9 @@ async function inspect (api) {
     fatal('Requested mode for inspection is NOT installed.\n')
   }
 
-  const isVersionBreaking = require('./../helpers/is-version-breaking')(api)
+  const hasNewQuasarConf = require('./../helpers/is-pkg-gte')(api, '@quasar/app', '2.0.1')
 
-  const QuasarConfFile = appRequire(isVersionBreaking ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir)
+  const QuasarConfFile = appRequire(hasNewQuasarConf ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir)
 
   const depth = parseInt(argv.depth, 10) || Infinity
 
@@ -86,7 +86,7 @@ async function inspect (api) {
   await quasarConfFile.compile()
 
   const util = require('util')
-  let cfgEntries = getCfgEntries(isVersionBreaking ? quasarConfFile.webpackConf : quasarConfFile.getWebpackConfig())
+  let cfgEntries = getCfgEntries(hasNewQuasarConf ? quasarConfFile.webpackConf : quasarConfFile.getWebpackConfig())
 
   if (argv.path) {
     const dot = require('dot-prop')

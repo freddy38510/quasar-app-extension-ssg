@@ -7,8 +7,8 @@ const { log } = require('./../helpers/logger')
 const { snapshot, compareSnapshots } = require('./snapshot')
 
 module.exports = async function ensureBuild (api, quasarConfig, ctx, extensionRunner, forceBuild = false) {
-  const isVersionBreaking = require('./../helpers/is-version-breaking')(api)
-  const quasarConf = isVersionBreaking ? quasarConfig.quasarConf : quasarConfig.getBuildConfig()
+  const hasNewQuasarConf = require('./../helpers/is-pkg-gte')(api, '@quasar/app', '2.0.1')
+  const quasarConf = hasNewQuasarConf ? quasarConfig.quasarConf : quasarConfig.getBuildConfig()
   const options = quasarConf.ssg
 
   if (options.cache === false || forceBuild) {

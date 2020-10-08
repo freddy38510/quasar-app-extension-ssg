@@ -36,10 +36,10 @@ module.exports = async function build (api, quasarConfig, ctx, extensionRunner) 
 
   const generator = new Generator(quasarConfig)
 
-  const isVersionBreaking = require('./../helpers/is-version-breaking')(api)
+  const hasNewQuasarConf = require('./../helpers/is-pkg-gte')(api, '@quasar/app', '2.0.1')
 
-  const webpackConfig = isVersionBreaking ? quasarConfig.webpackConf : quasarConfig.getWebpackConfig()
-  const buildConfig = isVersionBreaking ? quasarConfig.quasarConf : quasarConfig.getBuildConfig()
+  const webpackConfig = hasNewQuasarConf ? quasarConfig.webpackConf : quasarConfig.getWebpackConfig()
+  const buildConfig = hasNewQuasarConf ? quasarConfig.quasarConf : quasarConfig.getBuildConfig()
 
   regenerateTypesFeatureFlags(buildConfig)
 
