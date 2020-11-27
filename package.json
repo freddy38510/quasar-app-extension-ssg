@@ -6,7 +6,8 @@
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
@@ -75,6 +76,7 @@
     "eslint-plugin-quasar": "1.0.0",
     "eslint-plugin-standard": "4.0.1",
     "eslint-plugin-vue": "6.2.2",
-    "husky": "4.3.0"
+    "husky": "4.3.0",
+    "standard-version": "9.0.0"
   }
 }
