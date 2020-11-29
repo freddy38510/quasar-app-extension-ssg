@@ -76,7 +76,7 @@ class Generator {
   async generate (route, task) {
     let html = await this.render(route)
 
-    if (this.api.prompts.criticalCss) {
+    if (this.options.criticalCss !== false) {
       html = await this.inlineCriticalCss(html, task)
     }
 

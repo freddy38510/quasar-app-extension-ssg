@@ -49,6 +49,10 @@ const extendQuasarConf = function extendQuasarConf (conf, api) {
   // Overrides it to expect build output folder in SSR mode being our SSG buildDir
   conf.build.distDir = conf.ssg.buildDir
 
+  // Set inline critical css
+  conf.ssg.criticalCss = conf.ssg.criticalCss || api.prompts.criticalCss
+
+  // Set SSG cache.ignore
   if (conf.ssg.cache !== false) {
     const ignore = [
       join(conf.ssg.__distDir, '/**'),

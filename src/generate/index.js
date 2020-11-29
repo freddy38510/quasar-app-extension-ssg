@@ -18,7 +18,7 @@ module.exports = async (api, quasarConf) => {
 
   await fs.copy(join(quasarConf.build.distDir, 'www'), quasarConf.ssg.__distDir)
 
-  if (api.prompts.criticalCss) {
+  if (quasarConf.ssg.criticalCss) {
     try {
       log('Inlining critical CSS for fallback...')
 
