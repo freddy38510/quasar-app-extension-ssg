@@ -7,7 +7,7 @@ const { log } = require('./../helpers/logger')
 const { snapshot, compareSnapshots } = require('./snapshot')
 
 module.exports = async function ensureBuild (api, quasarConfig, ctx, extensionRunner, forceBuild = false) {
-  const hasNewQuasarConf = require('./../helpers/is-pkg-gte')(api, '@quasar/app', '2.0.1')
+  const hasNewQuasarConf = require('../helpers/compatibility')(api, '@quasar/app', '>=2.0.1')
   const quasarConf = hasNewQuasarConf ? quasarConfig.quasarConf : quasarConfig.getBuildConfig()
   const options = quasarConf.ssg
 

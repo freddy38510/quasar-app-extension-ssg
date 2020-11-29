@@ -36,7 +36,7 @@ if (argv.help) {
 }
 
 module.exports = async function run (api) {
-  const hasNewQuasarConf = require('./../helpers/is-pkg-gte')(api, '@quasar/app', '2.0.1')
+  const hasNewQuasarConf = require('../helpers/compatibility')(api, '@quasar/app', '>=2.0.1')
   const QuasarConfig = appRequire(hasNewQuasarConf ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir)
   const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir)
   const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir)

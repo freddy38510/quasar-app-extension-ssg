@@ -36,7 +36,7 @@ module.exports = async function build (api, quasarConfig, ctx, extensionRunner) 
 
   const generator = new Generator(quasarConfig)
 
-  const hasNewQuasarConf = require('./../helpers/is-pkg-gte')(api, '@quasar/app', '2.0.1')
+  const hasNewQuasarConf = require('../helpers/compatibility')(api, '@quasar/app', '>=2.0.1')
 
   const webpackConfig = hasNewQuasarConf ? quasarConfig.webpackConf : quasarConfig.getWebpackConfig()
   const buildConfig = hasNewQuasarConf ? quasarConfig.quasarConf : quasarConfig.getBuildConfig()

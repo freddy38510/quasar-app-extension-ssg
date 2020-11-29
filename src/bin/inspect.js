@@ -54,7 +54,7 @@ async function inspect (api) {
     fatal('Requested mode for inspection is NOT installed.\n')
   }
 
-  const hasNewQuasarConf = require('./../helpers/is-pkg-gte')(api, '@quasar/app', '2.0.1')
+  const hasNewQuasarConf = require('../helpers/compatibility')(api, '@quasar/app', '>=2.0.1')
 
   const QuasarConfFile = appRequire(hasNewQuasarConf ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir)
 
