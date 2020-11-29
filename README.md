@@ -10,17 +10,13 @@ This project was created to fill this [Feature Request](https://github.com/quasa
 
 ## Installing
 
-Add the App Extension into your Quasar project:
+Run this command into your Quasar project:
 
 ```bash
-yarn add --dev https://github.com/freddy38510/quasar-app-extension-ssg
+quasar ext add ssg
 ```
 
-Then install it:
-
-```bash
-quasar ext invoke ssg
-```
+This will find and install the extension’s module. After installation is complete, there will be prompts asking you to make choices.
 
 ### Prompts
 
@@ -37,32 +33,26 @@ quasar ext invoke ssg
 
 ## Uninstalling
 
-Uninstall the App Extension:
-
 ```bash
-quasar ext uninvoke ssg
-```
-
-Then remove it from your Quasar project:
-
-```bash
-yarn remove quasar-app-extension-ssg
+quasar ext remove ssg
 ```
 
 ## Upgrading
 
-To upgrade the extension, run this command from your quasar project folder:
+This is done with the same command as used for installation:
 
 ```bash
-yarn upgrade quasar-app-extension-ssg
+quasar ext add ssg
 ```
 
-If you are upgrading this extension from the old [v0.0.1](https://github.com/freddy38510/quasar-app-extension-ssg/tree/v0.0.1), you probably need to clean the extension from the yarn global cache, before upgrading it.
+If you are upgrading this extension from not yet published to NPM versions (before v1.0.0), you probably need to clean the extension from the yarn global cache, before upgrading it.
 
 ```bash
+yarn remove quasar-app-extension-ssg
+
 yarn cache clean quasar-app-extension-ssg
 
-yarn upgrade quasar-app-extension-ssg
+quasar ext add ssg
 ```
 
 ## Developing
