@@ -368,6 +368,16 @@ Default: `{}`
 
 The options merged with Quasar [defaults options](https://github.com/quasarframework/quasar/blob/934a6080290c219706f043fdf68f3ca9089ecc5d/app/lib/ssr/template.prod-webserver.js#L26), then pass to the `BundleRenderer` as in the [Vue SSR Guide](https://ssr.vuejs.org/api/#renderer-options).
 
+### `criticalCss`
+
+Type: `Boolean`
+
+Default: `true`
+
+Use a fork of [Critters](https://github.com/freddy38510/critters/tree/standalone) to generate critical CSS, inline it and lazy load stylesheets for each route generated.
+
+> Note: Useful to replace the [initialized value](#prompts) when installing the app extension.
+
 ### `onRouteRendered(html, route, distDir)`
 
 Type: `Function`
