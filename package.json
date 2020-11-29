@@ -1,6 +1,6 @@
 {
   "name": "quasar-app-extension-ssg",
-  "version": "0.9.8",
+  "version": "1.0.0",
   "description": "Static Site Generator App Extension for Quasar.",
   "author": "freddy38510 <freddyescobar@hotmail.fr>",
   "license": "MIT",
