@@ -41,26 +41,28 @@ module.exports = async function (api, quasarConf) {
     log('[InjectManifest] Using your custom service-worker written file...')
   }
 
+  // merge with custom options from user
   let opts = {
     ...defaultOptions,
     ...quasarConf.pwa.workboxOptions
   }
 
-  // Let user specify their own options
-  // opts.globIgnores = opts.exclude || []
-
-  delete opts.exclude
-
+  // if Object form:
   if (quasarConf.ssr.pwa && quasarConf.ssr.pwa !== true) {
     opts = merge(opts, quasarConf.ssr.pwa)
   }
+
+  delete opts.exclude // replaced by globIgnores with workbox-build
 
   if (mode === 'GenerateSW') {
     if (opts.navigateFallback === false) {
       delete opts.navigateFallback
     } else {
       opts.navigateFallbackDenylist = opts.navigateFallbackDenylist || []
-      opts.navigateFallbackDenylist.push(/service-worker\.js$/, /workbox-(.)*\.js$/)
+      opts.navigateFallbackDenylist.push(
+        /service-worker\.js$/,
+        /workbox-(.)*\.js$/
+      )
     }
   }
 
