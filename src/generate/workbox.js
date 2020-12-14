@@ -1,17 +1,16 @@
-const { join, extname } = require('path')
+const path = require('path')
 const { merge } = require('webpack-merge')
-const { generateSW } = require('workbox-build')
+const { generateSW, injectManifest } = require('workbox-build')
 const { log } = require('../helpers/logger')
 
 module.exports = async function (api, quasarConf) {
+  const mode = quasarConf.pwa.workboxPluginMode
   let defaultOptions
 
-  const pluginMode = quasarConf.pwa.workboxPluginMode
-
-  if (pluginMode === 'GenerateSW') {
+  if (mode === 'GenerateSW') {
     const pkg = require(api.resolve.app('package.json'))
-    const assets = require(join(quasarConf.build.distDir, 'quasar.client-manifest.json')).all
-    const assetsExt = assets.map(asset => extname(asset).slice(1)).join()
+    const assets = require(path.join(quasarConf.build.distDir, 'quasar.client-manifest.json')).all
+    const assetsExt = assets.map(asset => path.extname(asset).slice(1)).join()
 
     defaultOptions = {
       cacheId: pkg.name || 'quasar-pwa-app',
@@ -55,7 +54,7 @@ module.exports = async function (api, quasarConf) {
     opts = merge(opts, quasarConf.ssr.pwa)
   }
 
-  if (pluginMode === 'GenerateSW') {
+  if (mode === 'GenerateSW') {
     if (opts.navigateFallback === false) {
       delete opts.navigateFallback
     } else {
@@ -64,9 +63,12 @@ module.exports = async function (api, quasarConf) {
     }
   }
 
-  opts.swDest = join(quasarConf.ssg.__distDir, 'service-worker.js')
+  opts.globDirectory = quasarConf.ssg.__distDir
+  opts.swDest = path.join(quasarConf.ssg.__distDir, 'service-worker.js')
 
-  await generateSW({
-    ...opts
-  })
+  if (mode === 'GenerateSW') {
+    await generateSW(opts)
+  } else {
+    await injectManifest(opts)
+  }
 }
