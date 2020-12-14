@@ -3,25 +3,26 @@ const { merge } = require('webpack-merge')
 const { generateSW, injectManifest } = require('workbox-build')
 const { log } = require('../helpers/logger')
 
+function getAssetsExtensions (quasarConf) {
+  const assets = require(path.join(
+    quasarConf.build.distDir,
+    'quasar.client-manifest.json'
+  )).all
+
+  return assets.map((asset) => path.extname(asset).slice(1)).join()
+}
+
 module.exports = async function (api, quasarConf) {
   const mode = quasarConf.pwa.workboxPluginMode
   let defaultOptions
 
   if (mode === 'GenerateSW') {
     const pkg = require(api.resolve.app('package.json'))
-    const assets = require(path.join(quasarConf.build.distDir, 'quasar.client-manifest.json')).all
-    const assetsExt = assets.map(asset => path.extname(asset).slice(1)).join()
 
     defaultOptions = {
       cacheId: pkg.name || 'quasar-pwa-app',
-      globDirectory: quasarConf.ssg.__distDir,
-      // globPatterns: ['**/*.{js,css,html,svg,png,ico,json,woff,woff2}'],
-      globPatterns: [`**/*.{${assetsExt},html}`],
-      globIgnores: [
-        'service-worker.js',
-        'workbox-*.js',
-        'asset-manifest.json'
-      ],
+      globPatterns: [`**/*.{${getAssetsExtensions(quasarConf)},html}`],
+      globIgnores: ['service-worker.js', 'workbox-*.js', 'asset-manifest.json'],
       navigateFallback: false, // quasarConf.ssg.fallback,
       sourcemap: false,
       directoryIndex: 'index.html',
