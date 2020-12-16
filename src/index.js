@@ -74,6 +74,9 @@ const extendQuasarConf = function extendQuasarConf (conf, api) {
     } else if (Array.isArray(conf.ssg.cache.ignore)) {
       conf.ssg.cache.ignore = getUniqueArray(conf.ssg.cache.ignore.concat(ignore))
     }
+
+    // Needed for PWA InjectManifest mode
+    conf.sourceFiles.serviceWorker = conf.sourceFiles.serviceWorker || 'src-pwa/custom-service-worker.js'
   }
 
   if (conf.ssg.routes === void 0) {
@@ -94,16 +97,35 @@ const extendQuasarConf = function extendQuasarConf (conf, api) {
 }
 
 const chainWebpack = function ({ isClient, isServer }, chain, api, quasarConf) {
-  if (isClient && !api.ctx.mode.pwa) {
-    const injectHtml = appRequire('@quasar/app/lib/webpack/inject.html', api.appDir)
+  if (isClient) {
+    if (!api.ctx.mode.pwa) {
+      const injectHtml = appRequire('@quasar/app/lib/webpack/inject.html', api.appDir)
 
-    const cfg = merge(quasarConf, {
-      build: {
-        distDir: join(quasarConf.build.distDir, 'www')
+      const cfg = merge(quasarConf, {
+        build: {
+          distDir: join(quasarConf.build.distDir, 'www')
+        }
+      })
+
+      injectHtml(chain, cfg)
+    } else {
+      // handle workbox after build instead of webpack
+      // This way all assets could be precached, including generated html
+      chain.plugins.delete('workbox')
+
+      if (quasarConf.pwa.workboxPluginMode === 'InjectManifest') {
+        const filename = chain.output.get('filename')
+
+        // compile custom service worker to /service-worker.js
+        chain
+          .entry('service-worker')
+          .add(api.resolve.app(quasarConf.sourceFiles.serviceWorker))
+
+        chain.output.filename((pathData) => {
+          return pathData.chunk.name === 'service-worker' ? '[name].js' : filename
+        })
       }
-    })
-
-    injectHtml(chain, cfg)
+    }
   }
 
   if (isServer) {
@@ -111,12 +133,6 @@ const chainWebpack = function ({ isClient, isServer }, chain, api, quasarConf) {
 
     chain.plugin('ssr-artifacts')
       .use(SsrArtifacts, [quasarConf, api])
-  }
-
-  if (api.ctx.mode.pwa) {
-    // handle workbox after build instead of webpack
-    // This way all assets could be precached, including generated html
-    chain.plugins.delete('workbox')
   }
 }
 

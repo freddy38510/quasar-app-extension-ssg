@@ -14,7 +14,7 @@ function getAssetsExtensions (quasarConf) {
 
 module.exports = async function (api, quasarConf) {
   const mode = quasarConf.pwa.workboxPluginMode
-  let defaultOptions
+  let defaultOptions = {}
 
   if (mode === 'GenerateSW') {
     const pkg = require(api.resolve.app('package.json'))
@@ -34,10 +34,6 @@ module.exports = async function (api, quasarConf) {
 
     log('[GenerateSW] Generating a service-worker file...')
   } else {
-    defaultOptions = {
-      swSrc: api.resolve.app(quasarConf.sourceFiles.serviceWorker)
-    }
-
     log('[InjectManifest] Using your custom service-worker written file...')
   }
 
@@ -72,6 +68,9 @@ module.exports = async function (api, quasarConf) {
   if (mode === 'GenerateSW') {
     await generateSW(opts)
   } else {
+    // inject manifest to compiled service-worker.js
+    opts.swSrc = opts.swDest
+
     await injectManifest(opts)
   }
 }
