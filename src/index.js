@@ -50,7 +50,9 @@ const extendQuasarConf = function extendQuasarConf (conf, api) {
   conf.build.distDir = conf.ssg.buildDir
 
   // Set inline critical css
-  conf.ssg.criticalCss = conf.ssg.criticalCss || api.prompts.criticalCss
+  if (conf.ssg.criticalCss === void 0) {
+    conf.ssg.criticalCss = api.prompts.criticalCss
+  }
 
   // Set SSG cache.ignore
   if (conf.ssg.cache !== false) {
