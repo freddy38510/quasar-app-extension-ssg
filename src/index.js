@@ -101,9 +101,6 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
 };
 
 const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, quasarConf) {
-  conf.build.vueRouterMode = 'history'
-}
-
   if (isClient) {
     if (!api.ctx.mode.pwa) {
       const injectHtml = appRequire('@quasar/app/lib/webpack/inject.html', api.appDir);
