@@ -1,52 +1,56 @@
-const crc32 = require('crc/lib/crc32')
-const fs = require('fs-extra')
-const globby = require('globby')
-const path = require('path')
+const crc32 = require('crc/lib/crc32');
+const fs = require('fs-extra');
+const globby = require('globby');
+const path = require('path');
 
-const compareSnapshots = function compareSnapshots (from, to) {
+const compareSnapshots = function compareSnapshots(from, to) {
   const allKeys = Array.from(new Set([
     ...Object.keys(from).sort(),
-    ...Object.keys(to).sort()
-  ]))
+    ...Object.keys(to).sort(),
+  ]));
 
-  for (const key of allKeys) {
+  let changed = false;
+
+  allKeys.some((key) => {
     if (JSON.stringify(from[key]) !== JSON.stringify(to[key])) {
-      return key
+      changed = key;
     }
-  }
 
-  return false
-}
+    return false;
+  });
 
-const snapshot = async function snapshot ({ globbyOptions, ignore, rootDir }) {
-  const snapshot = {}
+  return changed;
+};
+
+const makeSnapshot = async function makeSnapshot({ globbyOptions, ignore, rootDir }) {
+  const snapshot = {};
 
   const files = await globby('**', {
     ...globbyOptions,
     ignore,
     cwd: rootDir,
-    absolute: true
-  })
+    absolute: true,
+  });
 
   await Promise.all(files.map(async (p) => {
-    const key = path.relative(rootDir, p)
+    const key = path.relative(rootDir, p);
     try {
-      const fileContent = await fs.readFile(p)
+      const fileContent = await fs.readFile(p);
       snapshot[key] = {
-        checksum: await crc32(fileContent).toString(16)
-      }
+        checksum: await crc32(fileContent).toString(16),
+      };
     } catch (e) {
       // TODO: Check for other errors like permission denied
       snapshot[key] = {
-        exists: false
-      }
+        exists: false,
+      };
     }
-  }))
+  }));
 
-  return snapshot
-}
+  return snapshot;
+};
 
 module.exports = {
-  snapshot,
-  compareSnapshots
-}
+  makeSnapshot,
+  compareSnapshots,
+};

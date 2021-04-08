@@ -39,21 +39,21 @@
 
  */
 
-module.exports = function () {
+module.exports = function prompts() {
   return [
     {
       name: 'scripts',
       type: 'confirm',
       message:
         'add scripts into your package.json?',
-      default: true
+      default: true,
     },
     {
       name: 'criticalCss',
       type: 'confirm',
       message:
         'inline critical CSS?',
-      default: true
-    }
-  ]
-}
+      default: true,
+    },
+  ];
+};

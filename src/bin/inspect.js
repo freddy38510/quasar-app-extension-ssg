@@ -1,23 +1,25 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
+/* eslint-disable global-require */
 
-const parseArgs = require('minimist')
-const appRequire = require('./../helpers/app-require')
-const { log, fatal } = require('./../helpers/logger')
+const parseArgs = require('minimist');
+const appRequire = require('../helpers/app-require');
+const { log, fatal } = require('../helpers/logger');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     d: 'depth',
     p: 'path',
-    h: 'help'
+    h: 'help',
   },
   boolean: ['h'],
   string: ['p'],
   default: {
-    d: 5
-  }
-})
+    d: 5,
+  },
+});
 
-argv.mode = 'ssr'
+argv.mode = 'ssr';
 
 if (argv.help) {
   console.log(`
@@ -35,84 +37,89 @@ if (argv.help) {
                           -p module.rules
                           -p plugins
     --help, -h       Displays this message
-  `)
-  process.exit(0)
+  `);
+  process.exit(0);
 }
 
-function getCfgEntries (webpackConf) {
+function getCfgEntries(webpackConf) {
   return [
     { name: 'Server', webpackCfg: webpackConf.server },
-    { name: 'Client', webpackCfg: webpackConf.client }
-  ]
+    { name: 'Client', webpackCfg: webpackConf.client },
+  ];
 }
 
-async function inspect (api) {
-  appRequire('@quasar/app/lib/helpers/banner', api.appDir)(argv, 'production')
+async function inspect(api) {
+  appRequire('@quasar/app/lib/helpers/banner', api.appDir)(argv, 'production');
 
-  const getMode = appRequire('@quasar/app/lib/mode/index', api.appDir)
+  const getMode = appRequire('@quasar/app/lib/mode/index', api.appDir);
   if (getMode('ssr').isInstalled !== true) {
-    fatal('Requested mode for inspection is NOT installed.\n')
+    fatal('Requested mode for inspection is NOT installed.\n');
   }
 
-  const hasNewQuasarConf = require('../helpers/compatibility')(api, '@quasar/app', '>=2.0.1')
+  const hasNewQuasarConf = require('../helpers/compatibility')(api, '@quasar/app', '>=2.0.1');
 
-  const QuasarConfFile = appRequire(hasNewQuasarConf ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir)
+  const QuasarConfFile = appRequire(hasNewQuasarConf ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir);
 
-  const depth = parseInt(argv.depth, 10) || Infinity
+  const depth = parseInt(argv.depth, 10) || Infinity;
 
-  const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir)
-  const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir)
+  const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir);
+  const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir);
 
   const ctx = getQuasarCtx({
     mode: 'ssr',
     target: undefined,
     debug: argv.debug,
     dev: false,
-    prod: true
-  })
+    prod: true,
+  });
 
   // register app extensions
-  await extensionRunner.registerExtensions(ctx)
+  await extensionRunner.registerExtensions(ctx);
 
-  const quasarConfFile = new QuasarConfFile(ctx)
+  const quasarConfFile = new QuasarConfFile(ctx);
 
   try {
-    await quasarConfFile.prepare()
+    await quasarConfFile.prepare();
   } catch (e) {
-    console.log(e)
-    fatal('[FAIL] quasar.conf.js has JS errors')
+    console.log(e);
+    fatal('[FAIL] quasar.conf.js has JS errors');
   }
 
-  await quasarConfFile.compile()
+  await quasarConfFile.compile();
 
-  const util = require('util')
-  let cfgEntries = getCfgEntries(hasNewQuasarConf ? quasarConfFile.webpackConf : quasarConfFile.getWebpackConfig())
+  const util = require('util');
+
+  let cfgEntries = getCfgEntries(
+    hasNewQuasarConf
+      ? quasarConfFile.webpackConf
+      : quasarConfFile.getWebpackConfig(),
+  );
 
   if (argv.path) {
-    const dot = require('dot-prop')
-    cfgEntries = cfgEntries.map(cfgEntry => ({
+    const dot = require('dot-prop');
+    cfgEntries = cfgEntries.map((cfgEntry) => ({
       name: cfgEntry.name,
-      webpackCfg: dot.get(cfgEntry.webpackCfg, argv.path)
-    }))
+      webpackCfg: dot.get(cfgEntry.webpackCfg, argv.path),
+    }));
   }
 
-  cfgEntries.forEach(cfgEntry => {
-    console.log()
-    log(`Showing Webpack config "${cfgEntry.name}" with depth of ${depth}`)
-    console.log()
+  cfgEntries.forEach((cfgEntry) => {
+    console.log();
+    log(`Showing Webpack config "${cfgEntry.name}" with depth of ${depth}`);
+    console.log();
     console.log(
       util.inspect(cfgEntry.webpackCfg, {
         showHidden: true,
-        depth: depth,
+        depth,
         colors: true,
-        compact: false
-      })
-    )
-  })
+        compact: false,
+      }),
+    );
+  });
 
-  console.log(`\n  Depth used: ${depth}. You can change it with "-d" parameter.\n`)
+  console.log(`\n  Depth used: ${depth}. You can change it with "-d" parameter.\n`);
 }
 
 module.exports = (api) => {
-  inspect(api)
-}
+  inspect(api);
+};

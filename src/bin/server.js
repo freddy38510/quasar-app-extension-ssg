@@ -1,7 +1,10 @@
 #!/usr/bin/env node
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable no-console */
+/* eslint-disable global-require */
 
-const parseArgs = require('minimist')
-const appRequire = require('./../helpers/app-require')
+const parseArgs = require('minimist');
+const appRequire = require('../helpers/app-require');
 
 const argv = parseArgs(process.argv.slice(4), {
   alias: {
@@ -18,7 +21,7 @@ const argv = parseArgs(process.argv.slice(4), {
     C: 'cert',
     K: 'key',
     P: 'proxy',
-    h: 'help'
+    h: 'help',
   },
   boolean: ['g', 'https', 'colors', 'h', 'cors'],
   string: ['H', 'C', 'K', 'prefix-path'],
@@ -29,9 +32,9 @@ const argv = parseArgs(process.argv.slice(4), {
     c: 24 * 60 * 60,
     m: 1,
     colors: true,
-    'prefix-path': '/'
-  }
-})
+    'prefix-path': '/',
+  },
+});
 if (argv.help) {
   console.log(`
   Description
@@ -72,145 +75,268 @@ if (argv.help) {
       }
     ]
     --> will be transformed into app.use(path, httpProxyMiddleware(rule))
-  `)
-  process.exit(0)
+  `);
+  process.exit(0);
 }
 
 module.exports = (api) => {
-  const fs = require('fs')
-  const path = require('path')
-  const glob = require('glob')
+  const fs = require('fs');
+  const path = require('path');
+  const glob = require('glob');
 
-  const root = getAbsolutePath(argv._[0] || '.')
-  const resolve = p => path.resolve(root, p)
-  const prefixPath = path.posix.join('/', argv['prefix-path'])
-
-  function getAbsolutePath (pathParam) {
+  function getAbsolutePath(pathParam) {
     return path.isAbsolute(pathParam)
       ? pathParam
-      : path.join(process.cwd(), pathParam)
+      : path.join(process.cwd(), pathParam);
   }
 
-  let green, grey, red
+  const root = getAbsolutePath(argv._[0] || '.');
+  const resolve = (p) => path.resolve(root, p);
+  const prefixPath = path.posix.join('/', argv['prefix-path']);
+
+  let green; let grey; let
+    red;
 
   if (argv.colors) {
-    const chalk = require('chalk')
-    green = chalk.green
-    grey = chalk.grey
-    red = chalk.red
+    const chalk = require('chalk');
+    green = chalk.green;
+    grey = chalk.grey;
+    red = chalk.red;
   } else {
-    green = grey = red = text => text
+    green = grey = red = (text) => text;
   }
 
   const
-    express = require('express'),
-    microCacheSeconds = argv.micro
-      ? parseInt(argv.micro, 10)
-      : false
+    express = require('express');
+  const microCacheSeconds = argv.micro
+    ? parseInt(argv.micro, 10)
+    : false;
 
-  function serve (path, cache) {
+  function serve(path, cache) {
     const opts = {
       maxAge: cache ? parseInt(argv.cache, 10) * 1000 : 0,
-      extensions: ['html']
-    }
+      extensions: ['html'],
+    };
 
-    return express.static(resolve(path), opts)
+    return express.static(resolve(path), opts);
   }
 
-  const app = express()
+  const app = express();
 
   if (argv.cors) {
-    const cors = require('cors')
-    app.use(cors())
+    const cors = require('cors');
+    app.use(cors());
   }
 
   if (!argv.silent) {
     app.get('*', (req, _, next) => {
       console.log(
-        `GET ${green(req.url)} ${grey('[' + req.ip + ']')} ${new Date()}`
-      )
-      next()
-    })
+        `GET ${green(req.url)} ${grey(`[${req.ip}]`)} ${new Date()}`,
+      );
+      next();
+    });
   }
 
   if (argv.gzip) {
-    const compression = require('compression')
-    app.use(compression({ threshold: 0 }))
+    const compression = require('compression');
+    app.use(compression({ threshold: 0 }));
   }
 
-  const serviceWorkerFile = resolve('service-worker.js')
+  const serviceWorkerFile = resolve('service-worker.js');
   if (fs.existsSync(serviceWorkerFile)) {
-    app.use(path.posix.join(prefixPath, 'service-worker.js'), serve('service-worker.js'))
+    app.use(path.posix.join(prefixPath, 'service-worker.js'), serve('service-worker.js'));
   }
 
-  app.use(prefixPath, serve('.', true))
+  app.use(prefixPath, serve('.', true));
 
-  const fallbackFile = glob.sync(resolve('./*.html'), { ignore: resolve('./index.html') })[0]
+  const fallbackFile = glob.sync(resolve('./*.html'), { ignore: resolve('./index.html') })[0];
   if (fallbackFile) {
     app.use(prefixPath, (req, res, next) => {
-      const ext = path.posix.extname(req.url) || '.html'
+      const ext = path.posix.extname(req.url) || '.html';
 
       if (ext !== '.html') {
-        return next()
+        return next();
       }
 
-      res.setHeader('Content-Type', 'text/html')
+      res.setHeader('Content-Type', 'text/html');
 
       if (fallbackFile.endsWith('404.html')) {
-        res.status(404)
+        res.status(404);
 
         if (!argv.silent) {
-          console.log(red(`  404 on ${req.url}`))
+          console.log(red(`  404 on ${req.url}`));
         }
       } else {
-        res.status(200)
+        res.status(200);
       }
 
-      res.sendFile(fallbackFile)
-    })
+      res.sendFile(fallbackFile);
+    });
   }
 
   app.get('*', (req, res) => {
-    res.setHeader('Content-Type', 'text/html')
-    res.status(404).send('404 | Page Not Found')
+    res.setHeader('Content-Type', 'text/html');
+    res.status(404).send('404 | Page Not Found');
     if (!argv.silent) {
-      console.log(red(`  404 on ${req.url}`))
+      console.log(red(`  404 on ${req.url}`));
     }
-  })
+  });
 
   if (microCacheSeconds) {
-    const microcache = require('route-cache')
+    const microcache = require('route-cache');
     app.use(
       microcache.cacheSeconds(
         microCacheSeconds,
-        req => req.originalUrl
-      )
-    )
+        (req) => req.originalUrl,
+      ),
+    );
   }
 
   if (argv.proxy) {
-    let file = argv.proxy = getAbsolutePath(argv.proxy)
+    let file = argv.proxy = getAbsolutePath(argv.proxy);
     if (!fs.existsSync(file)) {
-      console.error('Proxy definition file not found! ' + file)
-      process.exit(1)
+      console.error(`Proxy definition file not found! ${file}`);
+      process.exit(1);
     }
-    file = require(file)
+    file = require(file);
 
-    const proxy = appRequire('http-proxy-middleware', api.appDir)
-    file.forEach(entry => {
-      app.use(entry.path, proxy(entry.rule))
-    })
+    const proxy = appRequire('http-proxy-middleware', api.appDir);
+    file.forEach((entry) => {
+      app.use(entry.path, proxy(entry.rule));
+    });
   }
 
-  function getHostname (host) {
+  function getHostname(host) {
     return host === '0.0.0.0'
       ? 'localhost'
-      : host
+      : host;
+  }
+
+  function getServer(app) {
+    if (!argv.https) {
+      return app;
+    }
+
+    let fakeCert; let key; let
+      cert;
+
+    if (argv.key && argv.cert) {
+      key = getAbsolutePath(argv.key);
+      cert = getAbsolutePath(argv.cert);
+
+      if (fs.existsSync(key)) {
+        key = fs.readFileSync(key);
+      } else {
+        console.error(`SSL key file not found!${key}`);
+        process.exit(1);
+      }
+
+      if (fs.existsSync(cert)) {
+        cert = fs.readFileSync(cert);
+      } else {
+        console.error(`SSL cert file not found!${cert}`);
+        process.exit(1);
+      }
+    } else {
+      // Use a self-signed certificate if no certificate was configured.
+      // Cycle certs every 24 hours
+      const certPath = path.join(__dirname, '../ssl-server.pem');
+      let certExists = fs.existsSync(certPath);
+
+      if (certExists) {
+        const certStat = fs.statSync(certPath);
+        const certTtl = 1000 * 60 * 60 * 24;
+        const now = new Date();
+
+        // cert is more than 30 days old
+        if ((now - certStat.ctime) / certTtl > 30) {
+          console.log(' SSL Certificate is more than 30 days old. Removing.');
+          const { removeSync } = require('fs-extra');
+          removeSync(certPath);
+          certExists = false;
+        }
+      }
+
+      if (!certExists) {
+        console.log(' Generating self signed SSL Certificate...');
+        console.log(' DO NOT use this self-signed certificate in production!');
+
+        const selfsigned = require('selfsigned');
+        const pems = selfsigned.generate(
+          [{ name: 'commonName', value: 'localhost' }],
+          {
+            algorithm: 'sha256',
+            days: 30,
+            keySize: 2048,
+            extensions: [{
+              name: 'basicConstraints',
+              cA: true,
+            }, {
+              name: 'keyUsage',
+              keyCertSign: true,
+              digitalSignature: true,
+              nonRepudiation: true,
+              keyEncipherment: true,
+              dataEncipherment: true,
+            }, {
+              name: 'subjectAltName',
+              altNames: [
+                {
+                  // type 2 is DNS
+                  type: 2,
+                  value: 'localhost',
+                },
+                {
+                  type: 2,
+                  value: 'localhost.localdomain',
+                },
+                {
+                  type: 2,
+                  value: 'lvh.me',
+                },
+                {
+                  type: 2,
+                  value: '*.lvh.me',
+                },
+                {
+                  type: 2,
+                  value: '[::1]',
+                },
+                {
+                  // type 7 is IP
+                  type: 7,
+                  ip: '127.0.0.1',
+                },
+                {
+                  type: 7,
+                  ip: 'fe80::1',
+                },
+              ],
+            }],
+          },
+        );
+
+        try {
+          fs.writeFileSync(certPath, pems.private + pems.cert, { encoding: 'utf-8' });
+        } catch (err) {
+          console.error(` Cannot write certificate file ${certPath}`);
+          console.error(' Aborting...');
+          process.exit(1);
+        }
+      }
+
+      fakeCert = fs.readFileSync(certPath);
+    }
+
+    return require('https').createServer({
+      key: key || fakeCert,
+      cert: cert || fakeCert,
+    }, app);
   }
 
   getServer(app).listen(argv.port, argv.hostname, () => {
-    const url = `http${argv.https ? 's' : ''}://${getHostname(argv.hostname)}:${argv.port}`
-    const fullUrl = url + prefixPath
+    const url = `http${argv.https ? 's' : ''}://${getHostname(argv.hostname)}:${argv.port}`;
+    const fullUrl = url + prefixPath;
 
     const info = [
       ['Listening at', url],
@@ -220,147 +346,26 @@ module.exports = (api) => {
       argv.https ? ['HTTPS', 'enabled'] : '',
       argv.gzip ? ['Gzip', 'enabled'] : '',
       ['Cache (max-age)', argv.cache || 'disabled'],
-      microCacheSeconds ? ['Micro-cache', microCacheSeconds + 's'] : '',
+      microCacheSeconds ? ['Micro-cache', `${microCacheSeconds}s`] : '',
       argv.cors ? ['CORS', 'enabled'] : '',
-      argv.proxy ? ['Proxy definitions', argv.proxy] : ''
+      argv.proxy ? ['Proxy definitions', argv.proxy] : '',
     ]
-      .filter(msg => msg)
-      .map(msg => ' ' + msg[0].padEnd(20, '.') + ' ' + green(msg[1]))
+      .filter((msg) => msg)
+      .map((msg) => ` ${msg[0].padEnd(20, '.')} ${green(msg[1])}`);
 
-    console.log('\n' + info.join('\n') + '\n')
+    console.log(`\n${info.join('\n')}\n`);
 
     if (argv.open) {
-      const ci = require('ci-info')
+      const ci = require('ci-info');
 
       const isMinimalTerminal = (
-        ci.isCI ||
-        process.env.NODE_ENV === 'test' ||
-        !process.stdout.isTTY
-      )
+        ci.isCI
+        || process.env.NODE_ENV === 'test'
+        || !process.stdout.isTTY
+      );
       if (!isMinimalTerminal) {
-        require('open')(fullUrl, { url: true })
+        require('open')(fullUrl, { url: true });
       }
     }
-  })
-
-  function getServer (app) {
-    if (!argv.https) {
-      return app
-    }
-
-    let fakeCert, key, cert
-
-    if (argv.key && argv.cert) {
-      key = getAbsolutePath(argv.key)
-      cert = getAbsolutePath(argv.cert)
-
-      if (fs.existsSync(key)) {
-        key = fs.readFileSync(key)
-      } else {
-        console.error('SSL key file not found!' + key)
-        process.exit(1)
-      }
-
-      if (fs.existsSync(cert)) {
-        cert = fs.readFileSync(cert)
-      } else {
-        console.error('SSL cert file not found!' + cert)
-        process.exit(1)
-      }
-    } else {
-      // Use a self-signed certificate if no certificate was configured.
-      // Cycle certs every 24 hours
-      const certPath = path.join(__dirname, '../ssl-server.pem')
-      let certExists = fs.existsSync(certPath)
-
-      if (certExists) {
-        const certStat = fs.statSync(certPath)
-        const certTtl = 1000 * 60 * 60 * 24
-        const now = new Date()
-
-        // cert is more than 30 days old
-        if ((now - certStat.ctime) / certTtl > 30) {
-          console.log(' SSL Certificate is more than 30 days old. Removing.')
-          const { removeSync } = require('fs-extra')
-          removeSync(certPath)
-          certExists = false
-        }
-      }
-
-      if (!certExists) {
-        console.log(' Generating self signed SSL Certificate...')
-        console.log(' DO NOT use this self-signed certificate in production!')
-
-        const selfsigned = require('selfsigned')
-        const pems = selfsigned.generate(
-          [{ name: 'commonName', value: 'localhost' }],
-          {
-            algorithm: 'sha256',
-            days: 30,
-            keySize: 2048,
-            extensions: [{
-              name: 'basicConstraints',
-              cA: true
-            }, {
-              name: 'keyUsage',
-              keyCertSign: true,
-              digitalSignature: true,
-              nonRepudiation: true,
-              keyEncipherment: true,
-              dataEncipherment: true
-            }, {
-              name: 'subjectAltName',
-              altNames: [
-                {
-                  // type 2 is DNS
-                  type: 2,
-                  value: 'localhost'
-                },
-                {
-                  type: 2,
-                  value: 'localhost.localdomain'
-                },
-                {
-                  type: 2,
-                  value: 'lvh.me'
-                },
-                {
-                  type: 2,
-                  value: '*.lvh.me'
-                },
-                {
-                  type: 2,
-                  value: '[::1]'
-                },
-                {
-                  // type 7 is IP
-                  type: 7,
-                  ip: '127.0.0.1'
-                },
-                {
-                  type: 7,
-                  ip: 'fe80::1'
-                }
-              ]
-            }]
-          }
-        )
-
-        try {
-          fs.writeFileSync(certPath, pems.private + pems.cert, { encoding: 'utf-8' })
-        } catch (err) {
-          console.error(' Cannot write certificate file ' + certPath)
-          console.error(' Aborting...')
-          process.exit(1)
-        }
-      }
-
-      fakeCert = fs.readFileSync(certPath)
-    }
-
-    return require('https').createServer({
-      key: key || fakeCert,
-      cert: cert || fakeCert
-    }, app)
-  }
-}
+  });
+};
