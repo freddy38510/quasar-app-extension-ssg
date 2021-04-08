@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.6](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.0.5...v1.0.6) (2021-04-08)
+
+
+### Bug Fixes
+
+* remove bad syntax from airbnb linting commit ([95c48c0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/95c48c0d5cd926ea667774ba074fe4976d028fda))
+
 ### [1.0.5](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.0.4...v1.0.5) (2021-04-08)
 
 ### [1.0.4](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.0.3...v1.0.4) (2020-12-30)
