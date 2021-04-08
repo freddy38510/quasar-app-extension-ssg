@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.7](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.0.6...v1.0.7) (2021-04-08)
+
+
+### Bug Fixes
+
+* **compatibility:** add missing return statement ([0f841d4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/0f841d4e3773c53ac8b5f8bc01ddf36666411e13))
+
 ### [1.0.6](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.0.5...v1.0.6) (2021-04-08)
 
 
