@@ -7,7 +7,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
-    "release": "standard-version",
+    "release": "HUSKY=0 standard-version",
     "prepare": "husky install"
   },
   "repository": {
@@ -75,7 +75,7 @@
     "eslint-loader": "4.0.2",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-vue": "7.9.0",
-    "husky": "^6.0.0",
+    "husky": "6.0.0",
     "standard-version": "9.3.0"
   }
 }
