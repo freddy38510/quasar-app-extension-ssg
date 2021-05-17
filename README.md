@@ -388,6 +388,14 @@ Can use async/await or directly return a Promise.
 
 ## Infos
 
+### Tips
+
+The value `process.env.STATIC` is added once this AE is installed.
+
+This value is `true` when the command to generate a static site is running, and `false` when it don't.
+
+Could be useful if you mixed several builds with differents modes.
+
 ### About Boot File
 
 This Extension is using a boot file called [`body-classes.js`](https://github.com/freddy38510/quasar-app-extension-ssg/blob/master/src/boot/body-classes.js), only at client-side, to set platform classes to `<body>` tag like [Quasar does it](https://github.com/quasarframework/quasar/blob/dev/ui/src/body.js) originally.
