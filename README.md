@@ -388,13 +388,13 @@ Can use async/await or directly return a Promise.
 
 ## Infos
 
-### Tips
+### `process.env.STATIC`
 
-The value `process.env.STATIC` is added once this AE is installed.
+The property `STATIC` is added to `process.env` once the App Extension is installed.
 
-This value is `true` when the command to generate a static site is running, and `false` when it don't.
+`process.env.STATIC` is `true` when the command `quasar ssg generate` is running, and `false` when it don't.
 
-Could be useful if you mixed several builds with differents modes.
+It could be useful if you mixed several builds with differents modes to differentiate runtime procedures.
 
 ### About Boot File
 
