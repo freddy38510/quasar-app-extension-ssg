@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.0.7...v1.1.0) (2021-05-17)
+
+
+### Features
+
+* add STATIC value to process.env ([279c8dc](https://github.com/freddy38510/quasar-app-extension-ssg/commit/279c8dcb4edc80d6335de889d299117c781e3bfa))
+
 ### [1.0.7](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.0.6...v1.0.7) (2021-04-08)
 
 
