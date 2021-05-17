@@ -98,6 +98,8 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
   conf.build.ssrPwaHtmlFilename = conf.ssg.fallback;
 
   conf.build.vueRouterMode = 'history';
+
+  conf.build.env.STATIC = true;
 };
 
 const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, quasarConf) {
@@ -144,6 +146,10 @@ module.exports = function run(api) {
   api.registerCommand('inspect', () => require('./bin/inspect')(api));
 
   api.registerCommand('serve', () => require('./bin/server')(api));
+
+  api.extendQuasarConf((conf) => {
+    conf.build.env.STATIC = false;
+  });
 
   // Make sure we are running from command "quasar ssg"
   if (api.ctx.prod && api.ctx.mode.ssr && process.argv[2] === 'ssg') {
