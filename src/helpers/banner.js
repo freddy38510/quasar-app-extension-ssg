@@ -1,14 +1,15 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-void */
-const { green, grey, underline } = require('chalk');
+const {
+  red, green, grey, underline,
+} = require('chalk');
 const path = require('path');
 const appRequire = require('./app-require');
 const { hasBrowsersSupportFile } = require('./compatibility');
 
 module.exports.build = function build(api, ctx, cmd, details) {
   // eslint-disable-next-line global-require
-  const hasBrowsersSupportFile = require('./compatibility')(api, '@quasar/app', '>=2.0.0');
   const quasarVersion = api.getPackageVersion('quasar');
   const cliAppVersion = api.getPackageVersion('@quasar/app');
 
@@ -43,15 +44,21 @@ module.exports.build = function build(api, ctx, cmd, details) {
   }
 };
 
-module.exports.generate = function generate(options) {
+module.exports.generate = function generate(options, errors) {
   let banner = '\n';
 
   if (!options) {
     banner += ' ================== Generate ==================';
   } else {
     const relativeDistDir = path.posix.relative('', options.__distDir);
+    const hasErrors = errors.length > 0;
 
-    banner += ` ${underline('Generation succeeded')}\n`;
+    let successMessage = ` ${underline('Generation succeeded')}`;
+
+    successMessage += `${hasErrors ? ` with ${errors.length} error(s), check log above.` : ''}\n`;
+
+    banner += `${hasErrors ? ` ⚠️ ${red(successMessage)}` : successMessage}`;
+
     banner += `
  Fallback.......... ${green(options.fallback)}
  Output folder..... ${green(options.__distDir)}`;

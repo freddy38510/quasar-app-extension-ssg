@@ -58,6 +58,7 @@ class Generator {
 
   async generateAll() {
     const routes = await this.initRoutes();
+    const errors = [];
 
     let n = 0;
 
@@ -86,9 +87,12 @@ class Generator {
         },
       ).run();
     } catch (e) {
+      errors.push(e);
+
       warn(e.stack || e);
-      process.exit(0);
     }
+
+    return errors;
   }
 
   async generate(route, task) {

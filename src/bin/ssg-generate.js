@@ -8,9 +8,11 @@ if (process.env.NODE_ENV === void 0) {
 }
 
 const parseArgs = require('minimist');
+const { red } = require('chalk');
 const appRequire = require('../helpers/app-require');
-const { fatal } = require('../helpers/logger');
+const { fatal, warn } = require('../helpers/logger');
 const ensureBuild = require('../build/ensureBuild');
+const banner = require('../helpers/banner').generate;
 const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 
 const argv = parseArgs(process.argv.slice(2), {
@@ -18,9 +20,10 @@ const argv = parseArgs(process.argv.slice(2), {
     d: 'debug',
     h: 'help',
   },
-  boolean: ['h', 'd', 'force-build'],
+  boolean: ['h', 'd', 'force-build', 'fail-on-error'],
   default: {
     'force-build': false,
+    'fail-on-error': false,
   },
 });
 
@@ -32,6 +35,7 @@ if (argv.help) {
  Options
    --force-build   Force to build the application with webpack
    --debug, -d     Build for debugging purposes
+   --fail-on-error Exit with non-zero status code if there are errors when generating pages
 
    --help, -h      Displays this message
   `);
@@ -71,5 +75,12 @@ module.exports = async function run(api) {
   const quasarConf = hasNewQuasarConfFile(api)
     ? quasarConfFile.quasarConf : quasarConfFile.getBuildConfig();
 
-  await require('../generate')(api, quasarConf);
+  const { errors } = await require('../generate')(api, quasarConf);
+
+  if (argv['fail-on-error'] && errors.length > 0) {
+    warn(red(`[FAIL] Generating some pages failed with ${errors.length} error(s). Check log above.\n`));
+    fatal(red('Exiting with non-zero code.'));
+  }
+
+  banner(quasarConf.ssg, errors);
 };

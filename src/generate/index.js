@@ -36,7 +36,7 @@ module.exports = async (api, quasarConf) => {
     }
   }
 
-  await generator.generateAll();
+  const errors = await generator.generateAll();
 
   if (quasarConf.ctx.mode.pwa) {
     const buildWorkbox = require('./workbox.js');
@@ -69,5 +69,5 @@ module.exports = async (api, quasarConf) => {
 
   add(quasarConf.ssg.__distDir);
 
-  banner(quasarConf.ssg);
+  return { errors };
 };
