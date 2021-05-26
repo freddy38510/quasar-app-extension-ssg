@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.1.0...v1.2.0) (2021-05-26)
+
+
+### Features
+
+* exit with code 1 on generating pages error with --fail-on-error argument ([730a3f7](https://github.com/freddy38510/quasar-app-extension-ssg/commit/730a3f7d9610105ba868683896c9ba3244e9402f)), closes [#38](https://github.com/freddy38510/quasar-app-extension-ssg/issues/38)
+
 ## [1.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.0.7...v1.1.0) (2021-05-17)
 
 
