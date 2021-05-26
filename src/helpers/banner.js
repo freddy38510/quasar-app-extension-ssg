@@ -4,6 +4,7 @@
 const { green, grey, underline } = require('chalk');
 const path = require('path');
 const appRequire = require('./app-require');
+const { hasBrowsersSupportFile } = require('./compatibility');
 
 module.exports.build = function build(api, ctx, cmd, details) {
   // eslint-disable-next-line global-require
@@ -36,7 +37,7 @@ module.exports.build = function build(api, ctx, cmd, details) {
 
   console.log(`${banner}\n`);
 
-  if (!details && hasBrowsersSupportFile) {
+  if (!details && hasBrowsersSupportFile(api)) {
     const { getBrowsersBanner } = appRequire('@quasar/app/lib/helpers/browsers-support', api.appDir);
     console.log(getBrowsersBanner());
   }

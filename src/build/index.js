@@ -7,6 +7,7 @@ const pify = require('pify');
 const appRequire = require('../helpers/app-require');
 const banner = require('../helpers/banner').build;
 const { log, warn } = require('../helpers/logger');
+const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 
 function splitConfig(webpackConfig) {
   return [
@@ -25,7 +26,7 @@ function parseWebpackConfig(cfg) {
   };
 }
 
-module.exports = async function build(api, quasarConfig, ctx, extensionRunner) {
+module.exports = async function build(api, quasarConfFile, ctx, extensionRunner) {
   banner(api, ctx, 'build');
 
   const webpack = appRequire('webpack', api.appDir);
@@ -37,31 +38,30 @@ module.exports = async function build(api, quasarConfig, ctx, extensionRunner) {
   const artifacts = appRequire('@quasar/app/lib/artifacts', api.appDir);
   const regenerateTypesFeatureFlags = appRequire('@quasar/app/lib/helpers/types-feature-flags', api.appDir);
 
-  const generator = new Generator(quasarConfig);
+  const generator = new Generator(quasarConfFile);
 
-  const hasNewQuasarConf = require('../helpers/compatibility')(api, '@quasar/app', '>=2.0.1');
+  const webpackConfig = hasNewQuasarConfFile(api)
+    ? quasarConfFile.webpackConf
+    : quasarConfFile.getWebpackConfig();
 
-  const webpackConfig = hasNewQuasarConf
-    ? quasarConfig.webpackConf
-    : quasarConfig.getWebpackConfig();
+  const quasarConf = hasNewQuasarConfFile(api)
+    ? quasarConfFile.quasarConf : quasarConfFile.getquasarConf();
 
-  const buildConfig = hasNewQuasarConf ? quasarConfig.quasarConf : quasarConfig.getBuildConfig();
+  regenerateTypesFeatureFlags(quasarConf);
 
-  regenerateTypesFeatureFlags(buildConfig);
-
-  const outputFolder = buildConfig.build.distDir;
+  const outputFolder = quasarConf.build.distDir;
 
   artifacts.clean(outputFolder);
   generator.build();
 
-  if (typeof buildConfig.build.beforeBuild === 'function') {
-    await buildConfig.build.beforeBuild({ quasarConf: buildConfig });
+  if (typeof quasarConf.build.beforeBuild === 'function') {
+    await quasarConf.build.beforeBuild({ quasarConf });
   }
 
   // run possible beforeBuild hooks
   await extensionRunner.runHook('beforeBuild', async (hook) => {
     log(`Extension(${hook.api.extId}): Running beforeBuild hook...`);
-    await hook.fn(hook.api, { quasarConf: buildConfig });
+    await hook.fn(hook.api, { quasarConf });
   });
 
   log('Compiling with Webpack...');
@@ -121,16 +121,16 @@ module.exports = async function build(api, quasarConfig, ctx, extensionRunner) {
   // eslint-disable-next-line no-void
   webpackData = void 0;
 
-  banner(api, ctx, 'build', { outputFolder, transpileBanner: buildConfig.__transpileBanner });
+  banner(api, ctx, 'build', { outputFolder, transpileBanner: quasarConf.__transpileBanner });
 
-  if (typeof buildConfig.build.afterBuild === 'function') {
-    await buildConfig.build.afterBuild({ quasarConf: buildConfig });
+  if (typeof quasarConf.build.afterBuild === 'function') {
+    await quasarConf.build.afterBuild({ quasarConf });
   }
 
   // run possible afterBuild hooks
   await extensionRunner.runHook('afterBuild', async (hook) => {
     log(`Extension(${hook.api.extId}): Running afterBuild hook...`);
-    await hook.fn(hook.api, { quasarConf: buildConfig });
+    await hook.fn(hook.api, { quasarConf });
   });
 
   // eslint-disable-next-line no-void
@@ -138,11 +138,11 @@ module.exports = async function build(api, quasarConfig, ctx, extensionRunner) {
     const opts = {
       arg: ctx.publish,
       distDir: outputFolder,
-      quasarConf: buildConfig,
+      quasarConf,
     };
 
-    if (typeof buildConfig.build.onPublish === 'function') {
-      await buildConfig.build.onPublish(opts);
+    if (typeof quasarConf.build.onPublish === 'function') {
+      await quasarConf.build.onPublish(opts);
     }
 
     // run possible onPublish hooks

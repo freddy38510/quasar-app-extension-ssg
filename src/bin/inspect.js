@@ -5,6 +5,7 @@
 const parseArgs = require('minimist');
 const appRequire = require('../helpers/app-require');
 const { log, fatal } = require('../helpers/logger');
+const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -56,9 +57,7 @@ async function inspect(api) {
     fatal('Requested mode for inspection is NOT installed.\n');
   }
 
-  const hasNewQuasarConf = require('../helpers/compatibility')(api, '@quasar/app', '>=2.0.1');
-
-  const QuasarConfFile = appRequire(hasNewQuasarConf ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir);
+  const QuasarConfFile = appRequire(hasNewQuasarConfFile(api) ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir);
 
   const depth = parseInt(argv.depth, 10) || Infinity;
 
@@ -90,7 +89,7 @@ async function inspect(api) {
   const util = require('util');
 
   let cfgEntries = getCfgEntries(
-    hasNewQuasarConf
+    hasNewQuasarConfFile(api)
       ? quasarConfFile.webpackConf
       : quasarConfFile.getWebpackConfig(),
   );

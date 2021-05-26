@@ -6,14 +6,15 @@ const upath = require('upath');
 const build = require('.');
 const { log } = require('../helpers/logger');
 const { makeSnapshot, compareSnapshots } = require('./snapshot');
+const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 
-async function ensureBuild(api, quasarConfig, ctx, extensionRunner, forceBuild = false) {
-  const hasNewQuasarConf = require('../helpers/compatibility')(api, '@quasar/app', '>=2.0.1');
-  const quasarConf = hasNewQuasarConf ? quasarConfig.quasarConf : quasarConfig.getBuildConfig();
+async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild = false) {
+  const quasarConf = hasNewQuasarConfFile(api)
+    ? quasarConfFile.quasarConf : quasarConfFile.getBuildConfig();
   const options = quasarConf.ssg;
 
   if (options.cache === false || forceBuild) {
-    await build(api, quasarConfig, ctx, extensionRunner);
+    await build(api, quasarConfFile, ctx, extensionRunner);
     return;
   }
 
@@ -71,7 +72,7 @@ async function ensureBuild(api, quasarConfig, ctx, extensionRunner, forceBuild =
     }
   }
 
-  await build(api, quasarConfig, ctx, extensionRunner);
+  await build(api, quasarConfFile, ctx, extensionRunner);
 
   // Write build.json
   fs.writeFileSync(quasarBuildFile, JSON.stringify(currentBuild, null, 2), 'utf-8');
