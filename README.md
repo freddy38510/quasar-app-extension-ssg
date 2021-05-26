@@ -387,7 +387,11 @@ Can use async/await or directly return a Promise.
 
 > Note: `files` parameter is an `Array` of all generated routes paths + filenames (including the fallback file).
 
-## Infos
+## Tips
+
+### Deployment
+
+It could be useful to return a non-zero status code when a page error is encountered and let the CI/CD fail the deployment or build. To achieve that use the [`--fail-on-error`](#generate-options) argument.
 
 ### `process.env.STATIC`
 
@@ -396,6 +400,8 @@ The property `STATIC` is added to `process.env` once the App Extension is instal
 `process.env.STATIC` is `true` when your app was built with the command `quasar ssg generate`, and `false` when it don't.
 
 It could be useful if you mixed several builds with differents modes to differentiate runtime procedures.
+
+## Infos
 
 ### About Boot File
 
