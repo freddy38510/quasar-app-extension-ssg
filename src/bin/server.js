@@ -81,18 +81,18 @@ if (argv.help) {
 
 module.exports = (api) => {
   const fs = require('fs');
-  const path = require('path');
+  const PlatformPath = require('path');
   const glob = require('glob');
 
   function getAbsolutePath(pathParam) {
-    return path.isAbsolute(pathParam)
+    return PlatformPath.isAbsolute(pathParam)
       ? pathParam
-      : path.join(process.cwd(), pathParam);
+      : PlatformPath.join(process.cwd(), pathParam);
   }
 
   const root = getAbsolutePath(argv._[0] || '.');
-  const resolve = (p) => path.resolve(root, p);
-  const prefixPath = path.posix.join('/', argv['prefix-path']);
+  const resolve = (p) => PlatformPath.resolve(root, p);
+  const prefixPath = PlatformPath.posix.join('/', argv['prefix-path']);
 
   let green; let grey; let
     red;
@@ -103,7 +103,9 @@ module.exports = (api) => {
     grey = chalk.grey;
     red = chalk.red;
   } else {
-    green = grey = red = (text) => text;
+    red = (text) => text;
+    grey = red;
+    green = grey;
   }
 
   const
@@ -144,7 +146,7 @@ module.exports = (api) => {
 
   const serviceWorkerFile = resolve('service-worker.js');
   if (fs.existsSync(serviceWorkerFile)) {
-    app.use(path.posix.join(prefixPath, 'service-worker.js'), serve('service-worker.js'));
+    app.use(PlatformPath.posix.join(prefixPath, 'service-worker.js'), serve('service-worker.js'));
   }
 
   app.use(prefixPath, serve('.', true));
@@ -152,7 +154,7 @@ module.exports = (api) => {
   const fallbackFile = glob.sync(resolve('./*.html'), { ignore: resolve('./index.html') })[0];
   if (fallbackFile) {
     app.use(prefixPath, (req, res, next) => {
-      const ext = path.posix.extname(req.url) || '.html';
+      const ext = PlatformPath.posix.extname(req.url) || '.html';
 
       if (ext !== '.html') {
         return next();
@@ -170,7 +172,7 @@ module.exports = (api) => {
         res.status(200);
       }
 
-      res.sendFile(fallbackFile);
+      return res.sendFile(fallbackFile);
     });
   }
 
@@ -193,7 +195,9 @@ module.exports = (api) => {
   }
 
   if (argv.proxy) {
-    let file = argv.proxy = getAbsolutePath(argv.proxy);
+    argv.proxy = getAbsolutePath(argv.proxy);
+    let file = argv.proxy;
+
     if (!fs.existsSync(file)) {
       console.error(`Proxy definition file not found! ${file}`);
       process.exit(1);
@@ -212,7 +216,7 @@ module.exports = (api) => {
       : host;
   }
 
-  function getServer(app) {
+  function getServer() {
     if (!argv.https) {
       return app;
     }
@@ -240,7 +244,7 @@ module.exports = (api) => {
     } else {
       // Use a self-signed certificate if no certificate was configured.
       // Cycle certs every 24 hours
-      const certPath = path.join(__dirname, '../ssl-server.pem');
+      const certPath = PlatformPath.join(__dirname, '../ssl-server.pem');
       let certExists = fs.existsSync(certPath);
 
       if (certExists) {
@@ -334,7 +338,7 @@ module.exports = (api) => {
     }, app);
   }
 
-  getServer(app).listen(argv.port, argv.hostname, () => {
+  getServer().listen(argv.port, argv.hostname, () => {
     const url = `http${argv.https ? 's' : ''}://${getHostname(argv.hostname)}:${argv.port}`;
     const fullUrl = url + prefixPath;
 
@@ -342,7 +346,7 @@ module.exports = (api) => {
       ['Listening at', url],
       prefixPath !== '/' ? ['Served at sub path', fullUrl] : '',
       ['Web server root', root],
-      fallbackFile ? ['Fallback', path.basename(fallbackFile)] : '',
+      fallbackFile ? ['Fallback', PlatformPath.basename(fallbackFile)] : '',
       argv.https ? ['HTTPS', 'enabled'] : '',
       argv.gzip ? ['Gzip', 'enabled'] : '',
       ['Cache (max-age)', argv.cache || 'disabled'],
