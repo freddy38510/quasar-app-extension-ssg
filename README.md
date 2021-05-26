@@ -101,6 +101,7 @@ quasar ssg generate
 
 - `-h, --help`: Display usage instructions.
 - `--force-build`: Force to build the application with webpack.
+- `--fail-on-error`: Exit with non-zero status code if there are errors when generating pages.
 - `-d, --debug`: Build for debugging purposes.
 
 ### Serve
