@@ -155,6 +155,7 @@ quasar ssg inspect
 
 - `-d, --depth`: Number of levels deep (default: 5).
 - `-p, --path`: Path of config in dot notation.
+- `--colors`: Style output with ANSI color codes.
 
   Examples:
 
