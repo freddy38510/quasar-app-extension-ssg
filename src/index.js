@@ -87,12 +87,8 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
     conf.sourceFiles.serviceWorker = conf.sourceFiles.serviceWorker || 'src-pwa/custom-service-worker.js';
   }
 
-  if (conf.ssg.routes === void 0) {
-    conf.ssg.routes = ['/'];
-  }
-
-  // Client takeover to set body classes like desktop/mobile, touch/no-touch, etc...
-  // The server can't know the platform used from the browser at build time.
+  // Set body tag classes (desktop/mobile, q-ios-padding, ...) at client-side
+  // The platform used is unknown at build time when pre-rendering pages.
   conf.boot.push({ server: false, path: '~quasar-app-extension-ssg/src/boot/body-classes' });
 
   conf.build.transpileDependencies.push(/quasar-app-extension-ssg[\\/]src/);
