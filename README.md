@@ -361,7 +361,7 @@ Type: `Object`
 
 Default: `{}`
 
-The options merged with Quasar [defaults options](https://github.com/quasarframework/quasar/blob/934a6080290c219706f043fdf68f3ca9089ecc5d/app/lib/ssr/template.prod-webserver.js#L26), then pass to the `BundleRenderer` as in the [Vue SSR Guide](https://ssr.vuejs.org/api/#renderer-options).
+The options merged with Quasar [defaults options](https://github.com/quasarframework/quasar/blob/934a6080290c219706f043fdf68f3ca9089ecc5d/app/lib/ssr/template.prod-webserver.js#L26), then passed to the `BundleRenderer`. See the [Vue SSR Guide](https://ssr.vuejs.org/api/#renderer-options) for available options.
 
 ### `criticalCss`
 
