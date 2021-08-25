@@ -31,7 +31,7 @@ This will find and install the extension’s module. After installation is compl
 
 - `Inline CSS from Vue SFC style tags ?`: Add support for [vue-style-loader](https://github.com/vuejs/vue-style-loader) to inline critical css coming from Vue SFC `<style></style>` tags.
 
-- `inline critical CSS?`: Use a fork of [Critters](https://github.com/freddy38510/critters/tree/standalone) to generate critical CSS, inline it and lazy load stylesheets for each route generated.
+- `Inline critical async CSS ?`: Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS from async css chunks for each route generated.
 
 ## Uninstalling
 
@@ -365,15 +365,15 @@ Default: `{}`
 
 The options merged with Quasar [defaults options](https://github.com/quasarframework/quasar/blob/934a6080290c219706f043fdf68f3ca9089ecc5d/app/lib/ssr/template.prod-webserver.js#L26), then passed to the `BundleRenderer`. See the [Vue SSR Guide](https://ssr.vuejs.org/api/#renderer-options) for available options.
 
-### `criticalCss`
+### `inlineCriticalAsyncCss`
 
 Type: `Boolean`
 
 Default: `true`
 
-Use a fork of [Critters](https://github.com/freddy38510/critters/tree/standalone) to generate critical CSS, inline it and lazy load stylesheets for each route generated.
+Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS from async css chunks for each route generated.
 
-> Note: Useful to replace the [initialized value](#prompts) when installing the app extension.
+> Note: This option is useful to avoid [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) on first load page in browser.
 
 ### `inlineCssFromSFC`
 
