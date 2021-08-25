@@ -5,6 +5,7 @@ const Critters = require('critters');
 const fs = require('fs').promises;
 const { minify } = require('html-minifier');
 const path = require('path');
+const esmRequire = require('jiti')(__filename);
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright, redBright } = require('chalk');
@@ -13,6 +14,11 @@ const {
 } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
+const flatRoutes = require('../helpers/flat-routes');
+const {
+  withTrailingSlash,
+  withoutTrailingSlash,
+} = require('../helpers/normalize-slash');
 
 class Generator {
   constructor(api, quasarConf, ctx) {
@@ -33,28 +39,52 @@ class Generator {
         publicPath: quasarConf.build.publicPath,
       },
       vueRouterBase: quasarConf.build.vueRouterBase,
+      sourceFiles: quasarConf.sourceFiles,
       failOnError: ctx.failOnError,
       debug: ctx.debug,
     };
+
     this.generatedRoutes = new Set();
   }
 
   async initRoutes(...args) {
-    let routes = {};
+    let userRoutes = [];
+
     try {
-      routes = await promisifyRoutes(
-        this.options.routes,
-        ...args,
-      );
+      userRoutes = await promisifyRoutes(this.options.routes, ...args);
     } catch (error) {
       warn(error.stack || error);
 
       fatal('Could not resolve routes');
     }
 
-    routes = routes.filter((route) => !this.isRouteExcluded(route));
+    let appRoutes = [];
 
-    return routes;
+    try {
+      appRoutes = flatRoutes(await this.getAppRoutes());
+    } catch (err) {
+      appRoutes = ['/'];
+    }
+
+    appRoutes = appRoutes.filter((route) => !this.isRouteExcluded(route));
+
+    // remove duplicate routes between userRoutes and appRoutes
+    // wether trailing slash is present or not
+    userRoutes = userRoutes.filter(
+      (route) => !appRoutes.includes(withTrailingSlash(route))
+        && !appRoutes.includes(withoutTrailingSlash(route)),
+    );
+
+    return [...new Set([...userRoutes, ...appRoutes])];
+  }
+
+  async getAppRoutes() {
+    const routerPath = this.api.resolve.app(this.options.sourceFiles.router);
+    const { default: createRouter } = esmRequire(routerPath);
+
+    const router = typeof createRouter === 'function' ? await createRouter() : createRouter;
+
+    return router.matcher.getRoutes();
   }
 
   async generate() {
