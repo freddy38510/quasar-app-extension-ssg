@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-void */
 const {
-  red, green, grey, underline,
+  redBright, green, grey, underline,
 } = require('chalk');
 const path = require('path');
 const appRequire = require('./app-require');
@@ -53,11 +53,11 @@ module.exports.generate = function generate(options, errors) {
     const relativeDistDir = path.posix.relative('', options.__distDir);
     const hasErrors = errors.length > 0;
 
-    let successMessage = ` ${underline('Generation succeeded')}`;
+    const successMessage = ` ${underline('Generation succeeded')}`;
 
-    successMessage += `${hasErrors ? ` with ${errors.length} error(s), check log above.` : ''}\n`;
+    const failMessage = ` ${underline('Generation failed')} with ${errors.length} error(s), check log above.\n`;
 
-    banner += `${hasErrors ? ` ⚠️ ${red(successMessage)}` : successMessage}`;
+    banner += `${hasErrors ? ` ⚠️ ${redBright(failMessage)}` : successMessage}`;
 
     banner += `
  Fallback.......... ${green(options.fallback)}
