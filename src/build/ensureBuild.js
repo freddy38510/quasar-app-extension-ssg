@@ -2,7 +2,6 @@
 const destr = require('destr');
 const fs = require('fs-extra');
 const path = require('path');
-const upath = require('upath');
 const build = require('.');
 const { log } = require('../helpers/logger');
 const { makeSnapshot, compareSnapshots } = require('./snapshot');
@@ -21,7 +20,7 @@ async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild
   // Take a snapshot of current project
   const snapshotOptions = {
     rootDir: api.appDir,
-    ignore: options.cache.ignore.map(upath.normalize),
+    ignore: options.cache.ignore.map(path.posix.normalize),
     globbyOptions: options.cache.globbyOptions,
   };
 
