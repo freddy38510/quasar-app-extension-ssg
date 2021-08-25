@@ -45,7 +45,7 @@ module.exports = function prompts() {
       name: 'scripts',
       type: 'confirm',
       message:
-        'add scripts into your package.json?',
+        'Add scripts into your package.json ?',
       default: true,
     },
     {
@@ -54,6 +54,13 @@ module.exports = function prompts() {
       message:
         'inline critical CSS?',
       default: true,
+    },
+    {
+      name: 'inlineCssFromSFC',
+      type: 'confirm',
+      message:
+        'Inline CSS from Vue SFC style tags ?',
+      default: false,
     },
   ];
 };

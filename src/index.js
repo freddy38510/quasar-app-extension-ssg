@@ -56,6 +56,10 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
     conf.ssg.criticalCss = api.prompts.criticalCss;
   }
 
+  if (conf.ssg.inlineCssFromSFC === void 0) {
+    conf.ssg.inlineCssFromSFC = api.prompts.inlineCssFromSFC || false;
+  }
+
   // Set SSG cache.ignore
   if (conf.ssg.cache !== false) {
     const ignore = [
@@ -103,6 +107,38 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
 };
 
 const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, quasarConf) {
+  if (quasarConf.ssg.inlineCssFromSFC) {
+    /* Replace 'quasar-auto-import' loaders
+     *
+     * Quasar has two distinct loaders 'quasar-auto-import', one for client and one server
+     * This breaks vue-style-loader ssrId option
+     */
+    if (quasarConf.framework.importStrategy === 'auto') {
+      const vueRule = chain.module.rule('vue');
+
+      if (vueRule.uses.has('quasar-auto-import')) {
+        vueRule.uses.delete('quasar-auto-import');
+      }
+
+      vueRule.use('quasar-auto-import')
+        .loader(resolve(__dirname, './webpack/loader.auto-import.js'))
+        .options({ api, componentCase: quasarConf.framework.autoImportComponentCase, isServer })
+        .before('vue-loader');
+    }
+
+    // Inject missing rules to support vue-style-loader for Vue SFC
+    require('./webpack/inject.sfc-style-rules')(api, chain, {
+      rtl: quasarConf.build.rtl,
+      sourceMap: quasarConf.build.sourceMap,
+      minify: quasarConf.build.minify,
+      isServer,
+      stylusLoaderOptions: quasarConf.build.stylusLoaderOptions,
+      sassLoaderOptions: quasarConf.build.sassLoaderOptions,
+      scssLoaderOptions: quasarConf.build.scssLoaderOptions,
+      lessLoaderOptions: quasarConf.build.lessLoaderOptions,
+    });
+  }
+
   if (isClient) {
     if (!api.ctx.mode.pwa) {
       const injectHtml = appRequire('@quasar/app/lib/webpack/inject.html', api.appDir);
