@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0) (2021-08-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* criticalCss option is removed in favor of inlineCriticalAsyncCss option
+
+### Features
+
+* add a crawler to find and generate dynamic routes ([8518a3b](https://github.com/freddy38510/quasar-app-extension-ssg/commit/8518a3be7bb2fd61f064aee41af65de7768bad1f))
+* add ability to inline CSS from Vue SFC style tag ([7794095](https://github.com/freddy38510/quasar-app-extension-ssg/commit/77940951bda5081a5b02a6334c59ebacdd9c7513))
+* get routes from Vue Router ([e5a3966](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e5a3966a0572f2115696cce3ab41c7f8954a0f85)), closes [#22](https://github.com/freddy38510/quasar-app-extension-ssg/issues/22)
+* **inspect:** add ability to enable/disable colored output ([c90c6b4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c90c6b447924c4f63e382616de8b54e871787bf4))
+* replace critters by beastcss and only process async css ([b2cde35](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b2cde3524bffb1a80fd6cc248bc04ee32a452f21)), closes [#19](https://github.com/freddy38510/quasar-app-extension-ssg/issues/19)
+
+
+### Bug Fixes
+
+* do a webpack rebuild if the quasar-app-extension version changed ([866a2c0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/866a2c0b711434ada0e97c93b3f88118ea3e952e))
+* extend quasar conf only once when setting env.STATIC ([b931721](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b931721f6f52ce8a194732b8f5bccede66bc42f0))
+* **generator:** handle redirections and errors in renderToString function from Vue bundleRenderer ([6ffb2cf](https://github.com/freddy38510/quasar-app-extension-ssg/commit/6ffb2cf7b9c1087f098005cf3eda53b8e013a399))
+* minify html only once and pass missing html-minifier options ([f5c2cdc](https://github.com/freddy38510/quasar-app-extension-ssg/commit/f5c2cdc3865b40c8da4bcaf7295830f4467d9e53))
+* **package:** bump dependencies and re-add missing chalk and ci-info ([1534f9d](https://github.com/freddy38510/quasar-app-extension-ssg/commit/1534f9de58d8490f51800618fa968400b272c177))
+* print a fail message if there was any errors ([d484d43](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d484d43521823335d43964a510face3325ca2bd5))
+* require missing path.resolve function for inlineCssFromSFC feature ([20c440e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/20c440e095474d535eed1495bcf4e7d4ce5b7a0a))
+
 ## [1.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.1.0...v1.2.0) (2021-05-26)
 
 
