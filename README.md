@@ -29,6 +29,8 @@ This will find and install the extension’s module. After installation is compl
   }
   ```
 
+- `Inline CSS from Vue SFC style tags ?`: Add support for [vue-style-loader](https://github.com/vuejs/vue-style-loader) to inline critical css coming from Vue SFC `<style></style>` tags.
+
 - `inline critical CSS?`: Use a fork of [Critters](https://github.com/freddy38510/critters/tree/standalone) to generate critical CSS, inline it and lazy load stylesheets for each route generated.
 
 ## Uninstalling
@@ -372,6 +374,16 @@ Default: `true`
 Use a fork of [Critters](https://github.com/freddy38510/critters/tree/standalone) to generate critical CSS, inline it and lazy load stylesheets for each route generated.
 
 > Note: Useful to replace the [initialized value](#prompts) when installing the app extension.
+
+### `inlineCssFromSFC`
+
+Type: `Boolean`
+
+Default: `false`
+
+Add support for [vue-style-loader](https://github.com/vuejs/vue-style-loader) to inline critical css coming from Vue SFC `<style></style>` tags.
+
+> Note: This option works even if [`build.extractCSS`](https://v1.quasar.dev/quasar-cli/quasar-conf-js#property-build) is set to `true` in `quasar.conf.js` file.
 
 ### `onRouteRendered(html, route, distDir)`
 
