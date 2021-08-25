@@ -54,13 +54,12 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
   // Overrides it to expect build output folder in SSR mode being our SSG buildDir
   conf.build.distDir = conf.ssg.buildDir;
 
-  // Set inline critical css
-  if (conf.ssg.criticalCss === void 0) {
-    conf.ssg.criticalCss = api.prompts.criticalCss;
-  }
-
   if (conf.ssg.inlineCssFromSFC === void 0) {
     conf.ssg.inlineCssFromSFC = api.prompts.inlineCssFromSFC || false;
+  }
+
+  if (conf.ssg.inlineCriticalAsyncCss === void 0) {
+    conf.ssg.inlineCriticalAsyncCss = api.prompts.inlineCriticalAsyncCss || true;
   }
 
   // Set SSG cache.ignore
@@ -140,6 +139,7 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
 
   if (isClient) {
     if (!api.ctx.mode.pwa) {
+      // Use webpack-html-plugin for creating html fallback file
       const injectHtml = appRequire('@quasar/app/lib/webpack/inject.html', api.appDir);
 
       const cfg = merge(quasarConf, {
@@ -150,14 +150,21 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
 
       injectHtml(chain, cfg);
     } else {
-      // handle workbox after build instead of webpack
+      const HtmlPwaPlugin = require('./webpack/plugin.html-pwa');
+      // Handle workbox after build instead of during webpack compilation
       // This way all assets could be precached, including generated html
       chain.plugins.delete('workbox');
+      // The meta tags inserted have close tags resulting in invalid HTML markup
+      // This breaks beastcss html parser
+      chain.plugins.delete('html-pwa');
+
+      chain.plugin('html-pwa')
+        .use(HtmlPwaPlugin.plugin, [quasarConf, api]);
 
       if (quasarConf.pwa.workboxPluginMode === 'InjectManifest') {
         const filename = chain.output.get('filename');
 
-        // compile custom service worker to /service-worker.js
+        // Compile custom service worker to /service-worker.js
         chain
           .entry('service-worker')
           .add(api.resolve.app(quasarConf.sourceFiles.serviceWorker));

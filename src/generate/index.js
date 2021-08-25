@@ -20,22 +20,6 @@ module.exports = async (api, quasarConf, ctx) => {
 
   await fs.copy(join(quasarConf.build.distDir, 'www'), quasarConf.ssg.__distDir);
 
-  if (quasarConf.ssg.criticalCss) {
-    try {
-      log('Inlining critical CSS for fallback...');
-
-      const fallbackFile = join(quasarConf.ssg.__distDir, quasarConf.ssg.fallback);
-
-      let fallbackHtml = await fs.readFile(fallbackFile, 'utf-8');
-
-      fallbackHtml = await generator.inlineCriticalCss(fallbackHtml);
-
-      await fs.writeFile(fallbackFile, fallbackHtml);
-    } catch (error) {
-      warn(error.stack || error);
-    }
-  }
-
   log('Generating routes...');
 
   const { errors } = await generator.generate();

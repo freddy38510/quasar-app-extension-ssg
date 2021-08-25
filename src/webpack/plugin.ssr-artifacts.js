@@ -1,5 +1,5 @@
-const fs = require('fs');
-const appRequire = require('../helpers/app-require');
+const fs = require('fs').promises;
+const { getIndexHtml } = require('./html-template');
 
 module.exports = class SsrProdArtifacts {
   constructor(cfg = {}, api) {
@@ -8,33 +8,30 @@ module.exports = class SsrProdArtifacts {
   }
 
   apply(compiler) {
-    const { getIndexHtml } = appRequire('@quasar/app/lib/ssr/html-template', this.api.appDir);
-
-    // eslint-disable-next-line no-shadow
-    compiler.hooks.emit.tapAsync('ssr-artifacts', (compiler, callback) => {
+    compiler.hooks.emit.tapPromise('ssr-artifacts', async (compilation) => {
       /*
       * /template.html
       */
-      const htmlFile = this.api.resolve.app(this.cfg.sourceFiles.indexHtmlTemplate);
-      const htmlTemplate = getIndexHtml(fs.readFileSync(htmlFile, 'utf-8'), this.cfg);
+      const htmlTemplatePath = this.api.resolve.app(this.cfg.sourceFiles.indexHtmlTemplate);
+      const htmlTemplate = await fs.readFile(htmlTemplatePath, 'utf-8');
+      // use a custom getIndexHtml function to avoid malformed HTML when pwa is enabled
+      const htmlTemplateCompiled = getIndexHtml(this.api, htmlTemplate, this.cfg);
 
-      compiler.assets['../template.html'] = {
-        source: () => Buffer.from(htmlTemplate, 'utf8'),
-        size: () => Buffer.byteLength(htmlTemplate),
+      compilation.assets['../template.html'] = {
+        source: () => Buffer.from(htmlTemplateCompiled, 'utf8'),
+        size: () => Buffer.byteLength(htmlTemplateCompiled),
       };
 
       /*
       * /ssr-config.js
       */
-      const ssrConfigFile = this.api.resolve.app('.quasar/ssr-config.js');
-      const ssrConfig = fs.readFileSync(ssrConfigFile, 'utf-8');
+      const ssrConfigFilePath = this.api.resolve.app('.quasar/ssr-config.js');
+      const ssrConfig = await fs.readFile(ssrConfigFilePath, 'utf-8');
 
-      compiler.assets['../ssr-config.js'] = {
+      compilation.assets['../ssr-config.js'] = {
         source: () => Buffer.from(ssrConfig, 'utf8'),
         size: () => Buffer.byteLength(ssrConfig),
       };
-
-      callback();
     });
   }
 };

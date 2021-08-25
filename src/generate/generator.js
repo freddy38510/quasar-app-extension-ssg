@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-const Critters = require('critters');
+const Beastcss = require('beastcss');
 const fs = require('fs').promises;
 const { minify } = require('html-minifier');
 const path = require('path');
@@ -10,7 +10,11 @@ const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright, redBright } = require('chalk');
 const {
-  log, warn, fatal, routeBanner,
+  log,
+  warn,
+  fatal,
+  beastcssFormatMessage,
+  logBeastcss,
 } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
@@ -45,6 +49,27 @@ class Generator {
     };
 
     this.generatedRoutes = new Set();
+
+    if (this.options.inlineCriticalAsyncCss !== false) {
+      const manifest = require(path.join(
+        quasarConf.ssg.buildDir,
+        '/quasar.client-manifest.json',
+      ));
+
+      this.beastcssMessages = [];
+
+      this.beastcss = new Beastcss(
+        {
+          path: this.options.__distDir,
+          publicPath: this.options.build.publicPath,
+          additionalStylesheets: manifest.async,
+          external: false,
+          internal: false,
+          logger: this.createBeastcssLogger(),
+          logLevel: ctx.debug ? 'debug' : 'info',
+        },
+      );
+    }
   }
 
   async initRoutes(...args) {
@@ -89,15 +114,27 @@ class Generator {
 
   async generate() {
     const routes = await this.initRoutes();
-    const errors = [];
 
     const { errors } = await this.generateRoutes(routes);
 
+    if (this.options.inlineCriticalAsyncCss !== false) {
+      this.beastcss.clear();
+    }
+
     errors.forEach(({ route, error }) => {
-      warn(
-        `Error when generating route ${cyanBright(route)} \n ${error.stack || error
-        }`,
-      );
+      let msg = `Error when generating route ${cyanBright(route)}\n`;
+
+      if (this.beastcssMessages[route].errors.length > 0) {
+        msg += redBright(
+          beastcssFormatMessage(`${this.beastcssMessages[route].errors[0]} \n`),
+        );
+      }
+
+      if (this.options.debug) {
+        msg += `${error.stack || error}`;
+      }
+
+      warn(msg);
     });
 
     return { errors };
@@ -114,6 +151,9 @@ class Generator {
 
           log(`Generated route ${cyanBright(route)}`);
 
+          if (this.options.inlineCriticalAsyncCss !== false) {
+            logBeastcss(this.beastcssMessages[route]);
+          }
         } catch (e) {
           errors.push({ route, error: e });
 
@@ -169,6 +209,8 @@ class Generator {
       this.crawl(html);
     }
 
+    if (this.options.inlineCriticalAsyncCss !== false) {
+      html = await this.inlineCriticalAsyncCss(html, route);
     }
 
     if (typeof this.options.onRouteRendered === 'function') {
@@ -243,27 +285,32 @@ class Generator {
       });
   }
 
-  async inlineCriticalCss(html, task = null) {
-    const loggerFn = (level) => {
-      if (task === null) {
-        return (msg) => { level(msg); };
+  async inlineCriticalAsyncCss(html, route) {
+    return this.beastcss.process(html, route);
+  }
+
+  createBeastcssLogger() {
+    const saveMessage = (level) => (msg, id) => {
+      if (id && !this.beastcssMessages[id]) {
+        this.beastcssMessages[id] = {
+          traces: [],
+          debugs: [],
+          infos: [],
+          warns: [],
+          errors: [],
+        };
       }
 
-      return (msg) => { task.output = msg; };
+      this.beastcssMessages[id][level].push(msg);
     };
 
-    const critters = new Critters({
-      path: this.options.__distDir,
-      publicPath: this.options.build.publicPath,
-      logger: {
-        log: loggerFn(log),
-        info: loggerFn(log),
-        warn: loggerFn(warn),
-        error: loggerFn(warn),
-      },
-    });
-
-    return critters.process(html);
+    return {
+      trace: saveMessage('traces'),
+      debug: saveMessage('debugs'),
+      info: saveMessage('infos'),
+      warn: saveMessage('warns'),
+      error: saveMessage('errors'),
+    };
   }
 }
 

@@ -49,18 +49,18 @@ module.exports = function prompts() {
       default: true,
     },
     {
-      name: 'criticalCss',
-      type: 'confirm',
-      message:
-        'inline critical CSS?',
-      default: true,
-    },
-    {
       name: 'inlineCssFromSFC',
       type: 'confirm',
       message:
         'Inline CSS from Vue SFC style tags ?',
       default: false,
+    },
+    {
+      name: 'inlineCriticalAsyncCss',
+      type: 'confirm',
+      message:
+        'Inline critical async CSS ?',
+      default: true,
     },
   ];
 };
