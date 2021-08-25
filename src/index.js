@@ -25,7 +25,10 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
         gitignore: true,
       },
     },
+    routes: [],
     rendererOptions: {},
+    crawler: true,
+    exclude: [],
   }, conf.ssg ? conf.ssg : {});
 
   // Set SSG distDir

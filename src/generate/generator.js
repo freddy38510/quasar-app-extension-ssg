@@ -5,12 +5,14 @@ const Critters = require('critters');
 const fs = require('fs').promises;
 const { minify } = require('html-minifier');
 const path = require('path');
+const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright, redBright } = require('chalk');
 const {
   log, warn, fatal, routeBanner,
 } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
+const isRouteValid = require('../helpers/is-route-valid');
 
 class Generator {
   constructor(api, quasarConf, ctx) {
@@ -30,9 +32,11 @@ class Generator {
       build: {
         publicPath: quasarConf.build.publicPath,
       },
+      vueRouterBase: quasarConf.build.vueRouterBase,
       failOnError: ctx.failOnError,
       debug: ctx.debug,
     };
+    this.generatedRoutes = new Set();
   }
 
   async initRoutes(...args) {
@@ -47,6 +51,8 @@ class Generator {
 
       fatal('Could not resolve routes');
     }
+
+    routes = routes.filter((route) => !this.isRouteExcluded(route));
 
     return routes;
   }
@@ -108,6 +114,9 @@ class Generator {
     routes.forEach((route) => {
       route = decodeURI(route);
 
+      // Add routes to the tracked generated routes (for crawler)
+      this.generatedRoutes.add(route);
+
       this.queue.push(route);
     });
 
@@ -126,8 +135,10 @@ class Generator {
       return;
     }
 
-    if (this.options.criticalCss !== false) {
-      html = await this.inlineCriticalCss(html);
+    if (this.options.crawler) {
+      this.crawl(html);
+    }
+
     }
 
     if (typeof this.options.onRouteRendered === 'function') {
@@ -158,11 +169,48 @@ class Generator {
 
       this.ssr.renderToString(opts, (error, html) => {
         if (error) {
-          reject(error);
-        }
-        resolve(html);
-      });
+
+  isRouteExcluded(route) {
+    return this.options.exclude.some((regex) => {
+      if (typeof regex === 'string') {
+        return regex === route;
+      }
+      return regex.test(route);
     });
+  }
+
+  shouldGenerateRoute(route) {
+    if (!isRouteValid(route)) {
+      return false;
+    }
+
+    if (this.isRouteExcluded(route)) {
+      return false;
+    }
+
+    return !this.generatedRoutes.has(route);
+  }
+
+  crawl(html) {
+    parse(html)
+      .querySelectorAll('a')
+      .map((el) => {
+        const sanitizedHref = (el.getAttribute('href') || '')
+          .replace(this.options.vueRouterBase, '/')
+          .split('?')[0]
+          .split('#')[0]
+          .replace(/\/+$/, '')
+          .trim();
+
+        const foundRoute = decodeURI(sanitizedHref);
+
+        if (this.shouldGenerateRoute(foundRoute)) {
+          this.generatedRoutes.add(foundRoute);
+          this.queue.push(foundRoute);
+        }
+
+        return null;
+      });
   }
 
   async inlineCriticalCss(html, task = null) {
