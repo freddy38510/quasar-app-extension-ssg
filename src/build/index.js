@@ -26,17 +26,28 @@ function parseWebpackConfig(cfg) {
   };
 }
 
-module.exports = async function build(api, quasarConfFile, ctx, extensionRunner) {
+module.exports = async function build(
+  api,
+  quasarConfFile,
+  ctx,
+  extensionRunner,
+) {
   banner(api, ctx, 'build');
 
   const webpack = appRequire('webpack', api.appDir);
 
-  const installMissing = appRequire('@quasar/app/lib/mode/install-missing', api.appDir);
+  const installMissing = appRequire(
+    '@quasar/app/lib/mode/install-missing',
+    api.appDir,
+  );
   await installMissing(ctx.modeName, ctx.targetName);
 
   const Generator = appRequire('@quasar/app/lib/generator', api.appDir);
   const artifacts = appRequire('@quasar/app/lib/artifacts', api.appDir);
-  const regenerateTypesFeatureFlags = appRequire('@quasar/app/lib/helpers/types-feature-flags', api.appDir);
+  const regenerateTypesFeatureFlags = appRequire(
+    '@quasar/app/lib/helpers/types-feature-flags',
+    api.appDir,
+  );
 
   const generator = new Generator(quasarConfFile);
 
@@ -45,7 +56,8 @@ module.exports = async function build(api, quasarConfFile, ctx, extensionRunner)
     : quasarConfFile.getWebpackConfig();
 
   const quasarConf = hasNewQuasarConfFile(api)
-    ? quasarConfFile.quasarConf : quasarConfFile.getquasarConf();
+    ? quasarConfFile.quasarConf
+    : quasarConfFile.getquasarConf();
 
   regenerateTypesFeatureFlags(quasarConf);
 
@@ -104,24 +116,36 @@ module.exports = async function build(api, quasarConfFile, ctx, extensionRunner)
     });
 
     warn();
-    warn(chalk.red(`[FAIL] Build failed with ${errDetails}. Check log above.\n`));
+    warn(
+      chalk.red(`[FAIL] Build failed with ${errDetails}. Check log above.\n`),
+    );
 
     process.exit(1);
   });
 
-  const printWebpackStats = appRequire('@quasar/app/lib/helpers/print-webpack-stats', api.appDir);
+  const printWebpackStats = appRequire(
+    '@quasar/app/lib/helpers/print-webpack-stats',
+    api.appDir,
+  );
 
   console.log();
 
-  statsArray.forEach((_stats, index) => {
-    printWebpackStats(_stats, webpackData.folder[index], webpackData.name[index]);
+  statsArray.forEach((stat, index) => {
+    printWebpackStats(
+      stat,
+      webpackData.folder[index],
+      webpackData.name[index],
+    );
   });
 
   // free up memory
   // eslint-disable-next-line no-void
   webpackData = void 0;
 
-  banner(api, ctx, 'build', { outputFolder, transpileBanner: quasarConf.__transpileBanner });
+  banner(api, ctx, 'build', {
+    outputFolder,
+    transpileBanner: quasarConf.__transpileBanner,
+  });
 
   if (typeof quasarConf.build.afterBuild === 'function') {
     await quasarConf.build.afterBuild({ quasarConf });
