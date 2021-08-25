@@ -171,8 +171,14 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
   if (isServer) {
     const SsrArtifacts = require('./webpack/plugin.ssr-artifacts');
 
+    const cfg = merge(quasarConf, {
+      build: {
+        minify: false, // Minify later when generating pre-rendered pages to avoid to do it twice
+      },
+    });
+
     chain.plugin('ssr-artifacts')
-      .use(SsrArtifacts, [quasarConf, api]);
+      .use(SsrArtifacts, [cfg, api]);
   }
 };
 

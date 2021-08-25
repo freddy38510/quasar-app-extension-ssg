@@ -33,7 +33,9 @@ class Generator {
 
     this.options = {
       ...quasarConf.ssg,
-      minify: quasarConf.build.minify,
+      minify: quasarConf.build.minify
+        ? { ...quasarConf.__html.minifyOptions, removeComments: false }
+        : false,
       build: {
         publicPath: quasarConf.build.publicPath,
       },
