@@ -97,8 +97,6 @@ To generate a static site run this command from your quasar project folder:
 quasar ssg generate
 ```
 
-> Do not forget to set the routes you want to generate in the [configuration](#routes).
-
 #### Generate Options
 
 - `-h, --help`: Display usage instructions.
@@ -213,7 +211,7 @@ Interval in **milliseconds** between two batches of concurrently pages generatio
 
 Type: `String[]` or `Function`
 
-Default: `['/']`
+Default: `[]`
 
 An `Array` of `Strings` for routes to be generated.
 
