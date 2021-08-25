@@ -9,7 +9,7 @@
  * API: https://github.com/quasarframework/quasar/blob/master/app/lib/app-extension/IndexAPI.js
  */
 
-const { join, isAbsolute } = require('path');
+const { join, isAbsolute, resolve } = require('path');
 const { merge } = require('webpack-merge');
 const appRequire = require('./helpers/app-require');
 const getUniqueArray = require('./helpers/get-unique-array');
