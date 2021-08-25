@@ -48,7 +48,6 @@
     "destr": "1.1.0",
     "express": "4.17.1",
     "fs-extra": "10.0.0",
-    "glob": "7.1.7",
     "globby": "11.0.3",
     "html-minifier": "4.0.0",
     "https": "1.0.0",

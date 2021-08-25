@@ -82,7 +82,7 @@ if (argv.help) {
 module.exports = (api) => {
   const fs = require('fs');
   const PlatformPath = require('path');
-  const glob = require('glob');
+  const { sync: globbySync } = require('globby');
 
   function getAbsolutePath(pathParam) {
     return PlatformPath.isAbsolute(pathParam)
@@ -151,7 +151,7 @@ module.exports = (api) => {
 
   app.use(prefixPath, serve('.', true));
 
-  const fallbackFile = glob.sync(resolve('./*.html'), { ignore: resolve('./index.html') })[0];
+  const fallbackFile = globbySync(resolve('./*.html'), { ignore: resolve('./index.html') })[0];
   if (fallbackFile) {
     app.use(prefixPath, (req, res, next) => {
       const ext = PlatformPath.posix.extname(req.url) || '.html';
