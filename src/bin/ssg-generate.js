@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === void 0) {
 }
 
 const parseArgs = require('minimist');
-const { red } = require('chalk');
+const { redBright } = require('chalk');
 const appRequire = require('../helpers/app-require');
 const { fatal, warn } = require('../helpers/logger');
 const ensureBuild = require('../build/ensureBuild');
@@ -75,11 +75,11 @@ module.exports = async function run(api) {
   const quasarConf = hasNewQuasarConfFile(api)
     ? quasarConfFile.quasarConf : quasarConfFile.getBuildConfig();
 
-  const { errors } = await require('../generate')(api, quasarConf);
+  const { errors } = await require('../generate')(api, quasarConf, { failOnError: argv['fail-on-error'], debug: ctx.debug });
 
   if (argv['fail-on-error'] && errors.length > 0) {
-    warn(red(`[FAIL] Generating some pages failed with ${errors.length} error(s). Check log above.\n`));
-    fatal(red('Exiting with non-zero code.'));
+    warn(redBright('[FAIL] Generating pages failed. Check log above.\n'));
+    fatal(redBright('Exiting with non-zero code.'));
   }
 
   banner(quasarConf.ssg, errors);

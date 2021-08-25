@@ -9,7 +9,6 @@ const appRequire = require('./app-require');
 const { hasBrowsersSupportFile } = require('./compatibility');
 
 module.exports.build = function build(api, ctx, cmd, details) {
-  // eslint-disable-next-line global-require
   const quasarVersion = api.getPackageVersion('quasar');
   const cliAppVersion = api.getPackageVersion('@quasar/app');
 

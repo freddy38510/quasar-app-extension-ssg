@@ -4,25 +4,16 @@
 const Critters = require('critters');
 const fs = require('fs').promises;
 const { minify } = require('html-minifier');
-const { Listr } = require('listr2');
 const path = require('path');
+const fastq = require('fastq');
+const { cyanBright, redBright } = require('chalk');
 const {
   log, warn, fatal, routeBanner,
 } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 
-const fileWriter = async function fileWriter(route, content) {
-  try {
-    await fs.mkdir(path.dirname(route), { recursive: true });
-
-    await fs.writeFile(route, content);
-  } catch (error) {
-    warn(error.stack || error);
-  }
-};
-
 class Generator {
-  constructor(api, quasarConf) {
+  constructor(api, quasarConf, ctx) {
     const ssr = require(`${quasarConf.build.distDir}/ssr-config`);
 
     ssr.mergeRendererOptions(quasarConf.ssg.rendererOptions);
@@ -39,6 +30,8 @@ class Generator {
       build: {
         publicPath: quasarConf.build.publicPath,
       },
+      failOnError: ctx.failOnError,
+      debug: ctx.debug,
     };
   }
 
@@ -58,61 +51,102 @@ class Generator {
     return routes;
   }
 
-  async generateAll() {
+  async generate() {
     const routes = await this.initRoutes();
     const errors = [];
 
-    let n = 0;
+    const { errors } = await this.generateRoutes(routes);
 
-    try {
-      await new Listr(
-        routes
-          .map((route) => ({
-            title: routeBanner(route, 'Generating route...'),
-            task: async (_ctx, task) => {
-              n += 1;
+    errors.forEach(({ route, error }) => {
+      warn(
+        `Error when generating route ${cyanBright(route)} \n ${error.stack || error
+        }`,
+      );
+    });
 
-              await new Promise((resolve) => setTimeout(resolve, (n * this.options.interval) || 0));
-
-              await this.generate(route, task);
-            },
-            options: { persistentOutput: true },
-          })),
-        {
-          concurrent: this.options.concurrency,
-          rendererOptions: {
-            collapse: false,
-            collapseErrors: false,
-            exitOnError: true,
-            showTimer: true,
-          },
-        },
-      ).run();
-    } catch (e) {
-      errors.push(e);
-
-      warn(e.stack || e);
-    }
-
-    return errors;
+    return { errors };
   }
 
-  async generate(route, task) {
+  async generateRoutes(routes) {
+    const errors = [];
+
+    this.queue = fastq.promise(
+      this,
+      async (route) => {
+        try {
+          await this.generateRoute(route);
+
+          log(`Generated route ${cyanBright(route)}`);
+
+        } catch (e) {
+          errors.push({ route, error: e });
+
+          if (this.options.failOnError) {
+            this.queue.killAndDrain();
+          }
+        }
+      },
+      this.options.concurrency,
+    );
+
+    // https://ajahne.github.io/blog/javascript/2018/05/10/javascript-timers-minimum-delay.html
+    if (this.options.interval > 0) {
+      this.queue.saturated = async () => {
+        this.queue.pause();
+
+        await new Promise((resolve) => setTimeout(resolve, this.options.interval));
+
+        this.queue.resume();
+
+        if (this.queue.length() > 0) {
+          await this.queue.saturated();
+        }
+      };
+    }
+
+    // push routes to queue
+    routes.forEach((route) => {
+      route = decodeURI(route);
+
+      this.queue.push(route);
+    });
+
+    // waiting for queue to be fully processed
+    await new Promise((resolve) => {
+      this.queue.drain = () => resolve();
+    });
+
+    return { errors };
+  }
+
+  async generateRoute(route) {
     let html = await this.render(route);
 
+    if (!html) {
+      return;
+    }
+
     if (this.options.criticalCss !== false) {
-      html = await this.inlineCriticalCss(html, task);
+      html = await this.inlineCriticalCss(html);
     }
 
     if (typeof this.options.onRouteRendered === 'function') {
-      html = await this.options.onRouteRendered(html, route, this.options.__distDir);
+      html = await this.options.onRouteRendered(
+        html,
+        route,
+        this.options.__distDir,
+      );
     }
 
     if (this.options.minify !== false) {
       html = minify(html, this.options.minify);
     }
 
-    await fileWriter(path.join(this.options.__distDir, route, 'index.html'), html);
+    const dest = path.join(this.options.__distDir, route, 'index.html');
+
+    await fs.mkdir(path.dirname(dest), { recursive: true });
+
+    await fs.writeFile(dest, html, 'utf8');
   }
 
   render(route) {

@@ -7,10 +7,10 @@ const appRequire = require('../helpers/app-require');
 const banner = require('../helpers/banner').generate;
 const { log, warn } = require('../helpers/logger');
 
-module.exports = async (api, quasarConf) => {
+module.exports = async (api, quasarConf, ctx) => {
   const { add, clean } = appRequire('@quasar/app/lib/artifacts', api.appDir);
 
-  const generator = new Generator(api, quasarConf);
+  const generator = new Generator(api, quasarConf, ctx);
 
   banner();
 
@@ -36,7 +36,9 @@ module.exports = async (api, quasarConf) => {
     }
   }
 
-  const errors = await generator.generateAll();
+  log('Generating routes...');
+
+  const { errors } = await generator.generate();
 
   if (quasarConf.ctx.mode.pwa) {
     const buildWorkbox = require('./workbox.js');
