@@ -241,6 +241,29 @@ class Generator {
 
       this.ssr.renderToString(opts, (error, html) => {
         if (error) {
+          if (error.url) {
+            const redirectedRoute = decodeURI(error.url);
+
+            try {
+              // resolve to rendered redirected route
+              return resolve(this.render(redirectedRoute));
+            } catch (e) {
+              return reject(e);
+            }
+          }
+
+          if (error.code === 404) {
+            // do not render 404 error
+            return resolve();
+          }
+
+          return reject(error);
+        }
+
+        return resolve(html);
+      });
+    });
+  }
 
   isRouteExcluded(route) {
     return this.options.exclude.some((regex) => {
