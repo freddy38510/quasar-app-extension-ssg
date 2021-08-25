@@ -13,10 +13,11 @@ const argv = parseArgs(process.argv.slice(2), {
     p: 'path',
     h: 'help',
   },
-  boolean: ['h'],
+  boolean: ['h', 'colors'],
   string: ['p'],
   default: {
     d: 5,
+    colors: true,
   },
 });
 
@@ -37,6 +38,7 @@ if (argv.help) {
                         Examples:
                           -p module.rules
                           -p plugins
+    --colors,        Style output with ANSI color codes
     --help, -h       Displays this message
   `);
   process.exit(0);
@@ -110,7 +112,7 @@ async function inspect(api) {
       util.inspect(cfgEntry.webpackCfg, {
         showHidden: true,
         depth,
-        colors: true,
+        colors: argv.colors,
         compact: false,
       }),
     );
