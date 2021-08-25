@@ -215,6 +215,10 @@ Default: `[]`
 
 An `Array` of `Strings` for routes to be generated.
 
+> Note: As of quasar-app-extension-ssg v2.0.0 this option is no longer necessary thanks to the crawl feature and the ability to take routes from the Vue Router configuration.
+
+If have unlinked pages (such as secret pages) and you would like these to also be generated then you can use the ssg.routes property.
+
 Example:
 
 ```javascript
