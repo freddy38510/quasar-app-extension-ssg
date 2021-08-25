@@ -201,7 +201,11 @@ Type: `Number`
 
 Default: `0`
 
-Interval between two render cycles to avoid flooding a potential API with API calls from the web application.
+Interval in **milliseconds** between two batches of concurrently pages generation to avoid flooding a potential API with API calls from the web application.
+
+> Notes:
+>
+> This option is intended to be used in conjunction with the `concurrency` option.
 
 ### `routes`
 
