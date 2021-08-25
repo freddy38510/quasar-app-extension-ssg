@@ -32,6 +32,7 @@ async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild
     quasarVersion: api.getPackageVersion('quasar'),
     quasarAppVersion: api.getPackageVersion('@quasar/app'),
     quasarExtrasVersion: api.getPackageVersion('@quasar/extras'),
+    ssgAppExtensionVersion: api.getPackageVersion('quasar-app-extension-ssg'),
     ssr: quasarConf.ssr,
     snapshot: currentBuildSnapshot,
   };
