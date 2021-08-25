@@ -185,11 +185,7 @@ module.exports = function run(api) {
 
   api.registerCommand('serve', () => require('./bin/server')(api));
 
-  api.extendQuasarConf((conf) => {
-    conf.build.env.STATIC = false;
-  });
-
-  // Make sure we are running from command "quasar ssg"
+  // Apply SSG modifications only if current process has "ssg" argument
   if (api.ctx.prod && api.ctx.mode.ssr && process.argv[2] === 'ssg') {
     let quasarConf = {};
 
@@ -203,7 +199,11 @@ module.exports = function run(api) {
       chainWebpack({ isClient, isServer }, chain, api, quasarConf);
     });
 
-    // We do not use webserver for SSG
+    // Webserver is not used with SSG
     api.chainWebpackWebserver((chain) => chain.plugins.delete('progress'));
+  } else {
+    api.extendQuasarConf((conf) => {
+      conf.build.env.STATIC = false;
+    });
   }
 };
