@@ -1,14 +1,19 @@
 /* eslint-disable no-void */
-import { fromSSR, client } from 'quasar/src/plugins/Platform.js';
+import { isRuntimeSsrPreHydration, client } from 'quasar/src/plugins/Platform.js';
 
 function getMobilePlatform(is) {
-  if (is.ios === true) return 'ios';
-  if (is.android === true) return 'android';
+  if (is.ios === true) {
+    return 'ios';
+  }
+  if (is.android === true) {
+    return 'android';
+  }
+
   return '';
 }
 
 export default ({ app }) => {
-  if (fromSSR === true) {
+  if (isRuntimeSsrPreHydration.value === true) {
     const classes = document.body.className;
 
     let newCls = classes;
@@ -35,10 +40,6 @@ export default ({ app }) => {
       ) {
         newCls += ' q-ios-padding';
       }
-    } else if (client.is.electron === true) {
-      newCls += ' electron';
-    } else if (client.is.bex === true) {
-      newCls += ' bex';
     }
 
     if (classes !== newCls) {

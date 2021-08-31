@@ -1,21 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-const Beastcss = require('beastcss');
 const fs = require('fs').promises;
 const { minify } = require('html-minifier');
 const path = require('path');
 const esmRequire = require('jiti')(__filename);
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
-const { cyanBright, redBright } = require('chalk');
-const {
-  log,
-  warn,
-  fatal,
-  beastcssFormatMessage,
-  logBeastcss,
-} = require('../helpers/logger');
+const { cyanBright } = require('chalk');
+const appRequire = require('../helpers/app-require');
+const { log } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
 const flatRoutes = require('../helpers/flat-routes');
@@ -26,16 +20,25 @@ const {
 
 class Generator {
   constructor(api, quasarConf, ctx) {
-    const ssr = require(`${quasarConf.build.distDir}/ssr-config`);
-
-    ssr.mergeRendererOptions(quasarConf.ssg.rendererOptions);
-
-    this.ssr = ssr;
+    const createRenderer = appRequire('@quasar/ssr-helpers/create-renderer', api.appDir);
+    const { renderToString } = appRequire('@vue/server-renderer', api.appDir);
+    const serverManifest = require(`${quasarConf.build.distDir}/quasar.server-manifest.json`);
+    const clientManifest = require(`${quasarConf.build.distDir}/quasar.client-manifest.json`);
+    const renderTemplate = require(`${quasarConf.build.distDir}/render-template.js`);
+    const ssrRenderer = createRenderer({
+      vueRenderToString: renderToString,
+      basedir: quasarConf.build.distDir,
+      serverManifest,
+      clientManifest,
+    });
 
     this.api = api;
 
+    this.ssrRender = async (ssrContext) => ssrRenderer(ssrContext, renderTemplate);
+
     this.options = {
       ...quasarConf.ssg,
+      // keep comments to avoid issue at client-side hydration
       minify: quasarConf.build.minify
         ? { ...quasarConf.__html.minifyOptions, removeComments: false }
         : false,
@@ -44,7 +47,6 @@ class Generator {
       },
       vueRouterBase: quasarConf.build.vueRouterBase,
       sourceFiles: quasarConf.sourceFiles,
-      failOnError: ctx.failOnError,
       debug: ctx.debug,
     };
 
@@ -77,10 +79,9 @@ class Generator {
 
     try {
       userRoutes = await promisifyRoutes(this.options.routes, ...args);
-    } catch (error) {
-      warn(error.stack || error);
-
-      fatal('Could not resolve routes');
+    } catch (err) {
+      err.message = `Could not resolve provided routes\n\n${this.options.debug ? err.message : ` ${err.message}`}`;
+      throw err;
     }
 
     let appRoutes = [];
@@ -112,34 +113,6 @@ class Generator {
     return router.matcher.getRoutes();
   }
 
-  async generate() {
-    const routes = await this.initRoutes();
-
-    const { errors } = await this.generateRoutes(routes);
-
-    if (this.options.inlineCriticalAsyncCss !== false) {
-      this.beastcss.clear();
-    }
-
-    errors.forEach(({ route, error }) => {
-      let msg = `Error when generating route ${cyanBright(route)}\n`;
-
-      if (this.beastcssMessages[route].errors.length > 0) {
-        msg += redBright(
-          beastcssFormatMessage(`${this.beastcssMessages[route].errors[0]} \n`),
-        );
-      }
-
-      if (this.options.debug) {
-        msg += `${error.stack || error}`;
-      }
-
-      warn(msg);
-    });
-
-    return { errors };
-  }
-
   async generateRoutes(routes) {
     const errors = [];
 
@@ -149,17 +122,11 @@ class Generator {
         try {
           await this.generateRoute(route);
 
-          log(`Generated route ${cyanBright(route)}`);
-
-          if (this.options.inlineCriticalAsyncCss !== false) {
-            logBeastcss(this.beastcssMessages[route]);
-          }
+          log(`Generated page for route "${cyanBright(route)}"`);
         } catch (e) {
           errors.push({ route, error: e });
 
-          if (this.options.failOnError) {
-            this.queue.killAndDrain();
-          }
+          this.queue.killAndDrain();
         }
       },
       this.options.concurrency,
@@ -199,7 +166,7 @@ class Generator {
   }
 
   async generateRoute(route) {
-    let html = await this.render(route);
+    let html = await this.renderRoute(route);
 
     if (!html) {
       return;
@@ -232,37 +199,27 @@ class Generator {
     await fs.writeFile(dest, html, 'utf8');
   }
 
-  render(route) {
-    return new Promise((resolve, reject) => {
-      const opts = {
-        req: { headers: {}, url: route },
-        res: {},
-      };
+  async renderRoute(route) {
+    const ssrContext = {
+      req: { headers: {}, url: route },
+      res: {},
+    };
 
-      this.ssr.renderToString(opts, (error, html) => {
-        if (error) {
-          if (error.url) {
-            const redirectedRoute = decodeURI(error.url);
+    try {
+      return this.ssrRender(ssrContext);
+    } catch (error) {
+      if (error.url) {
+        const redirectedRoute = decodeURI(error.url);
 
-            try {
-              // resolve to rendered redirected route
-              return resolve(this.render(redirectedRoute));
-            } catch (e) {
-              return reject(e);
-            }
-          }
+        return this.renderRoute(redirectedRoute);
+      }
 
-          if (error.code === 404) {
-            // do not render 404 error
-            return resolve();
-          }
+      if (error.code === 404) {
+        return null;
+      }
 
-          return reject(error);
-        }
-
-        return resolve(html);
-      });
-    });
+      throw error;
+    }
   }
 
   isRouteExcluded(route) {

@@ -17,17 +17,21 @@ function injectSsrInterpolation(html) {
           start = start.replace(matches[0], '');
         }
 
-        return `${start} {{ Q_HTML_ATTRS }}${end}`;
+        return `${start} {{ _meta.htmlAttrs }}${end}`;
       },
     )
     .replace(
       /(<head[^>]*)(>)/i,
-      (_, start, end) => `${start}${end}{{ Q_HEAD_TAGS }}`,
+      (_, start, end) => `${start}${end}{{ _meta.headTags }}`,
+    )
+    .replace(
+      /(<\/head>)/i,
+      (_, tag) => `{{ _meta.resourceStyles }}${tag}`,
     )
     .replace(
       /(<body[^>]*)(>)/i,
       (found, start, end) => {
-        let classes = '{{ Q_BODY_CLASSES }}';
+        let classes = '{{ _meta.bodyClasses }}';
 
         const matches = found.match(/\sclass\s*=\s*['"]([^'"]*)['"]/i);
 
@@ -38,9 +42,69 @@ function injectSsrInterpolation(html) {
           start = start.replace(matches[0], '');
         }
 
-        return `${start} class="${classes.trim()}" {{ Q_BODY_ATTRS }}${end}{{ Q_BODY_TAGS }}`;
+        return `${start} class="${classes.trim()}" {{ _meta.bodyAttrs }}${end}{{ _meta.bodyTags }}`;
       },
+    )
+    .replace(
+      '<div id="q-app"></div>',
+      '<div id="q-app">{{ _meta.resourceApp }}</div>{{ _meta.resourceScripts }}',
     );
+}
+
+/**
+ * forked and adapted from html-webpack-plugin as
+ * it's no longer exporting this method
+ */
+function htmlTagObjectToString(tagDefinition) {
+  const attributes = Object.keys(tagDefinition.attributes || {})
+    .filter((attributeName) => tagDefinition.attributes[attributeName] === '' || tagDefinition.attributes[attributeName])
+    .map((attributeName) => (
+      tagDefinition.attributes[attributeName] === true
+        ? attributeName
+        : `${attributeName}="${tagDefinition.attributes[attributeName]}"`
+    ));
+
+  return `<${[tagDefinition.tagName].concat(attributes).join(' ')}>
+${tagDefinition.innerHTML || ''}${tagDefinition.voidTag ? '' : `</${tagDefinition.tagName}>`}`;
+}
+
+const htmlRegExp = /(<html[^>]*>)/i;
+const headRegExp = /(<\/head\s*>)/i;
+const bodyRegExp = /(<\/body\s*>)/i;
+
+/**
+ * forked and adapted from html-webpack-plugin as
+ * it's no longer exporting this method
+ */
+function injectAssetsIntoHtml(html, assetTags) {
+  const body = assetTags.bodyTags.map((entry) => htmlTagObjectToString(entry, false));
+  const head = assetTags.headTags.map((entry) => htmlTagObjectToString(entry, false));
+
+  if (body.length) {
+    if (bodyRegExp.test(html)) {
+      // Append assets to body element
+      html = html.replace(bodyRegExp, (match) => body.join('') + match);
+    } else {
+      // Append scripts to the end of the file if no <body> element exists:
+      html += body.join('');
+    }
+  }
+
+  if (head.length) {
+    // Create a head tag if none exists
+    if (!headRegExp.test(html)) {
+      if (!htmlRegExp.test(html)) {
+        html = `<head></head>${html}`;
+      } else {
+        html = html.replace(htmlRegExp, (match) => `${match}<head></head>`);
+      }
+    }
+
+    // Append assets to head element
+    html = html.replace(headRegExp, (match) => head.join('') + match);
+  }
+
+  return html;
 }
 
 module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
@@ -51,9 +115,7 @@ module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
   // eslint-disable-next-line global-require
   const { fillPwaTags } = require('./plugin.html-pwa');
 
-  const compiled = compileTemplate(
-    template.replace('<div id="q-app"></div>', '<!--vue-ssr-outlet-->'),
-  );
+  const compiled = compileTemplate(template);
 
   let html = compiled(cfg.htmlVariables);
 
@@ -64,25 +126,23 @@ module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
   }
 
   if (data.bodyTags.length > 0 || data.headTags.length > 0) {
-    const htmlCtx = { options: { xhtml: false } };
-    html = HtmlWebpackPlugin.prototype.injectAssetsIntoHtml.call(htmlCtx, html, {}, data);
+    html = injectAssetsIntoHtml(html, data);
   }
-
-  html = injectSsrInterpolation(html);
 
   if (cfg.build.appBase) {
     html = fillBaseTag(html, cfg.build.appBase);
   }
+
+  html = injectSsrInterpolation(html);
 
   if (cfg.build.minify) {
     const { minify } = appRequire('html-minifier', api.appDir);
     html = minify(html, {
       // eslint-disable-next-line no-underscore-dangle
       ...cfg.__html.minifyOptions,
-      ignoreCustomComments: [/vue-ssr-outlet/],
       ignoreCustomFragments: [/{{ [\s\S]*? }}/],
     });
   }
 
-  return html;
+  return compileTemplate(html, { interpolate: /{{([\s\S]+?)}}/g });
 };

@@ -6,7 +6,7 @@ module.exports = function promisifyRoutes(fn, ...args) {
     return Promise.resolve(fn);
   }
 
-  log('Preparing routes to generate...');
+  log('Preparing provided routes...');
 
   // If routes is a function expecting a callback
   if (fn.length === arguments.length) {
@@ -19,12 +19,15 @@ module.exports = function promisifyRoutes(fn, ...args) {
       }, ...args);
     });
   }
+
   let promise = fn(...args);
+
   if (
     !promise
     || (!(promise instanceof Promise) && typeof promise.then !== 'function')
   ) {
     promise = Promise.resolve(promise);
   }
+
   return promise;
 };

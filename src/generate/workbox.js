@@ -5,18 +5,7 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
 const { generateSW, injectManifest } = require('workbox-build');
-const { log } = require('../helpers/logger');
-
-/*
-function getAssetsExtensions (quasarConf) {
-  const assets = require(path.join(
-    quasarConf.build.distDir,
-    'quasar.client-manifest.json'
-  )).all
-
-  return assets.map((asset) => path.extname(asset).slice(1)).join()
-}
-*/
+const { info, success } = require('../helpers/logger');
 
 module.exports = async function buildWorkbox(api, quasarConf) {
   const mode = quasarConf.pwa.workboxPluginMode;
@@ -28,20 +17,22 @@ module.exports = async function buildWorkbox(api, quasarConf) {
     defaultOptions = {
       cacheId: pkg.name || 'quasar-pwa-app',
       globPatterns: ['**/*.{js,css,html}'], // precache js, css and html files
-      // globPatterns: [`**/*.{${getAssetsExtensions(quasarConf)},html}`], // precache all assets
-      globIgnores: ['service-worker.js', 'workbox-*.js', 'asset-manifest.json'],
+      globIgnores: ['service-worker.js', 'workbox-*.js', 'asset-manifest.json', '../quasar.client-manifest.json'],
       directoryIndex: 'index.html',
       modifyURLPrefix: {
         '': quasarConf.build.publicPath,
       },
-      // navigateFallback: false, // quasarConf.ssg.fallback,
-      // sourcemap: false,
-      // dontCacheBustURLsMatching: /(\.js$|\.css$|fonts\/)/,
     };
 
-    log('[GenerateSW] Generating a service-worker file...');
+    // log('[GenerateSW] Generating a service-worker file...');
+    info('Generating a service-worker file...', 'WAIT');
   } else {
-    log('[InjectManifest] Using your custom service-worker written file...');
+    defaultOptions = {
+      swSrc: api.resolve.app('.quasar/pwa/service-worker.js'),
+    };
+    info('Injecting manifest to your custom service-worker written file...', 'WAIT');
+
+    // log('[InjectManifest] Using your custom service-worker written file...');
   }
 
   // merge with custom options from user
@@ -76,12 +67,21 @@ module.exports = async function buildWorkbox(api, quasarConf) {
   opts.globDirectory = quasarConf.ssg.__distDir;
   opts.swDest = path.join(quasarConf.ssg.__distDir, 'service-worker.js');
 
+  const startTime = +new Date();
+
   if (mode === 'GenerateSW') {
     await generateSW(opts);
-  } else {
-    // inject manifest to compiled service-worker.js
-    opts.swSrc = opts.swDest;
 
-    await injectManifest(opts);
+    const diffTime = +new Date() - startTime;
+
+    success(`service-worker file generated with success • ${diffTime}ms`, 'DONE');
+
+    return;
   }
+
+  await injectManifest(opts);
+
+  const diffTime = +new Date() - startTime;
+
+  success(`Manifest injected with success • ${diffTime}ms`, 'DONE');
 };

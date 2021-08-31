@@ -5,7 +5,6 @@
 const parseArgs = require('minimist');
 const appRequire = require('../helpers/app-require');
 const { log, fatal } = require('../helpers/logger');
-const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -44,10 +43,10 @@ if (argv.help) {
   process.exit(0);
 }
 
-function getCfgEntries(webpackConf) {
+function splitWebpackConfig(webpackConfigs) {
   return [
-    { name: 'Server', webpackCfg: webpackConf.server },
-    { name: 'Client', webpackCfg: webpackConf.client },
+    { webpack: webpackConfigs.serverSide, name: 'Server-side' },
+    { webpack: webpackConfigs.clientSide, name: 'Client-side' },
   ];
 }
 
@@ -56,10 +55,10 @@ async function inspect(api) {
 
   const getMode = appRequire('@quasar/app/lib/mode/index', api.appDir);
   if (getMode('ssr').isInstalled !== true) {
-    fatal('Requested mode for inspection is NOT installed.\n');
+    fatal('Requested mode for inspection is NOT installed.');
   }
 
-  const QuasarConfFile = appRequire(hasNewQuasarConfFile(api) ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir);
+  const QuasarConfFile = appRequire('@quasar/app/lib/quasar-conf-file', api.appDir);
 
   const depth = parseInt(argv.depth, 10) || Infinity;
 
@@ -83,33 +82,28 @@ async function inspect(api) {
     await quasarConfFile.prepare();
   } catch (e) {
     console.log(e);
-    fatal('[FAIL] quasar.conf.js has JS errors');
+    fatal('quasar.conf.js has JS errors', 'FAIL');
   }
 
   await quasarConfFile.compile();
 
   const util = require('util');
 
-  let cfgEntries = getCfgEntries(
-    hasNewQuasarConfFile(api)
-      ? quasarConfFile.webpackConf
-      : quasarConfFile.getWebpackConfig(),
-  );
+  const cfgEntries = splitWebpackConfig(quasarConfFile.webpackConf);
 
   if (argv.path) {
     const dot = require('dot-prop');
-    cfgEntries = cfgEntries.map((cfgEntry) => ({
-      name: cfgEntry.name,
-      webpackCfg: dot.get(cfgEntry.webpackCfg, argv.path),
-    }));
+    cfgEntries.forEach((entry) => {
+      entry.webpack = dot.get(entry.webpack, argv.path);
+    });
   }
 
   cfgEntries.forEach((cfgEntry) => {
     console.log();
-    log(`Showing Webpack config "${cfgEntry.name}" with depth of ${depth}`);
+    log(`Showing Webpack config for "${cfgEntry.name}" with depth of ${depth}`);
     console.log();
     console.log(
-      util.inspect(cfgEntry.webpackCfg, {
+      util.inspect(cfgEntry.webpack, {
         showHidden: true,
         depth,
         colors: argv.colors,

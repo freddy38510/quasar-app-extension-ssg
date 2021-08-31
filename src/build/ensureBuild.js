@@ -5,11 +5,9 @@ const path = require('path');
 const build = require('.');
 const { log } = require('../helpers/logger');
 const { makeSnapshot, compareSnapshots } = require('./snapshot');
-const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 
 async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild = false) {
-  const quasarConf = hasNewQuasarConfFile(api)
-    ? quasarConfFile.quasarConf : quasarConfFile.getBuildConfig();
+  const { quasarConf } = quasarConfFile;
   const options = quasarConf.ssg;
 
   if (options.cache === false || forceBuild) {

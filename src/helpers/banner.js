@@ -2,11 +2,10 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-void */
 const {
-  redBright, green, grey, underline,
+  green, grey, bgBlue, underline,
 } = require('chalk');
 const path = require('path');
 const appRequire = require('./app-require');
-const { hasBrowsersSupportFile } = require('./compatibility');
 
 module.exports.build = function build(api, ctx, cmd, details) {
   const quasarVersion = api.getPackageVersion('quasar');
@@ -17,16 +16,15 @@ module.exports.build = function build(api, ctx, cmd, details) {
   if (details) {
     banner += ` ${underline('Build succeeded')}\n`;
   } else {
-    banner += '\n ================== Build ================== \n';
+    banner += `\n ${bgBlue('================== BUILD ==================')} \n`;
   }
 
   banner += `
  Build mode........ ${green(ctx.modeName)}
  Pkg quasar........ ${green(`v${quasarVersion}`)}
  Pkg @quasar/app... ${green(`v${cliAppVersion}`)}
+ Pkg webpack....... ${green('v5')}
  Debugging......... ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}`;
-
-  banner += `\n Publishing........ ${ctx.publish !== void 0 ? green('yes') : grey('no')}`;
 
   if (details) {
     banner += `\n Transpiled JS..... ${details.transpileBanner}`;
@@ -35,40 +33,41 @@ module.exports.build = function build(api, ctx, cmd, details) {
  Output folder..... ${green(details.outputFolder)}`;
   }
 
-  console.log(`${banner}\n`);
+  console.log(`${banner}`);
 
-  if (!details && hasBrowsersSupportFile(api)) {
+  if (!details) {
     const { getBrowsersBanner } = appRequire('@quasar/app/lib/helpers/browsers-support', api.appDir);
     console.log(getBrowsersBanner());
   }
 };
 
-module.exports.generate = function generate(options, errors) {
-  let banner = '\n';
+module.exports.generate = function generate(api, ctx, cmd, details) {
+  const quasarVersion = api.getPackageVersion('quasar');
+  const cliAppVersion = api.getPackageVersion('@quasar/app');
 
-  if (!options) {
-    banner += ' ================== Generate ==================';
+  let banner = '';
+
+  if (details) {
+    const relativeOutputFolder = path.posix.relative('', details.outputFolder);
+
+    banner += `\n ${underline('Generate succeeded')}\n`;
+
+    banner += `
+ Pkg quasar........ ${green(`v${quasarVersion}`)}
+ Pkg @quasar/app... ${green(`v${cliAppVersion}`)}
+ Debugging......... ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}`;
+
+    banner += `\n SPA fallback...... ${green(details.fallback)}`;
+
+    banner += `
+ ==================
+ Output folder..... ${green(details.outputFolder)}`;
+    banner += `
+
+ Tip: You can use "$ quasar ssg serve ${relativeOutputFolder}" command to create
+      a static web server for testing. Type "$ quasar ssg serve -h" for parameters.`;
   } else {
-    const relativeDistDir = path.posix.relative('', options.__distDir);
-    const hasErrors = errors.length > 0;
-
-    const successMessage = ` ${underline('Generation succeeded')}`;
-
-    const failMessage = ` ${underline('Generation failed')} with ${errors.length} error(s), check log above.\n`;
-
-    banner += `${hasErrors ? ` ⚠️ ${redBright(failMessage)}` : successMessage}`;
-
-    banner += `
- Fallback.......... ${green(options.fallback)}
- Output folder..... ${green(options.__distDir)}`;
-    banner += `
-
- Tip: You can use "$ quasar ssg serve ${relativeDistDir}" command to create
-      a web server for testing. Type "$ quasar ssg serve -h" for parameters.
-
- Tip: If you are intending to deploy your app at a sub-path
-      by setting "publicPath" in Quasar, you might use prefix-path parameter.
-      "$ quasar ssg serve ${relativeDistDir} --prefix-path <publicPath>"`;
+    banner += `\n ${bgBlue('================== GENERATE ==================')}`;
   }
 
   console.log(`${banner}\n`);

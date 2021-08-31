@@ -1,23 +1,19 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
-/* eslint-disable global-require */
-/* eslint-disable no-void */
-const chalk = require('chalk');
 const pify = require('pify');
 const appRequire = require('../helpers/app-require');
 const banner = require('../helpers/banner').build;
-const { log, warn } = require('../helpers/logger');
-const { hasNewQuasarConfFile } = require('../helpers/compatibility');
+const { log, fatal } = require('../helpers/logger');
 
-function splitConfig(webpackConfig) {
+function splitWebpackConfig(webpackConfigs) {
   return [
-    { webpack: webpackConfig.server, name: 'Server' },
-    { webpack: webpackConfig.client, name: 'Client' },
+    { webpack: webpackConfigs.serverSide, name: 'Server-side' },
+    { webpack: webpackConfigs.clientSide, name: 'Client-side' },
   ];
 }
 
 function parseWebpackConfig(cfg) {
-  const data = splitConfig(cfg);
+  const data = splitWebpackConfig(cfg);
 
   return {
     configs: data.map((d) => d.webpack),
@@ -34,13 +30,9 @@ module.exports = async function build(
 ) {
   banner(api, ctx, 'build');
 
-  const webpack = appRequire('webpack', api.appDir);
+  const { printWebpackErrors } = appRequire('@quasar/app/lib/helpers/print-webpack-issue', api.appDir);
 
-  const installMissing = appRequire(
-    '@quasar/app/lib/mode/install-missing',
-    api.appDir,
-  );
-  await installMissing(ctx.modeName, ctx.targetName);
+  const webpack = appRequire('webpack', api.appDir);
 
   const Generator = appRequire('@quasar/app/lib/generator', api.appDir);
   const artifacts = appRequire('@quasar/app/lib/artifacts', api.appDir);
@@ -51,13 +43,7 @@ module.exports = async function build(
 
   const generator = new Generator(quasarConfFile);
 
-  const webpackConfig = hasNewQuasarConfFile(api)
-    ? quasarConfFile.webpackConf
-    : quasarConfFile.getWebpackConfig();
-
-  const quasarConf = hasNewQuasarConfFile(api)
-    ? quasarConfFile.quasarConf
-    : quasarConfFile.getquasarConf();
+  const { webpackConf, quasarConf } = quasarConfFile;
 
   regenerateTypesFeatureFlags(quasarConf);
 
@@ -76,9 +62,19 @@ module.exports = async function build(
     await hook.fn(hook.api, { quasarConf });
   });
 
-  log('Compiling with Webpack...');
+  // using quasarConfFile.ctx instead of argv.mode
+  // because SSR might also have PWA enabled but we
+  // can only know it after parsing the quasar.conf file
+  if (quasarConfFile.ctx.mode.pwa === true) {
+    // need to build the custom service worker before renderer
+    const Runner = appRequire('@quasar/app/lib/pwa', api.appDir);
 
-  let webpackData = parseWebpackConfig(webpackConfig);
+    Runner.init(ctx);
+
+    await Runner.build(quasarConfFile);
+  }
+
+  let webpackData = parseWebpackConfig(webpackConf);
 
   const compiler = webpack(webpackData.configs);
 
@@ -99,28 +95,14 @@ module.exports = async function build(
 
   const statsArray = stats.stats || stats;
 
-  statsArray.forEach((stat) => {
+  statsArray.forEach((stat, index) => {
     if (stat.hasErrors() !== true) {
       return;
     }
 
-    const info = stat.toJson();
-    const errNumber = info.errors.length;
-    const errDetails = `${errNumber} error${errNumber > 1 ? 's' : ''}`;
-
-    warn();
-    warn(chalk.red(`${errDetails} encountered:\n`));
-
-    info.errors.forEach((error) => {
-      console.error(error);
-    });
-
-    warn();
-    warn(
-      chalk.red(`[FAIL] Build failed with ${errDetails}. Check log above.\n`),
-    );
-
-    process.exit(1);
+    const summary = printWebpackErrors(webpackData.name[index], stats);
+    console.log();
+    fatal(`for "${webpackData.name[index]}" with ${summary}. Please check the log above.`, 'COMPILATION FAILED');
   });
 
   const printWebpackStats = appRequire(
@@ -156,23 +138,4 @@ module.exports = async function build(
     log(`Extension(${hook.api.extId}): Running afterBuild hook...`);
     await hook.fn(hook.api, { quasarConf });
   });
-
-  // eslint-disable-next-line no-void
-  if (ctx.publish !== void 0) {
-    const opts = {
-      arg: ctx.publish,
-      distDir: outputFolder,
-      quasarConf,
-    };
-
-    if (typeof quasarConf.build.onPublish === 'function') {
-      await quasarConf.build.onPublish(opts);
-    }
-
-    // run possible onPublish hooks
-    await extensionRunner.runHook('onPublish', async (hook) => {
-      log(`Extension(${hook.api.extId}): Running onPublish hook...`);
-      await hook.fn(hook.api, opts);
-    });
-  }
 };

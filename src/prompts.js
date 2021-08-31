@@ -48,19 +48,5 @@ module.exports = function prompts() {
         'Add scripts into your package.json ?',
       default: true,
     },
-    {
-      name: 'inlineCssFromSFC',
-      type: 'confirm',
-      message:
-        'Inline CSS from Vue SFC style tags ?',
-      default: false,
-    },
-    {
-      name: 'inlineCriticalAsyncCss',
-      type: 'confirm',
-      message:
-        'Inline critical async CSS ?',
-      default: true,
-    },
   ];
 };

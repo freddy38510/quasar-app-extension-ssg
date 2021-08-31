@@ -1,47 +1,85 @@
+/* eslint-disable no-void */
 /* eslint-disable no-console */
 const {
-  green, redBright, blueBright, yellowBright, bold,
+  bgGreen, green,
+  red, bgRed,
+  bgYellow, yellow,
+  inverse,
 } = require('chalk');
-const isUnicodeSupported = require('./is-unicode-supported');
 
-const banner = 'Extension(ssg) ·';
-const pointer = isUnicodeSupported ? '❯' : '>';
+const dot = '•';
+const banner = `Extension(ssg) ${dot}`;
+const greenBanner = green(banner);
+const redBanner = red(banner);
+const yellowBanner = yellow(banner);
 
-const log = function log(msg) {
-  console.log(msg ? ` ${green(banner)} ${msg}` : '');
+const successPill = (msg) => bgGreen.black('', msg, '');
+const infoPill = (msg) => inverse('', msg, '');
+const errorPill = (msg) => bgRed.white('', msg, '');
+const warningPill = (msg) => bgYellow.black('', msg, '');
+
+module.exports.log = function log(msg) {
+  console.log(msg ? ` ${greenBanner} ${msg}` : '');
 };
 
-const warn = function warn(msg) {
-  console.warn(msg ? ` ${redBright(banner)} ⚠️  ${msg}` : '');
+module.exports.warn = function warn(msg, pill) {
+  if (msg !== void 0) {
+    const pillBanner = pill !== void 0
+      ? `${bgYellow.black('', pill, '')} `
+      : '';
+
+    console.warn(` ${yellowBanner} ⚠️  ${pillBanner}${msg}`);
+  } else {
+    console.warn();
+  }
 };
 
-const fatal = function fatal(msg) {
-  console.error(msg ? ` ${redBright(banner)} ⚠️  ${msg}` : '');
+module.exports.fatal = function fatal(msg, pill) {
+  if (msg !== void 0) {
+    const pillBanner = pill !== void 0
+      ? `${errorPill(pill)} `
+      : '';
+
+    console.error(`\n ${redBanner} ⚠️  ${pillBanner}${msg}\n`);
+  } else {
+    console.error();
+  }
+
   process.exit(1);
 };
 
-const beastcssFormatMessage = (msg, level = null, indent = true) => {
-  let prefix = indent ? `  ${pointer} ` : '';
+/**
+ * Extended approach - Generartion status & pills
+ */
 
-  prefix = level ? `${prefix}[${level}]` : prefix;
-
-  return `${prefix} ${bold('Beastcss')}: ${msg}`;
+module.exports.successPill = successPill;
+module.exports.success = function success(msg, title = 'SUCCESS') {
+  console.log(` ${greenBanner} ${successPill(title)} ${green(`${dot} ${msg}`)}`);
+};
+module.exports.getSuccess = function getSuccess(msg, title) {
+  return ` ${greenBanner} ${successPill(title)} ${green(`${dot} ${msg}`)}`;
 };
 
-const logBeastcss = ({
-  traces, debugs, infos, warns, errors,
-}, indent) => {
-  traces.forEach((msg) => log(blueBright(beastcssFormatMessage(msg, 'trace', indent))));
-  debugs.forEach((msg) => log(blueBright(beastcssFormatMessage(msg, 'debug', indent))));
-  warns.forEach((msg) => log(yellowBright(beastcssFormatMessage(msg, 'warn', indent))));
-  errors.forEach((msg) => log(redBright(beastcssFormatMessage(msg, 'error', indent))));
-  infos.forEach((msg) => log(blueBright(beastcssFormatMessage(msg, 'info', indent))));
+module.exports.infoPill = infoPill;
+module.exports.info = function info(msg, title = 'INFO') {
+  console.log(` ${greenBanner} ${infoPill(title)} ${green(dot)} ${msg}`);
+};
+module.exports.getInfo = function getInfo(msg, title) {
+  return ` ${greenBanner} ${infoPill(title)} ${green(dot)} ${msg}`;
 };
 
-module.exports = {
-  log,
-  warn,
-  fatal,
-  beastcssFormatMessage,
-  logBeastcss,
+module.exports.errorPill = errorPill;
+module.exports.error = function error(msg, title = 'ERROR') {
+  console.log(` ${redBanner} ${errorPill(title)} ${red(`${dot} ${msg}`)}`);
+};
+module.exports.getError = function getError(msg, title = 'ERROR') {
+  return ` ${redBanner} ${errorPill(title)} ${red(`${dot} ${msg}`)}`;
+};
+
+module.exports.warningPill = warningPill;
+module.exports.warning = function warning(msg, title = 'WARNING') {
+  console.log(` ${yellowBanner} ${warningPill(title)} ${yellow(`${dot} ${msg}`)}`);
+};
+module.exports.getWarning = function getWarning(msg, title = 'WARNING') {
+  return ` ${yellowBanner} ${warningPill(title)} ${yellow(`${dot} ${msg}`)}`;
 };

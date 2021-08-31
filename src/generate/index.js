@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable global-require */
 /* eslint-disable no-underscore-dangle */
 const fs = require('fs-extra');
@@ -5,34 +6,71 @@ const { join } = require('path');
 const Generator = require('./generator');
 const appRequire = require('../helpers/app-require');
 const banner = require('../helpers/banner').generate;
-const { log, warn } = require('../helpers/logger');
+const {
+  log, info, error, fatal, success,
+} = require('../helpers/logger');
+const printGeneratorErrors = require('../helpers/print-generator-errors');
 
 module.exports = async (api, quasarConf, ctx) => {
   const { add, clean } = appRequire('@quasar/app/lib/artifacts', api.appDir);
 
   const generator = new Generator(api, quasarConf, ctx);
 
-  banner();
+  let errors = [];
+
+  let startTime;
+
+  banner(api, ctx, 'generate');
 
   clean(quasarConf.ssg.__distDir);
 
   log('Copying assets...');
 
-  await fs.copy(join(quasarConf.build.distDir, 'www'), quasarConf.ssg.__distDir);
+  try {
+    await fs.copy(join(quasarConf.build.distDir, 'www'), quasarConf.ssg.__distDir);
+  } catch (err) {
+    err.message = `Could not copy assets\n\n${this.options.debug ? err.message : ` ${err.message}`}`;
 
-  log('Generating routes...');
+    console.error(err.stack || err);
 
-  const { errors } = await generator.generate();
+    process.exit(1);
+  }
+
+  try {
+    const routes = await generator.initRoutes();
+
+    startTime = +new Date();
+
+    info('Generating pages in progress...', 'WAIT');
+
+    ({ errors } = await generator.generateRoutes(routes));
+  } catch (err) {
+    console.error(err.stack || err);
+
+    process.exit(1);
+  }
+
+  const diffTime = +new Date() - startTime;
+
+  if (errors.length > 0) {
+    error(`Pages generated with errors • ${diffTime}ms`, 'DONE');
+
+    const summary = printGeneratorErrors(errors, ctx.debug);
+    console.log();
+    fatal(`with ${summary}. Please check the log above.`, 'GENERATE FAILED');
+  } else {
+    success(`Pages generated with success • ${diffTime}ms`, 'DONE');
+  }
 
   if (quasarConf.ctx.mode.pwa) {
     const buildWorkbox = require('./workbox.js');
 
     try {
       await buildWorkbox(api, quasarConf);
-    } catch (error) {
-      warn(error.stack || error);
+    } catch (err) {
+      console.error(err.stack || err);
 
-      warn('Could not build service-worker.js');
+      process.exit(1);
     }
   }
 
@@ -44,16 +82,12 @@ module.exports = async (api, quasarConf, ctx) => {
       absolute: true,
     });
 
-    try {
-      log('Running afterGenerate hook...');
+    log('Running afterGenerate hook...');
 
-      await quasarConf.ssg.afterGenerate(files, quasarConf.ssg.__distDir);
-    } catch (error) {
-      warn(error);
-    }
+    await quasarConf.ssg.afterGenerate(files, quasarConf.ssg.__distDir);
   }
 
   add(quasarConf.ssg.__distDir);
 
-  return { errors };
+  banner(api, ctx, 'generate', { outputFolder: quasarConf.ssg.__distDir, fallback: quasarConf.ssg.fallback });
 };

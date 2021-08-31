@@ -9,7 +9,7 @@
  * API: https://github.com/quasarframework/quasar/blob/master/app/lib/app-extension/IndexAPI.js
  */
 
-const { join, isAbsolute, resolve } = require('path');
+const { join, isAbsolute } = require('path');
 const { merge } = require('webpack-merge');
 const appRequire = require('./helpers/app-require');
 const getUniqueArray = require('./helpers/get-unique-array');
@@ -26,10 +26,19 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
       },
     },
     routes: [],
-    rendererOptions: {},
     crawler: true,
     exclude: [],
   }, conf.ssg ? conf.ssg : {});
+
+  // Set SSG buildDir
+  if (conf.ssg.buildDir === void 0) {
+    conf.ssg.buildDir = conf.ssg.cache !== false
+      ? api.resolve.app('node_modules/.cache/quasar-app-extension-ssg') : api.resolve.app('.ssg-build');
+  }
+
+  if (!isAbsolute(conf.ssg.buildDir)) {
+    conf.ssg.buildDir = join(api.appDir, conf.ssg.buildDir);
+  }
 
   // Set SSG distDir
   conf.ssg.__distDir = conf.build.distDir || join(api.appDir, 'dist', 'ssg');
@@ -38,29 +47,8 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
     conf.ssg.__distDir = join(api.appDir, conf.ssg.__distDir);
   }
 
-  // Set SSG buildDir
-  if (!conf.ssg.buildDir) {
-    if (conf.ssg.cache !== false) {
-      conf.ssg.buildDir = api.resolve.app('node_modules/.cache/quasar-app-extension-ssg');
-    } else {
-      conf.ssg.buildDir = api.resolve.app('.ssg-build');
-    }
-  }
-
-  if (!isAbsolute(conf.ssg.buildDir)) {
-    conf.ssg.buildDir = join(api.appDir, conf.ssg.buildDir);
-  }
-
   // Overrides it to expect build output folder in SSR mode being our SSG buildDir
   conf.build.distDir = conf.ssg.buildDir;
-
-  if (conf.ssg.inlineCssFromSFC === void 0) {
-    conf.ssg.inlineCssFromSFC = api.prompts.inlineCssFromSFC || false;
-  }
-
-  if (conf.ssg.inlineCriticalAsyncCss === void 0) {
-    conf.ssg.inlineCriticalAsyncCss = api.prompts.inlineCriticalAsyncCss || true;
-  }
 
   // Set SSG cache.ignore
   if (conf.ssg.cache !== false) {
@@ -84,9 +72,6 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
     } else if (Array.isArray(conf.ssg.cache.ignore)) {
       conf.ssg.cache.ignore = getUniqueArray(conf.ssg.cache.ignore.concat(ignore));
     }
-
-    // Needed for PWA InjectManifest mode
-    conf.sourceFiles.serviceWorker = conf.sourceFiles.serviceWorker || 'src-pwa/custom-service-worker.js';
   }
 
   // Set body tag classes (desktop/mobile, q-ios-padding, ...) at client-side
@@ -99,44 +84,10 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
 
   conf.build.ssrPwaHtmlFilename = conf.ssg.fallback;
 
-  conf.build.vueRouterMode = 'history';
-
   conf.build.env.STATIC = true;
 };
 
-const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, quasarConf) {
-  if (quasarConf.ssg.inlineCssFromSFC) {
-    /* Replace 'quasar-auto-import' loaders
-     *
-     * Quasar has two distinct loaders 'quasar-auto-import', one for client and one server
-     * This breaks vue-style-loader ssrId option
-     */
-    if (quasarConf.framework.importStrategy === 'auto') {
-      const vueRule = chain.module.rule('vue');
-
-      if (vueRule.uses.has('quasar-auto-import')) {
-        vueRule.uses.delete('quasar-auto-import');
-      }
-
-      vueRule.use('quasar-auto-import')
-        .loader(resolve(__dirname, './webpack/loader.auto-import.js'))
-        .options({ api, componentCase: quasarConf.framework.autoImportComponentCase, isServer })
-        .before('vue-loader');
-    }
-
-    // Inject missing rules to support vue-style-loader for Vue SFC
-    require('./webpack/inject.sfc-style-rules')(api, chain, {
-      rtl: quasarConf.build.rtl,
-      sourceMap: quasarConf.build.sourceMap,
-      minify: quasarConf.build.minify,
-      isServer,
-      stylusLoaderOptions: quasarConf.build.stylusLoaderOptions,
-      sassLoaderOptions: quasarConf.build.sassLoaderOptions,
-      scssLoaderOptions: quasarConf.build.scssLoaderOptions,
-      lessLoaderOptions: quasarConf.build.lessLoaderOptions,
-    });
-  }
-
+const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, quasarConf) {
   if (isClient) {
     if (!api.ctx.mode.pwa) {
       // Use webpack-html-plugin for creating html fallback file
@@ -155,22 +106,10 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
       // This way all assets could be precached, including generated html
       chain.plugins.delete('workbox');
       // The meta tags inserted have close tags resulting in invalid HTML markup
-      // This breaks beastcss html parser
       chain.plugins.delete('html-pwa');
 
       chain.plugin('html-pwa')
         .use(HtmlPwaPlugin.plugin, [quasarConf, api]);
-
-      if (quasarConf.pwa.workboxPluginMode === 'InjectManifest') {
-        const filename = chain.output.get('filename');
-
-        // Compile custom service worker to /service-worker.js
-        chain
-          .entry('service-worker')
-          .add(api.resolve.app(quasarConf.sourceFiles.serviceWorker));
-
-        chain.output.filename((pathData) => (pathData.chunk.name === 'service-worker' ? '[name].js' : filename));
-      }
     }
   }
 
@@ -206,7 +145,7 @@ module.exports = function run(api) {
     });
 
     api.chainWebpack((chain, { isClient, isServer }) => {
-      chainWebpack({ isClient, isServer }, chain, api, quasarConf);
+      chainWebpack(chain, { isClient, isServer }, api, quasarConf);
     });
 
     // Webserver is not used with SSG

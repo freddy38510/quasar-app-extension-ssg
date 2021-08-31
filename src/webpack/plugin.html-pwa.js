@@ -99,7 +99,6 @@ module.exports.plugin = class HtmlPwaPlugin {
       hooks.afterTemplateExecution.tapPromise('webpack-plugin-html-pwa', async (data) => {
         fillPwaTags(data, this.cfg, HtmlWebpackPlugin.createHtmlTagObject);
 
-        // finally, inform Webpack that we're ready
         return data;
       });
     });

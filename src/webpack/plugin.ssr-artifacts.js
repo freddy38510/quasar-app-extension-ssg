@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const { getIndexHtml } = require('./html-template');
+const appRequire = require('../helpers/app-require');
 
 module.exports = class SsrProdArtifacts {
   constructor(cfg = {}, api) {
@@ -8,30 +9,24 @@ module.exports = class SsrProdArtifacts {
   }
 
   apply(compiler) {
-    compiler.hooks.emit.tapPromise('ssr-artifacts', async (compilation) => {
-      /*
-      * /template.html
-      */
-      const htmlTemplatePath = this.api.resolve.app(this.cfg.sourceFiles.indexHtmlTemplate);
-      const htmlTemplate = await fs.readFile(htmlTemplatePath, 'utf-8');
-      // use a custom getIndexHtml function to avoid malformed HTML when pwa is enabled
-      const htmlTemplateCompiled = getIndexHtml(this.api, htmlTemplate, this.cfg);
+    const { sources, Compilation } = appRequire('webpack', this.api.appDir);
 
-      compilation.assets['../template.html'] = {
-        source: () => Buffer.from(htmlTemplateCompiled, 'utf8'),
-        size: () => Buffer.byteLength(htmlTemplateCompiled),
-      };
+    compiler.hooks.thisCompilation.tap('ssr-artifacts', (compilation) => {
+      compilation.hooks.processAssets.tapPromise(
+        { name: 'ssr-artifacts', state: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL }, async () => {
+          const htmlTemplate = await this.getHtmlTemplate();
+          const content = new sources.RawSource(htmlTemplate);
 
-      /*
-      * /ssr-config.js
-      */
-      const ssrConfigFilePath = this.api.resolve.app('.quasar/ssr-config.js');
-      const ssrConfig = await fs.readFile(ssrConfigFilePath, 'utf-8');
-
-      compilation.assets['../ssr-config.js'] = {
-        source: () => Buffer.from(ssrConfig, 'utf8'),
-        size: () => Buffer.byteLength(ssrConfig),
-      };
+          compilation.emitAsset('../render-template.js', content);
+        },
+      );
     });
+  }
+
+  async getHtmlTemplate() {
+    const htmlFile = this.api.resolve.app(this.cfg.sourceFiles.indexHtmlTemplate);
+    const renderTemplate = getIndexHtml(this.api, await fs.readFile(htmlFile, 'utf-8'), this.cfg);
+
+    return `module.exports=${renderTemplate.source}`;
   }
 };
