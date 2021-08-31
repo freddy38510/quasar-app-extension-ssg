@@ -1,12 +1,12 @@
 # Static Site Generator App Extension for Quasar, the Vue.js Framework
 
-> A [Quasar v1](https://quasar.dev/) App Extension to generate static site AKA [JAMstack](https://jamstack.org).
+> A [Quasar v1](https://v1.quasar.dev/) App Extension to generate static site AKA [JAMstack](https://jamstack.org).
 
-![npm](https://img.shields.io/npm/v/quasar-app-extension-ssg) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/freddy38510/quasar-app-extension-ssg) ![GitHub repo size](https://img.shields.io/github/repo-size/freddy38510/quasar-app-extension-ssg) ![npm](https://img.shields.io/npm/dt/quasar-app-extension-ssg) ![David](https://img.shields.io/david/freddy38510/quasar-app-extension-ssg) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+![npm](https://img.shields.io/npm/v/quasar-app-extension-ssg/quasar-v1) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/freddy38510/quasar-app-extension-ssg) ![GitHub repo size](https://img.shields.io/github/repo-size/freddy38510/quasar-app-extension-ssg) ![npm](https://img.shields.io/npm/dt/quasar-app-extension-ssg) ![David](https://img.shields.io/david/freddy38510/quasar-app-extension-ssg) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 This project was created to fill this [Feature Request](https://github.com/quasarframework/quasar/issues/2299) from Quasar.
 
-:warning: If you are using the new [Quasar v2](https://v1.quasar.dev/), please use and see the latest [quasar-app-extension-ssg](https://github.com/freddy38510/quasar-app-extension-ssg) documentation.
+:warning: If you are using the new [Quasar v2](https://quasar.dev/start/upgrade-guide), please use and see the latest [quasar-app-extension-ssg](https://github.com/freddy38510/quasar-app-extension-ssg) documentation.
 
 [Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [Infos](#infos)
 
@@ -15,7 +15,7 @@ This project was created to fill this [Feature Request](https://github.com/quasa
 Run this command into your Quasar project:
 
 ```bash
-quasar ext add ssg
+quasar ext add ssg@quasar-v1
 ```
 
 This will find and install the extension’s module. After installation is complete, there will be prompts asking you to make choices.
@@ -46,17 +46,7 @@ quasar ext remove ssg
 This is done with the same command as used for installation:
 
 ```bash
-quasar ext add ssg
-```
-
-If you are upgrading this extension from not yet published to NPM versions (before v1.0.0), you probably need to clean the extension from the yarn global cache, before upgrading it.
-
-```bash
-yarn remove quasar-app-extension-ssg
-
-yarn cache clean quasar-app-extension-ssg
-
-quasar ext add ssg
+quasar ext add ssg@quasar-v1
 ```
 
 ## Developing
@@ -64,7 +54,7 @@ quasar ext add ssg
 To help developing the extension, start by cloning this repository:
 
 ```bash
-git clone https://github.com/freddy38510/quasar-app-extension-ssg.git && cd quasar-app-extension-ssg
+git clone https://github.com/freddy38510/quasar-app-extension-ssg.git && cd quasar-app-extension-ssg && git checkout 2.x
 ```
 
 Register the App Extension through yarn:
