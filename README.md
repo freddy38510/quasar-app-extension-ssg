@@ -33,7 +33,7 @@ This will find and install the extension’s module. After installation is compl
 
 - `Inline CSS from Vue SFC style tags ?`: Add support for [vue-style-loader](https://github.com/vuejs/vue-style-loader) to inline critical css coming from Vue SFC `<style></style>` tags.
 
-- `Inline critical async CSS ?`: Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS from async css chunks for each route generated.
+- `Inline critical CSS and async load the rest ?`: Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
 
 ## Uninstalling
 
@@ -406,29 +406,15 @@ Default: `{}`
 
 The options merged with Quasar [defaults options](https://github.com/quasarframework/quasar/blob/934a6080290c219706f043fdf68f3ca9089ecc5d/app/lib/ssr/template.prod-webserver.js#L26), then passed to the `BundleRenderer`. See the [Vue SSR Guide](https://ssr.vuejs.org/api/#renderer-options) for available options.
 
-### `criticalCss`
-
-:warning: _Removed in [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0)_
+### `inlineCriticalCss`
 
 Type: `Boolean`
 
 Default: `true`
 
-Use a fork of [Critters](https://github.com/freddy38510/critters/tree/standalone) to generate critical CSS, inline it and lazy load stylesheets for each route generated.
+Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
 
-> Note: Useful to replace the [initialized value](#prompts) when installing the app extension.
-
-### `inlineCriticalAsyncCss`
-
-:new: _Added in [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0)_
-
-Type: `Boolean`
-
-Default: `true`
-
-Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS from async css chunks for each route generated.
-
-> Note: This option is useful to avoid [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) on first load page in browser.
+> Note: This option is useful to avoid [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) on first load page in browser because it inlines css coming from async css chunk dynamically injected into the document.
 
 ### `inlineCssFromSFC`
 
