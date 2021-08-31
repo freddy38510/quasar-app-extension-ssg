@@ -6,8 +6,10 @@ const {
   bgYellow, yellow,
   inverse,
 } = require('chalk');
+const isUnicodeSupported = require('./is-unicode-supported');
 
 const dot = '•';
+const pointer = isUnicodeSupported ? '❯' : '>';
 const banner = `Extension(ssg) ${dot}`;
 const greenBanner = green(banner);
 const redBanner = red(banner);
@@ -18,9 +20,11 @@ const infoPill = (msg) => inverse('', msg, '');
 const errorPill = (msg) => bgRed.white('', msg, '');
 const warningPill = (msg) => bgYellow.black('', msg, '');
 
-module.exports.log = function log(msg) {
+const log = function log(msg) {
   console.log(msg ? ` ${greenBanner} ${msg}` : '');
 };
+
+module.exports.log = log;
 
 module.exports.warn = function warn(msg, pill) {
   if (msg !== void 0) {
@@ -82,4 +86,12 @@ module.exports.warning = function warning(msg, title = 'WARNING') {
 };
 module.exports.getWarning = function getWarning(msg, title = 'WARNING') {
   return ` ${yellowBanner} ${warningPill(title)} ${yellow(`${dot} ${msg}`)}`;
+};
+
+module.exports.logBeastcss = function logBeastcss(messages, level) {
+  messages.forEach(({ level: msgLevel, msg }) => {
+    if (msgLevel === level) {
+      log(`  ${pointer} Beastcss[${msgLevel}]: ${msg}`);
+    }
+  });
 };

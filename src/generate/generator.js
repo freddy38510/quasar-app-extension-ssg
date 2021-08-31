@@ -4,12 +4,13 @@
 const fs = require('fs').promises;
 const { minify } = require('html-minifier');
 const path = require('path');
+const Beastcss = require('beastcss');
 const esmRequire = require('jiti')(__filename);
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright } = require('chalk');
 const appRequire = require('../helpers/app-require');
-const { log } = require('../helpers/logger');
+const { log, logBeastcss } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
 const flatRoutes = require('../helpers/flat-routes');
@@ -52,25 +53,15 @@ class Generator {
 
     this.generatedRoutes = new Set();
 
-    if (this.options.inlineCriticalAsyncCss !== false) {
-      const manifest = require(path.join(
-        quasarConf.ssg.buildDir,
-        '/quasar.client-manifest.json',
-      ));
+    if (quasarConf.ssg.inlineCriticalCss) {
+      this.beastcss = new Beastcss({
+        path: quasarConf.ssg.__distDir,
+        publicPath: quasarConf.build.publicPath,
+        noscriptFallback: false,
+        logger: this.createBeastcssLogger(),
+      });
 
-      this.beastcssMessages = [];
-
-      this.beastcss = new Beastcss(
-        {
-          path: this.options.__distDir,
-          publicPath: this.options.build.publicPath,
-          additionalStylesheets: manifest.async,
-          external: false,
-          internal: false,
-          logger: this.createBeastcssLogger(),
-          logLevel: ctx.debug ? 'debug' : 'info',
-        },
-      );
+      this.beastcssLogs = [];
     }
   }
 
@@ -123,6 +114,11 @@ class Generator {
           await this.generateRoute(route);
 
           log(`Generated page for route "${cyanBright(route)}"`);
+
+          if (this.options.inlineCriticalCss) {
+            logBeastcss(this.beastcssLogs[route], 'warn');
+            logBeastcss(this.beastcssLogs[route], 'info');
+          }
         } catch (e) {
           errors.push({ route, error: e });
 
@@ -162,6 +158,10 @@ class Generator {
       this.queue.drain = () => resolve();
     });
 
+    if (this.options.inlineCriticalCss) {
+      this.beastcss.clear();
+    }
+
     return { errors };
   }
 
@@ -176,8 +176,8 @@ class Generator {
       this.crawl(html);
     }
 
-    if (this.options.inlineCriticalAsyncCss !== false) {
-      html = await this.inlineCriticalAsyncCss(html, route);
+    if (this.options.inlineCriticalCss) {
+      html = await this.inlineCriticalCss(html, route);
     }
 
     if (typeof this.options.onRouteRendered === 'function') {
@@ -265,31 +265,27 @@ class Generator {
       });
   }
 
-  async inlineCriticalAsyncCss(html, route) {
-    return this.beastcss.process(html, route);
+  async inlineCriticalCss(html, route) {
+    this.beastcssLogs[route] = [];
+
+    try {
+      html = await this.beastcss.process(html, route);
+    } catch (e) {
+      e.message = `Could not inline critical css\n\n${this.options.debug ? e.message : ` Beastcss[error]: ${e.message}`}`;
+
+      throw e;
+    }
+
+    return html;
   }
 
   createBeastcssLogger() {
-    const saveMessage = (level) => (msg, id) => {
-      if (id && !this.beastcssMessages[id]) {
-        this.beastcssMessages[id] = {
-          traces: [],
-          debugs: [],
-          infos: [],
-          warns: [],
-          errors: [],
-        };
-      }
-
-      this.beastcssMessages[id][level].push(msg);
-    };
-
     return {
-      trace: saveMessage('traces'),
-      debug: saveMessage('debugs'),
-      info: saveMessage('infos'),
-      warn: saveMessage('warns'),
-      error: saveMessage('errors'),
+      info: (msg, route) => this.beastcssLogs[route].push({ level: 'info', msg }),
+      warn: (msg, route) => this.beastcssLogs[route].push({ level: 'warn', msg }),
+      error: (msg, route) => this.beastcssLogs[route].push({ level: 'error', msg }),
+      trace: (msg, route) => this.beastcssLogs[route].push({ level: 'trace', msg }),
+      debug: (msg, route) => this.beastcssLogs[route].push({ level: 'debug', msg }),
     };
   }
 }

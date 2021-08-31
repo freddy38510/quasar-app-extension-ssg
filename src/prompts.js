@@ -48,5 +48,12 @@ module.exports = function prompts() {
         'Add scripts into your package.json ?',
       default: true,
     },
+    {
+      name: 'inlineCriticalCss',
+      type: 'confirm',
+      message:
+        'Inline critical css and async load the rest ?',
+      default: true,
+    },
   ];
 };

@@ -74,6 +74,10 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
     }
   }
 
+  if (conf.ssg.inlineCriticalCss === void 0) {
+    conf.ssg.inlineCriticalCss = api.prompts.inlineCriticalCss || true;
+  }
+
   // Set body tag classes (desktop/mobile, q-ios-padding, ...) at client-side
   // The platform used is unknown at build time when pre-rendering pages.
   conf.boot.push({ server: false, path: '~quasar-app-extension-ssg/src/boot/body-classes' });
