@@ -26,8 +26,6 @@ module.exports.build = function build(api, ctx, cmd, details) {
  Pkg @quasar/app... ${green(`v${cliAppVersion}`)}
  Debugging......... ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}`;
 
-  banner += `\n Publishing........ ${ctx.publish !== void 0 ? green('yes') : grey('no')}`;
-
   if (details) {
     banner += `\n Transpiled JS..... ${details.transpileBanner}`;
     banner += `

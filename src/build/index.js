@@ -156,23 +156,4 @@ module.exports = async function build(
     log(`Extension(${hook.api.extId}): Running afterBuild hook...`);
     await hook.fn(hook.api, { quasarConf });
   });
-
-  // eslint-disable-next-line no-void
-  if (ctx.publish !== void 0) {
-    const opts = {
-      arg: ctx.publish,
-      distDir: outputFolder,
-      quasarConf,
-    };
-
-    if (typeof quasarConf.build.onPublish === 'function') {
-      await quasarConf.build.onPublish(opts);
-    }
-
-    // run possible onPublish hooks
-    await extensionRunner.runHook('onPublish', async (hook) => {
-      log(`Extension(${hook.api.extId}): Running onPublish hook...`);
-      await hook.fn(hook.api, opts);
-    });
-  }
 };
