@@ -117,6 +117,14 @@ module.exports = (api) => {
   function serve(path, cache) {
     const opts = {
       maxAge: cache ? parseInt(argv.cache, 10) * 1000 : 0,
+      setHeaders(res, filePath) {
+        if (res.req.method === 'GET' && resolve(filePath).endsWith('.html')) {
+          res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+          res.set('Pragma', 'no-cache');
+          res.set('Expires', '0');
+          res.set('Surrogate-Control', 'no-store');
+        }
+      },
       extensions: ['html'],
     };
 
@@ -149,6 +157,22 @@ module.exports = (api) => {
     app.use(PlatformPath.posix.join(prefixPath, 'service-worker.js'), serve('service-worker.js'));
   }
 
+  if (argv.proxy) {
+    argv.proxy = getAbsolutePath(argv.proxy);
+    let file = argv.proxy;
+
+    if (!fs.existsSync(file)) {
+      console.error(`Proxy definition file not found! ${file}`);
+      process.exit(1);
+    }
+    file = require(file);
+
+    const { createProxyMiddleware } = appRequire('http-proxy-middleware', api.appDir);
+    file.forEach((entry) => {
+      app.use(entry.path, createProxyMiddleware(entry.rule));
+    });
+  }
+
   app.use(prefixPath, serve('.', true));
 
   const fallbackFile = globbySync(resolve('./*.html'), { ignore: resolve('./index.html') })[0];
@@ -176,14 +200,6 @@ module.exports = (api) => {
     });
   }
 
-  app.get('*', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.status(404).send('404 | Page Not Found');
-    if (!argv.silent) {
-      console.log(red(`  404 on ${req.url}`));
-    }
-  });
-
   if (microCacheSeconds) {
     const microcache = require('route-cache');
     app.use(
@@ -194,21 +210,13 @@ module.exports = (api) => {
     );
   }
 
-  if (argv.proxy) {
-    argv.proxy = getAbsolutePath(argv.proxy);
-    let file = argv.proxy;
-
-    if (!fs.existsSync(file)) {
-      console.error(`Proxy definition file not found! ${file}`);
-      process.exit(1);
+  app.get('*', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.status(404).send('404 | Page Not Found');
+    if (!argv.silent) {
+      console.log(red(`  404 on ${req.url}`));
     }
-    file = require(file);
-
-    const proxy = appRequire('http-proxy-middleware', api.appDir);
-    file.forEach((entry) => {
-      app.use(entry.path, proxy(entry.rule));
-    });
-  }
+  });
 
   function getHostname(host) {
     return host === '0.0.0.0'
