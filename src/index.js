@@ -58,8 +58,8 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
     conf.ssg.inlineCssFromSFC = api.prompts.inlineCssFromSFC || false;
   }
 
-  if (conf.ssg.inlineCriticalAsyncCss === void 0) {
-    conf.ssg.inlineCriticalAsyncCss = api.prompts.inlineCriticalAsyncCss || true;
+  if (conf.ssg.inlineCriticalCss === void 0) {
+    conf.ssg.inlineCriticalCss = api.prompts.inlineCriticalCss || true;
   }
 
   // Set SSG cache.ignore

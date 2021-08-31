@@ -50,7 +50,7 @@ class Generator {
 
     this.generatedRoutes = new Set();
 
-    if (this.options.inlineCriticalAsyncCss !== false) {
+    if (this.options.inlineCriticalCss) {
       const manifest = require(path.join(
         quasarConf.ssg.buildDir,
         '/quasar.client-manifest.json',
@@ -63,8 +63,7 @@ class Generator {
           path: this.options.__distDir,
           publicPath: this.options.build.publicPath,
           additionalStylesheets: manifest.async,
-          external: false,
-          internal: false,
+          noscriptFallback: false,
           logger: this.createBeastcssLogger(),
           logLevel: ctx.debug ? 'debug' : 'info',
         },
@@ -117,7 +116,7 @@ class Generator {
 
     const { errors } = await this.generateRoutes(routes);
 
-    if (this.options.inlineCriticalAsyncCss !== false) {
+    if (this.options.inlineCriticalCss) {
       this.beastcss.clear();
     }
 
@@ -151,7 +150,7 @@ class Generator {
 
           log(`Generated route ${cyanBright(route)}`);
 
-          if (this.options.inlineCriticalAsyncCss !== false) {
+          if (this.options.inlineCriticalCss) {
             logBeastcss(this.beastcssMessages[route]);
           }
         } catch (e) {
@@ -209,8 +208,8 @@ class Generator {
       this.crawl(html);
     }
 
-    if (this.options.inlineCriticalAsyncCss !== false) {
-      html = await this.inlineCriticalAsyncCss(html, route);
+    if (this.options.inlineCriticalCss) {
+      html = await this.inlineCriticalCss(html, route);
     }
 
     if (typeof this.options.onRouteRendered === 'function') {
@@ -308,7 +307,7 @@ class Generator {
       });
   }
 
-  async inlineCriticalAsyncCss(html, route) {
+  async inlineCriticalCss(html, route) {
     return this.beastcss.process(html, route);
   }
 

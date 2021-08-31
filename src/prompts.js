@@ -56,10 +56,10 @@ module.exports = function prompts() {
       default: false,
     },
     {
-      name: 'inlineCriticalAsyncCss',
+      name: 'inlineCriticalCss',
       type: 'confirm',
       message:
-        'Inline critical async CSS ?',
+        'Inline critical css and async load the rest ?',
       default: true,
     },
   ];
