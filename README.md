@@ -1,10 +1,12 @@
 # Static Site Generator App Extension for Quasar, the Vue.js Framework
 
-> A [Quasar](https://quasar.dev/) App Extension to generate static site AKA [JAMstack](https://jamstack.org).
+> A [Quasar v1](https://quasar.dev/) App Extension to generate static site AKA [JAMstack](https://jamstack.org).
 
 ![npm](https://img.shields.io/npm/v/quasar-app-extension-ssg) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/freddy38510/quasar-app-extension-ssg) ![GitHub repo size](https://img.shields.io/github/repo-size/freddy38510/quasar-app-extension-ssg) ![npm](https://img.shields.io/npm/dt/quasar-app-extension-ssg) ![David](https://img.shields.io/david/freddy38510/quasar-app-extension-ssg) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 This project was created to fill this [Feature Request](https://github.com/quasarframework/quasar/issues/2299) from Quasar.
+
+:warning: If you are using the new [Quasar v2](https://v1.quasar.dev/), please use and see the latest [quasar-app-extension-ssg](https://github.com/freddy38510/quasar-app-extension-ssg) documentation.
 
 [Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [Infos](#infos)
 
@@ -133,10 +135,10 @@ quasar ssg serve <dist-folder>
   ```javascript
   module.exports = [
     {
-      path: '/api',
-      rule: { target: 'http://www.example.org' },
+      path: "/api",
+      rule: { target: "http://www.example.org" },
     },
-  ]
+  ];
   // will be transformed into app.use(path, httpProxyMiddleware(rule))
   ```
 
@@ -182,8 +184,8 @@ module.exports = function (/* ctx */) {
     },
 
     // ...
-  }
-}
+  };
+};
 ```
 
 See all availables options below:
@@ -224,7 +226,7 @@ Example:
 
 ```javascript
 ssg: {
-  routes: ['/', '/about', '/users', '/users/someone']
+  routes: ["/", "/about", "/users", "/users/someone"];
 }
 ```
 
@@ -233,7 +235,7 @@ With a `Function` which returns a `Promise`:
 ```javascript
 // quasar.conf.js
 
-const axios = require('axios')
+const axios = require("axios");
 
 module.exports = function (/* ctx */) {
   return {
@@ -241,17 +243,17 @@ module.exports = function (/* ctx */) {
 
     ssg: {
       routes() {
-        return axios.get('https://my-api/users').then((res) => {
+        return axios.get("https://my-api/users").then((res) => {
           return res.data.map((user) => {
-            return '/users/' + user.id
-          })
-        })
+            return "/users/" + user.id;
+          });
+        });
       },
     },
 
     // ...
-  }
-}
+  };
+};
 ```
 
 With a `Function` which returns a `callback(err, params)`:
@@ -259,7 +261,7 @@ With a `Function` which returns a `callback(err, params)`:
 ```javascript
 // quasar.conf.js
 
-const axios = require('axios')
+const axios = require("axios");
 
 module.exports = function (/* ctx */) {
   return {
@@ -268,20 +270,20 @@ module.exports = function (/* ctx */) {
     ssg: {
       routes(callback) {
         axios
-          .get('https://my-api/users')
+          .get("https://my-api/users")
           .then((res) => {
             const routes = res.data.map((user) => {
-              return '/users/' + user.id
-            })
-            callback(null, routes)
+              return "/users/" + user.id;
+            });
+            callback(null, routes);
           })
-          .catch(callback)
+          .catch(callback);
       },
     },
 
     // ...
-  }
-}
+  };
+};
 ```
 
 ### `buildDir`
@@ -329,7 +331,7 @@ This option is used to avoid re-building when no tracked file has been changed.
   ```javascript
   ssg: {
     cache: {
-      ignore: ['renovate.json'] // ignore changes applied on this file
+      ignore: ["renovate.json"]; // ignore changes applied on this file
     }
   }
   ```
@@ -340,7 +342,7 @@ This option is used to avoid re-building when no tracked file has been changed.
   ssg: {
     cache: {
       ignore: (defaultIgnore) =>
-        defaultIgnore.push('renovate.json') && defaultIgnore
+        defaultIgnore.push("renovate.json") && defaultIgnore;
     }
   }
   ```
