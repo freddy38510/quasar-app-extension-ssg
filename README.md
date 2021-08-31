@@ -1,10 +1,12 @@
-# Static Site Generator App Extension for Quasar, the Vue.js Framework
+# Static Site Generator App Extension for Quasar v2, the Vue.js Framework
 
-> A [Quasar](https://quasar.dev/) App Extension to generate static site AKA [JAMstack](https://jamstack.org).
+> A [Quasar v2](https://quasar.dev/) App Extension to generate static site AKA [JAMstack](https://jamstack.org).
 
 ![npm](https://img.shields.io/npm/v/quasar-app-extension-ssg) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/freddy38510/quasar-app-extension-ssg) ![GitHub repo size](https://img.shields.io/github/repo-size/freddy38510/quasar-app-extension-ssg) ![npm](https://img.shields.io/npm/dt/quasar-app-extension-ssg) ![David](https://img.shields.io/david/freddy38510/quasar-app-extension-ssg) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 This project was created to fill this [Feature Request](https://github.com/quasarframework/quasar/issues/2299) from Quasar.
+
+:warning: If you are using [Quasar v1](https://v1.quasar.dev/), please use and see the corresponding [quasar-app-extension-ssg v2](https://github.com/freddy38510/quasar-app-extension-ssg/tree/2.x) documentation instead of the latest version.
 
 [Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [Infos](#infos)
 
@@ -29,9 +31,7 @@ This will find and install the extension’s module. After installation is compl
   }
   ```
 
-- `Inline CSS from Vue SFC style tags ?`: Add support for [vue-style-loader](https://github.com/vuejs/vue-style-loader) to inline critical css coming from Vue SFC `<style></style>` tags.
-
-- `Inline critical async CSS ?`: Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS from async css chunks for each route generated.
+- `Inline critical css and async load the rest ?`: Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
 
 ## Uninstalling
 
@@ -46,8 +46,6 @@ This is done with the same command as used for installation:
 ```bash
 quasar ext add ssg
 ```
-
-If you are upgrading this extension from not yet published to NPM versions (before v1.0.0), you probably need to clean the extension from the yarn global cache, before upgrading it.
 
 ```bash
 yarn remove quasar-app-extension-ssg
@@ -85,7 +83,7 @@ Finally install the App Extension:
 quasar ext invoke ssg
 ```
 
-Now, you can developp this App Extension without uninstall/install it each time you change something in it.
+Now, you can develop this App Extension without uninstall/install it each time you change something in it.
 
 ## Usage
 
@@ -101,7 +99,6 @@ quasar ssg generate
 
 - `-h, --help`: Display usage instructions.
 - `--force-build`: Force to build the application with webpack.
-- `--fail-on-error`: Exit with non-zero status code if there are errors when generating pages.
 - `-d, --debug`: Build for debugging purposes.
 
 ### Serve
@@ -133,10 +130,10 @@ quasar ssg serve <dist-folder>
   ```javascript
   module.exports = [
     {
-      path: '/api',
-      rule: { target: 'http://www.example.org' },
+      path: "/api",
+      rule: { target: "http://www.example.org" },
     },
-  ]
+  ];
   // will be transformed into app.use(path, httpProxyMiddleware(rule))
   ```
 
@@ -182,8 +179,8 @@ module.exports = function (/* ctx */) {
     },
 
     // ...
-  }
-}
+  };
+};
 ```
 
 See all availables options below:
@@ -224,7 +221,7 @@ Example:
 
 ```javascript
 ssg: {
-  routes: ['/', '/about', '/users', '/users/someone']
+  routes: ["/", "/about", "/users", "/users/someone"];
 }
 ```
 
@@ -233,7 +230,7 @@ With a `Function` which returns a `Promise`:
 ```javascript
 // quasar.conf.js
 
-const axios = require('axios')
+const axios = require("axios");
 
 module.exports = function (/* ctx */) {
   return {
@@ -241,17 +238,17 @@ module.exports = function (/* ctx */) {
 
     ssg: {
       routes() {
-        return axios.get('https://my-api/users').then((res) => {
+        return axios.get("https://my-api/users").then((res) => {
           return res.data.map((user) => {
-            return '/users/' + user.id
-          })
-        })
+            return "/users/" + user.id;
+          });
+        });
       },
     },
 
     // ...
-  }
-}
+  };
+};
 ```
 
 With a `Function` which returns a `callback(err, params)`:
@@ -259,7 +256,7 @@ With a `Function` which returns a `callback(err, params)`:
 ```javascript
 // quasar.conf.js
 
-const axios = require('axios')
+const axios = require("axios");
 
 module.exports = function (/* ctx */) {
   return {
@@ -268,20 +265,20 @@ module.exports = function (/* ctx */) {
     ssg: {
       routes(callback) {
         axios
-          .get('https://my-api/users')
+          .get("https://my-api/users")
           .then((res) => {
             const routes = res.data.map((user) => {
-              return '/users/' + user.id
-            })
-            callback(null, routes)
+              return "/users/" + user.id;
+            });
+            callback(null, routes);
           })
-          .catch(callback)
+          .catch(callback);
       },
     },
 
     // ...
-  }
-}
+  };
+};
 ```
 
 ### `buildDir`
@@ -329,7 +326,7 @@ This option is used to avoid re-building when no tracked file has been changed.
   ```javascript
   ssg: {
     cache: {
-      ignore: ['renovate.json'] // ignore changes applied on this file
+      ignore: ["renovate.json"]; // ignore changes applied on this file
     }
   }
   ```
@@ -340,7 +337,7 @@ This option is used to avoid re-building when no tracked file has been changed.
   ssg: {
     cache: {
       ignore: (defaultIgnore) =>
-        defaultIgnore.push('renovate.json') && defaultIgnore
+        defaultIgnore.push("renovate.json") && defaultIgnore;
     }
   }
   ```
@@ -396,49 +393,13 @@ ssg: {
 }
 ```
 
-### `rendererOptions`
-
-Type: `Object`
-
-Default: `{}`
-
-The options merged with Quasar [defaults options](https://github.com/quasarframework/quasar/blob/934a6080290c219706f043fdf68f3ca9089ecc5d/app/lib/ssr/template.prod-webserver.js#L26), then passed to the `BundleRenderer`. See the [Vue SSR Guide](https://ssr.vuejs.org/api/#renderer-options) for available options.
-
 ### `criticalCss`
 
-:warning: _Removed in [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0)_
-
 Type: `Boolean`
 
 Default: `true`
 
-Use a fork of [Critters](https://github.com/freddy38510/critters/tree/standalone) to generate critical CSS, inline it and lazy load stylesheets for each route generated.
-
-> Note: Useful to replace the [initialized value](#prompts) when installing the app extension.
-
-### `inlineCriticalAsyncCss`
-
-:new: _Added in [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0)_
-
-Type: `Boolean`
-
-Default: `true`
-
-Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS from async css chunks for each route generated.
-
-> Note: This option is useful to avoid [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) on first load page in browser.
-
-### `inlineCssFromSFC`
-
-:new: _Added in [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0)_
-
-Type: `Boolean`
-
-Default: `false`
-
-Add support for [vue-style-loader](https://github.com/vuejs/vue-style-loader) to inline critical css coming from Vue SFC `<style></style>` tags.
-
-> Note: This option works even if [`build.extractCSS`](https://v1.quasar.dev/quasar-cli/quasar-conf-js#property-build) is set to `true` in `quasar.conf.js` file.
+Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
 
 ### `onRouteRendered(html, route, distDir)`
 
