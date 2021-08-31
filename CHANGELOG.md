@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.0.0...v3.0.0) (2021-08-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Drop support of quasar v1.
+
+### Features
+
+* add inline critical css and async load the rest ([b689b62](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b689b6250d3ccd5cbe9a3cf2b3e503130066e832))
+* port to quasar v2 with Vue3 ([aee8b05](https://github.com/freddy38510/quasar-app-extension-ssg/commit/aee8b054c8f8783aca2fa130b42e13823908587c)), closes [#36](https://github.com/freddy38510/quasar-app-extension-ssg/issues/36)
+* **serve:** serve index file with no-cache headers ([c3d0f41](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c3d0f41b834f24c9db359013477ba164cdbecf28))
+
 ## [2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0) (2021-08-25)
 
 
