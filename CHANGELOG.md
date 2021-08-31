@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.0.0...v2.1.0) (2021-08-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* deprecate inlineCriticalAsyncCss option in favor of inlineCriticalCss.
+
+### Features
+
+* inline critical css and async load the rest ([d1f1587](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d1f15871cf695169f2d2baa7956553be816ec95e))
+* **serve:** serve index file with no-cache headers ([42b18a6](https://github.com/freddy38510/quasar-app-extension-ssg/commit/42b18a60d7a587b622a8fb17ee7b5a1dc87aa755))
+
+
+### Bug Fixes
+
+* remove unused onPublish hook ([2ddbfa4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/2ddbfa4d52bace977fa990fe820101ddfa236cdc))
+
 ## [2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0) (2021-08-25)
 
 
