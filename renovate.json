@@ -3,5 +3,14 @@
     "config:base"
   ],
   "baseBranches": ["master", "2.x"],
-  "ignoreDeps": ["globby", "open"]
+  "packageRules": [
+    {
+      "matchPackageNames": ["globby"],
+      "allowedVersions": "<12.0.0"
+    },
+    {
+      "matchPackageNames": ["open"],
+      "allowedVersions": "<8.0.0"
+    }
+  ]
 }
