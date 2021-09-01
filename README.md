@@ -51,10 +51,12 @@ quasar ext add ssg@quasar-v1
 
 ## Developing
 
-To help developing the extension, start by cloning this repository:
+To help developing the extension for [Quasar v1](https://v1.quasar.dev/), start by cloning the branch [2.x](https://github.com/freddy38510/quasar-app-extension-ssg/tree/2.x) of the repository:
 
 ```bash
-git clone https://github.com/freddy38510/quasar-app-extension-ssg.git && cd quasar-app-extension-ssg && git checkout 2.x
+git clone --branch 2.x --single-branch https://github.com/freddy38510/quasar-app-extension-ssg.git quasar-app-extension-ssg-v2
+
+cd quasar-app-extension-ssg-v2
 ```
 
 Register the App Extension through yarn:
@@ -66,7 +68,7 @@ yarn link
 Create a new Quasar project then link the App Extension:
 
 ```bash
-quasar create <project-name> && cd <project-name>
+quasar create --branch v1 <project-name> && cd <project-name>
 
 yarn link quasar-app-extension-ssg
 ```
