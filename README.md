@@ -47,14 +47,6 @@ This is done with the same command as used for installation:
 quasar ext add ssg
 ```
 
-```bash
-yarn remove quasar-app-extension-ssg
-
-yarn cache clean quasar-app-extension-ssg
-
-quasar ext add ssg
-```
-
 ## Developing
 
 To help developing the extension, start by cloning this repository:
@@ -393,7 +385,7 @@ ssg: {
 }
 ```
 
-### `criticalCss`
+### `inlineCriticalCss`
 
 Type: `Boolean`
 
@@ -420,8 +412,6 @@ Can use async/await or directly return a Promise.
 > Note: `files` parameter is an `Array` of all generated routes paths + filenames (including the fallback file).
 
 ## Tips
-
-### Deployment
 
 ### `process.env.STATIC`
 
