@@ -41,6 +41,7 @@ class Generator {
           ...quasarConf.__html.minifyOptions,
           removeComments: false,
           collapseWhitespace: false,
+          minifyCSS: true,
         } : false,
       build: {
         publicPath: quasarConf.build.publicPath,
