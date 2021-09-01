@@ -41,8 +41,11 @@ class Generator {
       ...quasarConf.ssg,
       // keep comments to avoid issue at client-side hydration
       minify: quasarConf.build.minify
-        ? { ...quasarConf.__html.minifyOptions, removeComments: false }
-        : false,
+        ? {
+          ...quasarConf.__html.minifyOptions,
+          removeComments: false,
+          collapseWhitespace: false,
+        } : false,
       build: {
         publicPath: quasarConf.build.publicPath,
       },
