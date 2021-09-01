@@ -3,5 +3,5 @@
     "config:base"
   ],
   "baseBranches": ["master", "2.x"],
-  "ignoreDeps": ["globby"]
+  "ignoreDeps": ["globby", "open"]
 }
