@@ -123,7 +123,7 @@ quasar ssg serve <dist-folder>
 - `--https`: Enable HTTPS.
 - `--cert, -C [path]`: Path to SSL cert file (Optional).
 - `--key, -K [path]`: Path to SSL key file (Optional).
-- `--proxy <file.js>`: Proxy specific requests defined in file. File must export Array ({ path, rule }). "rule" is defined at: <https://github.com/chimurai/http-proxy-middleware/tree/v0.19.1#readme>.
+- `--proxy <file.js>`: Proxy specific requests defined in file. File must export Array ({ path, rule }). "rule" is defined at: <https://github.com/chimurai/http-proxy-middleware>.
 
   ```javascript
   module.exports = [
