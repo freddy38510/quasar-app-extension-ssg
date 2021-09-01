@@ -423,8 +423,6 @@ Can use async/await or directly return a Promise.
 
 ### Deployment
 
-It could be useful to return a non-zero status code when a page error is encountered and let the CI/CD fail the deployment or build. To achieve that use the [`--fail-on-error`](#generate-options) argument.
-
 ### `process.env.STATIC`
 
 The property `STATIC` is added to `process.env` once the App Extension is installed.
