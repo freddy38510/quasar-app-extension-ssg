@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base",
+    "config:base"
   ],
   "baseBranches": ["master", "2.x"],
   "ignoreDeps": ["globby"]
