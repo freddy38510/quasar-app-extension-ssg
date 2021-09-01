@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.0.0...v3.0.1) (2021-09-01)
+
+
+### Bug Fixes
+
+* **readme:** correct inlineCriticalCss option name and remove extra text ([47be2dd](https://github.com/freddy38510/quasar-app-extension-ssg/commit/47be2dd4832ab08b5bcac514348ec3838646c892))
+
 ## [3.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.0.0...v3.0.0) (2021-08-31)
 
 
