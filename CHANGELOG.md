@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.3](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.0.2...v3.0.3) (2021-09-01)
+
+
+### Bug Fixes
+
+* avoid hydration errors caused by html-minifier ([afd88d0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/afd88d08a56ab8d054fb9adf9493c5c48dce36be))
+
 ### [3.0.2](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.0.1...v3.0.2) (2021-09-01)
 
 
