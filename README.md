@@ -65,6 +65,12 @@ Register the App Extension through yarn:
 yarn link
 ```
 
+Install dependencies:
+
+```bash
+yarn
+```
+
 Create a new Quasar project then link the App Extension:
 
 ```bash
