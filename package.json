@@ -61,7 +61,7 @@
     "selfsigned": "1.10.11",
     "semver": "7.3.5",
     "webpack-merge": "5.8.0",
-    "workbox-build": "6.2.4"
+    "workbox-build": "6.3.0"
   },
   "devDependencies": {
     "@commitlint/cli": "13.1.0",
