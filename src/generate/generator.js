@@ -21,7 +21,10 @@ const {
 
 class Generator {
   constructor(api, quasarConf, ctx) {
-    const createRenderer = appRequire('@quasar/ssr-helpers/create-renderer', api.appDir);
+    const createRenderer = appRequire(
+      '@quasar/ssr-helpers/create-renderer',
+      api.appDir,
+    );
     const { renderToString } = appRequire('@vue/server-renderer', api.appDir);
     const serverManifest = require(`${quasarConf.build.distDir}/quasar.server-manifest.json`);
     const clientManifest = require(`${quasarConf.build.distDir}/quasar.client-manifest.json`);
@@ -158,9 +161,7 @@ class Generator {
     });
 
     // waiting for queue to be fully processed
-    await new Promise((resolve) => {
-      this.queue.drain = () => resolve();
-    });
+    await this.queue.drained();
 
     if (this.options.inlineCriticalCss) {
       this.beastcss.clear();
