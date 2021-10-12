@@ -194,9 +194,7 @@ class Generator {
     });
 
     // waiting for queue to be fully processed
-    await new Promise((resolve) => {
-      this.queue.drain = () => resolve();
-    });
+    await this.queue.drained();
 
     return { errors };
   }
