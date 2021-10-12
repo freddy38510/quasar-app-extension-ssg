@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.4](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.0.3...v3.0.4) (2021-10-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency fastq to v1.13.0 ([589506c](https://github.com/freddy38510/quasar-app-extension-ssg/commit/589506c736783878ff6745e308075ba57e439146))
+* **deps:** update dependency jiti to v1.12.6 ([51e0f9a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/51e0f9a7ff572f2d6ebde735adf56d30691da8c1))
+* **deps:** update dependency node-html-parser to v5 ([#63](https://github.com/freddy38510/quasar-app-extension-ssg/issues/63)) ([c9ae462](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c9ae462ac26960ed8125766627bdab97278b0149))
+* **deps:** update dependency workbox-build to v6.3.0 ([#51](https://github.com/freddy38510/quasar-app-extension-ssg/issues/51)) ([cbcb04a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/cbcb04a606bdb0a15ccb99f5a289a2778e1619fd))
+
 ### [3.0.3](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.0.2...v3.0.3) (2021-09-01)
 
 
