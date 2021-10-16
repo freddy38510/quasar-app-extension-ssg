@@ -378,7 +378,7 @@ module.exports = (api) => {
         || !process.stdout.isTTY
       );
       if (!isMinimalTerminal) {
-        require('open')(fullUrl, { url: true });
+        esmRequire('open')(fullUrl);
       }
     }
   });
