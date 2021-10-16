@@ -3,14 +3,6 @@
   "baseBranches": ["master", "2.x"],
   "packageRules": [
     {
-      "matchPackageNames": ["globby"],
-      "allowedVersions": "<12.0.0"
-    },
-    {
-      "matchPackageNames": ["open"],
-      "allowedVersions": "<8.0.0"
-    },
-    {
       "matchPackageNames": ["eslint"],
       "allowedVersions": "<8.0.0"
     },
