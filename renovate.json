@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "config:base",
-    ":semanticCommits"
-  ],
+  "extends": ["config:base", ":semanticCommits"],
   "baseBranches": ["master", "2.x"],
   "packageRules": [
     {
@@ -12,6 +9,14 @@
     {
       "matchPackageNames": ["open"],
       "allowedVersions": "<8.0.0"
+    },
+    {
+      "matchPackageNames": ["eslint"],
+      "allowedVersions": "<8.0.0"
+    },
+    {
+      "matchPackageNames": ["eslint-plugin-import"],
+      "allowedVersions": "<=2.24.2"
     }
   ]
 }
