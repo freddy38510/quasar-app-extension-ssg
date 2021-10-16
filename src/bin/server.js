@@ -4,6 +4,7 @@
 /* eslint-disable global-require */
 
 const parseArgs = require('minimist');
+const esmRequire = require('jiti')(__filename);
 const appRequire = require('../helpers/app-require');
 
 const argv = parseArgs(process.argv.slice(4), {
@@ -82,7 +83,7 @@ if (argv.help) {
 module.exports = (api) => {
   const fs = require('fs');
   const PlatformPath = require('path');
-  const { sync: globbySync } = require('globby');
+  const { globbySync } = esmRequire('globby');
 
   function getAbsolutePath(pathParam) {
     return PlatformPath.isAbsolute(pathParam)
@@ -175,7 +176,8 @@ module.exports = (api) => {
 
   app.use(prefixPath, serve('.', true));
 
-  const fallbackFile = globbySync(resolve('./*.html'), { ignore: resolve('./index.html') })[0];
+  const fallbackFile = globbySync(resolve('./*.html'), { ignore: [resolve('./index.html')] })[0];
+
   if (fallbackFile) {
     app.use(prefixPath, (req, res, next) => {
       const ext = PlatformPath.posix.extname(req.url) || '.html';
