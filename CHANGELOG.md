@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.4](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.1.3...v2.1.4) (2021-10-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency beastcss to v1.0.4 ([#78](https://github.com/freddy38510/quasar-app-extension-ssg/issues/78)) ([83bf433](https://github.com/freddy38510/quasar-app-extension-ssg/commit/83bf43378368dc5de7e66bd19b77dce3d50e3802))
+* **deps:** update dependency globby to v12.0.2 ([f2d184e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/f2d184ea11894d8caad536cee73455899a337042))
+* **deps:** update dependency jiti to v1.12.9 ([#67](https://github.com/freddy38510/quasar-app-extension-ssg/issues/67)) ([5915dcf](https://github.com/freddy38510/quasar-app-extension-ssg/commit/5915dcf511137dd8f8d063267c6132a5a6341e1c))
+* **deps:** update dependency open to v8.3.0 ([19083d9](https://github.com/freddy38510/quasar-app-extension-ssg/commit/19083d9418512b6ba1abf1f4934fbdaebab70b27))
+* **generator:** create beastcss messages array sooner ([2e8f557](https://github.com/freddy38510/quasar-app-extension-ssg/commit/2e8f557ac4453ca0c6d7ff1be9cee0ccabbc9047))
+* **generator:** output beastcss error, even if debug mode is disabled ([4d2e833](https://github.com/freddy38510/quasar-app-extension-ssg/commit/4d2e83305bfa5b413ed917f94c177f776927ddbd))
+* remove comments and condense whitespaces when minifying html ([e159cfe](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e159cfe1010908a531838452a97c868aaebeff5a))
+
 ### [2.1.3](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.1.2...v2.1.3) (2021-10-12)
 
 
