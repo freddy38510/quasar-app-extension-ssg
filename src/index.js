@@ -88,6 +88,12 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
 
   conf.build.ssrPwaHtmlFilename = conf.ssg.fallback;
 
+  conf.build.vueLoaderOptions = {
+    compilerOptions: {
+      whitespace: 'condense',
+    },
+  };
+
   conf.build.env.STATIC = true;
 };
 
@@ -120,14 +126,8 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
   if (isServer) {
     const SsrArtifacts = require('./webpack/plugin.ssr-artifacts');
 
-    const cfg = merge(quasarConf, {
-      build: {
-        minify: false, // Minify later when generating pre-rendered pages to avoid to do it twice
-      },
-    });
-
     chain.plugin('ssr-artifacts')
-      .use(SsrArtifacts, [cfg, api]);
+      .use(SsrArtifacts, [quasarConf, api]);
   }
 };
 
