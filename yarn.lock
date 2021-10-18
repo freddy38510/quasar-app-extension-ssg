@@ -1978,15 +1978,15 @@ base64-js@^1.3.1:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
-beastcss@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.0.3.tgz#f3650a84b5671e44df6f55c0ed42b0492b543f23"
-  integrity sha512-9vZ5XfPAkdUELy4Rbq0jfE7z/q0IQzB4I6TmsoGN+WfZBcbAGC/TDu2HUqlekrcHlor94gz4evm+e1DEz2hyLA==
+beastcss@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.0.4.tgz#4776cf0f44102378e82b089fce3a2b483ae7f270"
+  integrity sha512-1ZqETByUXQ0JawnXbKdbIkIOC1e2qp7M2KUssTELFwtS06Dfi8Gy0DmUja2B+zi1JrPZzncd7uqDP6FSSiF5CA==
   dependencies:
     "@freddy38510/dropcss" "^2.3.1"
     chalk "^4.1.2"
     fast-glob "^3.2.7"
-    node-html-parser "^4.1.3"
+    node-html-parser "^5.0.0"
 
 big.js@^5.2.2:
   version "5.2.2"
@@ -4512,18 +4512,10 @@ node-forge@^0.10.0:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
   integrity sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==
 
-node-html-parser@5.0.0:
+node-html-parser@5.0.0, node-html-parser@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/node-html-parser/-/node-html-parser-5.0.0.tgz#a398d6d27459346c517dc1b1e3dd779e12d685c3"
   integrity sha512-TTcYevvxqIyRfc1Y/3O6EwzmPFmN9fykfdP3DewtDaVMzft4HFfs21ogw5LGDYhieIq8QBFG+PSBNd5x3n0WZQ==
-  dependencies:
-    css-select "^4.1.3"
-    he "1.2.0"
-
-node-html-parser@^4.1.3:
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/node-html-parser/-/node-html-parser-4.1.3.tgz#993f42273c97bc0b1171f3c7e4d2f7959defc96a"
-  integrity sha512-jWFd9TBxDJ0hXkvPKxiWXy4R87ZoIjYj5P2twbef3q/E4vJyFt8TTRQ68ssHYW5Aozwth4SWHOPT6yfDd/gzQQ==
   dependencies:
     css-select "^4.1.3"
     he "1.2.0"
