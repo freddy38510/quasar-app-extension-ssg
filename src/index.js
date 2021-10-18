@@ -105,6 +105,16 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
 };
 
 const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, quasarConf) {
+  if (chain.plugins.has('vue-loader')) {
+    chain
+      .plugin('vue-loader')
+      .tap((options) => [...options, {
+        compilerOptions: {
+          preserveWhitespace: false,
+        },
+      }]);
+  }
+
   if (quasarConf.ssg.inlineCssFromSFC) {
     /* Replace 'quasar-auto-import' loaders
      *
@@ -177,14 +187,8 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
   if (isServer) {
     const SsrArtifacts = require('./webpack/plugin.ssr-artifacts');
 
-    const cfg = merge(quasarConf, {
-      build: {
-        minify: false, // Minify later when generating pre-rendered pages to avoid to do it twice
-      },
-    });
-
     chain.plugin('ssr-artifacts')
-      .use(SsrArtifacts, [cfg, api]);
+      .use(SsrArtifacts, [quasarConf, api]);
   }
 };
 

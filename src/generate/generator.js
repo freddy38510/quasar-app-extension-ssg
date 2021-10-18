@@ -39,8 +39,8 @@ class Generator {
       minify: quasarConf.build.minify
         ? {
           ...quasarConf.__html.minifyOptions,
-          removeComments: false,
-          collapseWhitespace: false,
+          ignoreCustomComments: [/^(\]?|\[?)$/], // avoid client-side hydration error
+          collapseWhitespace: false, // avoid client-side hydration error
           minifyCSS: true,
         } : false,
       build: {
