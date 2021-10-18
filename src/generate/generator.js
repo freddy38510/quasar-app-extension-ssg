@@ -310,21 +310,21 @@ class Generator {
   }
 
   async inlineCriticalCss(html, route) {
+    if (!this.beastcssMessages[route]) {
+      this.beastcssMessages[route] = {
+        traces: [],
+        debugs: [],
+        infos: [],
+        warns: [],
+        errors: [],
+      };
+    }
+
     return this.beastcss.process(html, route);
   }
 
   createBeastcssLogger() {
     const saveMessage = (level) => (msg, id) => {
-      if (id && !this.beastcssMessages[id]) {
-        this.beastcssMessages[id] = {
-          traces: [],
-          debugs: [],
-          infos: [],
-          warns: [],
-          errors: [],
-        };
-      }
-
       this.beastcssMessages[id][level].push(msg);
     };
 
