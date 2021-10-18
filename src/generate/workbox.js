@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
@@ -5,10 +6,11 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
 const { generateSW, injectManifest } = require('workbox-build');
-const { info, success } = require('../helpers/logger');
+const {
+  info, error, fatal, success, warn,
+} = require('../helpers/logger');
 
-module.exports = async function buildWorkbox(api, quasarConf) {
-  const mode = quasarConf.pwa.workboxPluginMode;
+const getOptions = (api, quasarConf, mode) => {
   let defaultOptions = {};
 
   if (mode === 'GenerateSW') {
@@ -23,16 +25,10 @@ module.exports = async function buildWorkbox(api, quasarConf) {
         '': quasarConf.build.publicPath,
       },
     };
-
-    // log('[GenerateSW] Generating a service-worker file...');
-    info('Generating a service-worker file...', 'WAIT');
   } else {
     defaultOptions = {
       swSrc: api.resolve.app('.quasar/pwa/service-worker.js'),
     };
-    info('Injecting manifest to your custom service-worker written file...', 'WAIT');
-
-    // log('[InjectManifest] Using your custom service-worker written file...');
   }
 
   // merge with custom options from user
@@ -67,21 +63,65 @@ module.exports = async function buildWorkbox(api, quasarConf) {
   opts.globDirectory = quasarConf.ssg.__distDir;
   opts.swDest = path.join(quasarConf.ssg.__distDir, 'service-worker.js');
 
+  return opts;
+};
+
+const handleError = (e, isGenerateSW, pill) => {
+  const prefix = isGenerateSW ? 'Generated service-worker file' : 'Injected Manifest';
+
+  error(`${prefix} with error`, 'DONE');
+
+  console.error();
+
+  console.error(e.stack || e);
+
+  fatal('Please check the log above.', `${pill} FAILED`);
+};
+
+const handleWarnings = (warnings, pill) => {
+  if (warnings.length > 0) {
+    warnings.forEach((workboxWarning) => {
+      console.log();
+
+      warn(workboxWarning, `${pill} WARNING`);
+    });
+  }
+};
+
+const handleSuccess = (isGenerateSW, size, count, diffTime) => {
+  const prefix = isGenerateSW ? 'Generated service-worker file' : 'Injected Manifest to custom service-worker file';
+
+  success(`${prefix}, which will precache ${count} files, totaling ${(size / 1024).toFixed(2)} kB • ${diffTime}ms`, 'DONE');
+};
+
+module.exports = async function buildWorkbox(api, quasarConf) {
+  const mode = quasarConf.pwa.workboxPluginMode;
+  const isGenerateSW = mode === 'GenerateSW';
+  const pill = `[${mode}]`;
+  const opts = getOptions(api, quasarConf, mode);
   const startTime = +new Date();
 
-  if (mode === 'GenerateSW') {
-    await generateSW(opts);
+  let size = 0;
+  let count = 0;
+  let warnings = [];
 
-    const diffTime = +new Date() - startTime;
+  try {
+    if (isGenerateSW) {
+      info('Generating a service-worker file...', 'WAIT');
 
-    success(`service-worker file generated with success • ${diffTime}ms`, 'DONE');
+      ({ size, count, warnings } = await generateSW(opts));
+    } else {
+      info('Injecting Manifest to custom service-worker file...', 'WAIT');
 
-    return;
+      ({ size, count, warnings } = await injectManifest(opts));
+    }
+  } catch (e) {
+    handleError(e, isGenerateSW, pill);
   }
-
-  await injectManifest(opts);
 
   const diffTime = +new Date() - startTime;
 
-  success(`Manifest injected with success • ${diffTime}ms`, 'DONE');
+  handleWarnings(warnings, pill);
+
+  handleSuccess(isGenerateSW, size, count, diffTime);
 };

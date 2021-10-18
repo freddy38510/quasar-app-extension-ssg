@@ -18,8 +18,6 @@ module.exports = async (api, quasarConf, ctx) => {
 
   let errors = [];
 
-  let startTime;
-
   banner(api, ctx, 'generate');
 
   clean(quasarConf.ssg.__distDir);
@@ -27,19 +25,22 @@ module.exports = async (api, quasarConf, ctx) => {
   log('Copying assets...');
 
   try {
-    await fs.copy(join(quasarConf.build.distDir, 'www'), quasarConf.ssg.__distDir);
+    await fs.copy(
+      join(quasarConf.build.distDir, 'www'),
+      quasarConf.ssg.__distDir,
+    );
   } catch (err) {
-    err.message = `Could not copy assets\n\n${this.options.debug ? err.message : ` ${err.message}`}`;
+    err.message = `Could not copy assets\n\n${err.message}`;
 
     console.error(err.stack || err);
 
     process.exit(1);
   }
 
+  const startTime = +new Date();
+
   try {
     const routes = await generator.initRoutes();
-
-    startTime = +new Date();
 
     info('Generating pages in progress...', 'WAIT');
 
@@ -55,8 +56,8 @@ module.exports = async (api, quasarConf, ctx) => {
   if (errors.length > 0) {
     error(`Pages generated with errors • ${diffTime}ms`, 'DONE');
 
-    const summary = printGeneratorErrors(errors, ctx.debug);
-    console.log();
+    const summary = printGeneratorErrors(errors);
+
     fatal(`with ${summary}. Please check the log above.`, 'GENERATE FAILED');
   } else {
     success(`Pages generated with success • ${diffTime}ms`, 'DONE');
@@ -65,13 +66,7 @@ module.exports = async (api, quasarConf, ctx) => {
   if (quasarConf.ctx.mode.pwa) {
     const buildWorkbox = require('./workbox.js');
 
-    try {
-      await buildWorkbox(api, quasarConf);
-    } catch (err) {
-      console.error(err.stack || err);
-
-      process.exit(1);
-    }
+    await buildWorkbox(api, quasarConf);
   }
 
   if (typeof quasarConf.ssg.afterGenerate === 'function') {
@@ -89,5 +84,8 @@ module.exports = async (api, quasarConf, ctx) => {
 
   add(quasarConf.ssg.__distDir);
 
-  banner(api, ctx, 'generate', { outputFolder: quasarConf.ssg.__distDir, fallback: quasarConf.ssg.fallback });
+  banner(api, ctx, 'generate', {
+    outputFolder: quasarConf.ssg.__distDir,
+    fallback: quasarConf.ssg.fallback,
+  });
 };

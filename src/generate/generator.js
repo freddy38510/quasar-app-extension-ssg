@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-const fs = require('fs').promises;
-const { minify } = require('html-minifier');
 const path = require('path');
-const Beastcss = require('beastcss');
+const fs = require('fs').promises;
 const esmRequire = require('jiti')(__filename);
+const { minify } = require('html-minifier');
+const Beastcss = require('beastcss');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright } = require('chalk');
@@ -42,7 +42,6 @@ class Generator {
 
     this.options = {
       ...quasarConf.ssg,
-      // keep comments to avoid issue at client-side hydration
       minify: quasarConf.build.minify
         ? {
           ...quasarConf.__html.minifyOptions,
@@ -78,7 +77,8 @@ class Generator {
     try {
       userRoutes = await promisifyRoutes(this.options.routes, ...args);
     } catch (err) {
-      err.message = `Could not resolve provided routes\n\n${this.options.debug ? err.message : ` ${err.message}`}`;
+      err.message = `Could not resolve provided routes\n\n${err.message}`;
+
       throw err;
     }
 
@@ -171,7 +171,15 @@ class Generator {
   }
 
   async generateRoute(route) {
-    let html = await this.renderRoute(route);
+    let html;
+
+    try {
+      html = await this.renderRoute(route);
+    } catch (e) {
+      e.message = `Could not pre-render route\n\n${e.message}`;
+
+      throw e;
+    }
 
     if (!html) {
       return;
@@ -186,15 +194,27 @@ class Generator {
     }
 
     if (typeof this.options.onRouteRendered === 'function') {
-      html = await this.options.onRouteRendered(
-        html,
-        route,
-        this.options.__distDir,
-      );
+      try {
+        html = await this.options.onRouteRendered(
+          html,
+          route,
+          this.options.__distDir,
+        );
+      } catch (e) {
+        e.message = `Could not process onRouteRendered hook\n\n${e.message}`;
+
+        throw e;
+      }
     }
 
     if (this.options.minify !== false) {
-      html = minify(html, this.options.minify);
+      try {
+        html = minify(html, this.options.minify);
+      } catch (e) {
+        e.message = `Could not minify html\n\n${e.message}`;
+
+        throw e;
+      }
     }
 
     const dest = path.join(this.options.__distDir, route, 'index.html');
@@ -276,7 +296,7 @@ class Generator {
     try {
       html = await this.beastcss.process(html, route);
     } catch (e) {
-      e.message = `Could not inline critical css\n\n${this.options.debug ? e.message : ` Beastcss[error]: ${e.message}`}`;
+      e.message = `Could not inline critical css\n\n${e.message}`;
 
       throw e;
     }
