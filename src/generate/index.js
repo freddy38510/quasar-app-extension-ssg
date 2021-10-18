@@ -66,7 +66,7 @@ module.exports = async (api, quasarConf, ctx) => {
   if (quasarConf.ctx.mode.pwa) {
     const buildWorkbox = require('./workbox.js');
 
-    await buildWorkbox(api, quasarConf);
+    await buildWorkbox(api, quasarConf, ctx);
   }
 
   if (typeof quasarConf.ssg.afterGenerate === 'function') {
