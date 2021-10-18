@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.5](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.0.4...v3.0.5) (2021-10-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency beastcss to v1.0.4 ([#77](https://github.com/freddy38510/quasar-app-extension-ssg/issues/77)) ([366cf2e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/366cf2ec81711ff39ca1c177b40fc82d234f38c5))
+* **deps:** update dependency globby to v12.0.2 ([b78cb2e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b78cb2eeddb0b212e9a2330c388e05d3bdedef5f))
+* **deps:** update dependency jiti to v1.12.7 ([#66](https://github.com/freddy38510/quasar-app-extension-ssg/issues/66)) ([2ede3e1](https://github.com/freddy38510/quasar-app-extension-ssg/commit/2ede3e183544c997fb5c8782ced53d9a77dc595d))
+* **deps:** update dependency jiti to v1.12.9 ([#76](https://github.com/freddy38510/quasar-app-extension-ssg/issues/76)) ([ac8c1e3](https://github.com/freddy38510/quasar-app-extension-ssg/commit/ac8c1e39e41c11167160e58656c749a320463b0d))
+* **deps:** update dependency open to v8.3.0 ([70d5a4e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/70d5a4e1363a07f37f54d7d158adab95f0eea264))
+* improve readability of errors and logs output ([835f05b](https://github.com/freddy38510/quasar-app-extension-ssg/commit/835f05b1308cd26de57b7b877775a19f89cee26c))
+* remove comments and condense whitespaces when minifying html ([b198275](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b198275684a6f3c3c091d1172013edf154fd6432))
+
 ### [3.0.4](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.0.3...v3.0.4) (2021-10-12)
 
 
