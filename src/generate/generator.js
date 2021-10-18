@@ -133,9 +133,7 @@ class Generator {
         );
       }
 
-      if (this.options.debug) {
-        msg += `${error.stack || error}`;
-      }
+      msg += `${error.stack || error}`;
 
       warn(msg);
     });
