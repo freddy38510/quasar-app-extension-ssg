@@ -211,7 +211,7 @@ Default: `[]`
 
 An `Array` of `Strings` for routes to be generated.
 
-> Note: As of quasar-app-extension-ssg [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0) this option is no longer necessary thanks to the crawl feature and the ability to take routes from the Vue Router configuration.
+> Note: As of quasar-app-extension-ssg [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0) this option is no longer necessary thanks to the crawler feature and the ability to take routes from the Vue Router configuration.
 >
 > If have unlinked pages (such as secret pages) and you would like these to also be generated then you can use the ssg.routes property.
 
@@ -355,7 +355,7 @@ The filename of the full SPA or PWA page as a fallback when an index.html file d
 > - Overrides `build.htmlFilename` and `build.ssrPwaHtmlFilename`.
 > - This file is created with `html-webpack-plugin` with [defaults options](https://github.com/quasarframework/quasar/blob/dev/app/lib/webpack/inject.html.js) set by Quasar. You can extend it with some [plugins](https://github.com/jantimon/html-webpack-plugin#plugins).
 
-### `crawl`
+### `crawler`
 
 :new: _Added in [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0)_
 
