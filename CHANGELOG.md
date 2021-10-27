@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.0.5...v3.1.0) (2021-10-27)
+
+
+### Features
+
+* make process.env.STATIC available when running ssg command ([5aa7632](https://github.com/freddy38510/quasar-app-extension-ssg/commit/5aa76321ed5476365e29522dc632e29d8fdaa547))
+
+
+### Bug Fixes
+
+* build ssr directives only when it is necessary ([fa91c1c](https://github.com/freddy38510/quasar-app-extension-ssg/commit/fa91c1c98ef6f46d33fc72432874b77bcaf17c2a))
+* **deps:** update dependency open to v8.4.0 ([#84](https://github.com/freddy38510/quasar-app-extension-ssg/issues/84)) ([6b80896](https://github.com/freddy38510/quasar-app-extension-ssg/commit/6b808965a50bf06fb70f3f4209e06ebe3963cd1a))
+* **generator:** adapt routes parsing from created router for vue-router v4 ([50716a3](https://github.com/freddy38510/quasar-app-extension-ssg/commit/50716a3cdcdea48ce93a27003302d409c02eb937)), closes [#86](https://github.com/freddy38510/quasar-app-extension-ssg/issues/86)
+* **generator:** print warnings on catched errors from routes initialization ([38791d7](https://github.com/freddy38510/quasar-app-extension-ssg/commit/38791d731015a4c137cd3c10fc67cb8922e44c08))
+* **workbox:** generate sourcemap only when debug mode is enabled ([0823dfa](https://github.com/freddy38510/quasar-app-extension-ssg/commit/0823dfac79256db7375ad1dba561ea50c0691d63))
+
 ### [3.0.5](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.0.4...v3.0.5) (2021-10-18)
 
 
