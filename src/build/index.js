@@ -40,6 +40,11 @@ module.exports = async function build(
     '@quasar/app/lib/helpers/types-feature-flags',
     api.appDir,
   );
+  const SSRDirectives = appRequire('@quasar/app/lib/ssr/ssr-directives', api.appDir);
+
+  const directivesBuilder = new SSRDirectives();
+
+  await directivesBuilder.build();
 
   const generator = new Generator(quasarConfFile);
 

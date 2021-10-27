@@ -57,7 +57,7 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
       join(conf.ssg.buildDir, '/**'),
       'dist/**',
       'public/**',
-      'src-ssr/**',
+      'src-ssr/middlewares/**',
       'src-cordova/**',
       'src-electron/**',
       'src-bex/**',

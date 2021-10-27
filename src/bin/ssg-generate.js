@@ -46,9 +46,6 @@ module.exports = async function run(api) {
     api.appDir,
   );
 
-  const SSRDirectives = appRequire('@quasar/app/lib/ssr/ssr-directives', api.appDir);
-  const directivesBuilder = new SSRDirectives();
-
   const ctx = getQuasarCtx({
     mode: 'ssr',
     target: undefined,
@@ -60,8 +57,6 @@ module.exports = async function run(api) {
   });
 
   await installMissing(ctx.modeName, ctx.targetName);
-
-  await directivesBuilder.build();
 
   await extensionRunner.registerExtensions(ctx);
 
