@@ -7,16 +7,20 @@ const Generator = require('./generator');
 const appRequire = require('../helpers/app-require');
 const banner = require('../helpers/banner').generate;
 const {
-  log, info, error, fatal, success,
+  log, info, warn, error, warning, fatal, success,
 } = require('../helpers/logger');
-const printGeneratorErrors = require('../helpers/print-generator-errors');
+const { printGeneratorErrors, printGeneratorWarnings } = require('../helpers/print-generator-issue');
 
 module.exports = async (api, quasarConf, ctx) => {
   const { add, clean } = appRequire('@quasar/app/lib/artifacts', api.appDir);
 
   const generator = new Generator(api, quasarConf, ctx);
 
-  let errors = [];
+  const state = {
+    errors: [],
+    warnings: [],
+    startTime: null,
+  };
 
   banner(api, ctx, 'generate');
 
@@ -37,28 +41,42 @@ module.exports = async (api, quasarConf, ctx) => {
     process.exit(1);
   }
 
-  const startTime = +new Date();
-
   try {
-    const routes = await generator.initRoutes();
+    state.startTime = +new Date();
+
+    const { routes, warnings } = await generator.initRoutes();
+
+    state.warnings = warnings;
 
     info('Generating pages in progress...', 'WAIT');
 
-    ({ errors } = await generator.generateRoutes(routes));
+    const { errors } = await generator.generateRoutes(routes);
+
+    state.errors = errors;
   } catch (err) {
     console.error(err.stack || err);
 
     process.exit(1);
   }
 
-  const diffTime = +new Date() - startTime;
+  const diffTime = +new Date() - state.startTime;
 
-  if (errors.length > 0) {
+  if (state.errors.length > 0) {
     error(`Pages generated with errors • ${diffTime}ms`, 'DONE');
 
-    const summary = printGeneratorErrors(errors);
+    const summary = printGeneratorErrors(state.errors);
+
+    console.log();
 
     fatal(`with ${summary}. Please check the log above.`, 'GENERATE FAILED');
+  } else if (state.warnings.length > 0) {
+    warning(`Pages generated, but with warnings • ${diffTime}ms`, 'DONE');
+
+    const summary = printGeneratorWarnings(state.warnings);
+
+    console.log();
+
+    warn(`Pages generated with success, but with ${summary}. Check log above.\n`);
   } else {
     success(`Pages generated with success • ${diffTime}ms`, 'DONE');
   }

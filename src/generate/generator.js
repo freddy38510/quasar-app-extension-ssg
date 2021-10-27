@@ -72,21 +72,25 @@ class Generator {
   }
 
   async initRoutes(...args) {
+    const warnings = [];
+    let appRoutes = [];
     let userRoutes = [];
 
     try {
       userRoutes = await promisifyRoutes(this.options.routes, ...args);
     } catch (err) {
-      err.message = `Could not resolve provided routes\n\n${err.message}`;
+      err.message = ` Could not resolve provided routes:\n\n ${err.message}`;
 
-      throw err;
+      warnings.push(err);
     }
-
-    let appRoutes = [];
 
     try {
       appRoutes = flatRoutes(await this.getAppRoutes());
     } catch (err) {
+      err.message = ` Could not resolve routes from Vue Router:\n\n ${err.message}`;
+
+      warnings.push(err);
+
       appRoutes = ['/'];
     }
 
@@ -99,7 +103,10 @@ class Generator {
         && !appRoutes.includes(withoutTrailingSlash(route)),
     );
 
-    return [...new Set([...userRoutes, ...appRoutes])];
+    return {
+      routes: [...new Set([...userRoutes, ...appRoutes])],
+      warnings,
+    };
   }
 
   async getAppRoutes() {
