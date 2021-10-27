@@ -1,11 +1,16 @@
 #!/usr/bin/env node
+/* eslint-disable no-void */
 /* eslint-disable no-console */
 /* eslint-disable global-require */
 
-// eslint-disable-next-line no-void
 if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'production';
 }
+
+if (process.env.STATIC === void 0) {
+  process.env.STATIC = true;
+}
+
 const parseArgs = require('minimist');
 const appRequire = require('../helpers/app-require');
 const { fatal } = require('../helpers/logger');
