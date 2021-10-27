@@ -104,11 +104,18 @@ class Generator {
 
   async getAppRoutes() {
     const routerPath = this.api.resolve.app(this.options.sourceFiles.router);
+
     const { default: createRouter } = esmRequire(routerPath);
+
+    process.env.SERVER = true;
+    process.env.MODE = 'ssr';
 
     const router = typeof createRouter === 'function' ? await createRouter() : createRouter;
 
-    return router.matcher.getRoutes();
+    delete process.env.SERVER;
+    delete process.env.MODE;
+
+    return router.getRoutes();
   }
 
   async generateRoutes(routes) {
