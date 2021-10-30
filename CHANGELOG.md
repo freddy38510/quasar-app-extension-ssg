@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.1.0...v3.1.1) (2021-10-30)
+
+
+### Bug Fixes
+
+* build the required SSR directives before preparing quasar.conf ([2541691](https://github.com/freddy38510/quasar-app-extension-ssg/commit/25416918d7bb2c9ac4f04d966451d511394a13a4))
+
 ## [3.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.0.5...v3.1.0) (2021-10-27)
 
 
