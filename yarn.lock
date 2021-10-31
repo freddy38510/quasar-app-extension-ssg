@@ -1520,10 +1520,10 @@ base64-js@^1.3.1:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
-beastcss@1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.0.4.tgz#4776cf0f44102378e82b089fce3a2b483ae7f270"
-  integrity sha512-1ZqETByUXQ0JawnXbKdbIkIOC1e2qp7M2KUssTELFwtS06Dfi8Gy0DmUja2B+zi1JrPZzncd7uqDP6FSSiF5CA==
+beastcss@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.0.5.tgz#bc1ed017e171b86d747cb2a4bb1a2138c19c5483"
+  integrity sha512-0pSmhsTsuStpaoZ0XndIIlQNwngor2Ks3iWc4IT+QsNmlpnYyTvEBKcDSMiqW7xRLSSoeMMDTuVcnz5xFgibbg==
   dependencies:
     "@freddy38510/dropcss" "^2.3.1"
     chalk "^4.1.2"
