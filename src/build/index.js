@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 const pify = require('pify');
 const appRequire = require('../helpers/app-require');
+const Router = require('./router');
 const banner = require('../helpers/banner').build;
 const { log, fatal } = require('../helpers/logger');
 
@@ -74,6 +75,10 @@ module.exports = async function build(
     await Runner.build(quasarConfFile);
   }
 
+  const routerBuilder = new Router(api, quasarConf, webpackConf.serverSide);
+
+  const routerBuildPromise = routerBuilder.build();
+
   let webpackData = parseWebpackConfig(webpackConf);
 
   const compiler = webpack(webpackData.configs);
@@ -138,4 +143,6 @@ module.exports = async function build(
     log(`Extension(${hook.api.extId}): Running afterBuild hook...`);
     await hook.fn(hook.api, { quasarConf });
   });
+
+  await routerBuildPromise;
 };

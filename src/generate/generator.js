@@ -3,7 +3,6 @@
 /* eslint-disable import/no-dynamic-require */
 const path = require('path');
 const fs = require('fs').promises;
-const esmRequire = require('jiti')(__filename);
 const { minify } = require('html-minifier');
 const Beastcss = require('beastcss');
 const { parse } = require('node-html-parser');
@@ -71,13 +70,13 @@ class Generator {
     }
   }
 
-  async initRoutes(...args) {
+  async initRoutes() {
     const warnings = [];
     let appRoutes = [];
     let userRoutes = [];
 
     try {
-      userRoutes = await promisifyRoutes(this.options.routes, ...args);
+      userRoutes = await promisifyRoutes(this.options.routes);
     } catch (err) {
       err.message = ` Could not resolve provided routes:\n\n ${err.message}`;
 
@@ -110,17 +109,9 @@ class Generator {
   }
 
   async getAppRoutes() {
-    const routerPath = this.api.resolve.app(this.options.sourceFiles.router);
-
-    const { default: createRouter } = esmRequire(routerPath);
-
-    process.env.SERVER = true;
-    process.env.MODE = 'ssr';
+    const { default: createRouter } = require(path.join(this.options.buildDir, 'compiled-router.js'));
 
     const router = typeof createRouter === 'function' ? await createRouter() : createRouter;
-
-    delete process.env.SERVER;
-    delete process.env.MODE;
 
     return router.getRoutes();
   }
