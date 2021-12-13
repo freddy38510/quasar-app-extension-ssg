@@ -61,7 +61,7 @@
     "selfsigned": "1.10.11",
     "semver": "7.3.5",
     "webpack-merge": "5.8.0",
-    "workbox-build": "6.3.0"
+    "workbox-build": "6.4.2"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.15.8",
