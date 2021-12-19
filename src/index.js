@@ -98,6 +98,14 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
 };
 
 const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, quasarConf) {
+  // workaround so that isRuntimeSsrPreHydration.value is correctly defined
+  // if fallback to SPA at first-load (routes not found)
+  // @see https://github.com/freddy38510/quasar-app-extension-ssg/issues/110
+  chain.plugin('define').tap((args) => [{
+    ...args[0],
+    __QUASAR_SSR_PWA__: true,
+  }]);
+
   if (isClient) {
     if (!api.ctx.mode.pwa) {
       // Use webpack-html-plugin for creating html fallback file
