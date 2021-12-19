@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.2](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.1.1...v3.1.2) (2021-12-19)
+
+
+### Bug Fixes
+
+* add a workaround to not consider the app pre-hydrated when falling back to SPA at first-load ([7c7243f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/7c7243fef1c62528d2e99a0b420a0c695659e1a3)), closes [#110](https://github.com/freddy38510/quasar-app-extension-ssg/issues/110)
+* **deps:** update dependency beastcss to v1.0.5 ([#95](https://github.com/freddy38510/quasar-app-extension-ssg/issues/95)) ([d93ab27](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d93ab270db712c09787ce36f925eb3595a4ca0bb))
+* **deps:** update dependency workbox-build to v6.4.2 ([#101](https://github.com/freddy38510/quasar-app-extension-ssg/issues/101)) ([890938a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/890938a703fd23df0955f1b0292ee5bf0b15d763))
+* initialize app routes from compiled router ([d0d94e1](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d0d94e12079cf1753ca61b2d666edbc2852563a7))
+
 ### [3.1.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.1.0...v3.1.1) (2021-10-30)
 
 
