@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.3](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.1.2...v3.1.3) (2021-12-20)
+
+
+### Bug Fixes
+
+* remove html template minification to avoid parsing errors ([ae8a1e8](https://github.com/freddy38510/quasar-app-extension-ssg/commit/ae8a1e806d1357f796a673ff56d57a5729d8cb22)), closes [#111](https://github.com/freddy38510/quasar-app-extension-ssg/issues/111)
+
 ### [3.1.2](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.1.1...v3.1.2) (2021-12-19)
 
 
