@@ -135,6 +135,7 @@ module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
 
   html = injectSsrInterpolation(html);
 
+  /*
   if (cfg.build.minify) {
     const { minify } = appRequire('html-minifier', api.appDir);
     html = minify(html, {
@@ -143,6 +144,7 @@ module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
       ignoreCustomFragments: [/{{ [\s\S]*? }}/],
     });
   }
+  */
 
   return compileTemplate(html, { interpolate: /{{([\s\S]+?)}}/g });
 };
