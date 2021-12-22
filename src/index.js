@@ -55,11 +55,11 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
   conf.build.distDir = conf.ssg.buildDir;
 
   if (conf.ssg.inlineCssFromSFC === void 0) {
-    conf.ssg.inlineCssFromSFC = api.prompts.inlineCssFromSFC || false;
+    conf.ssg.inlineCssFromSFC = api.prompts.inlineCssFromSFC;
   }
 
   if (conf.ssg.inlineCriticalCss === void 0) {
-    conf.ssg.inlineCriticalCss = api.prompts.inlineCriticalCss || true;
+    conf.ssg.inlineCriticalCss = api.prompts.inlineCriticalCss;
   }
 
   // Set SSG cache.ignore
