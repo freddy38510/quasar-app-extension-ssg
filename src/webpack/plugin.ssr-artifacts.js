@@ -2,7 +2,7 @@ const fs = require('fs').promises;
 const { getIndexHtml } = require('./html-template');
 
 module.exports = class SsrProdArtifacts {
-  constructor(cfg = {}, api) {
+  constructor(api, cfg = {}) {
     this.cfg = cfg;
     this.api = api;
   }

@@ -18,9 +18,7 @@ module.exports = function loaderAutoImport(content, map) {
   };
 
   // regex to match functional components
-  const funcCompRegex = new RegExp(
-    'var\\s+component\\s*=\\s*normalizer\\((?:[^,]+,){3}\\s*true,',
-  );
+  const funcCompRegex = /var\s+component\s*=\s*normalizer\((?:[^,]+,){3}\s*true,/;
 
   const dirRegex = new RegExp(data.regex.directives, 'g');
 

@@ -169,7 +169,7 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
       chain.plugins.delete('html-pwa');
 
       chain.plugin('html-pwa')
-        .use(HtmlPwaPlugin.plugin, [quasarConf, api]);
+        .use(HtmlPwaPlugin.plugin, [api, quasarConf]);
 
       if (quasarConf.pwa.workboxPluginMode === 'InjectManifest') {
         const filename = chain.output.get('filename');
@@ -188,7 +188,7 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
     const SsrArtifacts = require('./webpack/plugin.ssr-artifacts');
 
     chain.plugin('ssr-artifacts')
-      .use(SsrArtifacts, [quasarConf, api]);
+      .use(SsrArtifacts, [api, quasarConf]);
   }
 };
 
