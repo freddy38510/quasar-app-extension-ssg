@@ -75,7 +75,7 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
   }
 
   if (conf.ssg.inlineCriticalCss === void 0) {
-    conf.ssg.inlineCriticalCss = api.prompts.inlineCriticalCss || true;
+    conf.ssg.inlineCriticalCss = api.prompts.inlineCriticalCss;
   }
 
   // Set body tag classes (desktop/mobile, q-ios-padding, ...) at client-side
