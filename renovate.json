@@ -3,12 +3,8 @@
   "baseBranches": ["master", "2.x"],
   "packageRules": [
     {
-      "matchPackageNames": ["eslint"],
-      "allowedVersions": "<8.0.0"
-    },
-    {
-      "matchPackageNames": ["eslint-plugin-import"],
-      "allowedVersions": "<=2.24.2"
+      "matchPackageNames": ["chalk"],
+      "allowedVersions": "<5.0.0"
     }
   ]
 }
