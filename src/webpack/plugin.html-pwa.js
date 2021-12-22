@@ -85,7 +85,7 @@ function fillPwaTags(data, {
 module.exports.fillPwaTags = fillPwaTags;
 
 module.exports.plugin = class HtmlPwaPlugin {
-  constructor(cfg = {}, api) {
+  constructor(api, cfg = {}) {
     this.cfg = cfg;
     this.api = api;
   }

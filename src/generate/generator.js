@@ -145,7 +145,7 @@ class Generator {
       this.queue.saturated = async () => {
         this.queue.pause();
 
-        await new Promise((resolve) => setTimeout(resolve, this.options.interval));
+        await new Promise((resolve) => { setTimeout(resolve, this.options.interval); });
 
         this.queue.resume();
 

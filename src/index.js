@@ -127,7 +127,7 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
       chain.plugins.delete('html-pwa');
 
       chain.plugin('html-pwa')
-        .use(HtmlPwaPlugin.plugin, [quasarConf, api]);
+        .use(HtmlPwaPlugin.plugin, [api, quasarConf]);
     }
   }
 
@@ -135,7 +135,7 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
     const SsrArtifacts = require('./webpack/plugin.ssr-artifacts');
 
     chain.plugin('ssr-artifacts')
-      .use(SsrArtifacts, [quasarConf, api]);
+      .use(SsrArtifacts, [api, quasarConf]);
   }
 };
 

@@ -3,7 +3,7 @@ const { getIndexHtml } = require('./html-template');
 const appRequire = require('../helpers/app-require');
 
 module.exports = class SsrProdArtifacts {
-  constructor(cfg = {}, api) {
+  constructor(api, cfg = {}) {
     this.cfg = cfg;
     this.api = api;
   }
@@ -12,14 +12,12 @@ module.exports = class SsrProdArtifacts {
     const { sources, Compilation } = appRequire('webpack', this.api.appDir);
 
     compiler.hooks.thisCompilation.tap('ssr-artifacts', (compilation) => {
-      compilation.hooks.processAssets.tapPromise(
-        { name: 'ssr-artifacts', state: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL }, async () => {
-          const htmlTemplate = await this.getHtmlTemplate();
-          const content = new sources.RawSource(htmlTemplate);
+      compilation.hooks.processAssets.tapPromise({ name: 'ssr-artifacts', state: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL }, async () => {
+        const htmlTemplate = await this.getHtmlTemplate();
+        const content = new sources.RawSource(htmlTemplate);
 
-          compilation.emitAsset('../render-template.js', content);
-        },
-      );
+        compilation.emitAsset('../render-template.js', content);
+      });
     });
   }
 
