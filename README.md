@@ -2,7 +2,7 @@
 
 > A [Quasar v1](https://v1.quasar.dev/) App Extension to generate static site AKA [JAMstack](https://jamstack.org).
 
-![npm](https://img.shields.io/npm/v/quasar-app-extension-ssg/quasar-v1) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/freddy38510/quasar-app-extension-ssg) ![GitHub repo size](https://img.shields.io/github/repo-size/freddy38510/quasar-app-extension-ssg) ![npm](https://img.shields.io/npm/dt/quasar-app-extension-ssg) ![David](https://img.shields.io/david/freddy38510/quasar-app-extension-ssg) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+![npm](https://img.shields.io/npm/v/quasar-app-extension-ssg/quasar-v1) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/freddy38510/quasar-app-extension-ssg) ![GitHub repo size](https://img.shields.io/github/repo-size/freddy38510/quasar-app-extension-ssg) ![npm](https://img.shields.io/npm/dt/quasar-app-extension-ssg) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 This project was created to fill this [Feature Request](https://github.com/quasarframework/quasar/issues/2299) from Quasar.
 
