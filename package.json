@@ -39,7 +39,7 @@
     }
   },
   "dependencies": {
-    "beastcss": "1.0.5",
+    "beastcss": "1.0.6",
     "chalk": "4.1.2",
     "ci-info": "3.3.0",
     "compression": "1.7.4",
