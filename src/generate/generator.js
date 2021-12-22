@@ -40,7 +40,7 @@ class Generator {
         ? {
           ...quasarConf.__html.minifyOptions,
           ignoreCustomComments: [/^(\]?|\[?)$/], // avoid client-side hydration error
-          collapseWhitespace: false, // avoid client-side hydration error
+          conservativeCollapse: true, // avoid client-side hydration error
           minifyCSS: true,
         } : false,
       build: {

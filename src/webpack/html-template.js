@@ -74,6 +74,7 @@ module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
     html = fillBaseTag(html, cfg.build.appBase);
   }
 
+  /*
   if (cfg.build.minify) {
     const { minify } = appRequire('html-minifier', api.appDir);
     html = minify(html, {
@@ -83,6 +84,7 @@ module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
       ignoreCustomFragments: [/{{ [\s\S]*? }}/],
     });
   }
+  */
 
   return html;
 };
