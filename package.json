@@ -72,7 +72,7 @@
     "commitizen": "4.2.4",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "7.32.0",
-    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-config-airbnb-base": "15.0.0",
     "eslint-loader": "4.0.2",
     "eslint-plugin-import": "2.25.3",
     "eslint-plugin-vue": "7.20.0",
