@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.4](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.1.3...v3.1.4) (2021-12-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency beastcss to v1.0.6 ([#115](https://github.com/freddy38510/quasar-app-extension-ssg/issues/115)) ([c1b67e6](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c1b67e675dbdc9973e987418f1da64b9fb2cb941))
+* **deps:** update dependency ci-info to v3.3.0 ([#103](https://github.com/freddy38510/quasar-app-extension-ssg/issues/103)) ([354b843](https://github.com/freddy38510/quasar-app-extension-ssg/commit/354b843a8bbaa764b73f30f358a3374dedde4078))
+* **deps:** update dependency crc to v4 ([#117](https://github.com/freddy38510/quasar-app-extension-ssg/issues/117)) ([4d264b4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/4d264b461283c01341a189e2f0441dab1758a300))
+* **deps:** update dependency express to v4.17.2 ([#116](https://github.com/freddy38510/quasar-app-extension-ssg/issues/116)) ([98ad12a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/98ad12a93f518cab357b9fafc8046f69408ee9ff))
+* **deps:** update dependency node-html-parser to v5.1.0 ([#89](https://github.com/freddy38510/quasar-app-extension-ssg/issues/89)) ([b937161](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b937161ce2b197fca757787c42b73400e4896bd3))
+* parse correctly the value of the inlineCriticalCss option ([3cfb6b5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3cfb6b5f3ca2b34276419eee5c51a6ad5a56af6a))
+
 ### [3.1.3](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.1.2...v3.1.3) (2021-12-20)
 
 
