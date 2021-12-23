@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.1.4...v2.2.0) (2021-12-23)
+
+
+### Features
+
+* make process.env.STATIC available when running ssg command ([c557506](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c557506b4c49ab416a29cf321050a8249578ccc7))
+
+
+### Bug Fixes
+
+* **deps:** update dependency beastcss to v1.0.5 ([#96](https://github.com/freddy38510/quasar-app-extension-ssg/issues/96)) ([5010cb8](https://github.com/freddy38510/quasar-app-extension-ssg/commit/5010cb832b9c66547937f987c4e2dcf124d18c80))
+* **deps:** update dependency beastcss to v1.0.6 ([#119](https://github.com/freddy38510/quasar-app-extension-ssg/issues/119)) ([4505a85](https://github.com/freddy38510/quasar-app-extension-ssg/commit/4505a85b604093c423e8d4b4721d85b36e69dfe6))
+* **deps:** update dependency ci-info to v3.3.0 ([#104](https://github.com/freddy38510/quasar-app-extension-ssg/issues/104)) ([d6c626f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d6c626f883a6af2fe0b33a76cd7927e7ae91d8c2))
+* **deps:** update dependency crc to v4 ([#121](https://github.com/freddy38510/quasar-app-extension-ssg/issues/121)) ([b936f8d](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b936f8d9f53ff215fe1a8d1797da695ae4b8d5a4))
+* **deps:** update dependency express to v4.17.2 ([#120](https://github.com/freddy38510/quasar-app-extension-ssg/issues/120)) ([e778b34](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e778b34bea9db6bf16100cdf737369ea486d7d2e))
+* **deps:** update dependency node-html-parser to v5.1.0 ([#90](https://github.com/freddy38510/quasar-app-extension-ssg/issues/90)) ([739c9db](https://github.com/freddy38510/quasar-app-extension-ssg/commit/739c9db7117da03c576509676f758b9295f4eb42))
+* **deps:** update dependency open to v8.4.0 ([#75](https://github.com/freddy38510/quasar-app-extension-ssg/issues/75)) ([e34604d](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e34604d222267a7b62480e367ee5400c78719e23))
+* **deps:** update dependency workbox-build to v6.4.2 ([#102](https://github.com/freddy38510/quasar-app-extension-ssg/issues/102)) ([db4bfc2](https://github.com/freddy38510/quasar-app-extension-ssg/commit/db4bfc2f5709c533c363139be860d1596ff1796e))
+* initialize app routes from compiled router ([5b33845](https://github.com/freddy38510/quasar-app-extension-ssg/commit/5b33845747f5578eabac74a051701489b8856b9a))
+* parse correctly the value of the inlineCriticalCss and inlineCssFromSFC options ([61cadaa](https://github.com/freddy38510/quasar-app-extension-ssg/commit/61cadaaf16307b54e81565f6d8fb7ec1c5abdc9b))
+* remove html template minification to avoid parsing errors ([f0b23e5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/f0b23e5502a613f680b3f7c0c338116b2c66744a))
+* **workbox:** generate sourcemap only when debug mode is enabled ([9870ba1](https://github.com/freddy38510/quasar-app-extension-ssg/commit/9870ba1a9dc43a7e3e9062583df32faa31041aab))
+
 ### [2.1.4](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.1.3...v2.1.4) (2021-10-18)
 
 
