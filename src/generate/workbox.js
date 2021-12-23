@@ -18,14 +18,17 @@ function getAssetsExtensions (quasarConf) {
 }
 */
 
-module.exports = async function buildWorkbox(api, quasarConf) {
+module.exports = async function buildWorkbox(api, quasarConf, ctx) {
   const mode = quasarConf.pwa.workboxPluginMode;
-  let defaultOptions = {};
+  let defaultOptions = {
+    sourcemap: ctx.debug,
+  };
 
   if (mode === 'GenerateSW') {
     const pkg = require(api.resolve.app('package.json'));
 
     defaultOptions = {
+      ...defaultOptions,
       cacheId: pkg.name || 'quasar-pwa-app',
       globPatterns: ['**/*.{js,css,html}'], // precache js, css and html files
       // globPatterns: [`**/*.{${getAssetsExtensions(quasarConf)},html}`], // precache all assets

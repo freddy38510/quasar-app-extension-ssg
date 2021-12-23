@@ -28,7 +28,7 @@ module.exports = async (api, quasarConf, ctx) => {
     const buildWorkbox = require('./workbox.js');
 
     try {
-      await buildWorkbox(api, quasarConf);
+      await buildWorkbox(api, quasarConf, ctx);
     } catch (error) {
       warn(error.stack || error);
 
