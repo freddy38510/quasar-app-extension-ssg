@@ -5,7 +5,6 @@ const Beastcss = require('beastcss');
 const fs = require('fs').promises;
 const { minify } = require('html-minifier');
 const path = require('path');
-const esmRequire = require('jiti')(__filename);
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright, redBright } = require('chalk');
@@ -107,8 +106,7 @@ class Generator {
   }
 
   async getAppRoutes() {
-    const routerPath = this.api.resolve.app(this.options.sourceFiles.router);
-    const { default: createRouter } = esmRequire(routerPath);
+    const { default: createRouter } = require(path.join(this.options.buildDir, 'compiled-router.js'));
 
     const router = typeof createRouter === 'function' ? await createRouter() : createRouter;
 

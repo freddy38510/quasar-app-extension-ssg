@@ -5,6 +5,7 @@
 const chalk = require('chalk');
 const pify = require('pify');
 const appRequire = require('../helpers/app-require');
+const Router = require('./router');
 const banner = require('../helpers/banner').build;
 const { log, warn } = require('../helpers/logger');
 const { hasNewQuasarConfFile } = require('../helpers/compatibility');
@@ -75,6 +76,10 @@ module.exports = async function build(
     log(`Extension(${hook.api.extId}): Running beforeBuild hook...`);
     await hook.fn(hook.api, { quasarConf });
   });
+
+  const routerBuilder = new Router(api, quasarConf, webpackConfig.server);
+
+  const routerBuildPromise = routerBuilder.build();
 
   log('Compiling with Webpack...');
 
@@ -156,4 +161,6 @@ module.exports = async function build(
     log(`Extension(${hook.api.extId}): Running afterBuild hook...`);
     await hook.fn(hook.api, { quasarConf });
   });
+
+  await routerBuildPromise;
 };
