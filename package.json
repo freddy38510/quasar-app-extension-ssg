@@ -65,8 +65,8 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.16.5",
-    "@commitlint/cli": "15.0.0",
-    "@commitlint/config-conventional": "15.0.0",
+    "@commitlint/cli": "16.1.0",
+    "@commitlint/config-conventional": "16.0.0",
     "@quasar/babel-preset-app": "2.0.1",
     "@vue/eslint-config-standard": "6.1.0",
     "commitizen": "4.2.4",
