@@ -4653,10 +4653,10 @@ rollup@^2.43.1:
   optionalDependencies:
     fsevents "~2.3.2"
 
-route-cache@0.4.5:
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/route-cache/-/route-cache-0.4.5.tgz#4969495f8a673739e90d2add49eba1fcfb8f8dc2"
-  integrity sha512-Z/nUYyOJR7hEMS+om8Qao5XKC/FmMQNeTuTukDvT7dZNrsw37OZXgsiN7gxZBhxB5JJtYi5NfTjHVteadetFug==
+route-cache@0.4.7:
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/route-cache/-/route-cache-0.4.7.tgz#66dab6f18eb5638a252e0a05158e1d9b68ddb6fe"
+  integrity sha512-yPGnBG4wDUVRC7cMhqmK3C9Zzpqft1vseIcaHmmHLkB97fzzlY2Nzd8mlpFcrqBazZK79dfC2ZqOhy0FShMvkw==
   dependencies:
     debug "3.1.0"
     lru-cache "4.0.1"
