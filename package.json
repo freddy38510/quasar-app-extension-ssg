@@ -58,7 +58,7 @@
     "open": "8.4.0",
     "pify": "5.0.0",
     "route-cache": "0.4.5",
-    "selfsigned": "1.10.11",
+    "selfsigned": "2.0.0",
     "semver": "7.3.5",
     "webpack-merge": "5.8.0",
     "workbox-build": "6.4.2"
