@@ -1,4 +1,4 @@
-const crc32 = require('crc/lib/crc32');
+const crc32 = require('crc/crc32');
 const fs = require('fs-extra');
 const path = require('path');
 const esmRequire = require('jiti')(__filename);
