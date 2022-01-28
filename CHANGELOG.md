@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.0...v3.2.1) (2022-01-28)
+
+
+### Bug Fixes
+
+* auto-install vue deps when @quasar/app dep is greater than or equal to v3.3.0 and not v3.0.0 ([1c8a6f6](https://github.com/freddy38510/quasar-app-extension-ssg/commit/1c8a6f65dc4e93b55b46a5eedce7b806ee03215f))
+
 ## [3.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.1.4...v3.2.0) (2022-01-28)
 
 
