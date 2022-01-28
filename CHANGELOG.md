@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.2.0...v2.3.0) (2022-01-28)
+
+
+### Features
+
+* **banner:** add quasar-app-extension-ssg package version to console output ([387690b](https://github.com/freddy38510/quasar-app-extension-ssg/commit/387690b59939dc8569060cb5e7730a6d9cf3eafe))
+
+
+### Bug Fixes
+
+* **deps:** update dependency crc to v4.1.0 ([#147](https://github.com/freddy38510/quasar-app-extension-ssg/issues/147)) ([88fa127](https://github.com/freddy38510/quasar-app-extension-ssg/commit/88fa12795e86932728f6579258ad0bbb21c26e01))
+* **deps:** update dependency globby to v12.2.0 ([#150](https://github.com/freddy38510/quasar-app-extension-ssg/issues/150)) ([fee4953](https://github.com/freddy38510/quasar-app-extension-ssg/commit/fee4953ffd55118037e824ea5efdcc3c1e3d5d58))
+* **deps:** update dependency globby to v13 ([#152](https://github.com/freddy38510/quasar-app-extension-ssg/issues/152)) ([10483c0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/10483c02a09baf5d4a45d25ab37271e80709ad94))
+* **deps:** update dependency jiti to v1.12.15 ([#160](https://github.com/freddy38510/quasar-app-extension-ssg/issues/160)) ([5a4924e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/5a4924e67651155cf5d114b1cf9e283e2bb3173d))
+* **deps:** update dependency node-html-parser to v5.2.0 ([#148](https://github.com/freddy38510/quasar-app-extension-ssg/issues/148)) ([d211bfc](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d211bfc8bd2af21dc78d8fdb965411aa8cdd704d))
+* **deps:** update dependency route-cache to v0.4.7 ([#144](https://github.com/freddy38510/quasar-app-extension-ssg/issues/144)) ([70f71c9](https://github.com/freddy38510/quasar-app-extension-ssg/commit/70f71c9a6484d25bca018d38ff26fc6fefa3959b))
+* **deps:** update dependency selfsigned to v2 ([#137](https://github.com/freddy38510/quasar-app-extension-ssg/issues/137)) ([599569f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/599569f6b42bb65d377b473464c228b3fd56cd3f))
+* **snapshot:** load module crc32 from its new path introduced by dependency crc v4.1.0 ([e34d602](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e34d602aec104319fd0f866fdfd5812f9b9121ed)), closes [#153](https://github.com/freddy38510/quasar-app-extension-ssg/issues/153)
+
 ## [2.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.1.4...v2.2.0) (2021-12-23)
 
 
