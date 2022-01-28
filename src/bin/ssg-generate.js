@@ -47,7 +47,7 @@ module.exports = async function run(api) {
   const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir);
   const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir);
 
-  if (semverSatisfies(api.getPackageVersion('@quasar/app'), '>=3.0.0')) {
+  if (semverSatisfies(api.getPackageVersion('@quasar/app'), '>=3.3.0')) {
     const ensureVueDeps = appRequire('@quasar/app/lib/helpers/ensure-vue-deps', api.appDir);
     ensureVueDeps();
   }
