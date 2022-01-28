@@ -10,6 +10,7 @@ const appRequire = require('./app-require');
 module.exports.build = function build(api, ctx, cmd, details) {
   const quasarVersion = api.getPackageVersion('quasar');
   const cliAppVersion = api.getPackageVersion('@quasar/app');
+  const ssgVersion = api.getPackageVersion('quasar-app-extension-ssg');
 
   let banner = '';
 
@@ -21,6 +22,7 @@ module.exports.build = function build(api, ctx, cmd, details) {
 
   banner += `
  Build mode........ ${green(ctx.modeName)}
+ Pkg ssg........... ${green(`v${ssgVersion}`)}
  Pkg quasar........ ${green(`v${quasarVersion}`)}
  Pkg @quasar/app... ${green(`v${cliAppVersion}`)}
  Pkg webpack....... ${green('v5')}
@@ -44,6 +46,7 @@ module.exports.build = function build(api, ctx, cmd, details) {
 module.exports.generate = function generate(api, ctx, cmd, details) {
   const quasarVersion = api.getPackageVersion('quasar');
   const cliAppVersion = api.getPackageVersion('@quasar/app');
+  const ssgVersion = api.getPackageVersion('quasar-app-extension-ssg');
 
   let banner = '';
 
@@ -53,6 +56,7 @@ module.exports.generate = function generate(api, ctx, cmd, details) {
     banner += `\n ${underline('Generate succeeded')}\n`;
 
     banner += `
+ Pkg ssg........... ${green(`v${ssgVersion}`)}
  Pkg quasar........ ${green(`v${quasarVersion}`)}
  Pkg @quasar/app... ${green(`v${cliAppVersion}`)}
  Debugging......... ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}`;
