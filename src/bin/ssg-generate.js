@@ -12,6 +12,7 @@ if (process.env.STATIC === void 0) {
 }
 
 const parseArgs = require('minimist');
+const semverSatisfies = require('semver/functions/satisfies');
 const appRequire = require('../helpers/app-require');
 const { fatal } = require('../helpers/logger');
 const ensureBuild = require('../build/ensureBuild');
@@ -45,6 +46,11 @@ module.exports = async function run(api) {
   const QuasarConfFile = appRequire('@quasar/app/lib/quasar-conf-file', api.appDir);
   const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir);
   const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir);
+
+  if (semverSatisfies(api.getPackageVersion('@quasar/app'), '>=3.0.0')) {
+    const ensureVueDeps = appRequire('@quasar/app/lib/helpers/ensure-vue-deps', api.appDir);
+    ensureVueDeps();
+  }
 
   const installMissing = appRequire(
     '@quasar/app/lib/mode/install-missing',
