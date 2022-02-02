@@ -1588,15 +1588,15 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
-beastcss@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.0.6.tgz#92ac425601cc3a69dd6e6935946d9bd390e05ed5"
-  integrity sha512-c6R/zfJJx0t5tik0rQll1qZoNl7RvcH2cHsPnDkzQ6+tr044yJIteUDqt+E3kBcc2KmYRtC+tYDwPygcBL86AQ==
+beastcss@1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.0.7.tgz#a69ddcb6d9a32dc2b6bf1695e8b0f0d6a33146de"
+  integrity sha512-NHnKD90qu8wrOvpyyzsAhcFXhKzKj8D3n8VI2d/CKIBdNRJnkKN9Y7aoY6TePSomtYMOJ/VNmHbOalzvBPCmRg==
   dependencies:
     "@freddy38510/dropcss" "2.3.2"
     chalk "4.1.2"
-    fast-glob "3.2.7"
-    node-html-parser "5.1.0"
+    fast-glob "3.2.11"
+    node-html-parser "5.2.0"
 
 big.js@^5.2.2:
   version "5.2.2"
@@ -2799,18 +2799,7 @@ fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
 
-fast-glob@3.2.7:
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
-  integrity sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==
-  dependencies:
-    "@nodelib/fs.stat" "^2.0.2"
-    "@nodelib/fs.walk" "^1.2.3"
-    glob-parent "^5.1.2"
-    merge2 "^1.3.0"
-    micromatch "^4.0.4"
-
-fast-glob@^3.2.11:
+fast-glob@3.2.11, fast-glob@^3.2.11:
   version "3.2.11"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.11.tgz#a1172ad95ceb8a16e20caa5c5e56480e5129c1d9"
   integrity sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==
@@ -4071,14 +4060,6 @@ node-forge@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.2.1.tgz#82794919071ef2eb5c509293325cec8afd0fd53c"
   integrity sha512-Fcvtbb+zBcZXbTTVwqGA5W+MKBj56UjVRevvchv5XrcyXbmNdesfZL37nlcWOfpgHhgmxApw3tQbTr4CqNmX4w==
-
-node-html-parser@5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/node-html-parser/-/node-html-parser-5.1.0.tgz#753f5a60cdfe6d027c15857cb817df592c18c998"
-  integrity sha512-l6C1Gf1o7YuxeMGa17PypEez/rj+ii3q4/NZG37nRmWSLDjHyB0WNrlE4h2UW92D0JSfUSfu+lOvxThttVe7Jw==
-  dependencies:
-    css-select "^4.1.3"
-    he "1.2.0"
 
 node-html-parser@5.2.0:
   version "5.2.0"
