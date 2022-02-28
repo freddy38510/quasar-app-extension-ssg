@@ -20,19 +20,18 @@ const {
 
 class Generator {
   constructor(api, quasarConf, ctx) {
-    const createRenderer = appRequire(
-      '@quasar/ssr-helpers/create-renderer',
-      api.appDir,
-    );
+    const createRenderer = require('./create-renderer');
     const { renderToString } = appRequire('@vue/server-renderer', api.appDir);
     const serverManifest = require(`${quasarConf.build.distDir}/quasar.server-manifest.json`);
     const clientManifest = require(`${quasarConf.build.distDir}/quasar.client-manifest.json`);
     const renderTemplate = require(`${quasarConf.build.distDir}/render-template.js`);
-    const ssrRenderer = createRenderer({
+    const ssrRenderer = createRenderer(api, {
       vueRenderToString: renderToString,
       basedir: quasarConf.build.distDir,
       serverManifest,
       clientManifest,
+      shouldPrefetch: quasarConf.ssg.shouldPrefetch,
+      shouldPreload: quasarConf.ssg.shouldPreload,
     });
 
     this.api = api;

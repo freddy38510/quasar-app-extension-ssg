@@ -78,8 +78,17 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
     conf.ssg.inlineCriticalCss = api.prompts.inlineCriticalCss;
   }
 
-  // Set body tag classes (desktop/mobile, q-ios-padding, ...) at client-side
-  // The platform used is unknown at build time when pre-rendering pages.
+
+  if (conf.ssg.shouldPrefetch === void 0) {
+    conf.ssg.shouldPrefetch = () => false;
+  }
+
+  if (conf.ssg.shouldPreload === void 0) {
+    conf.ssg.shouldPreload = (_file, asType) => ['font'].includes(asType);
+  }
+
+  // Set body tag classes (desktop/mobile, q-ios-padding, etc...) at client-side
+  // The client platform is unknown at build-time
   conf.boot.push({ server: false, path: '~quasar-app-extension-ssg/src/boot/body-classes' });
 
   conf.build.transpileDependencies.push(/quasar-app-extension-ssg[\\/]src/);
@@ -98,15 +107,26 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
 };
 
 const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, quasarConf) {
-  // workaround so that isRuntimeSsrPreHydration.value is correctly defined
-  // if fallback to SPA at first-load (routes not found)
+  const SsrArtifacts = require('./webpack/plugin.ssr-artifacts');
+  const { QuasarSSRClientPlugin } = require('./webpack/plugin.client-side');
+  const { QuasarSSRServerPlugin } = require('./webpack/plugin.server-side');
+
   // @see https://github.com/freddy38510/quasar-app-extension-ssg/issues/110
   chain.plugin('define').tap((args) => [{
     ...args[0],
     __QUASAR_SSR_PWA__: true,
   }]);
 
+  // QuasarSSRServerPlugin handles concatenated modules
+  chain.optimization
+    .concatenateModules(true);
+
   if (isClient) {
+    chain.plugin('quasar-ssr-client')
+      .use(QuasarSSRClientPlugin, [api, {
+        filename: '../quasar.client-manifest.json',
+      }]);
+
     if (!api.ctx.mode.pwa) {
       // Use webpack-html-plugin for creating html fallback file
       const injectHtml = appRequire('@quasar/app/lib/webpack/inject.html', api.appDir);
@@ -123,6 +143,7 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
       // Handle workbox after build instead of during webpack compilation
       // This way all assets could be precached, including generated html
       chain.plugins.delete('workbox');
+
       // The meta tags inserted have close tags resulting in invalid HTML markup
       chain.plugins.delete('html-pwa');
 
@@ -132,7 +153,10 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
   }
 
   if (isServer) {
-    const SsrArtifacts = require('./webpack/plugin.ssr-artifacts');
+    chain.plugin('quasar-ssr-server')
+      .use(QuasarSSRServerPlugin, [api, {
+        filename: '../quasar.server-manifest.json',
+      }]);
 
     chain.plugin('ssr-artifacts')
       .use(SsrArtifacts, [api, quasarConf]);
