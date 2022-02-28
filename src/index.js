@@ -78,6 +78,9 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
     conf.ssg.inlineCriticalCss = api.prompts.inlineCriticalCss;
   }
 
+  if (conf.ssg.inlineCssFromSFC === void 0) {
+    conf.ssg.inlineCssFromSFC = api.prompts.inlineCssFromSFC;
+  }
 
   if (conf.ssg.shouldPrefetch === void 0) {
     conf.ssg.shouldPrefetch = () => false;
@@ -120,6 +123,31 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
   // QuasarSSRServerPlugin handles concatenated modules
   chain.optimization
     .concatenateModules(true);
+
+  if (quasarConf.ssg.inlineCssFromSFC) {
+    /**
+    * replace vue-loader by @freddy38510/vue-loader
+    * which has SSR critical CSS collection support
+    * https://github.com/freddy38510/vue-loader/commit/d71c7925a3b35f658d461523cbb2b5be2aac9622
+    */
+    const { VueLoaderPlugin } = appRequire('@freddy38510/vue-loader', api.appDir);
+    const vueRule = chain.module.rule('vue');
+
+    vueRule.use('vue-loader').loader('@freddy38510/vue-loader');
+    chain.plugin('vue-loader').use(VueLoaderPlugin);
+
+    // support server-side style injection with vue-style-loader
+    require('./webpack/inject.sfc-style-rules')(api, chain, {
+      isServerBuild: isServer,
+      rtl: quasarConf.build.rtl,
+      sourceMap: quasarConf.build.sourceMap,
+      minify: quasarConf.build.minify,
+      stylusLoaderOptions: quasarConf.build.stylusLoaderOptions,
+      sassLoaderOptions: quasarConf.build.sassLoaderOptions,
+      scssLoaderOptions: quasarConf.build.scssLoaderOptions,
+      lessLoaderOptions: quasarConf.build.lessLoaderOptions,
+    });
+  }
 
   if (isClient) {
     chain.plugin('quasar-ssr-client')

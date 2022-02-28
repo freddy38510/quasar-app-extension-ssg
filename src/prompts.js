@@ -55,5 +55,12 @@ module.exports = function prompts() {
         'Inline critical css and async load the rest ?',
       default: true,
     },
+    {
+      name: 'inlineCssFromSFC',
+      type: 'confirm',
+      message:
+        'Inline CSS from Vue SFC <style> blocks ?',
+      default: false,
+    },
   ];
 };
