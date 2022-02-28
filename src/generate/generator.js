@@ -310,13 +310,13 @@ class Generator {
   }
 
   createBeastcssLogger() {
-    return {
-      info: (msg, route) => this.beastcssLogs[route].push({ level: 'info', msg }),
-      warn: (msg, route) => this.beastcssLogs[route].push({ level: 'warn', msg }),
-      error: (msg, route) => this.beastcssLogs[route].push({ level: 'error', msg }),
-      trace: (msg, route) => this.beastcssLogs[route].push({ level: 'trace', msg }),
-      debug: (msg, route) => this.beastcssLogs[route].push({ level: 'debug', msg }),
-    };
+    const logger = {};
+
+    ['info', 'warn', 'error', 'trace', 'debug'].forEach((level) => {
+      logger[level] = (msg, route) => this.beastcssLogs[route].push({ level, msg });
+    });
+
+    return logger;
   }
 }
 
