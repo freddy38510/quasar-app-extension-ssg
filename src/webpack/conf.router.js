@@ -1,9 +1,9 @@
 const appRequire = require('../helpers/app-require');
 
-module.exports = (api, quasarConf, webpackConf) => {
-  const webpack = appRequire('webpack', api.appDir);
+module.exports = ({ appDir, resolve }, quasarConf, webpackConf) => {
+  const webpack = appRequire('webpack', appDir);
 
-  const entryFile = api.resolve.app(quasarConf.sourceFiles.router);
+  const entryFile = resolve.app(quasarConf.sourceFiles.router);
 
   const newConf = { ...webpackConf };
 
