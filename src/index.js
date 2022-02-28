@@ -159,9 +159,6 @@ module.exports = function run(api) {
     api.chainWebpack((chain, { isClient, isServer }) => {
       chainWebpack(chain, { isClient, isServer }, api, quasarConf);
     });
-
-    // Webserver is not used with SSG
-    api.chainWebpackWebserver((chain) => chain.plugins.delete('progress'));
   } else {
     api.extendQuasarConf((conf) => {
       conf.build.env.STATIC = false;
