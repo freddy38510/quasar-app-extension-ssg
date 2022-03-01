@@ -391,6 +391,48 @@ ssg: {
 }
 ```
 
+### `shouldPreload`
+
+:new: _Added in [v3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0)_
+
+Type: `Function`
+
+A function to control what files should have <link rel="preload"> resource hints generated.
+
+By default, only Fonts files will be preloaded.
+
+Example to preload other types of assets:
+
+```javascript
+ssg: {
+  shouldPreload: (file, type, ext) => {
+    // type is inferred based on the file extension.
+    // https://fetch.spec.whatwg.org/#concept-request-destination
+    if (type === "script" || type === "style") {
+      return true;
+    }
+    if (type === "font" && ext === "woff2") {
+      // only preload woff2 fonts
+      return file;
+    }
+    if (type === "image") {
+      // only preload important images
+      return file === "hero.jpg";
+    }
+  };
+}
+```
+
+### `shouldPrefetch`
+
+:new: _Added in [v3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0)_
+
+Type: `Function`
+
+A function to control what files should have <link rel="prefetch"> resource hints generated.
+
+By default, no assets will be prefetched; however you can customize what to prefetch in order to better control bandwidth usage. This option expects the same function signature as shouldPreload.
+
 ### `inlineCriticalCss`
 
 Type: `Boolean`
