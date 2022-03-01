@@ -33,6 +33,8 @@ This will find and install the extension’s module. After installation is compl
 
 - `Inline critical css and async load the rest ?`: Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
 
+- `Inline CSS from Vue SFC <style> blocks ?`: Inline css from Vue Single-File Component (SFC) <style> blocks.
+
 ## Uninstalling
 
 ```bash
@@ -440,6 +442,18 @@ Type: `Boolean`
 Default: `true`
 
 Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
+
+### `inlineCssFromSFC`
+
+:new: _Added in [v3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0)_
+
+Type: `Boolean`
+
+Default: `false`
+
+Inline css from Vue Single-File Component (SFC) <style> blocks.
+
+Note: This option works even if build.extractCSS is set to `true` in quasar.conf.js file.
 
 ### `onRouteRendered(html, route, distDir)`
 
