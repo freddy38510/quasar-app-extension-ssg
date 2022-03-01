@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.3.0...v3.3.1) (2022-03-01)
+
+
+### Bug Fixes
+
+* do not preload any assets by default ([1b30006](https://github.com/freddy38510/quasar-app-extension-ssg/commit/1b30006804e7f9736ec57a8b496b9468f69f6d2b))
+* pass missing argument extension to shouldPrefetch option ([864a833](https://github.com/freddy38510/quasar-app-extension-ssg/commit/864a8331c06b5fbf26942aa70541772b72556e46))
+
 ## [3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0) (2022-03-01)
 
 
