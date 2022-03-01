@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0) (2022-03-01)
+
+
+### Features
+
+* allow custom beastcss options ([4ab1a35](https://github.com/freddy38510/quasar-app-extension-ssg/commit/4ab1a35c3331cc5a936fc07a9ee82c044b4f5702))
+* keep account of brand colors from quasar.conf.js file at server-side ([67648d5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/67648d56e848fc23f6e943fda7cdccd93efe2d0d))
+* provide an option to inline css from Vue SFC <style> blocks ([854d84f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/854d84f6f2f8253a60d42bb9f33429370af998b2))
+* provide shouldPreload and shouldPrefetch options from custom SSR renderer ([761a62c](https://github.com/freddy38510/quasar-app-extension-ssg/commit/761a62c7787532c96d3c1cbb145c33055798adb0)), closes [#175](https://github.com/freddy38510/quasar-app-extension-ssg/issues/175)
+
+
+### Bug Fixes
+
+* **deps:** update dependency beastcss to v1.0.7 ([#167](https://github.com/freddy38510/quasar-app-extension-ssg/issues/167)) ([86baf08](https://github.com/freddy38510/quasar-app-extension-ssg/commit/86baf0872b3d99d9300e916a868013e25298805c))
+* **deps:** update dependency express to v4.17.3 ([#177](https://github.com/freddy38510/quasar-app-extension-ssg/issues/177)) ([3da2e74](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3da2e74fb12942b05483ba8dfea54ccca7f80b1c))
+* **deps:** update dependency fs-extra to v10.0.1 ([#178](https://github.com/freddy38510/quasar-app-extension-ssg/issues/178)) ([cee8513](https://github.com/freddy38510/quasar-app-extension-ssg/commit/cee8513495f2937cb95d96052f7976edb9cd8eef))
+* **deps:** update dependency globby to v13.1.1 ([#165](https://github.com/freddy38510/quasar-app-extension-ssg/issues/165)) ([5a89296](https://github.com/freddy38510/quasar-app-extension-ssg/commit/5a89296591d7ca7b390410d5eb9a3d9197026c0c))
+* **deps:** update dependency jiti to v1.13.0 ([#180](https://github.com/freddy38510/quasar-app-extension-ssg/issues/180)) ([fe1c3b0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/fe1c3b0f64cc565cb73f6231238b2b97a8042845))
+* **deps:** update dependency workbox-build to v6.5.0 ([#181](https://github.com/freddy38510/quasar-app-extension-ssg/issues/181)) ([f7b9015](https://github.com/freddy38510/quasar-app-extension-ssg/commit/f7b9015fb980aa1052b6b52bc212fb548289a5ec))
+
 ### [3.2.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.0...v3.2.1) (2022-01-28)
 
 
