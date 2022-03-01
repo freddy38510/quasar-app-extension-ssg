@@ -437,11 +437,24 @@ By default, no assets will be prefetched; however you can customize what to pref
 
 ### `inlineCriticalCss`
 
-Type: `Boolean`
+Type: `Boolean` or `Object`
 
 Default: `true`
 
 Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
+
+You can customize the default beastcss options by passing it to `inlineCriticalCss`.
+
+Example:
+
+```javascript
+ssg: {
+  inlineCriticalCss: {
+    internal: false,
+    merge: false,
+  };
+}
+```
 
 ### `inlineCssFromSFC`
 
