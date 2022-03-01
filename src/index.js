@@ -87,7 +87,7 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
   }
 
   if (conf.ssg.shouldPreload === void 0) {
-    conf.ssg.shouldPreload = (_file, asType) => ['font'].includes(asType);
+    conf.ssg.shouldPreload = () => false;
   }
 
   // Set body tag classes (desktop/mobile, q-ios-padding, etc...) at client-side
