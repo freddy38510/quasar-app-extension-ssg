@@ -161,8 +161,10 @@ function renderPrefetchLinks(renderContext, usedAsyncFiles) {
 
   const alreadyRendered = (file) => usedAsyncFiles && usedAsyncFiles.some((f) => f.file === file);
 
-  return renderContext.prefetchFiles.map(({ file, fileWithoutQuery, asType }) => {
-    if (!shouldPrefetch(fileWithoutQuery, asType)) {
+  return renderContext.prefetchFiles.map(({
+    file, fileWithoutQuery, asType, extension,
+  }) => {
+    if (!shouldPrefetch(fileWithoutQuery, asType, extension)) {
       return '';
     }
 
