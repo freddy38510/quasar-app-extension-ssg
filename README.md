@@ -401,9 +401,9 @@ Type: `Function`
 
 A function to control what files should have <link rel="preload"> resource hints generated.
 
-By default, only Fonts files will be preloaded.
+By default, no assets will be preloaded.
 
-Example to preload other types of assets:
+Example to preload assets:
 
 ```javascript
 ssg: {
