@@ -59,9 +59,10 @@ class Generator {
 
     if (quasarConf.ssg.inlineCriticalCss) {
       this.beastcss = new Beastcss({
+        noscriptFallback: false,
+        ...quasarConf.ssg.inlineCriticalCss || {},
         path: quasarConf.ssg.__distDir,
         publicPath: quasarConf.build.publicPath,
-        noscriptFallback: false,
         logger: this.createBeastcssLogger(),
       });
 
