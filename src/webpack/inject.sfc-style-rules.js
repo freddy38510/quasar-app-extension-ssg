@@ -161,7 +161,7 @@ function create(
 
     rule.use('postcss-loader')
       .loader('postcss-loader')
-      .options(postCssOpts);
+      .options({ postcssOptions: postCssOpts });
   }
 
   if (loader && !rule.uses.has(loader)) {
