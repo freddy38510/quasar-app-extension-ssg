@@ -130,29 +130,30 @@ function create(
     delete require.cache[postCssConfigFile];
     // eslint-disable-next-line import/no-dynamic-require
     const postCssConfig = require(postCssConfigFile);
-    const postCssOpts = { sourceMap: pref.sourceMap, ...postCssConfig };
+    let postCssOpts = { sourceMap: pref.sourceMap, ...postCssConfig };
 
     if (pref.rtl) {
       const postcssRTLOptions = pref.rtl === true ? {} : pref.rtl;
       if (
         typeof postCssConfig.plugins !== 'function'
-        && (postcssRTLOptions.fromRTL === true || typeof postcssRTLOptions === 'function')
+        && (postcssRTLOptions.source === 'ltr' || typeof postcssRTLOptions === 'function')
       ) {
-        postCssConfig.plugins = postCssConfig.plugins || [];
-        postCssOpts.plugins = (ctx) => {
-          const plugins = [...postCssConfig.plugins];
-          const isClientCSS = quasarCssPaths.every(
-            (item) => ctx.resourcePath.indexOf(item) === -1,
-          );
+        const originalPlugins = postCssOpts.plugins ? [...postCssOpts.plugins] : [];
+
+        postCssOpts = (ctx) => {
+          const plugins = [...originalPlugins];
+          const isClientCSS = quasarCssPaths.every((item) => ctx.resourcePath.indexOf(item) === -1);
+
           plugins.push(postcssRTL(
             typeof postcssRTLOptions === 'function'
               ? postcssRTLOptions(isClientCSS, ctx.resourcePath)
               : {
                 ...postcssRTLOptions,
-                fromRTL: isClientCSS,
+                source: isClientCSS ? 'rtl' : 'ltr',
               },
           ));
-          return plugins;
+
+          return { sourceMap: pref.sourceMap, plugins };
         };
       } else {
         postCssOpts.plugins.push(postcssRTL(postcssRTLOptions));
@@ -234,7 +235,7 @@ module.exports = function injectSFCStyleRules({ appDir, resolve }, chain, pref) 
     cssnano = appRequire('cssnano', appDir);
   }
   if (pref.rtl) {
-    postcssRTL = appRequire('postcss-rtl', appDir);
+    postcssRTL = appRequire('postcss-rtlcss', appDir);
   }
 
   const args = {
