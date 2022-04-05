@@ -1,4 +1,3 @@
-/* eslint-disable no-void */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
 const fs = require('fs');
@@ -48,7 +47,6 @@ function resolveNewQuasarPackage() {
         paths: [appDir],
       }),
     );
-    // eslint-disable-next-line no-empty
   } catch (e) {
     isResolved = false;
   }
@@ -78,9 +76,9 @@ hasNewQuasarPackage = resolveNewQuasarPackage();
 module.exports = {
   appDir,
   quasarConfigFilename: resolve(appDir, quasarConfigFilename),
-  appPackage: (name) => join(appDir, 'node_modules', getPackageName(name)),
-  appModule: (module) => join(appDir, 'node_modules', getModulePath(module)),
   resolve: {
     app: (dir) => join(appDir, dir),
+    appPackage: (name) => join(appDir, 'node_modules', getPackageName(name)),
+    appModule: (module) => join(appDir, 'node_modules', getModulePath(module)),
   },
 };
