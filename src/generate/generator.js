@@ -19,13 +19,13 @@ const {
 } = require('../helpers/normalize-slash');
 
 class Generator {
-  constructor(api, quasarConf, ctx) {
+  constructor(quasarConf, ctx) {
     const createRenderer = require('./create-renderer');
-    const { renderToString } = appRequire('@vue/server-renderer', api.appDir);
+    const { renderToString } = appRequire('@vue/server-renderer');
     const serverManifest = require(`${quasarConf.build.distDir}/quasar.server-manifest.json`);
     const clientManifest = require(`${quasarConf.build.distDir}/quasar.client-manifest.json`);
     const renderTemplate = require(`${quasarConf.build.distDir}/render-template.js`);
-    const ssrRenderer = createRenderer(api, {
+    const ssrRenderer = createRenderer({
       vueRenderToString: renderToString,
       basedir: quasarConf.build.distDir,
       serverManifest,
@@ -33,8 +33,6 @@ class Generator {
       shouldPrefetch: quasarConf.ssg.shouldPrefetch,
       shouldPreload: quasarConf.ssg.shouldPreload,
     });
-
-    this.api = api;
 
     this.ssrRender = async (ssrContext) => ssrRenderer(ssrContext, renderTemplate);
 

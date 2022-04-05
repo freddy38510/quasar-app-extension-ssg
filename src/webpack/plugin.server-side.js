@@ -75,8 +75,7 @@ function getServerManifest(compilation) {
 module.exports.getServerManifest = getServerManifest;
 
 module.exports.QuasarSSRServerPlugin = class QuasarSSRServerPlugin {
-  constructor({ appDir }, cfg = {}) {
-    this.appDir = appDir;
+  constructor(cfg = {}) {
     this.cfg = cfg;
   }
 
@@ -96,7 +95,7 @@ module.exports.QuasarSSRServerPlugin = class QuasarSSRServerPlugin {
       );
     }
 
-    const { sources, Compilation } = appRequire('webpack', this.appDir);
+    const { sources, Compilation } = appRequire('webpack');
 
     compiler.hooks.thisCompilation.tap('quasar-ssr-server-plugin', (compilation) => {
       if (compilation.compiler !== compiler) {

@@ -130,14 +130,14 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
     * which has SSR critical CSS collection support
     * https://github.com/freddy38510/vue-loader/commit/d71c7925a3b35f658d461523cbb2b5be2aac9622
     */
-    const { VueLoaderPlugin } = appRequire('@freddy38510/vue-loader', api.appDir);
+    const { VueLoaderPlugin } = appRequire('@freddy38510/vue-loader');
     const vueRule = chain.module.rule('vue');
 
     vueRule.use('vue-loader').loader('@freddy38510/vue-loader');
     chain.plugin('vue-loader').use(VueLoaderPlugin);
 
     // support server-side style injection with vue-style-loader
-    require('./webpack/inject.sfc-style-rules')(api, chain, {
+    require('./webpack/inject.sfc-style-rules')(chain, {
       isServerBuild: isServer,
       rtl: quasarConf.build.rtl,
       sourceMap: quasarConf.build.sourceMap,
@@ -151,13 +151,13 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
 
   if (isClient) {
     chain.plugin('quasar-ssr-client')
-      .use(QuasarSSRClientPlugin, [api, {
+      .use(QuasarSSRClientPlugin, [{
         filename: '../quasar.client-manifest.json',
       }]);
 
     if (!api.ctx.mode.pwa) {
       // Use webpack-html-plugin for creating html fallback file
-      const injectHtml = appRequire('@quasar/app/lib/webpack/inject.html', api.appDir);
+      const injectHtml = appRequire('@quasar/app/lib/webpack/inject.html');
 
       const cfg = merge(quasarConf, {
         build: {
@@ -176,18 +176,18 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
       chain.plugins.delete('html-pwa');
 
       chain.plugin('html-pwa')
-        .use(HtmlPwaPlugin.plugin, [api, quasarConf]);
+        .use(HtmlPwaPlugin.plugin, [quasarConf]);
     }
   }
 
   if (isServer) {
     chain.plugin('quasar-ssr-server')
-      .use(QuasarSSRServerPlugin, [api, {
+      .use(QuasarSSRServerPlugin, [{
         filename: '../quasar.server-manifest.json',
       }]);
 
     chain.plugin('ssr-artifacts')
-      .use(SsrArtifacts, [api, quasarConf]);
+      .use(SsrArtifacts, [quasarConf]);
   }
 };
 
@@ -202,9 +202,9 @@ module.exports = function run(api) {
 
   api.registerCommand('generate', () => require('./bin/ssg-generate')(api));
 
-  api.registerCommand('inspect', () => require('./bin/inspect')(api));
+  api.registerCommand('inspect', () => require('./bin/inspect'));
 
-  api.registerCommand('serve', () => require('./bin/server')(api));
+  api.registerCommand('serve', () => require('./bin/server'));
 
   // Apply SSG modifications only if current process has "ssg" argument
   if (api.ctx.prod && api.ctx.mode.ssr && process.argv[2] === 'ssg') {

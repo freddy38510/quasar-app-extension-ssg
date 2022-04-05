@@ -51,20 +51,20 @@ function splitWebpackConfig(webpackConfigs) {
   ];
 }
 
-async function inspect(api) {
-  appRequire('@quasar/app/lib/helpers/banner', api.appDir)(argv, 'production');
+async function inspect() {
+  appRequire('@quasar/app/lib/helpers/banner')(argv, 'production');
 
-  const getMode = appRequire('@quasar/app/lib/mode/index', api.appDir);
+  const getMode = appRequire('@quasar/app/lib/mode/index');
   if (getMode('ssr').isInstalled !== true) {
     fatal('Requested mode for inspection is NOT installed.');
   }
 
-  const QuasarConfFile = appRequire('@quasar/app/lib/quasar-conf-file', api.appDir);
+  const QuasarConfFile = appRequire('@quasar/app/lib/quasar-conf-file');
 
   const depth = parseInt(argv.depth, 10) || Infinity;
 
-  const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir);
-  const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir);
+  const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner');
+  const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx');
 
   const ctx = getQuasarCtx({
     mode: 'ssr',
@@ -116,6 +116,4 @@ async function inspect(api) {
   console.log(`\n  Depth used: ${depth}. You can change it with "-d" parameter.\n`);
 }
 
-module.exports = (api) => {
-  inspect(api);
-};
+inspect();

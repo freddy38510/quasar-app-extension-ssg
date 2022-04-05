@@ -108,11 +108,11 @@ function injectAssetsIntoHtml(html, assetTags) {
   return html;
 }
 
-module.exports.getIndexHtml = function getIndexHtml(appDir, template, cfg) {
-  const compileTemplate = appRequire('lodash.template', appDir);
-  const HtmlWebpackPlugin = appRequire('html-webpack-plugin', appDir);
+module.exports.getIndexHtml = function getIndexHtml(template, cfg) {
+  const compileTemplate = appRequire('lodash.template');
+  const HtmlWebpackPlugin = appRequire('html-webpack-plugin');
 
-  const { fillBaseTag } = appRequire('@quasar/app/lib/webpack/plugin.html-addons', appDir);
+  const { fillBaseTag } = appRequire('@quasar/app/lib/webpack/plugin.html-addons');
   const { fillPwaTags } = require('./plugin.html-pwa');
 
   const compiled = compileTemplate(template);
@@ -137,7 +137,7 @@ module.exports.getIndexHtml = function getIndexHtml(appDir, template, cfg) {
 
   /*
   if (cfg.build.minify) {
-    const { minify } = appRequire('html-minifier', appDir);
+    const { minify } = appRequire('html-minifier');
     html = minify(html, {
       // eslint-disable-next-line no-underscore-dangle
       ...cfg.__html.minifyOptions,

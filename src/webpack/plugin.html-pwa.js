@@ -85,13 +85,12 @@ function fillPwaTags(data, {
 module.exports.fillPwaTags = fillPwaTags;
 
 module.exports.plugin = class HtmlPwaPlugin {
-  constructor({ appDir }, cfg = {}) {
-    this.appDir = appDir;
+  constructor(cfg = {}) {
     this.cfg = cfg;
   }
 
   apply(compiler) {
-    const HtmlWebpackPlugin = appRequire('html-webpack-plugin', this.appDir);
+    const HtmlWebpackPlugin = appRequire('html-webpack-plugin');
 
     compiler.hooks.compilation.tap('webpack-plugin-html-pwa', (compilation) => {
       const hooks = HtmlWebpackPlugin.getHooks(compilation);

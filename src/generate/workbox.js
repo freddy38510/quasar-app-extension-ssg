@@ -9,14 +9,15 @@ const { generateSW, injectManifest } = require('workbox-build');
 const {
   info, error, fatal, success, warn,
 } = require('../helpers/logger');
+const { resolve } = require('../helpers/app-paths');
 
-const getOptions = (api, quasarConf, mode, ctx) => {
+const getOptions = (quasarConf, mode, ctx) => {
   let defaultOptions = {
     sourcemap: ctx.debug,
   };
 
   if (mode === 'GenerateSW') {
-    const pkg = require(api.resolve.app('package.json'));
+    const pkg = require(resolve.app('package.json'));
 
     defaultOptions = {
       cacheId: pkg.name || 'quasar-pwa-app',
@@ -29,7 +30,7 @@ const getOptions = (api, quasarConf, mode, ctx) => {
     };
   } else {
     defaultOptions = {
-      swSrc: api.resolve.app('.quasar/pwa/service-worker.js'),
+      swSrc: resolve.app('.quasar/pwa/service-worker.js'),
     };
   }
 
@@ -96,11 +97,11 @@ const handleSuccess = (isGenerateSW, size, count, diffTime) => {
   success(`${prefix}, which will precache ${count} files, totaling ${(size / 1024).toFixed(2)} kB • ${diffTime}ms`, 'DONE');
 };
 
-module.exports = async function buildWorkbox(api, quasarConf, ctx) {
+module.exports = async function buildWorkbox(quasarConf, ctx) {
   const mode = quasarConf.pwa.workboxPluginMode;
   const isGenerateSW = mode === 'GenerateSW';
   const pill = `[${mode}]`;
-  const opts = getOptions(api, quasarConf, mode, ctx);
+  const opts = getOptions(quasarConf, mode, ctx);
   const startTime = +new Date();
 
   let size = 0;

@@ -31,16 +31,13 @@ module.exports = async function build(
 ) {
   banner(api, ctx, 'build');
 
-  const { printWebpackErrors } = appRequire('@quasar/app/lib/helpers/print-webpack-issue', api.appDir);
+  const { printWebpackErrors } = appRequire('@quasar/app/lib/helpers/print-webpack-issue');
 
-  const webpack = appRequire('webpack', api.appDir);
+  const webpack = appRequire('webpack');
 
-  const Generator = appRequire('@quasar/app/lib/generator', api.appDir);
-  const artifacts = appRequire('@quasar/app/lib/artifacts', api.appDir);
-  const regenerateTypesFeatureFlags = appRequire(
-    '@quasar/app/lib/helpers/types-feature-flags',
-    api.appDir,
-  );
+  const Generator = appRequire('@quasar/app/lib/generator');
+  const artifacts = appRequire('@quasar/app/lib/artifacts');
+  const regenerateTypesFeatureFlags = appRequire('@quasar/app/lib/helpers/types-feature-flags');
 
   const generator = new Generator(quasarConfFile);
 
@@ -68,14 +65,14 @@ module.exports = async function build(
   // can only know it after parsing the quasar.config.js file
   if (quasarConfFile.ctx.mode.pwa === true) {
     // need to build the custom service worker before renderer
-    const Runner = appRequire('@quasar/app/lib/pwa', api.appDir);
+    const Runner = appRequire('@quasar/app/lib/pwa');
 
     Runner.init(ctx);
 
     await Runner.build(quasarConfFile);
   }
 
-  const routerBuilder = new Router(api, quasarConf, webpackConf.serverSide);
+  const routerBuilder = new Router(quasarConf, webpackConf.serverSide);
 
   const routerBuildPromise = routerBuilder.build();
 
@@ -110,10 +107,7 @@ module.exports = async function build(
     fatal(`for "${webpackData.name[index]}" with ${summary}. Please check the log above.`, 'COMPILATION FAILED');
   });
 
-  const printWebpackStats = appRequire(
-    '@quasar/app/lib/helpers/print-webpack-stats',
-    api.appDir,
-  );
+  const printWebpackStats = appRequire('@quasar/app/lib/helpers/print-webpack-stats');
 
   console.log();
 

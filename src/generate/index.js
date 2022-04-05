@@ -12,9 +12,9 @@ const {
 const { printGeneratorErrors, printGeneratorWarnings } = require('../helpers/print-generator-issue');
 
 module.exports = async (api, quasarConf, ctx) => {
-  const { add, clean } = appRequire('@quasar/app/lib/artifacts', api.appDir);
+  const { add, clean } = appRequire('@quasar/app/lib/artifacts');
 
-  const generator = new Generator(api, quasarConf, ctx);
+  const generator = new Generator(quasarConf, ctx);
 
   const state = {
     errors: [],
@@ -84,7 +84,7 @@ module.exports = async (api, quasarConf, ctx) => {
   if (quasarConf.ctx.mode.pwa) {
     const buildWorkbox = require('./workbox.js');
 
-    await buildWorkbox(api, quasarConf, ctx);
+    await buildWorkbox(quasarConf, ctx);
   }
 
   if (typeof quasarConf.ssg.afterGenerate === 'function') {

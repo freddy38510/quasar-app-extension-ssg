@@ -200,9 +200,9 @@ function renderStyles(renderContext, usedAsyncFiles, ssrContext) {
 
 const autoRemove = 'var currentScript=document.currentScript;currentScript.parentNode.removeChild(currentScript)';
 
-function renderVuexState(ssrContext, nonce, appDir) {
+function renderVuexState(ssrContext, nonce) {
   if (ssrContext.state !== void 0) {
-    const serialize = appRequire('serialize-javascript', appDir);
+    const serialize = appRequire('serialize-javascript');
 
     const state = serialize(ssrContext.state, { isJSON: true });
 
@@ -225,8 +225,8 @@ function renderScripts(renderContext, usedAsyncFiles, nonce) {
   return '';
 }
 
-module.exports = function createRenderer({ appDir }, opts) {
-  const createBundle = appRequire('@quasar/ssr-helpers/lib/create-bundle', appDir);
+module.exports = function createRenderer(opts) {
+  const createBundle = appRequire('@quasar/ssr-helpers/lib/create-bundle');
 
   const renderContext = createRenderContext(opts);
   const { evaluateEntry, rewriteErrorTrace } = createBundle(opts);
@@ -279,7 +279,7 @@ module.exports = function createRenderer({ appDir }, opts) {
         resourceHints: renderResourceHints(renderContext, usedAsyncFiles),
         resourceStyles: renderStyles(renderContext, usedAsyncFiles, ssrContext),
         resourceScripts: (
-          renderVuexState(ssrContext, nonce, appDir)
+          renderVuexState(ssrContext, nonce)
           + renderScripts(renderContext, usedAsyncFiles, nonce)
         ),
       });

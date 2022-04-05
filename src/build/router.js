@@ -2,14 +2,15 @@ const webpackConf = require('../webpack/conf.router');
 const appRequire = require('../helpers/app-require');
 
 class Router {
-  constructor(api, quasarConf, webpackConfServerSide) {
-    this.webpack = appRequire('webpack', api.appDir);
-    this.webpackConf = webpackConf(api, quasarConf, webpackConfServerSide);
+  constructor(quasarConf, webpackConfServerSide) {
+    this.webpackConf = webpackConf(quasarConf, webpackConfServerSide);
   }
 
   build() {
+    const webpack = appRequire('webpack');
+
     return new Promise((resolve) => {
-      this.webpack(this.webpackConf, async () => resolve());
+      webpack(this.webpackConf, async () => resolve());
     });
   }
 }

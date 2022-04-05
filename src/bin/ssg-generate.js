@@ -43,16 +43,16 @@ if (argv.help) {
 }
 
 module.exports = async function run(api) {
-  const QuasarConfFile = appRequire('@quasar/app/lib/quasar-conf-file', api.appDir);
-  const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir);
-  const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir);
+  const QuasarConfFile = appRequire('@quasar/app/lib/quasar-conf-file');
+  const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx');
+  const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner');
 
   if (api.hasPackage('@quasar/app', '>=3.3.0')) {
     const ensureVueDeps = appRequire('@quasar/app/lib/helpers/ensure-vue-deps');
     ensureVueDeps();
   }
 
-  const installMissing = appRequire('@quasar/app/lib/mode/install-missing', api.appDir);
+  const installMissing = appRequire('@quasar/app/lib/mode/install-missing');
 
   const ctx = getQuasarCtx({
     mode: 'ssr',

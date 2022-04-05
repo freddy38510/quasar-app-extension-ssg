@@ -12,8 +12,8 @@ const hotUpdateRE = /\.hot-update\.js$/;
 
 const uniq = (arr) => [...new Set(arr)];
 
-function getClientManifest(appDir, compilation) {
-  const hash = appRequire('hash-sum', appDir);
+function getClientManifest(compilation) {
+  const hash = appRequire('hash-sum');
 
   const stats = compilation.getStats().toJson();
 
@@ -93,7 +93,6 @@ function getClientManifest(appDir, compilation) {
 
       // find all asset modules associated with the same chunk
       assetModules.forEach((assetModule) => {
-        // assetModule.chunks.some((chunkId) => console.log(chunkId === cid));
         if (assetModule.chunks.includes(cid)) {
           // eslint-disable-next-line prefer-spread
           files.push.apply(files, assetModule.assets.map(fileToIndex));
@@ -106,13 +105,12 @@ function getClientManifest(appDir, compilation) {
 }
 
 module.exports.QuasarSSRClientPlugin = class QuasarSSRClientPlugin {
-  constructor({ appDir }, cfg = {}) {
-    this.appDir = appDir;
+  constructor(cfg = {}) {
     this.cfg = cfg;
   }
 
   apply(compiler) {
-    const { sources, Compilation } = appRequire('webpack', this.appDir);
+    const { sources, Compilation } = appRequire('webpack');
 
     compiler.hooks.thisCompilation.tap('quasar-ssr-client-plugin', (compilation) => {
       if (compilation.compiler !== compiler) {
@@ -123,7 +121,7 @@ module.exports.QuasarSSRClientPlugin = class QuasarSSRClientPlugin {
       compilation.hooks.processAssets.tapAsync(
         { name: 'quasar-ssr-client-plugin', stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL },
         (_, callback) => {
-          const manifest = getClientManifest(this.appDir, compilation);
+          const manifest = getClientManifest(compilation);
           const json = JSON.stringify(manifest, null, 2);
           const content = new sources.RawSource(json);
 
