@@ -207,7 +207,7 @@ module.exports = function run(api) {
   api.registerCommand('serve', () => require('./bin/server'));
 
   // Apply SSG modifications only if current process has "ssg" argument
-  if (api.ctx.prod && api.ctx.mode.ssr && process.argv[2] === 'ssg') {
+  if (process.argv[2] === 'ssg') {
     let quasarConf = {};
 
     api.extendQuasarConf((conf) => {
