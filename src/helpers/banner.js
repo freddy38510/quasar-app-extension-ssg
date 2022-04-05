@@ -34,7 +34,7 @@ module.exports.build = function build(api, ctx, cmd, details) {
     banner += `\n Transpiled JS..... ${details.transpileBanner}`;
     banner += `
  ${hasNewQuasarPkg ? '==========================' : '=================='}
- ${hasNewQuasarPkg ? 'Output folder.....' : 'Output folder.............'} ${green(details.outputFolder)}`;
+ ${hasNewQuasarPkg ? 'Output folder.............' : 'Output folder.....'} ${green(details.outputFolder)}`;
   }
 
   console.log(`${banner}\n`);
