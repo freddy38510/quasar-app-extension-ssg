@@ -29,7 +29,7 @@ function getAppDir() {
     dir = normalize(join(dir, '..'));
   }
 
-  const { fatal } = require('./helpers/logger');
+  const { fatal } = require('./logger');
 
   return fatal('Error. This command must be executed inside a Quasar project folder.');
 }
