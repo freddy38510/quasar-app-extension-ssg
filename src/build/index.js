@@ -65,7 +65,7 @@ module.exports = async function build(
 
   // using quasarConfFile.ctx instead of argv.mode
   // because SSR might also have PWA enabled but we
-  // can only know it after parsing the quasar.conf file
+  // can only know it after parsing the quasar.config.js file
   if (quasarConfFile.ctx.mode.pwa === true) {
     // need to build the custom service worker before renderer
     const Runner = appRequire('@quasar/app/lib/pwa', api.appDir);

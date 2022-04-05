@@ -4,6 +4,7 @@
 
 const parseArgs = require('minimist');
 const appRequire = require('../helpers/app-require');
+const { quasarConfigFilename } = require('../helpers/app-paths');
 const { log, fatal } = require('../helpers/logger');
 
 const argv = parseArgs(process.argv.slice(2), {
@@ -82,7 +83,7 @@ async function inspect(api) {
     await quasarConfFile.prepare();
   } catch (e) {
     console.log(e);
-    fatal('quasar.conf.js has JS errors', 'FAIL');
+    fatal(`${quasarConfigFilename} has JS errors`, 'FAIL');
   }
 
   await quasarConfFile.compile();

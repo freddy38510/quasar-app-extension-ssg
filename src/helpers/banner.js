@@ -20,25 +20,27 @@ module.exports.build = function build(api, ctx, cmd, details) {
     banner += `\n ${bgBlue('================== BUILD ==================')} \n`;
   }
 
+  const hasNewQuasarPkg = api.hasPackage('@quasar/app', '<3.4.0');
+
   banner += `
- Build mode........ ${green(ctx.modeName)}
- Pkg ssg........... ${green(`v${ssgVersion}`)}
- Pkg quasar........ ${green(`v${quasarVersion}`)}
- Pkg @quasar/app... ${green(`v${cliAppVersion}`)}
- Pkg webpack....... ${green('v5')}
- Debugging......... ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}`;
+ ${hasNewQuasarPkg ? 'Build mode................' : 'Build mode........'} ${green(ctx.modeName)}
+ ${hasNewQuasarPkg ? 'Pkg ssg...................' : 'Pkg ssg...........'} ${green(`v${ssgVersion}`)}
+ ${hasNewQuasarPkg ? 'Pkg quasar................' : 'Pkg quasar........'} ${green(`v${quasarVersion}`)}
+ ${hasNewQuasarPkg ? 'Pkg @quasar/app-webpack...' : 'Pkg @quasar/app...'} ${green(`v${cliAppVersion}`)}
+ ${hasNewQuasarPkg ? 'Pkg webpack...............' : 'Pkg webpack.......'} ${green('v5')}
+ ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}`;
 
   if (details) {
     banner += `\n Transpiled JS..... ${details.transpileBanner}`;
     banner += `
- ==================
- Output folder..... ${green(details.outputFolder)}`;
+ ${hasNewQuasarPkg ? '==========================' : '=================='}
+ ${hasNewQuasarPkg ? 'Output folder.....' : 'Output folder.............'} ${green(details.outputFolder)}`;
   }
 
-  console.log(`${banner}`);
+  console.log(`${banner}\n`);
 
   if (!details) {
-    const { getBrowsersBanner } = appRequire('@quasar/app/lib/helpers/browsers-support', api.appDir);
+    const { getBrowsersBanner } = appRequire('@quasar/app/lib/helpers/browsers-support');
     console.log(getBrowsersBanner());
   }
 };
@@ -55,18 +57,16 @@ module.exports.generate = function generate(api, ctx, cmd, details) {
 
     banner += `\n ${underline('Generate succeeded')}\n`;
 
-    banner += `
- Pkg ssg........... ${green(`v${ssgVersion}`)}
- Pkg quasar........ ${green(`v${quasarVersion}`)}
- Pkg @quasar/app... ${green(`v${cliAppVersion}`)}
- Debugging......... ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}`;
-
-    banner += `\n SPA fallback...... ${green(details.fallback)}`;
+    const hasNewQuasarPkg = api.hasPackage('@quasar/app', '<3.4.0');
 
     banner += `
- ==================
- Output folder..... ${green(details.outputFolder)}`;
-    banner += `
+ ${hasNewQuasarPkg ? 'Pkg ssg...................' : 'Pkg ssg...........'} ${green(`v${ssgVersion}`)}
+ ${hasNewQuasarPkg ? 'Pkg quasar................' : 'Pkg quasar........'} ${green(`v${quasarVersion}`)}
+ ${hasNewQuasarPkg ? 'Pkg @quasar/app-webpack...' : 'Pkg @quasar/app...'} ${green(`v${cliAppVersion}`)}
+ ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}
+ ${hasNewQuasarPkg ? 'SPA fallback..............' : 'SPA fallback......'} ${green(details.fallback)}
+ ${hasNewQuasarPkg ? '==========================' : '=================='}
+ ${hasNewQuasarPkg ? 'Output folder.............' : 'Output folder.....'} ${green(details.outputFolder)}
 
  Tip: You can use "$ quasar ssg serve ${relativeOutputFolder}" command to create
       a static web server for testing. Type "$ quasar ssg serve -h" for parameters.`;

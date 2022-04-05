@@ -12,8 +12,8 @@ if (process.env.STATIC === void 0) {
 }
 
 const parseArgs = require('minimist');
-const semverSatisfies = require('semver/functions/satisfies');
 const appRequire = require('../helpers/app-require');
+const { quasarConfigFilename } = require('../helpers/app-paths');
 const { fatal } = require('../helpers/logger');
 const ensureBuild = require('../build/ensureBuild');
 
@@ -47,19 +47,12 @@ module.exports = async function run(api) {
   const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir);
   const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir);
 
-  if (semverSatisfies(api.getPackageVersion('@quasar/app'), '>=3.3.0')) {
-    const ensureVueDeps = appRequire('@quasar/app/lib/helpers/ensure-vue-deps', api.appDir);
+  if (api.hasPackage('@quasar/app', '>=3.3.0')) {
+    const ensureVueDeps = appRequire('@quasar/app/lib/helpers/ensure-vue-deps');
     ensureVueDeps();
   }
 
-  const installMissing = appRequire(
-    '@quasar/app/lib/mode/install-missing',
-    api.appDir,
-  );
-
-  const SSRDirectives = appRequire('@quasar/app/lib/ssr/ssr-directives', api.appDir);
-
-  const directivesBuilder = new SSRDirectives();
+  const installMissing = appRequire('@quasar/app/lib/mode/install-missing', api.appDir);
 
   const ctx = getQuasarCtx({
     mode: 'ssr',
@@ -75,7 +68,13 @@ module.exports = async function run(api) {
 
   await extensionRunner.registerExtensions(ctx);
 
-  await directivesBuilder.build();
+  if (api.hasPackage('@quasar/app', '< 3.4.0')) {
+    const SSRDirectives = appRequire('@quasar/app/lib/ssr/ssr-directives');
+
+    const directivesBuilder = new SSRDirectives();
+
+    await directivesBuilder.build();
+  }
 
   const quasarConfFile = new QuasarConfFile(ctx, argv);
 
@@ -83,7 +82,7 @@ module.exports = async function run(api) {
     await quasarConfFile.prepare();
   } catch (e) {
     console.error(e);
-    fatal('quasar.conf.js has JS errors', 'FAIL');
+    fatal(`${quasarConfigFilename} has JS errors`, 'FAIL');
   }
 
   await quasarConfFile.compile();

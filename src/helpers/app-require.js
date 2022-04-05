@@ -1,5 +1,5 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-const { join } = require('path');
+const { appModule } = require('./app-paths');
 
-module.exports = (module, appDir) => require(join(appDir, 'node_modules', module));
+module.exports = (module) => require(appModule(module));
