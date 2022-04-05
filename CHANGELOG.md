@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.3.1...v3.4.0) (2022-04-05)
+
+
+### Features
+
+* support @quasar/app-webpack v3.4.0 ([93ae832](https://github.com/freddy38510/quasar-app-extension-ssg/commit/93ae83255a72802a8b171fadc95b5e706e3bf31a)), closes [#200](https://github.com/freddy38510/quasar-app-extension-ssg/issues/200)
+
+
+### Bug Fixes
+
+* alleviates the conditions necessary to apply the ssg changes ([a5b26dd](https://github.com/freddy38510/quasar-app-extension-ssg/commit/a5b26dd3552bc39bbe478501c68f03001c757e9a))
+* **deps:** update dependency minimist to v1.2.6 [security] ([#192](https://github.com/freddy38510/quasar-app-extension-ssg/issues/192)) ([a1ec758](https://github.com/freddy38510/quasar-app-extension-ssg/commit/a1ec7586d737f6191388e6a394a7115bf891f8f6))
+* **deps:** update dependency node-html-parser to v5.3.3 ([#198](https://github.com/freddy38510/quasar-app-extension-ssg/issues/198)) ([d895177](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d8951778ae0f84b308ed6e847ae8b6af6eb68da4))
+* **deps:** update dependency selfsigned to v2.0.1 ([#194](https://github.com/freddy38510/quasar-app-extension-ssg/issues/194)) ([1d4052d](https://github.com/freddy38510/quasar-app-extension-ssg/commit/1d4052d5d752921a3961926b0d7884e8575ab81c))
+* **deps:** update dependency workbox-build to v6.5.2 ([#187](https://github.com/freddy38510/quasar-app-extension-ssg/issues/187)) ([c21bec0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c21bec043641faf1b1f0d826416f83ae39029539))
+* **inlineCssFromSFC:** support rtl transformation with build > rtl > source ([b74de1e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b74de1e3ba893efaeee49dd457664e7dcab60927))
+* update postcss-loader option structure ([31e736a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/31e736a13db6bbc4b43a1351cf252ad45bedfed4)), closes [#188](https://github.com/freddy38510/quasar-app-extension-ssg/issues/188)
+
 ### [3.3.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.3.0...v3.3.1) (2022-03-01)
 
 
