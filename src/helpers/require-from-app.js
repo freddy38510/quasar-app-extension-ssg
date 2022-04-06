@@ -2,4 +2,4 @@
 /* eslint-disable global-require */
 const { resolve } = require('./app-paths');
 
-module.exports = (module) => require(resolve.appModule(module));
+module.exports = (module) => require(resolve.appNodeModule(module));

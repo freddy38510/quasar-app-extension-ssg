@@ -1,11 +1,11 @@
 /* eslint-disable global-require */
 const path = require('path');
 const { merge } = require('webpack-merge');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const { resolve } = require('../helpers/app-paths');
 
 const postCssConfigFile = resolve.app('.postcssrc.js');
-const cssVariables = appRequire('@quasar/app/lib/helpers/css-variables');
+const cssVariables = requireFromApp('@quasar/app/lib/helpers/css-variables');
 
 const quasarCssPaths = [
   path.join('node_modules', 'quasar', 'dist'),
@@ -118,7 +118,7 @@ function create(
         sourceMap: pref.sourceMap,
         postcssOptions: {
           plugins: [
-            appRequire('cssnano')({
+            requireFromApp('cssnano')({
               preset: ['default', {
                 mergeLonghand: false,
                 convertValues: false,
@@ -140,7 +140,7 @@ function create(
     let postCssOpts = { sourceMap: pref.sourceMap, ...postCssConfig };
 
     if (pref.rtl) {
-      const postcssRTL = appRequire('postcss-rtlcss');
+      const postcssRTL = requireFromApp('postcss-rtlcss');
 
       const postcssRTLOptions = pref.rtl === true ? {} : pref.rtl;
       if (

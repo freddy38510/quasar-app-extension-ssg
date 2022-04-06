@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 const pify = require('pify');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const Router = require('./router');
 const banner = require('../helpers/banner').build;
 const { log, fatal } = require('../helpers/logger');
@@ -31,13 +31,13 @@ module.exports = async function build(
 ) {
   banner(api, ctx, 'build');
 
-  const { printWebpackErrors } = appRequire('@quasar/app/lib/helpers/print-webpack-issue');
+  const { printWebpackErrors } = requireFromApp('@quasar/app/lib/helpers/print-webpack-issue');
 
-  const webpack = appRequire('webpack');
+  const webpack = requireFromApp('webpack');
 
-  const Generator = appRequire('@quasar/app/lib/generator');
-  const artifacts = appRequire('@quasar/app/lib/artifacts');
-  const regenerateTypesFeatureFlags = appRequire('@quasar/app/lib/helpers/types-feature-flags');
+  const Generator = requireFromApp('@quasar/app/lib/generator');
+  const artifacts = requireFromApp('@quasar/app/lib/artifacts');
+  const regenerateTypesFeatureFlags = requireFromApp('@quasar/app/lib/helpers/types-feature-flags');
 
   const generator = new Generator(quasarConfFile);
 
@@ -65,7 +65,7 @@ module.exports = async function build(
   // can only know it after parsing the quasar.config.js file
   if (quasarConfFile.ctx.mode.pwa === true) {
     // need to build the custom service worker before renderer
-    const Runner = appRequire('@quasar/app/lib/pwa');
+    const Runner = requireFromApp('@quasar/app/lib/pwa');
 
     Runner.init(ctx);
 
@@ -107,7 +107,7 @@ module.exports = async function build(
     fatal(`for "${webpackData.name[index]}" with ${summary}. Please check the log above.`, 'COMPILATION FAILED');
   });
 
-  const printWebpackStats = appRequire('@quasar/app/lib/helpers/print-webpack-stats');
+  const printWebpackStats = requireFromApp('@quasar/app/lib/helpers/print-webpack-stats');
 
   console.log();
 

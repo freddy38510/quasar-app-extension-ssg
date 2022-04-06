@@ -1,5 +1,5 @@
 const webpackConf = require('../webpack/conf.router');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 
 class Router {
   constructor(quasarConf, webpackConfServerSide) {
@@ -7,7 +7,7 @@ class Router {
   }
 
   build() {
-    const webpack = appRequire('webpack');
+    const webpack = requireFromApp('webpack');
 
     return new Promise((resolve) => {
       webpack(this.webpackConf, async () => resolve());

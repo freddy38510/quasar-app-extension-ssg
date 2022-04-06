@@ -12,7 +12,7 @@ if (process.env.STATIC === void 0) {
 }
 
 const parseArgs = require('minimist');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const { quasarConfigFilename } = require('../helpers/app-paths');
 const { fatal } = require('../helpers/logger');
 const ensureBuild = require('../build/ensureBuild');
@@ -43,16 +43,16 @@ if (argv.help) {
 }
 
 module.exports = async function run(api) {
-  const QuasarConfFile = appRequire('@quasar/app/lib/quasar-conf-file');
-  const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx');
-  const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner');
+  const QuasarConfFile = requireFromApp('@quasar/app/lib/quasar-conf-file');
+  const getQuasarCtx = requireFromApp('@quasar/app/lib/helpers/get-quasar-ctx');
+  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
 
   if (api.hasPackage('@quasar/app', '>=3.3.0')) {
-    const ensureVueDeps = appRequire('@quasar/app/lib/helpers/ensure-vue-deps');
+    const ensureVueDeps = requireFromApp('@quasar/app/lib/helpers/ensure-vue-deps');
     ensureVueDeps();
   }
 
-  const installMissing = appRequire('@quasar/app/lib/mode/install-missing');
+  const installMissing = requireFromApp('@quasar/app/lib/mode/install-missing');
 
   const ctx = getQuasarCtx({
     mode: 'ssr',
@@ -69,7 +69,7 @@ module.exports = async function run(api) {
   await extensionRunner.registerExtensions(ctx);
 
   if (api.hasPackage('@quasar/app', '< 3.4.0')) {
-    const SSRDirectives = appRequire('@quasar/app/lib/ssr/ssr-directives');
+    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
 
     const directivesBuilder = new SSRDirectives();
 

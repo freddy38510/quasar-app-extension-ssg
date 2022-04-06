@@ -3,7 +3,7 @@
  * Forked from vue-server-renderer/client-plugin.js v2.6.14 NPM package
  */
 
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const getAssetName = require('../helpers/get-asset-name');
 
 const jsCssRE = /\.(js|css)(\?[^.]+)?$/;
@@ -13,7 +13,7 @@ const hotUpdateRE = /\.hot-update\.js$/;
 const uniq = (arr) => [...new Set(arr)];
 
 function getClientManifest(compilation) {
-  const hash = appRequire('hash-sum');
+  const hash = requireFromApp('hash-sum');
 
   const stats = compilation.getStats().toJson();
 
@@ -110,7 +110,7 @@ module.exports.QuasarSSRClientPlugin = class QuasarSSRClientPlugin {
   }
 
   apply(compiler) {
-    const { sources, Compilation } = appRequire('webpack');
+    const { sources, Compilation } = requireFromApp('webpack');
 
     compiler.hooks.thisCompilation.tap('quasar-ssr-client-plugin', (compilation) => {
       if (compilation.compiler !== compiler) {

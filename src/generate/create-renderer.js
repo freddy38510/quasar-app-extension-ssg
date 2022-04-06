@@ -5,7 +5,7 @@
  */
 
 const { extname } = require('path');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 
 const jsRE = /\.js(\?[^.]+)?$/;
 const jsModuleRE = /\.mjs(\?[^.]+)?$/;
@@ -202,7 +202,7 @@ const autoRemove = 'var currentScript=document.currentScript;currentScript.paren
 
 function renderVuexState(ssrContext, nonce) {
   if (ssrContext.state !== void 0) {
-    const serialize = appRequire('serialize-javascript');
+    const serialize = requireFromApp('serialize-javascript');
 
     const state = serialize(ssrContext.state, { isJSON: true });
 
@@ -226,7 +226,7 @@ function renderScripts(renderContext, usedAsyncFiles, nonce) {
 }
 
 module.exports = function createRenderer(opts) {
-  const createBundle = appRequire('@quasar/ssr-helpers/lib/create-bundle');
+  const createBundle = requireFromApp('@quasar/ssr-helpers/lib/create-bundle');
 
   const renderContext = createRenderContext(opts);
   const { evaluateEntry, rewriteErrorTrace } = createBundle(opts);

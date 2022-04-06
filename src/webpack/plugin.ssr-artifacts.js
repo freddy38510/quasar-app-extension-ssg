@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 const { getIndexHtml } = require('./html-template');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const { resolve } = require('../helpers/app-paths');
 
 module.exports = class SsrProdArtifacts {
@@ -9,7 +9,7 @@ module.exports = class SsrProdArtifacts {
   }
 
   apply(compiler) {
-    const { sources, Compilation } = appRequire('webpack');
+    const { sources, Compilation } = requireFromApp('webpack');
 
     compiler.hooks.thisCompilation.tap('ssr-artifacts', (compilation) => {
       compilation.hooks.processAssets.tapPromise({ name: 'ssr-artifacts', state: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL }, async () => {

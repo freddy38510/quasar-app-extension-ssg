@@ -11,7 +11,7 @@
 
 const { join, isAbsolute } = require('path');
 const { merge } = require('webpack-merge');
-const appRequire = require('./helpers/app-require');
+const requireFromApp = require('./helpers/require-from-app');
 const getUniqueArray = require('./helpers/get-unique-array');
 
 const extendQuasarConf = function extendQuasarConf(conf, api) {
@@ -130,7 +130,7 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
     * which has SSR critical CSS collection support
     * https://github.com/freddy38510/vue-loader/commit/d71c7925a3b35f658d461523cbb2b5be2aac9622
     */
-    const { VueLoaderPlugin } = appRequire('@freddy38510/vue-loader');
+    const { VueLoaderPlugin } = requireFromApp('@freddy38510/vue-loader');
     const vueRule = chain.module.rule('vue');
 
     vueRule.use('vue-loader').loader('@freddy38510/vue-loader');
@@ -157,7 +157,7 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
 
     if (!api.ctx.mode.pwa) {
       // Use webpack-html-plugin for creating html fallback file
-      const injectHtml = appRequire('@quasar/app/lib/webpack/inject.html');
+      const injectHtml = requireFromApp('@quasar/app/lib/webpack/inject.html');
 
       const cfg = merge(quasarConf, {
         build: {

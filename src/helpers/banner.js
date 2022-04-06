@@ -5,7 +5,7 @@ const {
   green, grey, bgBlue, underline,
 } = require('chalk');
 const path = require('path');
-const appRequire = require('./app-require');
+const requireFromApp = require('./require-from-app');
 
 module.exports.build = function build(api, ctx, cmd, details) {
   const quasarVersion = api.getPackageVersion('quasar');
@@ -40,7 +40,7 @@ module.exports.build = function build(api, ctx, cmd, details) {
   console.log(`${banner}\n`);
 
   if (!details) {
-    const { getBrowsersBanner } = appRequire('@quasar/app/lib/helpers/browsers-support');
+    const { getBrowsersBanner } = requireFromApp('@quasar/app/lib/helpers/browsers-support');
     console.log(getBrowsersBanner());
   }
 };

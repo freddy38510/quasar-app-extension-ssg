@@ -4,7 +4,7 @@
 const fs = require('fs-extra');
 const { join } = require('path');
 const Generator = require('./generator');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const banner = require('../helpers/banner').generate;
 const {
   log, info, warn, error, warning, fatal, success,
@@ -12,7 +12,7 @@ const {
 const { printGeneratorErrors, printGeneratorWarnings } = require('../helpers/print-generator-issue');
 
 module.exports = async (api, quasarConf, ctx) => {
-  const { add, clean } = appRequire('@quasar/app/lib/artifacts');
+  const { add, clean } = requireFromApp('@quasar/app/lib/artifacts');
 
   const generator = new Generator(quasarConf, ctx);
 

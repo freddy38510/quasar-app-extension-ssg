@@ -3,7 +3,7 @@
  * Forked from vue-server-renderer/server-plugin.js v2.6.14 NPM package
  */
 
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const getAssetName = require('../helpers/get-asset-name');
 
 const jsRE = /\.js(\?[^.]+)?$/;
@@ -95,7 +95,7 @@ module.exports.QuasarSSRServerPlugin = class QuasarSSRServerPlugin {
       );
     }
 
-    const { sources, Compilation } = appRequire('webpack');
+    const { sources, Compilation } = requireFromApp('webpack');
 
     compiler.hooks.thisCompilation.tap('quasar-ssr-server-plugin', (compilation) => {
       if (compilation.compiler !== compiler) {

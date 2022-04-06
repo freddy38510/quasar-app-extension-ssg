@@ -109,7 +109,7 @@ if (argv.colors) {
 }
 
 const express = require('express');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 
 const microCacheSeconds = argv.micro
   ? parseInt(argv.micro, 10)
@@ -168,7 +168,7 @@ if (argv.proxy) {
   }
   file = require(file);
 
-  const { createProxyMiddleware } = appRequire('http-proxy-middleware');
+  const { createProxyMiddleware } = requireFromApp('http-proxy-middleware');
   file.forEach((entry) => {
     app.use(entry.path, createProxyMiddleware(entry.rule));
   });

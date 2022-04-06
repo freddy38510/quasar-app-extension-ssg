@@ -8,7 +8,7 @@ const Beastcss = require('beastcss');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright } = require('chalk');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const { log, logBeastcss } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
@@ -21,7 +21,7 @@ const {
 class Generator {
   constructor(quasarConf, ctx) {
     const createRenderer = require('./create-renderer');
-    const { renderToString } = appRequire('@vue/server-renderer');
+    const { renderToString } = requireFromApp('@vue/server-renderer');
     const serverManifest = require(`${quasarConf.build.distDir}/quasar.server-manifest.json`);
     const clientManifest = require(`${quasarConf.build.distDir}/quasar.client-manifest.json`);
     const renderTemplate = require(`${quasarConf.build.distDir}/render-template.js`);
