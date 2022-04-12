@@ -3,14 +3,14 @@
  * Forked from vue-server-renderer/server-plugin.js v2.6.14 NPM package
  */
 
-const requireFromApp = require('../helpers/require-from-app');
-const getAssetName = require('../helpers/get-asset-name');
+const requireFromApp = require('../../../helpers/require-from-app');
+const getAssetName = require('../../../helpers/get-asset-name');
 
 const jsRE = /\.js(\?[^.]+)?$/;
 const jsMapRE = /\.js\.map$/;
 const mapRE = /\.map$/;
 
-const banner = 'quasar-app-extension-ssg/src/webpack/webpack-server-plugin';
+const banner = 'quasar-app-extension-ssg/src/build/webpack/ssr/plugin.server-side';
 
 function warn(msg) {
   console.warn(msg ? ` [warn] ${banner} ⚠️  ${msg}` : '');

@@ -131,9 +131,9 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
 };
 
 const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, quasarConf) {
-  const SsrArtifacts = require('./webpack/plugin.ssr-artifacts');
-  const { QuasarSSRClientPlugin } = require('./webpack/plugin.client-side');
-  const { QuasarSSRServerPlugin } = require('./webpack/plugin.server-side');
+  const SsrArtifacts = require('./build/webpack/ssr/plugin.ssr-artifacts');
+  const { QuasarSSRClientPlugin } = require('./build/webpack/ssr/plugin.client-side');
+  const { QuasarSSRServerPlugin } = require('./build/webpack/ssr/plugin.server-side');
 
   // @see https://github.com/freddy38510/quasar-app-extension-ssg/issues/110
   chain.plugin('define').tap((args) => [{
@@ -158,7 +158,7 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
     chain.plugin('vue-loader').use(VueLoaderPlugin);
 
     // support server-side style injection with vue-style-loader
-    require('./webpack/inject.sfc-style-rules')(chain, {
+    require('./build/webpack/inject.sfc-style-rules')(chain, {
       isServerBuild: isServer,
       rtl: quasarConf.build.rtl,
       sourceMap: quasarConf.build.sourceMap,
@@ -188,7 +188,7 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
 
       injectHtml(chain, cfg);
     } else {
-      const HtmlPwaPlugin = require('./webpack/plugin.html-pwa');
+      const HtmlPwaPlugin = require('./build/webpack/pwa/plugin.html-pwa');
       // Handle workbox after build instead of during webpack compilation
       // This way all assets could be precached, including generated html
       chain.plugins.delete('workbox');
@@ -217,11 +217,11 @@ module.exports = function run(api) {
 
   api.compatibleWith('@quasar/app', '^3.0.0');
 
-  api.registerCommand('generate', () => require('./bin/ssg-generate')(api));
+  api.registerCommand('generate', () => require('./cmd/ssg-generate')(api));
 
-  api.registerCommand('inspect', () => require('./bin/inspect'));
+  api.registerCommand('inspect', () => require('./cmd/inspect'));
 
-  api.registerCommand('serve', () => require('./bin/server'));
+  api.registerCommand('serve', () => require('./cmd/server'));
 
   // Apply SSG modifications only if current process has "ssg" argument
   if (process.argv[2] === 'ssg') {

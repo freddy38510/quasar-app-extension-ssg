@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /* eslint-disable no-void */
 /* eslint-disable no-console */
 /* eslint-disable global-require */
@@ -15,7 +14,7 @@ const parseArgs = require('minimist');
 const requireFromApp = require('../helpers/require-from-app');
 const { quasarConfigFilename } = require('../helpers/app-paths');
 const { fatal } = require('../helpers/logger');
-const ensureBuild = require('../build/ensureBuild');
+const ensureBuild = require('../helpers/ensure-build');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {

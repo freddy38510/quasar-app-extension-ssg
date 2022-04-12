@@ -1,4 +1,4 @@
-const webpackConf = require('../webpack/conf.router');
+const webpackConf = require('./webpack/router/conf.router');
 const requireFromApp = require('../helpers/require-from-app');
 
 class Router {

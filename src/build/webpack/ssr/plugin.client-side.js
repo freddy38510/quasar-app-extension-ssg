@@ -3,8 +3,8 @@
  * Forked from vue-server-renderer/client-plugin.js v2.6.14 NPM package
  */
 
-const requireFromApp = require('../helpers/require-from-app');
-const getAssetName = require('../helpers/get-asset-name');
+const requireFromApp = require('../../../helpers/require-from-app');
+const getAssetName = require('../../../helpers/get-asset-name');
 
 const jsCssRE = /\.(js|css)(\?[^.]+)?$/;
 const swRE = /\|\w+$/;

@@ -2,9 +2,9 @@
 const destr = require('destr');
 const fs = require('fs-extra');
 const path = require('path');
-const build = require('.');
-const { log } = require('../helpers/logger');
-const { makeSnapshot, compareSnapshots } = require('./snapshot');
+const build = require('../build');
+const { log } = require('./logger');
+const { makeSnapshot, compareSnapshots } = require('../build/snapshot');
 
 async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild = false) {
   const { quasarConf } = quasarConfFile;

@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-const requireFromApp = require('../helpers/require-from-app');
+const requireFromApp = require('../../../helpers/require-from-app');
 
 function injectSsrInterpolation(html) {
   return html
@@ -113,7 +113,7 @@ module.exports.getIndexHtml = function getIndexHtml(template, cfg) {
   const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin');
 
   const { fillBaseTag } = requireFromApp('@quasar/app/lib/webpack/plugin.html-addons');
-  const { fillPwaTags } = require('./plugin.html-pwa');
+  const { fillPwaTags } = require('../pwa/plugin.html-pwa');
 
   const compiled = compileTemplate(template);
 

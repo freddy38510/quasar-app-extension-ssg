@@ -1,8 +1,8 @@
 /* eslint-disable global-require */
 const path = require('path');
 const { merge } = require('webpack-merge');
-const requireFromApp = require('../helpers/require-from-app');
-const { resolve } = require('../helpers/app-paths');
+const requireFromApp = require('../../helpers/require-from-app');
+const { resolve } = require('../../helpers/app-paths');
 
 const postCssConfigFile = resolve.app('.postcssrc.js');
 const cssVariables = requireFromApp('@quasar/app/lib/helpers/css-variables');

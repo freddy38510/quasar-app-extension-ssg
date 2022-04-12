@@ -1,5 +1,5 @@
-const requireFromApp = require('../helpers/require-from-app');
-const { resolve } = require('../helpers/app-paths');
+const requireFromApp = require('../../../helpers/require-from-app');
+const { resolve } = require('../../../helpers/app-paths');
 
 module.exports = (quasarConf, webpackConf) => {
   const webpack = requireFromApp('webpack');
@@ -35,7 +35,7 @@ module.exports = (quasarConf, webpackConf) => {
   newConf.plugins.push(
     new webpack.NormalModuleReplacementPlugin(
       /\.vue$/,
-      'quasar-app-extension-ssg/src/webpack/fake-vue-component.js',
+      'quasar-app-extension-ssg/src/build/webpack/router/fake-vue-component.js',
     ),
   );
 
