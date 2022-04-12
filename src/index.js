@@ -194,11 +194,7 @@ const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, q
 module.exports = function run(api) {
   api.compatibleWith('quasar', '^2.0.0');
 
-  if (api.hasPackage('@quasar/app', '>=3.4.0')) {
-    api.compatibleWith('@quasar/app-webpack', '^3.0.0');
-  } else {
-    api.compatibleWith('@quasar/app', '^3.0.0');
-  }
+  api.compatibleWith('@quasar/app', '^3.0.0');
 
   api.registerCommand('generate', () => require('./bin/ssg-generate')(api));
 
