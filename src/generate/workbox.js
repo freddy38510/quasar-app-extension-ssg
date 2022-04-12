@@ -30,7 +30,7 @@ const getOptions = (quasarConf, mode, ctx) => {
     };
   } else {
     defaultOptions = {
-      swSrc: resolve.app('.quasar/pwa/service-worker.js'),
+      swSrc: path.join(quasarConf.ssg.__distDir, 'service-worker.js'),
     };
   }
 

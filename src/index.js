@@ -107,6 +107,27 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
   };
 
   conf.build.env.STATIC = true;
+
+  if (conf.ssr.pwa && conf.pwa.workboxPluginMode === 'InjectManifest') {
+    let originalChain;
+
+    if (conf.pwa.chainWebpackCustomSW) {
+      originalChain = conf.pwa.chainWebpackCustomSW;
+    }
+
+    conf.pwa.chainWebpackCustomSW = ((chain, { isClient, isServer }) => {
+      chain.output
+        .clear()
+        .filename('service-worker.js')
+        .path(join(conf.ssg.buildDir, 'www'));
+
+      chain.externals();
+
+      if (typeof originalChain === 'function') {
+        originalChain(chain, { isClient, isServer });
+      }
+    });
+  }
 };
 
 const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, quasarConf) {
