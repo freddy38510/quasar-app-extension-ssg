@@ -11,9 +11,9 @@ const {
 } = require('../helpers/logger');
 const { resolve } = require('../helpers/app-paths');
 
-const getOptions = (quasarConf, mode, ctx) => {
+const getOptions = (quasarConf, mode) => {
   let defaultOptions = {
-    sourcemap: ctx.debug,
+    sourcemap: quasarConf.build.sourceMap,
   };
 
   if (mode === 'GenerateSW') {
@@ -97,11 +97,11 @@ const handleSuccess = (isGenerateSW, size, count, diffTime) => {
   success(`${prefix}, which will precache ${count} files, totaling ${(size / 1024).toFixed(2)} kB • ${diffTime}ms`, 'DONE');
 };
 
-module.exports = async function buildWorkbox(quasarConf, ctx) {
+module.exports = async function buildWorkbox(quasarConf) {
   const mode = quasarConf.pwa.workboxPluginMode;
   const isGenerateSW = mode === 'GenerateSW';
   const pill = `[${mode}]`;
-  const opts = getOptions(quasarConf, mode, ctx);
+  const opts = getOptions(quasarConf, mode);
   const startTime = +new Date();
 
   let size = 0;
