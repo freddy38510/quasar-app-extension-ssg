@@ -310,8 +310,24 @@ class Generator {
   createBeastcssLogger() {
     const logger = {};
 
+    const getColor = (level) => {
+      if (level === 'info') {
+        return require('chalk').blue;
+      }
+
+      if (level === 'warn') {
+        return require('chalk').yellow;
+      }
+
+      return require('chalk').red;
+    };
+
     ['info', 'warn', 'error', 'trace', 'debug'].forEach((level) => {
-      logger[level] = (msg, route) => this.beastcssLogs[route].push({ level, msg });
+      logger[level] = (msg, route) => this.beastcssLogs[route].push({
+        level,
+        msg,
+        color: getColor(level),
+      });
     });
 
     return logger;
