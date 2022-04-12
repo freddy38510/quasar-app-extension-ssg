@@ -14,6 +14,7 @@ const { resolve } = require('../helpers/app-paths');
 const getOptions = (quasarConf, mode) => {
   let defaultOptions = {
     sourcemap: quasarConf.build.sourceMap,
+    dontCacheBustUrlsMatching: /\.\w{8}\./,
   };
 
   if (mode === 'GenerateSW') {
