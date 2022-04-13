@@ -4,10 +4,10 @@
 /* eslint-disable no-console */
 const pify = require('pify');
 const Generator = require('./generator');
-const { splitWebpackConfig } = require('./webpack/symbols');
 const requireFromApp = require('../helpers/require-from-app');
 const { logBuildBanner } = require('../helpers/banner');
 const { log, fatal } = require('../helpers/logger');
+const { splitWebpackConfig } = require('./webpack/symbols');
 
 const webpack = requireFromApp('webpack');
 const { printWebpackErrors } = requireFromApp('@quasar/app/lib/helpers/print-webpack-issue');
@@ -27,23 +27,30 @@ function parseWebpackConfig(cfg, mode) {
 module.exports = async function build(
   api,
   quasarConfFile,
-  ctx,
   extensionRunner,
 ) {
   logBuildBanner(api, quasarConfFile.ctx);
 
+  if (api.hasPackage('@quasar/app', '< 3.4.0')) {
+    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
+
+    const directivesBuilder = new SSRDirectives();
+
+    await directivesBuilder.build();
+  }
+
+  await quasarConfFile.addWebpackConf();
+
   const generator = new Generator(quasarConfFile);
 
-  const { quasarConf } = quasarConfFile;
-  const webpackConf = await require('./webpack')(quasarConfFile.quasarConf);
-
-  quasarConfFile.webpackConf = webpackConf;
+  const { quasarConf, webpackConf } = quasarConfFile;
 
   regenerateTypesFeatureFlags(quasarConf);
 
-  const outputFolder = quasarConf.build.distDir;
+  const outputFolder = quasarConf.ssg.buildDir;
 
   artifacts.clean(outputFolder);
+
   generator.build();
 
   if (typeof quasarConf.build.beforeBuild === 'function') {
@@ -63,7 +70,7 @@ module.exports = async function build(
     // need to build the custom service worker before renderer
     const Runner = requireFromApp('@quasar/app/lib/pwa');
 
-    Runner.init(ctx);
+    Runner.init(quasarConfFile.ctx);
 
     await Runner.build(quasarConfFile);
   }

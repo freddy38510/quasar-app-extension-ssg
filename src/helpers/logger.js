@@ -10,7 +10,7 @@ const isUnicodeSupported = require('./is-unicode-supported');
 
 const dot = '•';
 const pointer = isUnicodeSupported ? '❯' : '>';
-const banner = `Extension(ssg) ${dot}`;
+const banner = `App ${dot}`;
 const greenBanner = green(banner);
 const redBanner = red(banner);
 const yellowBanner = yellow(banner);

@@ -11,10 +11,10 @@ const {
 } = require('../helpers/logger');
 const { printGeneratorErrors, printGeneratorWarnings } = require('../helpers/print-generator-issue');
 
-module.exports = async (api, quasarConf, ctx) => {
+module.exports = async (api, quasarConf) => {
   const { add, clean } = requireFromApp('@quasar/app/lib/artifacts');
 
-  const generator = new Generator(quasarConf, ctx);
+  const generator = new Generator(quasarConf);
 
   const state = {
     errors: [],
@@ -30,7 +30,7 @@ module.exports = async (api, quasarConf, ctx) => {
 
   try {
     await fs.copy(
-      join(quasarConf.build.distDir, 'www'),
+      join(quasarConf.ssg.buildDir, 'www'),
       quasarConf.ssg.__distDir,
     );
   } catch (err) {

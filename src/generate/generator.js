@@ -18,7 +18,7 @@ const {
 } = require('../helpers/normalize-slash');
 
 class Generator {
-  constructor(quasarConf, ctx) {
+  constructor(quasarConf) {
     this.render = require(path.join(quasarConf.ssg.buildDir, 'render.js'));
 
     this.options = {
@@ -35,7 +35,7 @@ class Generator {
       },
       vueRouterBase: quasarConf.build.vueRouterBase,
       sourceFiles: quasarConf.sourceFiles,
-      debug: ctx.debug,
+      debug: quasarConf.ctx.debug,
     };
 
     this.generatedRoutes = new Set();

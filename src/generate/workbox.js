@@ -31,7 +31,7 @@ const getOptions = (quasarConf, mode) => {
     };
   } else {
     defaultOptions = {
-      swSrc: path.join(quasarConf.ssg.__distDir, 'service-worker.js'),
+      swSrc: path.join(quasarConf.ssg.buildDir, 'www', 'service-worker.js'),
     };
   }
 

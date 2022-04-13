@@ -2,16 +2,16 @@
 const destr = require('destr');
 const fs = require('fs-extra');
 const path = require('path');
-const build = require('../build');
 const { log } = require('./logger');
 const { makeSnapshot, compareSnapshots } = require('../build/snapshot');
 
-async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild = false) {
+module.exports = async function ensureBuild(api, quasarConfFile, extensionRunner) {
   const { quasarConf } = quasarConfFile;
   const options = quasarConf.ssg;
 
-  if (options.cache === false || forceBuild) {
-    await build(api, quasarConfFile, ctx, extensionRunner);
+  if (options.cache === false || quasarConfFile.opts['force-build']) {
+    await require('../build')(api, quasarConfFile, extensionRunner);
+
     return;
   }
 
@@ -55,14 +55,15 @@ async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild
       return false;
     });
 
-    // Full snapshot diff
     if (!needBuild) {
+      // Full snapshot diff
       log('Comparing previous build with current build...');
 
       const changed = compareSnapshots(previousBuild.snapshot, currentBuild.snapshot);
 
       if (!changed) {
         log('Skipping webpack build as no changes detected');
+
         return;
       }
 
@@ -70,10 +71,8 @@ async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild
     }
   }
 
-  await build(api, quasarConfFile, ctx, extensionRunner);
+  await require('../build')(api, quasarConfFile, extensionRunner);
 
   // Write build.json
-  fs.writeFileSync(quasarBuildFile, JSON.stringify(currentBuild, null, 2), 'utf-8');
-}
-
-module.exports = ensureBuild;
+  await fs.writeFile(quasarBuildFile, JSON.stringify(currentBuild, null, 2), 'utf-8');
+};

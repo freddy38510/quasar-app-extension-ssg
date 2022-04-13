@@ -2,6 +2,7 @@
 /* eslint-disable global-require */
 
 const parseArgs = require('minimist');
+const QuasarConfFile = require('../conf');
 const requireFromApp = require('../helpers/require-from-app');
 const { quasarConfigFilename } = require('../helpers/app-paths');
 const getQuasarCtx = require('../helpers/get-quasar-ctx');
@@ -46,15 +47,13 @@ if (argv.help) {
 
 const { splitWebpackConfig } = require('../build/webpack/symbols');
 
-async function inspect() {
+async function inspect(api) {
   requireFromApp('@quasar/app/lib/helpers/banner')(argv, 'production');
 
   const getMode = requireFromApp('@quasar/app/lib/mode/index');
   if (getMode('ssr').isInstalled !== true) {
     fatal('Requested mode for inspection is NOT installed.');
   }
-
-  const QuasarConfFile = requireFromApp('@quasar/app/lib/quasar-conf-file');
 
   const depth = parseInt(argv.depth, 10) || Infinity;
 
@@ -71,7 +70,7 @@ async function inspect() {
   // register app extensions
   await extensionRunner.registerExtensions(ctx);
 
-  const quasarConfFile = new QuasarConfFile(ctx);
+  const quasarConfFile = new QuasarConfFile(api, ctx, argv);
 
   try {
     await quasarConfFile.prepare();
@@ -82,9 +81,15 @@ async function inspect() {
 
   await quasarConfFile.compile();
 
-  const webpackConf = await require('../build/webpack')(quasarConfFile.quasarConf);
+  if (api.hasPackage('@quasar/app', '< 3.4.0')) {
+    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
 
-  quasarConfFile.webpackConf = webpackConf;
+    const directivesBuilder = new SSRDirectives();
+
+    await directivesBuilder.build();
+  }
+
+  await quasarConfFile.addWebpackConf();
 
   const util = require('util');
 
@@ -114,4 +119,6 @@ async function inspect() {
   console.log(`\n  Depth used: ${depth}. You can change it with "-d" parameter.\n`);
 }
 
-inspect();
+module.exports = (api) => {
+  inspect(api);
+};

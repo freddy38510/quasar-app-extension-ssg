@@ -33,6 +33,7 @@ if (argv.help) {
   process.exit(0);
 }
 
+const QuasarConfFile = require('../conf');
 const { quasarConfigFilename } = require('../helpers/app-paths');
 const requireFromApp = require('../helpers/require-from-app');
 const ensureBuild = require('../helpers/ensure-build');
@@ -40,7 +41,6 @@ const getQuasarCtx = require('../helpers/get-quasar-ctx');
 const { fatal } = require('../helpers/logger');
 
 module.exports = async function run(api) {
-  const QuasarConfFile = requireFromApp('@quasar/app/lib/quasar-conf-file');
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
 
   if (api.hasPackage('@quasar/app', '>=3.3.0')) {
@@ -62,17 +62,16 @@ module.exports = async function run(api) {
 
   await installMissing('ssr');
 
+  // do not run ssg extension again
+  extensionRunner.extensions.splice(
+    extensionRunner.extensions
+      .findIndex((extension) => extension.extId !== api.extId),
+    1,
+  );
+
   await extensionRunner.registerExtensions(ctx);
 
-  if (api.hasPackage('@quasar/app', '< 3.4.0')) {
-    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
-
-    const directivesBuilder = new SSRDirectives();
-
-    await directivesBuilder.build();
-  }
-
-  const quasarConfFile = new QuasarConfFile(ctx, argv);
+  const quasarConfFile = new QuasarConfFile(api, ctx, argv);
 
   try {
     await quasarConfFile.prepare();
@@ -83,7 +82,7 @@ module.exports = async function run(api) {
 
   await quasarConfFile.compile();
 
-  await ensureBuild(api, quasarConfFile, ctx, extensionRunner, argv['force-build']);
+  await ensureBuild(api, quasarConfFile, extensionRunner);
 
-  await require('../generate')(api, quasarConfFile.quasarConf, ctx);
+  await require('../generate')(api, quasarConfFile.quasarConf);
 };
