@@ -3,7 +3,6 @@
 /* eslint-disable global-require */
 
 const parseArgs = require('minimist');
-const esmRequire = require('jiti')(__filename);
 
 const argv = parseArgs(process.argv.slice(4), {
   alias: {
@@ -80,6 +79,9 @@ if (argv.help) {
 
 const fs = require('fs');
 const PlatformPath = require('path');
+const esmRequire = require('jiti')(__filename);
+const express = require('express');
+const requireFromApp = require('../helpers/require-from-app');
 
 const { globbySync } = esmRequire('globby');
 
@@ -106,9 +108,6 @@ if (argv.colors) {
   grey = red;
   green = grey;
 }
-
-const express = require('express');
-const requireFromApp = require('../helpers/require-from-app');
 
 const microCacheSeconds = argv.micro
   ? parseInt(argv.micro, 10)
