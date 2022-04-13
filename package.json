@@ -78,5 +78,9 @@
     "eslint-plugin-vue": "8.6.0",
     "husky": "7.0.4",
     "standard-version": "9.3.2"
+  },
+  "resolutions": {
+    "async": "3.2.3",
+    "minimist": "1.2.6"
   }
 }
