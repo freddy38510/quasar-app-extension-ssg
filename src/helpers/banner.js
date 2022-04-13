@@ -11,16 +11,15 @@ module.exports.build = function build(api, ctx, cmd, details) {
   const quasarVersion = api.getPackageVersion('quasar');
   const cliAppVersion = api.getPackageVersion('@quasar/app');
   const ssgVersion = api.getPackageVersion('quasar-app-extension-ssg');
+  const hasNewQuasarPkg = hasPackage('@quasar/app', '>=3.4.0');
 
   let banner = '';
 
   if (details) {
     banner += ` ${underline('Build succeeded')}\n`;
   } else {
-    banner += `\n ${bgBlue('================== BUILD ==================')} \n`;
+    banner += ` ${bgBlue('================== BUILD ==================')} \n`;
   }
-
-  const hasNewQuasarPkg = api.hasPackage('@quasar/app', '<3.4.0');
 
   banner += `
  ${hasNewQuasarPkg ? 'Build mode................' : 'Build mode........'} ${green(ctx.modeName)}
@@ -31,13 +30,15 @@ module.exports.build = function build(api, ctx, cmd, details) {
  ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}`;
 
   if (details) {
-    banner += `\n Transpiled JS..... ${details.transpileBanner}`;
+    banner += `\n ${hasNewQuasarPkg ? 'Transpiled JS.............' : 'Transpiled JS.....'} ${details.transpileBanner}`;
     banner += `
  ${hasNewQuasarPkg ? '==========================' : '=================='}
  ${hasNewQuasarPkg ? 'Output folder.............' : 'Output folder.....'} ${green(details.outputFolder)}`;
+  } else {
+    banner += '\n';
   }
 
-  console.log(`${banner}\n`);
+  console.log(`${banner}`);
 
   if (!details) {
     const { getBrowsersBanner } = requireFromApp('@quasar/app/lib/helpers/browsers-support');
@@ -54,10 +55,9 @@ module.exports.generate = function generate(api, ctx, cmd, details) {
 
   if (details) {
     const relativeOutputFolder = path.posix.relative('', details.outputFolder);
+    const hasNewQuasarPkg = hasPackage('@quasar/app', '>=3.4.0');
 
     banner += `\n ${underline('Generate succeeded')}\n`;
-
-    const hasNewQuasarPkg = api.hasPackage('@quasar/app', '<3.4.0');
 
     banner += `
  ${hasNewQuasarPkg ? 'Pkg ssg...................' : 'Pkg ssg...........'} ${green(`v${ssgVersion}`)}
