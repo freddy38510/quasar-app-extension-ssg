@@ -2,8 +2,7 @@
 /* eslint-disable no-console */
 const pify = require('pify');
 const requireFromApp = require('../helpers/require-from-app');
-const Router = require('./router');
-const banner = require('../helpers/banner').build;
+const { logBuildBanner } = require('../helpers/banner');
 const { log, fatal } = require('../helpers/logger');
 
 function splitWebpackConfig(webpackConfigs) {
@@ -29,7 +28,8 @@ module.exports = async function build(
   ctx,
   extensionRunner,
 ) {
-  banner(api, ctx, 'build');
+  logBuildBanner(api, quasarConfFile.ctx);
+
 
   const { printWebpackErrors } = requireFromApp('@quasar/app/lib/helpers/print-webpack-issue');
 
@@ -123,7 +123,7 @@ module.exports = async function build(
   // eslint-disable-next-line no-void
   webpackData = void 0;
 
-  banner(api, ctx, 'build', {
+  logBuildBanner(api, quasarConfFile.ctx, {
     outputFolder,
     transpileBanner: quasarConf.__transpileBanner,
   });

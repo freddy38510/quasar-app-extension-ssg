@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 const { join } = require('path');
 const Generator = require('./generator');
 const requireFromApp = require('../helpers/require-from-app');
-const banner = require('../helpers/banner').generate;
+const { logGenerateBanner } = require('../helpers/banner');
 const {
   log, info, warn, error, warning, fatal, success,
 } = require('../helpers/logger');
@@ -22,7 +22,7 @@ module.exports = async (api, quasarConf, ctx) => {
     startTime: null,
   };
 
-  banner(api, ctx, 'generate');
+  logGenerateBanner(api, quasarConf.ctx);
 
   clean(quasarConf.ssg.__distDir);
 
@@ -102,7 +102,7 @@ module.exports = async (api, quasarConf, ctx) => {
 
   add(quasarConf.ssg.__distDir);
 
-  banner(api, ctx, 'generate', {
+  logGenerateBanner(api, quasarConf.ctx, {
     outputFolder: quasarConf.ssg.__distDir,
     fallback: quasarConf.ssg.fallback,
   });

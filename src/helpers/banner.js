@@ -1,16 +1,18 @@
 /* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-void */
 const {
   green, grey, bgBlue, underline,
 } = require('chalk');
 const path = require('path');
 const requireFromApp = require('./require-from-app');
 
-module.exports.build = function build(api, ctx, cmd, details) {
-  const quasarVersion = api.getPackageVersion('quasar');
-  const cliAppVersion = api.getPackageVersion('@quasar/app');
-  const ssgVersion = api.getPackageVersion('quasar-app-extension-ssg');
+module.exports.logBuildBanner = function logBuildBanner(
+  { getPackageVersion, hasPackage },
+  ctx,
+  details,
+) {
+  const quasarVersion = getPackageVersion('quasar');
+  const cliAppVersion = getPackageVersion('@quasar/app');
+  const ssgVersion = getPackageVersion('quasar-app-extension-ssg');
   const hasNewQuasarPkg = hasPackage('@quasar/app', '>=3.4.0');
 
   let banner = '';
@@ -27,7 +29,7 @@ module.exports.build = function build(api, ctx, cmd, details) {
  ${hasNewQuasarPkg ? 'Pkg quasar................' : 'Pkg quasar........'} ${green(`v${quasarVersion}`)}
  ${hasNewQuasarPkg ? 'Pkg @quasar/app-webpack...' : 'Pkg @quasar/app...'} ${green(`v${cliAppVersion}`)}
  ${hasNewQuasarPkg ? 'Pkg webpack...............' : 'Pkg webpack.......'} ${green('v5')}
- ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}`;
+ ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${ctx.debug ? green('enabled') : grey('no')}`;
 
   if (details) {
     banner += `\n ${hasNewQuasarPkg ? 'Transpiled JS.............' : 'Transpiled JS.....'} ${details.transpileBanner}`;
@@ -46,10 +48,14 @@ module.exports.build = function build(api, ctx, cmd, details) {
   }
 };
 
-module.exports.generate = function generate(api, ctx, cmd, details) {
-  const quasarVersion = api.getPackageVersion('quasar');
-  const cliAppVersion = api.getPackageVersion('@quasar/app');
-  const ssgVersion = api.getPackageVersion('quasar-app-extension-ssg');
+module.exports.logGenerateBanner = function logGenerateBanner(
+  { getPackageVersion, hasPackage },
+  ctx,
+  details,
+) {
+  const quasarVersion = getPackageVersion('quasar');
+  const cliAppVersion = getPackageVersion('@quasar/app');
+  const ssgVersion = getPackageVersion('quasar-app-extension-ssg');
 
   let banner = '';
 
@@ -63,7 +69,7 @@ module.exports.generate = function generate(api, ctx, cmd, details) {
  ${hasNewQuasarPkg ? 'Pkg ssg...................' : 'Pkg ssg...........'} ${green(`v${ssgVersion}`)}
  ${hasNewQuasarPkg ? 'Pkg quasar................' : 'Pkg quasar........'} ${green(`v${quasarVersion}`)}
  ${hasNewQuasarPkg ? 'Pkg @quasar/app-webpack...' : 'Pkg @quasar/app...'} ${green(`v${cliAppVersion}`)}
- ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}
+ ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${ctx.debug ? green('enabled') : grey('no')}
  ${hasNewQuasarPkg ? 'SPA fallback..............' : 'SPA fallback......'} ${green(details.fallback)}
  ${hasNewQuasarPkg ? '==========================' : '=================='}
  ${hasNewQuasarPkg ? 'Output folder.............' : 'Output folder.....'} ${green(details.outputFolder)}
