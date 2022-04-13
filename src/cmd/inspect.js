@@ -4,6 +4,7 @@
 const parseArgs = require('minimist');
 const requireFromApp = require('../helpers/require-from-app');
 const { quasarConfigFilename } = require('../helpers/app-paths');
+const getQuasarCtx = require('../helpers/get-quasar-ctx');
 const { log, fatal } = require('../helpers/logger');
 
 const argv = parseArgs(process.argv.slice(2), {
@@ -43,12 +44,7 @@ if (argv.help) {
   process.exit(0);
 }
 
-function splitWebpackConfig(webpackConfigs) {
-  return [
-    { webpack: webpackConfigs.serverSide, name: 'Server-side' },
-    { webpack: webpackConfigs.clientSide, name: 'Client-side' },
-  ];
-}
+const { splitWebpackConfig } = require('../build/webpack/symbols');
 
 async function inspect() {
   requireFromApp('@quasar/app/lib/helpers/banner')(argv, 'production');
@@ -63,10 +59,9 @@ async function inspect() {
   const depth = parseInt(argv.depth, 10) || Infinity;
 
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
-  const getQuasarCtx = requireFromApp('@quasar/app/lib/helpers/get-quasar-ctx');
 
   const ctx = getQuasarCtx({
-    mode: 'ssr',
+    mode: 'ssg',
     target: undefined,
     debug: argv.debug,
     dev: false,
@@ -87,9 +82,13 @@ async function inspect() {
 
   await quasarConfFile.compile();
 
+  const webpackConf = await require('../build/webpack')(quasarConfFile.quasarConf);
+
+  quasarConfFile.webpackConf = webpackConf;
+
   const util = require('util');
 
-  const cfgEntries = splitWebpackConfig(quasarConfFile.webpackConf);
+  const cfgEntries = splitWebpackConfig(quasarConfFile.webpackConf, 'ssg');
 
   if (argv.path) {
     const dot = require('dot-prop');

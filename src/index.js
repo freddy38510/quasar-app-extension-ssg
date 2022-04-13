@@ -11,7 +11,6 @@
 
 const { join, isAbsolute } = require('path');
 const { merge } = require('webpack-merge');
-const requireFromApp = require('./helpers/require-from-app');
 const getUniqueArray = require('./helpers/get-unique-array');
 
 const extendQuasarConf = function extendQuasarConf(conf, api) {
@@ -105,111 +104,6 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
       whitespace: 'condense',
     },
   };
-
-  conf.build.env.STATIC = true;
-
-  if (conf.ssr.pwa && conf.pwa.workboxPluginMode === 'InjectManifest') {
-    let originalChain;
-
-    if (conf.pwa.chainWebpackCustomSW) {
-      originalChain = conf.pwa.chainWebpackCustomSW;
-    }
-
-    conf.pwa.chainWebpackCustomSW = ((chain, { isClient, isServer }) => {
-      chain.output
-        .clear()
-        .filename('service-worker.js')
-        .path(join(conf.ssg.buildDir, 'www'));
-
-      chain.externals();
-
-      if (typeof originalChain === 'function') {
-        originalChain(chain, { isClient, isServer });
-      }
-    });
-  }
-};
-
-const chainWebpack = function chainWebpack(chain, { isClient, isServer }, api, quasarConf) {
-  const SsrArtifacts = require('./build/webpack/ssr/plugin.ssr-artifacts');
-  const { QuasarSSRClientPlugin } = require('./build/webpack/ssr/plugin.client-side');
-  const { QuasarSSRServerPlugin } = require('./build/webpack/ssr/plugin.server-side');
-
-  // @see https://github.com/freddy38510/quasar-app-extension-ssg/issues/110
-  chain.plugin('define').tap((args) => [{
-    ...args[0],
-    __QUASAR_SSR_PWA__: true,
-  }]);
-
-  // QuasarSSRServerPlugin handles concatenated modules
-  chain.optimization
-    .concatenateModules(true);
-
-  if (quasarConf.ssg.inlineCssFromSFC) {
-    /**
-    * replace vue-loader by @freddy38510/vue-loader
-    * which has SSR critical CSS collection support
-    * https://github.com/freddy38510/vue-loader/commit/d71c7925a3b35f658d461523cbb2b5be2aac9622
-    */
-    const { VueLoaderPlugin } = requireFromApp('@freddy38510/vue-loader');
-    const vueRule = chain.module.rule('vue');
-
-    vueRule.use('vue-loader').loader('@freddy38510/vue-loader');
-    chain.plugin('vue-loader').use(VueLoaderPlugin);
-
-    // support server-side style injection with vue-style-loader
-    require('./build/webpack/inject.sfc-style-rules')(chain, {
-      isServerBuild: isServer,
-      rtl: quasarConf.build.rtl,
-      sourceMap: quasarConf.build.sourceMap,
-      minify: quasarConf.build.minify,
-      stylusLoaderOptions: quasarConf.build.stylusLoaderOptions,
-      sassLoaderOptions: quasarConf.build.sassLoaderOptions,
-      scssLoaderOptions: quasarConf.build.scssLoaderOptions,
-      lessLoaderOptions: quasarConf.build.lessLoaderOptions,
-    });
-  }
-
-  if (isClient) {
-    chain.plugin('quasar-ssr-client')
-      .use(QuasarSSRClientPlugin, [{
-        filename: '../quasar.client-manifest.json',
-      }]);
-
-    if (!api.ctx.mode.pwa) {
-      // Use webpack-html-plugin for creating html fallback file
-      const injectHtml = requireFromApp('@quasar/app/lib/webpack/inject.html');
-
-      const cfg = merge(quasarConf, {
-        build: {
-          distDir: join(quasarConf.build.distDir, 'www'),
-        },
-      });
-
-      injectHtml(chain, cfg);
-    } else {
-      const HtmlPwaPlugin = require('./build/webpack/pwa/plugin.html-pwa');
-      // Handle workbox after build instead of during webpack compilation
-      // This way all assets could be precached, including generated html
-      chain.plugins.delete('workbox');
-
-      // The meta tags inserted have close tags resulting in invalid HTML markup
-      chain.plugins.delete('html-pwa');
-
-      chain.plugin('html-pwa')
-        .use(HtmlPwaPlugin.plugin, [quasarConf]);
-    }
-  }
-
-  if (isServer) {
-    chain.plugin('quasar-ssr-server')
-      .use(QuasarSSRServerPlugin, [{
-        filename: '../quasar.server-manifest.json',
-      }]);
-
-    chain.plugin('ssr-artifacts')
-      .use(SsrArtifacts, [quasarConf]);
-  }
 };
 
 module.exports = function run(api) {
@@ -225,20 +119,8 @@ module.exports = function run(api) {
 
   // Apply SSG modifications only if current process has "ssg" argument
   if (process.argv[2] === 'ssg') {
-    let quasarConf = {};
-
     api.extendQuasarConf((conf) => {
       extendQuasarConf(conf, api);
-
-      quasarConf = conf;
-    });
-
-    api.chainWebpack((chain, { isClient, isServer }) => {
-      chainWebpack(chain, { isClient, isServer }, api, quasarConf);
-    });
-  } else {
-    api.extendQuasarConf((conf) => {
-      conf.build.env.STATIC = false;
     });
   }
 };

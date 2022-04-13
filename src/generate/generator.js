@@ -8,7 +8,6 @@ const Beastcss = require('beastcss');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright } = require('chalk');
-const requireFromApp = require('../helpers/require-from-app');
 const { log, logBeastcss } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
@@ -20,21 +19,7 @@ const {
 
 class Generator {
   constructor(quasarConf, ctx) {
-    const createRenderer = require('./create-renderer');
-    const { renderToString } = requireFromApp('@vue/server-renderer');
-    const serverManifest = require(`${quasarConf.build.distDir}/quasar.server-manifest.json`);
-    const clientManifest = require(`${quasarConf.build.distDir}/quasar.client-manifest.json`);
-    const renderTemplate = require(`${quasarConf.build.distDir}/render-template.js`);
-    const ssrRenderer = createRenderer({
-      vueRenderToString: renderToString,
-      basedir: quasarConf.build.distDir,
-      serverManifest,
-      clientManifest,
-      shouldPrefetch: quasarConf.ssg.shouldPrefetch,
-      shouldPreload: quasarConf.ssg.shouldPreload,
-    });
-
-    this.ssrRender = async (ssrContext) => ssrRenderer(ssrContext, renderTemplate);
+    this.render = require(path.join(quasarConf.ssg.buildDir, 'render.js'));
 
     this.options = {
       ...quasarConf.ssg,
@@ -82,7 +67,9 @@ class Generator {
     }
 
     try {
-      appRoutes = flatRoutes(await this.getAppRoutes());
+      const getAppRoutes = require(path.join(this.options.buildDir, 'get-app-routes.js'));
+
+      appRoutes = flatRoutes(await getAppRoutes());
     } catch (err) {
       err.message = ` Could not resolve routes from Vue Router:\n\n ${err.message}`;
 
@@ -104,14 +91,6 @@ class Generator {
       routes: [...new Set([...userRoutes, ...appRoutes])],
       warnings,
     };
-  }
-
-  async getAppRoutes() {
-    const { default: createRouter } = require(path.join(this.options.buildDir, 'compiled-router.js'));
-
-    const router = typeof createRouter === 'function' ? await createRouter() : createRouter;
-
-    return router.getRoutes();
   }
 
   async generateRoutes(routes) {
@@ -234,7 +213,7 @@ class Generator {
     };
 
     try {
-      return this.ssrRender(ssrContext);
+      return this.render(ssrContext);
     } catch (error) {
       if (error.url) {
         const redirectedRoute = decodeURI(error.url);

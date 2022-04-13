@@ -3,7 +3,7 @@ const { getIndexHtml } = require('./html-template');
 const requireFromApp = require('../../../helpers/require-from-app');
 const { resolve } = require('../../../helpers/app-paths');
 
-module.exports = class SsrProdArtifacts {
+module.exports = class RenderTemplatePlugin {
   constructor(cfg = {}) {
     this.cfg = cfg;
   }
@@ -11,12 +11,12 @@ module.exports = class SsrProdArtifacts {
   apply(compiler) {
     const { sources, Compilation } = requireFromApp('webpack');
 
-    compiler.hooks.thisCompilation.tap('ssr-artifacts', (compilation) => {
-      compilation.hooks.processAssets.tapPromise({ name: 'ssr-artifacts', state: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL }, async () => {
+    compiler.hooks.thisCompilation.tap('render-template', (compilation) => {
+      compilation.hooks.processAssets.tapPromise({ name: 'render-template', state: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL }, async () => {
         const htmlTemplate = await this.getHtmlTemplate();
         const content = new sources.RawSource(htmlTemplate);
 
-        compilation.emitAsset('../render-template.js', content);
+        compilation.emitAsset('render-template.js', content);
       });
     });
   }

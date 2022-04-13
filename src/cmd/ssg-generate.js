@@ -6,15 +6,7 @@ if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'production';
 }
 
-if (process.env.STATIC === void 0) {
-  process.env.STATIC = true;
-}
-
 const parseArgs = require('minimist');
-const requireFromApp = require('../helpers/require-from-app');
-const { quasarConfigFilename } = require('../helpers/app-paths');
-const { fatal } = require('../helpers/logger');
-const ensureBuild = require('../helpers/ensure-build');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -41,9 +33,14 @@ if (argv.help) {
   process.exit(0);
 }
 
+const { quasarConfigFilename } = require('../helpers/app-paths');
+const requireFromApp = require('../helpers/require-from-app');
+const ensureBuild = require('../helpers/ensure-build');
+const getQuasarCtx = require('../helpers/get-quasar-ctx');
+const { fatal } = require('../helpers/logger');
+
 module.exports = async function run(api) {
   const QuasarConfFile = requireFromApp('@quasar/app/lib/quasar-conf-file');
-  const getQuasarCtx = requireFromApp('@quasar/app/lib/helpers/get-quasar-ctx');
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
 
   if (api.hasPackage('@quasar/app', '>=3.3.0')) {
@@ -54,7 +51,7 @@ module.exports = async function run(api) {
   const installMissing = requireFromApp('@quasar/app/lib/mode/install-missing');
 
   const ctx = getQuasarCtx({
-    mode: 'ssr',
+    mode: 'ssg',
     target: undefined,
     arch: undefined,
     bundler: undefined,
@@ -63,7 +60,7 @@ module.exports = async function run(api) {
     publish: undefined,
   });
 
-  await installMissing(ctx.modeName, ctx.targetName);
+  await installMissing('ssr');
 
   await extensionRunner.registerExtensions(ctx);
 
@@ -88,7 +85,5 @@ module.exports = async function run(api) {
 
   await ensureBuild(api, quasarConfFile, ctx, extensionRunner, argv['force-build']);
 
-  const { quasarConf } = quasarConfFile;
-
-  await require('../generate')(api, quasarConf, ctx);
+  await require('../generate')(api, quasarConfFile.quasarConf, ctx);
 };

@@ -1,19 +1,21 @@
+/* eslint-disable no-void */
+/* eslint-disable global-require */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 const pify = require('pify');
+const Generator = require('./generator');
+const { splitWebpackConfig } = require('./webpack/symbols');
 const requireFromApp = require('../helpers/require-from-app');
 const { logBuildBanner } = require('../helpers/banner');
 const { log, fatal } = require('../helpers/logger');
 
-function splitWebpackConfig(webpackConfigs) {
-  return [
-    { webpack: webpackConfigs.serverSide, name: 'Server-side' },
-    { webpack: webpackConfigs.clientSide, name: 'Client-side' },
-  ];
-}
+const webpack = requireFromApp('webpack');
+const { printWebpackErrors } = requireFromApp('@quasar/app/lib/helpers/print-webpack-issue');
+const artifacts = requireFromApp('@quasar/app/lib/artifacts');
+const regenerateTypesFeatureFlags = requireFromApp('@quasar/app/lib/helpers/types-feature-flags');
 
-function parseWebpackConfig(cfg) {
-  const data = splitWebpackConfig(cfg);
+function parseWebpackConfig(cfg, mode) {
+  const data = splitWebpackConfig(cfg, mode);
 
   return {
     configs: data.map((d) => d.webpack),
@@ -30,18 +32,12 @@ module.exports = async function build(
 ) {
   logBuildBanner(api, quasarConfFile.ctx);
 
-
-  const { printWebpackErrors } = requireFromApp('@quasar/app/lib/helpers/print-webpack-issue');
-
-  const webpack = requireFromApp('webpack');
-
-  const Generator = requireFromApp('@quasar/app/lib/generator');
-  const artifacts = requireFromApp('@quasar/app/lib/artifacts');
-  const regenerateTypesFeatureFlags = requireFromApp('@quasar/app/lib/helpers/types-feature-flags');
-
   const generator = new Generator(quasarConfFile);
 
-  const { webpackConf, quasarConf } = quasarConfFile;
+  const { quasarConf } = quasarConfFile;
+  const webpackConf = await require('./webpack')(quasarConfFile.quasarConf);
+
+  quasarConfFile.webpackConf = webpackConf;
 
   regenerateTypesFeatureFlags(quasarConf);
 
@@ -72,11 +68,7 @@ module.exports = async function build(
     await Runner.build(quasarConfFile);
   }
 
-  const routerBuilder = new Router(quasarConf, webpackConf.serverSide);
-
-  const routerBuildPromise = routerBuilder.build();
-
-  let webpackData = parseWebpackConfig(webpackConf);
+  let webpackData = parseWebpackConfig(webpackConf, 'ssg');
 
   const compiler = webpack(webpackData.configs);
 
@@ -120,7 +112,6 @@ module.exports = async function build(
   });
 
   // free up memory
-  // eslint-disable-next-line no-void
   webpackData = void 0;
 
   logBuildBanner(api, quasarConfFile.ctx, {
@@ -137,6 +128,4 @@ module.exports = async function build(
     log(`Extension(${hook.api.extId}): Running afterBuild hook...`);
     await hook.fn(hook.api, { quasarConf });
   });
-
-  await routerBuildPromise;
 };
