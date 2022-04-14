@@ -24,11 +24,9 @@ function parseWebpackConfig(cfg, mode) {
   };
 }
 
-module.exports = async function build(
-  api,
-  quasarConfFile,
-  extensionRunner,
-) {
+module.exports = async function build(api, quasarConfFile) {
+  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
+
   logBuildBanner(api, quasarConfFile.ctx);
 
   if (api.hasPackage('@quasar/app', '< 3.4.0')) {

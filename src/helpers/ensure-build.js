@@ -5,12 +5,12 @@ const path = require('path');
 const { log } = require('./logger');
 const { makeSnapshot, compareSnapshots } = require('../build/snapshot');
 
-module.exports = async function ensureBuild(api, quasarConfFile, extensionRunner) {
+module.exports = async function ensureBuild(api, quasarConfFile) {
   const { quasarConf } = quasarConfFile;
   const options = quasarConf.ssg;
 
   if (options.cache === false || quasarConfFile.opts['force-build']) {
-    await require('../build')(api, quasarConfFile, extensionRunner);
+    await require('../build')(api, quasarConfFile);
 
     return;
   }
@@ -71,7 +71,7 @@ module.exports = async function ensureBuild(api, quasarConfFile, extensionRunner
     }
   }
 
-  await require('../build')(api, quasarConfFile, extensionRunner);
+  await require('../build')(api, quasarConfFile);
 
   // Write build.json
   await fs.writeFile(quasarBuildFile, JSON.stringify(currentBuild, null, 2), 'utf-8');

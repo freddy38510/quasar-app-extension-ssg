@@ -82,7 +82,7 @@ module.exports = async function run(api) {
 
   await quasarConfFile.compile();
 
-  await ensureBuild(api, quasarConfFile, extensionRunner);
+  await ensureBuild(api, quasarConfFile);
 
   await require('../generate')(api, quasarConfFile.quasarConf);
 };
