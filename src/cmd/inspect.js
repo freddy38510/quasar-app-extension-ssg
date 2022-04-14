@@ -67,6 +67,14 @@ async function inspect(api) {
     prod: true,
   });
 
+  // do not run ssg extension again
+  // TODO: extend ExtensionRunner class
+  extensionRunner.extensions.splice(
+    extensionRunner.extensions
+      .findIndex((extension) => extension.extId === api.extId),
+    1,
+  );
+
   // register app extensions
   await extensionRunner.registerExtensions(ctx);
 

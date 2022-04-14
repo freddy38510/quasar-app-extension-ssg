@@ -63,9 +63,10 @@ module.exports = async function run(api) {
   await installMissing('ssr');
 
   // do not run ssg extension again
+  // TODO: extend ExtensionRunner class
   extensionRunner.extensions.splice(
     extensionRunner.extensions
-      .findIndex((extension) => extension.extId !== api.extId),
+      .findIndex((extension) => extension.extId === api.extId),
     1,
   );
 
