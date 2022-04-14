@@ -61,18 +61,6 @@ module.exports = async function build(api, quasarConfFile) {
     await hook.fn(hook.api, { quasarConf });
   });
 
-  // using quasarConfFile.ctx instead of argv.mode
-  // because SSR might also have PWA enabled but we
-  // can only know it after parsing the quasar.config.js file
-  if (quasarConfFile.ctx.mode.pwa === true) {
-    // need to build the custom service worker before renderer
-    const Runner = requireFromApp('@quasar/app/lib/pwa');
-
-    Runner.init(quasarConfFile.ctx);
-
-    await Runner.build(quasarConfFile);
-  }
-
   let webpackData = parseWebpackConfig(webpackConf, 'ssg');
 
   const compiler = webpack(webpackData.configs);
