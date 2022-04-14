@@ -83,8 +83,11 @@ async function getSSG(cfg) {
     generator: await getWebpackConfig(generator, cfg, {
       name: webpackNames.ssg.generator,
       cfgExtendBase: cfg.ssg,
-      hookSuffix: 'Generator', // conf.ssg.chainWebpackGenerator
-      cmdSuffix: 'Generator', // conf.ssg.extendWebpackGenerator
+      // not supported yet without adding ssg hooks to Index API
+      hookSuffix: 'SsgGenerator',
+      // supported (but not documented)
+      // quasarConf.ssg.chainWebpackGenerator / quasarConf.ssg.extendWebpackGenerator
+      cmdSuffix: 'Generator',
       invokeParams: { isClient: false, isServer: true },
     }),
 
