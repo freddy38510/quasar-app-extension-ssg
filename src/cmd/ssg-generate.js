@@ -39,6 +39,7 @@ const requireFromApp = require('../helpers/require-from-app');
 const ensureBuild = require('../helpers/ensure-build');
 const getQuasarCtx = require('../helpers/get-quasar-ctx');
 const { fatal } = require('../helpers/logger');
+const { logBuildBanner } = require('../helpers/banner');
 
 module.exports = async function run(api) {
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
@@ -47,6 +48,8 @@ module.exports = async function run(api) {
     const ensureVueDeps = requireFromApp('@quasar/app/lib/helpers/ensure-vue-deps');
     ensureVueDeps();
   }
+
+  logBuildBanner(api, argv);
 
   const installMissing = requireFromApp('@quasar/app/lib/mode/install-missing');
 
@@ -62,6 +65,14 @@ module.exports = async function run(api) {
 
   await installMissing('ssr');
 
+  if (api.hasPackage('@quasar/app', '< 3.4.0')) {
+    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
+
+    const directivesBuilder = new SSRDirectives();
+
+    await directivesBuilder.build();
+  }
+
   // do not run ssg extension again
   // TODO: extend ExtensionRunner class
   extensionRunner.extensions.splice(
@@ -72,7 +83,7 @@ module.exports = async function run(api) {
 
   await extensionRunner.registerExtensions(ctx);
 
-  const quasarConfFile = new QuasarConfFile(api, ctx, argv);
+  const quasarConfFile = new QuasarConfFile(ctx, argv);
 
   try {
     await quasarConfFile.prepare();

@@ -27,16 +27,6 @@ function parseWebpackConfig(cfg, mode) {
 module.exports = async function build(api, quasarConfFile) {
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
 
-  logBuildBanner(api, quasarConfFile.ctx);
-
-  if (api.hasPackage('@quasar/app', '< 3.4.0')) {
-    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
-
-    const directivesBuilder = new SSRDirectives();
-
-    await directivesBuilder.build();
-  }
-
   await quasarConfFile.addWebpackConf();
 
   const generator = new Generator(quasarConfFile);

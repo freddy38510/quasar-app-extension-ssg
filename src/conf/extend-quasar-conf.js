@@ -4,8 +4,13 @@ const { join, isAbsolute } = require('path');
 const { merge } = require('webpack-merge');
 const getUniqueArray = require('../helpers/get-unique-array');
 const appPaths = require('../helpers/app-paths');
+const requireFromApp = require('../helpers/require-from-app');
 
-module.exports = function extendQuasarConf(conf, prompts) {
+const extensionJson = requireFromApp('@quasar/app/lib/app-extension/extension-json');
+
+module.exports = function extendQuasarConf(conf) {
+  const prompts = extensionJson.getPrompts('ssg');
+
   conf.ssg = merge({
     concurrency: 10,
     interval: 0,

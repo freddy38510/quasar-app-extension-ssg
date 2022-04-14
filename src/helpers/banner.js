@@ -7,7 +7,7 @@ const requireFromApp = require('./require-from-app');
 
 module.exports.logBuildBanner = function logBuildBanner(
   { getPackageVersion, hasPackage },
-  ctx,
+  argv,
   details,
 ) {
   const quasarVersion = getPackageVersion('quasar');
@@ -24,12 +24,12 @@ module.exports.logBuildBanner = function logBuildBanner(
   }
 
   banner += `
- ${hasNewQuasarPkg ? 'Build mode................' : 'Build mode........'} ${green(ctx.modeName)}
+ ${hasNewQuasarPkg ? 'Build mode................' : 'Build mode........'} ${green('ssg')}
  ${hasNewQuasarPkg ? 'Pkg ssg...................' : 'Pkg ssg...........'} ${green(`v${ssgVersion}`)}
  ${hasNewQuasarPkg ? 'Pkg quasar................' : 'Pkg quasar........'} ${green(`v${quasarVersion}`)}
  ${hasNewQuasarPkg ? 'Pkg @quasar/app-webpack...' : 'Pkg @quasar/app...'} ${green(`v${cliAppVersion}`)}
  ${hasNewQuasarPkg ? 'Pkg webpack...............' : 'Pkg webpack.......'} ${green('v5')}
- ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${ctx.debug ? green('enabled') : grey('no')}`;
+ ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${argv.debug ? green('enabled') : grey('no')}`;
 
   if (details) {
     banner += `\n ${hasNewQuasarPkg ? 'Transpiled JS.............' : 'Transpiled JS.....'} ${details.transpileBanner}`;
@@ -77,7 +77,7 @@ module.exports.logGenerateBanner = function logGenerateBanner(
  Tip: You can use "$ quasar ssg serve ${relativeOutputFolder}" command to create
       a static web server for testing. Type "$ quasar ssg serve -h" for parameters.`;
   } else {
-    banner += `\n ${bgBlue('================== GENERATE ==================')}`;
+    banner += `\n ${bgBlue('================ GENERATE =================')}`;
   }
 
   console.log(`${banner}\n`);

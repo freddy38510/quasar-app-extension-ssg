@@ -47,7 +47,7 @@ if (argv.help) {
 
 const { splitWebpackConfig } = require('../build/webpack/symbols');
 
-async function inspect(api) {
+module.exports = async function inspect(api) {
   requireFromApp('@quasar/app/lib/helpers/banner')(argv, 'production');
 
   const getMode = requireFromApp('@quasar/app/lib/mode/index');
@@ -67,6 +67,14 @@ async function inspect(api) {
     prod: true,
   });
 
+  if (api.hasPackage('@quasar/app', '< 3.4.0')) {
+    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
+
+    const directivesBuilder = new SSRDirectives();
+
+    await directivesBuilder.build();
+  }
+
   // do not run ssg extension again
   // TODO: extend ExtensionRunner class
   extensionRunner.extensions.splice(
@@ -78,7 +86,7 @@ async function inspect(api) {
   // register app extensions
   await extensionRunner.registerExtensions(ctx);
 
-  const quasarConfFile = new QuasarConfFile(api, ctx, argv);
+  const quasarConfFile = new QuasarConfFile(ctx, argv);
 
   try {
     await quasarConfFile.prepare();
@@ -88,14 +96,6 @@ async function inspect(api) {
   }
 
   await quasarConfFile.compile();
-
-  if (api.hasPackage('@quasar/app', '< 3.4.0')) {
-    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
-
-    const directivesBuilder = new SSRDirectives();
-
-    await directivesBuilder.build();
-  }
 
   await quasarConfFile.addWebpackConf();
 
@@ -125,8 +125,4 @@ async function inspect(api) {
   });
 
   console.log(`\n  Depth used: ${depth}. You can change it with "-d" parameter.\n`);
-}
-
-module.exports = (api) => {
-  inspect(api);
 };
