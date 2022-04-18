@@ -1,6 +1,33 @@
 /* eslint-disable global-require */
+const { existsSync } = require('fs');
+const { join, sep, normalize } = require('path');
+
 const requireFromApp = require('../../../helpers/require-from-app');
+const appPaths = require('../../../helpers/app-paths');
 const { QuasarSSRServerPlugin } = require('./plugin.server-side');
+
+const nodeExternals = requireFromApp('webpack-node-externals');
+const API = requireFromApp('@quasar/app/lib/app-extension/IndexAPI.js');
+
+const { hasPackage } = new API({});
+
+function getModuleDirs() {
+  const folders = [];
+  let dir = appPaths.resolve.app('..');
+
+  while (dir.length && dir[dir.length - 1] !== sep) {
+    const newFolder = join(dir, 'node_modules');
+    if (existsSync(newFolder)) {
+      folders.push(newFolder);
+    }
+
+    dir = normalize(join(dir, '..'));
+  }
+
+  return folders;
+}
+
+const additionalModuleDirs = getModuleDirs();
 
 module.exports = function chainWebpackServer(chain, cfg) {
   requireFromApp('@quasar/app/lib/webpack/ssr/server')(chain, cfg);
@@ -32,6 +59,22 @@ module.exports = function chainWebpackServer(chain, cfg) {
       scssLoaderOptions: cfg.build.scssLoaderOptions,
       lessLoaderOptions: cfg.build.lessLoaderOptions,
     });
+  }
+
+  if (hasPackage('quasar', '>= 2.6.1 ')
+    && hasPackage('@quasar/extras', '>= 1.13.3')
+    && hasPackage('@quasar/app-webpack', '>= 3.4.2 ')) {
+    chain.externals(nodeExternals({
+      // do not externalize:
+      //  1. vue files
+      //  2. CSS files
+      //  3. when importing directly from Quasar's src folder
+      allowlist: [
+        /(\.(vue|css|styl|scss|sass|less)$|\?vue&type=style)/,
+        ...cfg.build.transpileDependencies,
+      ],
+      additionalModuleDirs,
+    }));
   }
 
   // work despite this commit

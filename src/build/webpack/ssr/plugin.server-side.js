@@ -55,7 +55,6 @@ function getServerManifest(compilation) {
   };
 
   Object.keys(compilation.assets)
-    // .filter((name) => name !== '../render-template.js')
     .forEach((name) => {
       if (jsRE.test(name)) {
         serverManifest.files[name] = compilation.getAsset(name).source.source();
