@@ -12,7 +12,7 @@ function display(errors, severity, titleFn) {
 
     printLog();
 
-    printLog(err.error ? err.error.message : err.message);
+    printLog(err.error || err);
   });
 
   return summary;

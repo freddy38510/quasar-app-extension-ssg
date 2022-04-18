@@ -91,7 +91,7 @@ module.exports.getWarning = function getWarning(msg, title = 'WARNING') {
 module.exports.logBeastcss = function logBeastcss(messages, level) {
   messages.forEach(({ level: msgLevel, msg, color }) => {
     if (msgLevel === level) {
-      console.log(`        ${color(`${pointer} Beastcss[${msgLevel}]: ${msg}`)}`);
+      console.log(`        ${color(`${pointer} Beastcss: ${msg}`)}`);
     }
   });
 };

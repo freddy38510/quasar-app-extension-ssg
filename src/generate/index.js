@@ -44,6 +44,8 @@ module.exports = async (api, quasarConf) => {
   try {
     state.startTime = +new Date();
 
+    log('Initializing routes...');
+
     const { routes, warnings } = await generator.initRoutes();
 
     state.warnings = warnings;
