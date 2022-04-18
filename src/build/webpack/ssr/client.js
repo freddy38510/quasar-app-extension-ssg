@@ -63,4 +63,9 @@ module.exports = function chainWebpackClient(chain, cfg) {
       lessLoaderOptions: cfg.build.lessLoaderOptions,
     });
   }
+
+  // work despite this commit
+  // https://github.com/quasarframework/quasar/commit/425c451b7a0f71cdfd9fcf49b5a9caff18bfd398
+  chain.optimization
+    .concatenateModules(true);
 };

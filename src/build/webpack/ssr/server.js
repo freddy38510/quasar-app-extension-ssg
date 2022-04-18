@@ -5,10 +5,6 @@ const { QuasarSSRServerPlugin } = require('./plugin.server-side');
 module.exports = function chainWebpackServer(chain, cfg) {
   requireFromApp('@quasar/app/lib/webpack/ssr/server')(chain, cfg);
 
-  // QuasarSSRServerPlugin handles concatenated modules
-  chain.optimization
-    .concatenateModules(true);
-
   chain.plugin('quasar-ssr-server')
     .use(QuasarSSRServerPlugin, [{
       filename: '../quasar.server-manifest.json',
@@ -37,4 +33,9 @@ module.exports = function chainWebpackServer(chain, cfg) {
       lessLoaderOptions: cfg.build.lessLoaderOptions,
     });
   }
+
+  // work despite this commit
+  // https://github.com/quasarframework/quasar/commit/425c451b7a0f71cdfd9fcf49b5a9caff18bfd398
+  chain.optimization
+    .concatenateModules(true);
 };
