@@ -488,11 +488,9 @@ Can use async/await or directly return a Promise.
 
 ## Tips
 
-### `process.env.STATIC`
+### `process.env`
 
-The property `STATIC` is added to `process.env` once the App Extension is installed.
-
-`process.env.STATIC` is `true` when your app was built with the command `quasar ssg generate`, and `false` when it don't.
+Since the version [v4.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.4.0...v4.0.0) the value of `process.env.MODE` is `ssg` when your app was built with the command `quasar ssg generate`.
 
 It could be useful if you mixed several builds with differents modes to differentiate runtime procedures.
 
