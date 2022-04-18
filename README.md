@@ -33,7 +33,7 @@ This will find and install the extension’s module. After installation is compl
 
 - `Inline critical css and async load the rest ?`: Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
 
-- `Inline CSS from Vue SFC <style> blocks ?`: Inline css from Vue Single-File Component (SFC) <style> blocks.
+- `Inline CSS from Vue SFC <style> blocks ?`: Inline css from Vue Single-File Component (SFC) `<style>` blocks.
 
 ## Uninstalling
 
@@ -213,7 +213,7 @@ Default: `[]`
 
 An `Array` of `Strings` for routes to be generated.
 
-> Note: As of quasar-app-extension-ssg [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0) this option is no longer necessary thanks to the crawler feature and the ability to take routes from the Vue Router configuration.
+> Note: As of quasar-app-extension-ssg [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0) this option is no longer necessary thanks to the crawler feature and the ability to include static routes from the router using `ssg.includeStaticRoutes` option.
 >
 > If have unlinked pages (such as secret pages) and you would like these to also be generated then you can use the ssg.routes property.
 
@@ -280,6 +280,18 @@ module.exports = function (/* ctx */) {
   };
 };
 ```
+
+### `includeStaticRoutes`
+
+:new: _Added in [v4.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.4.0...v4.0.0)_
+
+Type: `Boolean`
+
+Default: `true`
+
+Include the application router static routes to generate the corresponding pages.
+
+> Note: In case of warnings issued when initializing routes you can disable this option and let the crawler find your static and dynamic routes or provide them via the option `ssg.routes`.
 
 ### `buildDir`
 
@@ -464,7 +476,7 @@ Type: `Boolean`
 
 Default: `false`
 
-Inline css from Vue Single-File Component (SFC) <style> blocks.
+Inline css from Vue Single-File Component (SFC) `<style>` blocks.
 
 Note: This option works even if build.extractCSS is set to `true` in quasar.config.js file.
 
