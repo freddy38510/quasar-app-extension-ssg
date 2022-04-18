@@ -56,18 +56,15 @@ module.exports = function createChain(cfg, configName) {
   chain.mode(cfg.ctx.prod ? 'production' : 'development');
 
   chain.resolve.alias.set('quasar$', 'quasar/dist/quasar.cjs.prod.js');
-  chain.resolve.alias.set('app', appPaths.appDir);
 
   chain.entry('render')
     .add(appPaths.resolve.app('.quasar/ssg-render-entry.js'));
-  chain.entry('get-app-routes')
-    .add(appPaths.resolve.app('.quasar/ssg-get-app-routes-entry.js'));
+  chain.entry('get-app-routes-paths')
+    .add(appPaths.resolve.app('.quasar/ssg-get-app-routes-paths-entry.js'));
 
   chain.output
     .filename('[name].js')
-    .path(cfg.ssg.buildDir);
-
-  chain.output
+    .path(cfg.ssg.buildDir)
     .library({
       type: 'commonjs2',
       export: 'default',
@@ -78,10 +75,10 @@ module.exports = function createChain(cfg, configName) {
       additionalModuleDirs,
     }),
     'quasar-app-extension-ssg/src/build/create-renderer',
+    'quasar-app-extension-ssg/src/build/get-app-routes',
     './render-template',
     './quasar.server-manifest.json',
     './quasar.client-manifest.json',
-    /\.vue/,
   ]);
 
   chain.node

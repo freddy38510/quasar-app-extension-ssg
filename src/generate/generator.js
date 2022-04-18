@@ -11,7 +11,6 @@ const { cyanBright } = require('chalk');
 const { log, logBeastcss } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
-const flatRoutes = require('../helpers/flat-routes');
 const {
   withTrailingSlash,
   withoutTrailingSlash,
@@ -55,11 +54,13 @@ class Generator {
 
   async initRoutes() {
     const warnings = [];
-    let appRoutes = [];
+    let appRoutes = ['/'];
     let userRoutes = [];
 
     try {
       userRoutes = await promisifyRoutes(this.options.routes);
+
+      userRoutes = userRoutes.filter((route) => !this.isRouteExcluded(route));
     } catch (err) {
       err.message = ` Could not resolve provided routes:\n\n ${err.message}`;
 
@@ -67,18 +68,14 @@ class Generator {
     }
 
     try {
-      const getAppRoutes = require(path.join(this.options.buildDir, 'get-app-routes.js'));
+      appRoutes = await require(path.join(this.options.buildDir, 'get-app-routes-paths.js'))();
 
-      appRoutes = flatRoutes(await getAppRoutes());
+      appRoutes = appRoutes.filter((route) => !this.isRouteExcluded(route));
     } catch (err) {
-      err.message = ` Could not resolve routes from Vue Router:\n\n ${err.message}`;
+      err.message = ` Could not get routes paths from app:\n\n ${err.message}`;
 
       warnings.push(err);
-
-      appRoutes = ['/'];
     }
-
-    appRoutes = appRoutes.filter((route) => !this.isRouteExcluded(route));
 
     // remove duplicate routes between userRoutes and appRoutes
     // wether trailing slash is present or not
