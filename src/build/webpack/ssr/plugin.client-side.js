@@ -26,7 +26,14 @@ function getClientManifest(compilation) {
       .map((name) => stats.entrypoints[name].assets)
       .reduce((assets, all) => all.concat(assets), [])
       .map(getAssetName)
-      .filter((file) => jsCssRE.test(file) === true && hotUpdateRE.test(file) === false),
+      .filter((file) => jsCssRE.test(file) === true && hotUpdateRE.test(file) === false)
+      .concat(
+        Object.keys(stats.entrypoints)
+          .map((name) => stats.entrypoints[name].auxiliaryAssets)
+          .reduce((auxiliaryAssets, all) => all.concat(auxiliaryAssets), [])
+          .map(getAssetName)
+          .filter((file) => hotUpdateRE.test(file) === false),
+      ),
   );
 
   const asyncFiles = allFiles
@@ -40,8 +47,6 @@ function getClientManifest(compilation) {
     async: asyncFiles,
     modules: { /* [identifier: string]: Array<index: number> */ },
   };
-
-  const { entrypoints, namedChunkGroups } = stats;
 
   const assetModules = stats.modules.filter((m) => m.assets.length);
   const fileToIndex = (asset) => manifest.all.indexOf(getAssetName(asset));
@@ -58,38 +63,8 @@ function getClientManifest(compilation) {
 
       const id = m.identifier.replace(swRE, ''); // remove appended hash
 
-      const filesSet = new Set(chunk.files.map(fileToIndex).filter((i) => i !== -1));
-
-      chunk.names.forEach((chunkName) => {
-        if (!entrypoints[chunkName]) {
-          const chunkGroup = namedChunkGroups[chunkName];
-
-          if (chunkGroup) {
-            chunkGroup.assets.forEach((asset) => {
-              filesSet.add(fileToIndex(asset));
-            });
-
-            chunkGroup.auxiliaryAssets.forEach((asset) => {
-              filesSet.add(fileToIndex(asset));
-            });
-          }
-        }
-      });
-
-      const files = Array.from(filesSet);
+      const files = chunk.files.map(fileToIndex);
       manifest.modules[hash(id)] = files;
-
-      // In production mode, modules may be concatenated by scope hoisting
-      // Include ConcatenatedModule for not losing module-component mapping
-      if (Array.isArray(m.modules)) {
-        m.modules.forEach((concatenatedModule) => {
-          const concatModuleId = hash(concatenatedModule.identifier.replace(swRE, ''));
-
-          if (!manifest.modules[concatModuleId]) {
-            manifest.modules[concatModuleId] = files;
-          }
-        });
-      }
 
       // find all asset modules associated with the same chunk
       assetModules.forEach((assetModule) => {
