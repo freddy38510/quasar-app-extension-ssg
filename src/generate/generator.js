@@ -67,14 +67,16 @@ class Generator {
       warnings.push(err);
     }
 
-    try {
-      appRoutes = await require(path.join(this.options.buildDir, 'get-app-routes-paths.js'))();
+    if (this.options.includeStaticRoutes !== false) {
+      try {
+        appRoutes = await require(path.join(this.options.buildDir, 'get-app-routes-paths.js'))();
 
-      appRoutes = appRoutes.filter((route) => !this.isRouteExcluded(route));
-    } catch (err) {
-      err.message = ` Could not get routes paths from app:\n\n ${err.message}`;
+        appRoutes = appRoutes.filter((route) => !this.isRouteExcluded(route));
+      } catch (err) {
+        err.message = ` Could not get static routes from router:\n\n ${err.message}`;
 
-      warnings.push(err);
+        warnings.push(err);
+      }
     }
 
     // remove duplicate routes between userRoutes and appRoutes
