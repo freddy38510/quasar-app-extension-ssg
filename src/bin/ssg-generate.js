@@ -16,7 +16,7 @@ const parseArgs = require('minimist');
 const { redBright } = require('chalk');
 const requireFromApp = require('../helpers/require-from-app');
 const { fatal, warn } = require('../helpers/logger');
-const ensureBuild = require('../build/ensureBuild');
+const ensureBuild = require('../helpers/ensure-build');
 const banner = require('../helpers/banner').generate;
 const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 

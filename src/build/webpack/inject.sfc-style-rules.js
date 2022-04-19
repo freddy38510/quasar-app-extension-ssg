@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 const path = require('path');
 const { merge } = require('webpack-merge');
-const requireFromApp = require('../helpers/require-from-app');
+const requireFromApp = require('../../helpers/require-from-app');
 
 function create(
   rule,

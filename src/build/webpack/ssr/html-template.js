@@ -1,4 +1,4 @@
-const requireFromApp = require('../helpers/require-from-app');
+const requireFromApp = require('../../../helpers/require-from-app');
 
 function injectSsrInterpolation(html) {
   return html
@@ -49,7 +49,7 @@ module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
 
   const { fillBaseTag } = requireFromApp('@quasar/app/lib/webpack/plugin.html-addons');
   // eslint-disable-next-line global-require
-  const { fillPwaTags } = require('./plugin.html-pwa');
+  const { fillPwaTags } = require('../pwa/plugin.html-pwa');
 
   const compiled = compileTemplate(
     template.replace('<div id="q-app"></div>', '<!--vue-ssr-outlet-->'),

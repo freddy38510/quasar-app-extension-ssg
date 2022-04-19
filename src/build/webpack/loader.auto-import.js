@@ -1,5 +1,5 @@
 const path = require('path');
-const requireFromApp = require('../helpers/require-from-app');
+const requireFromApp = require('../../helpers/require-from-app');
 
 module.exports = function loaderAutoImport(content, map) {
   const { api, isServer, componentCase } = this.query;

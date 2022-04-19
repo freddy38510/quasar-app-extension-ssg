@@ -129,13 +129,13 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
       }
 
       vueRule.use('quasar-auto-import')
-        .loader(resolve(__dirname, './webpack/loader.auto-import.js'))
+        .loader(resolve(__dirname, './build/webpack/loader.auto-import.js'))
         .options({ api, componentCase: quasarConf.framework.autoImportComponentCase, isServer })
         .before('vue-loader');
     }
 
     // Inject missing rules to support vue-style-loader for Vue SFC
-    require('./webpack/inject.sfc-style-rules')(api, chain, {
+    require('./build/webpack/inject.sfc-style-rules')(api, chain, {
       rtl: quasarConf.build.rtl,
       sourceMap: quasarConf.build.sourceMap,
       minify: quasarConf.build.minify,
@@ -160,7 +160,7 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
 
       injectHtml(chain, cfg);
     } else {
-      const HtmlPwaPlugin = require('./webpack/plugin.html-pwa');
+      const HtmlPwaPlugin = require('./build/webpack/pwa/plugin.html-pwa');
       // Handle workbox after build instead of during webpack compilation
       // This way all assets could be precached, including generated html
       chain.plugins.delete('workbox');
@@ -185,7 +185,7 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
   }
 
   if (isServer) {
-    const SsrArtifacts = require('./webpack/plugin.ssr-artifacts');
+    const SsrArtifacts = require('./build/webpack/ssr/plugin.ssr-artifacts');
 
     chain.plugin('ssr-artifacts')
       .use(SsrArtifacts, [api, quasarConf]);
