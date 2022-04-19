@@ -31,8 +31,6 @@ module.exports = async (api, quasarConf, ctx) => {
       await buildWorkbox(api, quasarConf, ctx);
     } catch (error) {
       warn(error.stack || error);
-
-      warn('Could not build service-worker.js');
     }
   }
 
