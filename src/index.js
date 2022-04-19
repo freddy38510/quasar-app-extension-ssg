@@ -11,7 +11,7 @@
 
 const { join, isAbsolute, resolve } = require('path');
 const { merge } = require('webpack-merge');
-const appRequire = require('./helpers/app-require');
+const requireFromApp = require('./helpers/require-from-app');
 const getUniqueArray = require('./helpers/get-unique-array');
 
 const extendQuasarConf = function extendQuasarConf(conf, api) {
@@ -150,7 +150,7 @@ const chainWebpack = function chainWebpack({ isClient, isServer }, chain, api, q
   if (isClient) {
     if (!api.ctx.mode.pwa) {
       // Use webpack-html-plugin for creating html fallback file
-      const injectHtml = appRequire('@quasar/app/lib/webpack/inject.html', api.appDir);
+      const injectHtml = requireFromApp('@quasar/app/lib/webpack/inject.html');
 
       const cfg = merge(quasarConf, {
         build: {
@@ -197,7 +197,7 @@ module.exports = function run(api) {
 
   api.registerCommand('inspect', () => require('./bin/inspect')(api));
 
-  api.registerCommand('serve', () => require('./bin/server')(api));
+  api.registerCommand('serve', () => require('./bin/server'));
 
   // Apply SSG modifications only if current process has "ssg" argument
   if (api.ctx.prod && api.ctx.mode.ssr && process.argv[2] === 'ssg') {

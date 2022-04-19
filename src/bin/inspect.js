@@ -3,7 +3,7 @@
 /* eslint-disable global-require */
 
 const parseArgs = require('minimist');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const { log, fatal } = require('../helpers/logger');
 const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 
@@ -52,19 +52,19 @@ function getCfgEntries(webpackConf) {
 }
 
 async function inspect(api) {
-  appRequire('@quasar/app/lib/helpers/banner', api.appDir)(argv, 'production');
+  requireFromApp('@quasar/app/lib/helpers/banner')(argv, 'production');
 
-  const getMode = appRequire('@quasar/app/lib/mode/index', api.appDir);
+  const getMode = requireFromApp('@quasar/app/lib/mode/index');
   if (getMode('ssr').isInstalled !== true) {
     fatal('Requested mode for inspection is NOT installed.\n');
   }
 
-  const QuasarConfFile = appRequire(hasNewQuasarConfFile(api) ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir);
+  const QuasarConfFile = requireFromApp(hasNewQuasarConfFile(api) ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config');
 
   const depth = parseInt(argv.depth, 10) || Infinity;
 
-  const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir);
-  const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir);
+  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
+  const getQuasarCtx = requireFromApp('@quasar/app/lib/helpers/get-quasar-ctx');
 
   const ctx = getQuasarCtx({
     mode: 'ssr',

@@ -1,4 +1,4 @@
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 
 function injectSsrInterpolation(html) {
   return html
@@ -44,10 +44,10 @@ function injectSsrInterpolation(html) {
 }
 
 module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
-  const compileTemplate = appRequire('lodash.template', api.appDir);
-  const HtmlWebpackPlugin = appRequire('html-webpack-plugin', api.appDir);
+  const compileTemplate = requireFromApp('lodash.template');
+  const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin');
 
-  const { fillBaseTag } = appRequire('@quasar/app/lib/webpack/plugin.html-addons', api.appDir);
+  const { fillBaseTag } = requireFromApp('@quasar/app/lib/webpack/plugin.html-addons');
   // eslint-disable-next-line global-require
   const { fillPwaTags } = require('./plugin.html-pwa');
 
@@ -76,7 +76,7 @@ module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
 
   /*
   if (cfg.build.minify) {
-    const { minify } = appRequire('html-minifier', api.appDir);
+    const { minify } = requireFromApp('html-minifier');
     html = minify(html, {
       // eslint-disable-next-line no-underscore-dangle
       ...cfg.__html.minifyOptions,

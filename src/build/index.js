@@ -4,7 +4,7 @@
 /* eslint-disable no-void */
 const chalk = require('chalk');
 const pify = require('pify');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const Router = require('./router');
 const banner = require('../helpers/banner').build;
 const { log, warn } = require('../helpers/logger');
@@ -35,17 +35,17 @@ module.exports = async function build(
 ) {
   banner(api, ctx, 'build');
 
-  const webpack = appRequire('webpack', api.appDir);
+  const webpack = requireFromApp('webpack');
 
-  const installMissing = appRequire(
+  const installMissing = requireFromApp(
     '@quasar/app/lib/mode/install-missing',
     api.appDir,
   );
   await installMissing(ctx.modeName, ctx.targetName);
 
-  const Generator = appRequire('@quasar/app/lib/generator', api.appDir);
-  const artifacts = appRequire('@quasar/app/lib/artifacts', api.appDir);
-  const regenerateTypesFeatureFlags = appRequire(
+  const Generator = requireFromApp('@quasar/app/lib/generator');
+  const artifacts = requireFromApp('@quasar/app/lib/artifacts');
+  const regenerateTypesFeatureFlags = requireFromApp(
     '@quasar/app/lib/helpers/types-feature-flags',
     api.appDir,
   );
@@ -128,7 +128,7 @@ module.exports = async function build(
     process.exit(1);
   });
 
-  const printWebpackStats = appRequire(
+  const printWebpackStats = requireFromApp(
     '@quasar/app/lib/helpers/print-webpack-stats',
     api.appDir,
   );

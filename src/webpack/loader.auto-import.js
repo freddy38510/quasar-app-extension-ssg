@@ -1,11 +1,11 @@
 const path = require('path');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 
 module.exports = function loaderAutoImport(content, map) {
   const { api, isServer, componentCase } = this.query;
 
-  const stringifyRequest = appRequire('loader-utils/lib/stringifyRequest', api.appDir);
-  const getDevlandFile = appRequire('@quasar/app/lib/helpers/get-devland-file', api.appDir);
+  const stringifyRequest = requireFromApp('loader-utils/lib/stringifyRequest');
+  const getDevlandFile = requireFromApp('@quasar/app/lib/helpers/get-devland-file');
 
   const data = getDevlandFile('quasar/dist/babel-transforms/auto-import.json');
   const importTransform = getDevlandFile('quasar/dist/babel-transforms/imports.js');

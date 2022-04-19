@@ -1,9 +1,9 @@
 const webpackConf = require('../webpack/conf.router');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 
 class Router {
   constructor(api, quasarConf, webpackConfServerSide) {
-    this.webpack = appRequire('webpack', api.appDir);
+    this.webpack = requireFromApp('webpack');
     this.webpackConf = webpackConf(api, quasarConf, webpackConfServerSide);
   }
 

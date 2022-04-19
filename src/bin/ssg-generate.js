@@ -14,7 +14,7 @@ if (process.env.STATIC === void 0) {
 
 const parseArgs = require('minimist');
 const { redBright } = require('chalk');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 const { fatal, warn } = require('../helpers/logger');
 const ensureBuild = require('../build/ensureBuild');
 const banner = require('../helpers/banner').generate;
@@ -48,9 +48,9 @@ if (argv.help) {
 }
 
 module.exports = async function run(api) {
-  const QuasarConfFile = appRequire(hasNewQuasarConfFile(api) ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config', api.appDir);
-  const getQuasarCtx = appRequire('@quasar/app/lib/helpers/get-quasar-ctx', api.appDir);
-  const extensionRunner = appRequire('@quasar/app/lib/app-extension/extensions-runner', api.appDir);
+  const QuasarConfFile = requireFromApp(hasNewQuasarConfFile(api) ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config');
+  const getQuasarCtx = requireFromApp('@quasar/app/lib/helpers/get-quasar-ctx');
+  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
 
   const ctx = getQuasarCtx({
     mode: 'ssr',

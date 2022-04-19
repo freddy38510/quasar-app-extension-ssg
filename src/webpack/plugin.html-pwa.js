@@ -1,4 +1,4 @@
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 
 function fillPwaTags(data, {
   pwa: {
@@ -91,7 +91,7 @@ module.exports.plugin = class HtmlPwaPlugin {
   }
 
   apply(compiler) {
-    const HtmlWebpackPlugin = appRequire('html-webpack-plugin', this.api.appDir);
+    const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin', this.api.appDir);
 
     compiler.hooks.compilation.tap('webpack-plugin-html-pwa', (compilation) => {
       const hooks = HtmlWebpackPlugin.getHooks(compilation);

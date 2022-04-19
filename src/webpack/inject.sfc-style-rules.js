@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 const path = require('path');
 const { merge } = require('webpack-merge');
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 
 function create(
   rule,
@@ -190,7 +190,7 @@ function injectRule(
 }
 
 module.exports = function injectSFCStyleRules(api, chain, pref) {
-  const cssVariables = appRequire(
+  const cssVariables = requireFromApp(
     '@quasar/app/lib/helpers/css-variables',
     api.appDir,
   );
@@ -201,10 +201,10 @@ module.exports = function injectSFCStyleRules(api, chain, pref) {
   let postcssRTL;
 
   if (pref.minify) {
-    cssnano = appRequire('cssnano', api.appDir);
+    cssnano = requireFromApp('cssnano');
   }
   if (pref.rtl) {
-    postcssRTL = appRequire('postcss-rtl', api.appDir);
+    postcssRTL = requireFromApp('postcss-rtl');
   }
 
   const args = {

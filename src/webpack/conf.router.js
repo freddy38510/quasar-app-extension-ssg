@@ -1,7 +1,7 @@
-const appRequire = require('../helpers/app-require');
+const requireFromApp = require('../helpers/require-from-app');
 
 module.exports = (api, quasarConf, webpackConf) => {
-  const webpack = appRequire('webpack', api.appDir);
+  const webpack = requireFromApp('webpack');
 
   const entryFile = api.resolve.app(quasarConf.sourceFiles.router);
 
