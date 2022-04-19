@@ -63,12 +63,13 @@ class Generator {
 
       this.beastcss = new Beastcss(
         {
+          noscriptFallback: false,
+          logLevel: ctx.debug ? 'debug' : 'info',
+          ...quasarConf.ssg.inlineCriticalCss || {},
           path: this.options.__distDir,
           publicPath: this.options.build.publicPath,
           additionalStylesheets: manifest.async,
-          noscriptFallback: false,
           logger: this.createBeastcssLogger(),
-          logLevel: ctx.debug ? 'debug' : 'info',
         },
       );
     }
