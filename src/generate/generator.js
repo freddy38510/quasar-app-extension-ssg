@@ -59,8 +59,6 @@ class Generator {
         '/quasar.client-manifest.json',
       ));
 
-      this.beastcssMessages = [];
-
       this.beastcss = new Beastcss(
         {
           noscriptFallback: false,
@@ -72,6 +70,8 @@ class Generator {
           logger: this.createBeastcssLogger(),
         },
       );
+
+      this.beastcssLogs = [];
     }
   }
 
@@ -126,12 +126,6 @@ class Generator {
     errors.forEach(({ route, error }) => {
       let msg = `Error when generating route ${cyanBright(route)}\n`;
 
-      if (this.beastcssMessages[route].errors.length > 0) {
-        msg += redBright(
-          beastcssFormatMessage(`${this.beastcssMessages[route].errors[0]} \n`),
-        );
-      }
-
       msg += `${error.stack || error}`;
 
       warn(msg);
@@ -152,7 +146,8 @@ class Generator {
           log(`Generated route ${cyanBright(route)}`);
 
           if (this.options.inlineCriticalCss) {
-            logBeastcss(this.beastcssMessages[route]);
+            logBeastcss(this.beastcssLogs[route], 'warn');
+            logBeastcss(this.beastcssLogs[route], 'info');
           }
         } catch (e) {
           errors.push({ route, error: e });
@@ -307,31 +302,43 @@ class Generator {
   }
 
   async inlineCriticalCss(html, route) {
-    if (!this.beastcssMessages[route]) {
-      this.beastcssMessages[route] = {
-        traces: [],
-        debugs: [],
-        infos: [],
-        warns: [],
-        errors: [],
-      };
+    this.beastcssLogs[route] = [];
+
+    try {
+      html = await this.beastcss.process(html, route);
+    } catch (e) {
+      e.message = `Could not inline critical css\n\n${e.message}`;
+
+      throw e;
     }
 
-    return this.beastcss.process(html, route);
+    return html;
   }
 
   createBeastcssLogger() {
-    const saveMessage = (level) => (msg, id) => {
-      this.beastcssMessages[id][level].push(msg);
+    const logger = {};
+
+    const getColor = (level) => {
+      if (level === 'info') {
+        return require('chalk').blue;
+      }
+
+      if (level === 'warn') {
+        return require('chalk').yellow;
+      }
+
+      return require('chalk').red;
     };
 
-    return {
-      trace: saveMessage('traces'),
-      debug: saveMessage('debugs'),
-      info: saveMessage('infos'),
-      warn: saveMessage('warns'),
-      error: saveMessage('errors'),
-    };
+    ['info', 'warn', 'error', 'trace', 'debug'].forEach((level) => {
+      logger[level] = (msg, route) => this.beastcssLogs[route].push({
+        level,
+        msg,
+        color: getColor(level),
+      });
+    });
+
+    return logger;
   }
 }
 

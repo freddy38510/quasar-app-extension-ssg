@@ -28,14 +28,12 @@ const beastcssFormatMessage = (msg, level = null, indent = true) => {
   return `${prefix} ${bold('Beastcss')}: ${msg}`;
 };
 
-const logBeastcss = ({
-  traces, debugs, infos, warns, errors,
-}, indent) => {
-  traces.forEach((msg) => log(blueBright(beastcssFormatMessage(msg, 'trace', indent))));
-  debugs.forEach((msg) => log(blueBright(beastcssFormatMessage(msg, 'debug', indent))));
-  warns.forEach((msg) => log(yellowBright(beastcssFormatMessage(msg, 'warn', indent))));
-  errors.forEach((msg) => log(redBright(beastcssFormatMessage(msg, 'error', indent))));
-  infos.forEach((msg) => log(blueBright(beastcssFormatMessage(msg, 'info', indent))));
+const logBeastcss = (messages, level) => {
+  messages.forEach(({ level: msgLevel, msg, color }) => {
+    if (msgLevel === level) {
+      console.log(`                  ${color(`${pointer} Beastcss: ${msg}`)}`);
+    }
+  });
 };
 
 module.exports = {
