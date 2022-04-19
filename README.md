@@ -372,8 +372,7 @@ Crawl your relative links and generate your dynamic links based on these links.
 
 ### `exclude`
 
-:new: _Added in v2.0.0_
-
+:new: _Added in [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0)_
 Type: `String[] | Regexp[]`
 
 It accepts an array of string or regular expressions and will prevent generation of routes matching them.
