@@ -406,11 +406,24 @@ The options merged with Quasar [defaults options](https://github.com/quasarframe
 
 ### `inlineCriticalCss`
 
-Type: `Boolean`
+Type: `Boolean` or `Object`
 
 Default: `true`
 
 Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
+
+You can customize the default beastcss options by passing it to `inlineCriticalCss`.
+
+Example:
+
+```javascript
+ssg: {
+  inlineCriticalCss: {
+    internal: false,
+    merge: false,
+  };
+}
+```
 
 > Note: This option is useful to avoid [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) on first load page in browser because it inlines css coming from async css chunk dynamically injected into the document.
 
