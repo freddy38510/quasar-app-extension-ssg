@@ -59,8 +59,6 @@ module.exports = function createChain(cfg, configName) {
 
   chain.entry('render')
     .add(appPaths.resolve.app('.quasar/ssg-render-entry.js'));
-  chain.entry('get-app-routes-paths')
-    .add(appPaths.resolve.app('.quasar/ssg-get-app-routes-paths-entry.js'));
 
   chain.output
     .filename('[name].js')
@@ -75,7 +73,6 @@ module.exports = function createChain(cfg, configName) {
       additionalModuleDirs,
     }),
     'quasar-app-extension-ssg/src/build/create-renderer',
-    'quasar-app-extension-ssg/src/build/get-app-routes',
     './render-template',
     './quasar.server-manifest.json',
     './quasar.client-manifest.json',

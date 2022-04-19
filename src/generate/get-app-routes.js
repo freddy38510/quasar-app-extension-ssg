@@ -11,7 +11,7 @@ module.exports = async function getAppRoutes(opts) {
     const entry = await evaluateEntry();
 
     const { _context: { provides } } = await entry({
-      req: { headers: {}, url: '/jjj' },
+      req: { headers: {}, url: '/' },
       res: {},
     });
 

@@ -8,9 +8,11 @@ const Beastcss = require('beastcss');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright } = require('chalk');
+const { appDir } = require('../helpers/app-paths');
 const { log, logBeastcss } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
+const flatRoutes = require('../helpers/flat-routes');
 const {
   withTrailingSlash,
   withoutTrailingSlash,
@@ -54,13 +56,12 @@ class Generator {
 
   async initRoutes() {
     const warnings = [];
+
+    let userRoutes = ['/'];
     let appRoutes = ['/'];
-    let userRoutes = [];
 
     try {
       userRoutes = await promisifyRoutes(this.options.routes);
-
-      userRoutes = userRoutes.filter((route) => !this.isRouteExcluded(route));
     } catch (err) {
       err.message = ` Could not resolve provided routes:\n\n ${err.message}`;
 
@@ -69,9 +70,10 @@ class Generator {
 
     if (this.options.includeStaticRoutes !== false) {
       try {
-        appRoutes = await require(path.join(this.options.buildDir, 'get-app-routes-paths.js'))();
-
-        appRoutes = appRoutes.filter((route) => !this.isRouteExcluded(route));
+        appRoutes = flatRoutes(await require('./get-app-routes')({
+          basedir: appDir,
+          serverManifest: require(path.join(this.options.buildDir, './quasar.server-manifest.json')),
+        }));
       } catch (err) {
         err.message = ` Could not get static routes from router:\n\n ${err.message}`;
 
@@ -86,8 +88,11 @@ class Generator {
         && !appRoutes.includes(withoutTrailingSlash(route)),
     );
 
+    const routes = [...new Set([...userRoutes, ...appRoutes])]
+      .filter((route) => !this.isRouteExcluded(route));
+
     return {
-      routes: [...new Set([...userRoutes, ...appRoutes])],
+      routes,
       warnings,
     };
   }

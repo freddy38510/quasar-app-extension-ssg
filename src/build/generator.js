@@ -14,7 +14,6 @@ class Generator extends QuasarGenerator {
 
     const paths = [
       'ssg-render-entry.js',
-      'ssg-get-app-routes-paths-entry.js',
     ];
 
     const newFiles = paths.map((file) => {
