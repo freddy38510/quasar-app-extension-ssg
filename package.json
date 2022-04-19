@@ -48,7 +48,7 @@
     "destr": "1.1.1",
     "express": "4.17.3",
     "fastq": "1.13.0",
-    "fs-extra": "10.0.1",
+    "fs-extra": "10.1.0",
     "globby": "13.1.1",
     "html-minifier": "4.0.0",
     "https": "1.0.0",
