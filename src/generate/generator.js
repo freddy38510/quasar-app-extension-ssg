@@ -7,12 +7,11 @@ const { minify } = require('html-minifier');
 const path = require('path');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
-const { cyanBright, redBright } = require('chalk');
+const { cyanBright } = require('chalk');
 const {
   log,
   warn,
   fatal,
-  beastcssFormatMessage,
   logBeastcss,
 } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');

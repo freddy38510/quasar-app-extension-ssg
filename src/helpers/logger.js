@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
-const {
-  green, redBright, blueBright, yellowBright, bold,
-} = require('chalk');
+const { green, redBright } = require('chalk');
 const isUnicodeSupported = require('./is-unicode-supported');
 
 const banner = 'Extension(ssg) ·';
@@ -20,14 +18,6 @@ const fatal = function fatal(msg) {
   process.exit(1);
 };
 
-const beastcssFormatMessage = (msg, level = null, indent = true) => {
-  let prefix = indent ? `  ${pointer} ` : '';
-
-  prefix = level ? `${prefix}[${level}]` : prefix;
-
-  return `${prefix} ${bold('Beastcss')}: ${msg}`;
-};
-
 const logBeastcss = (messages, level) => {
   messages.forEach(({ level: msgLevel, msg, color }) => {
     if (msgLevel === level) {
@@ -40,6 +30,5 @@ module.exports = {
   log,
   warn,
   fatal,
-  beastcssFormatMessage,
   logBeastcss,
 };
