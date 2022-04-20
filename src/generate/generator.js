@@ -25,11 +25,11 @@ const {
 
 class Generator {
   constructor(api, quasarConf, ctx) {
-    const ssr = require(`${quasarConf.build.distDir}/ssr-config`);
+    const renderer = require(`${quasarConf.ssg.buildDir}/renderer`);
 
-    ssr.mergeRendererOptions(quasarConf.ssg.rendererOptions);
+    renderer.mergeRendererOptions(quasarConf.ssg.rendererOptions);
 
-    this.ssr = ssr;
+    this.renderer = renderer;
 
     this.api = api;
 
@@ -232,7 +232,7 @@ class Generator {
         res: {},
       };
 
-      this.ssr.renderToString(opts, (error, html) => {
+      this.renderer.renderToString(opts, (error, html) => {
         if (error) {
           if (error.url) {
             const redirectedRoute = decodeURI(error.url);

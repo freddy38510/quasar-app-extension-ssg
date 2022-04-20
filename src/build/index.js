@@ -4,16 +4,21 @@
 /* eslint-disable no-void */
 const chalk = require('chalk');
 const pify = require('pify');
-const requireFromApp = require('../helpers/require-from-app');
+const Generator = require('./generator');
 const Router = require('./router');
+const requireFromApp = require('../helpers/require-from-app');
 const banner = require('../helpers/banner').build;
 const { log, warn } = require('../helpers/logger');
 const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 
-function splitConfig(webpackConfig) {
+const webpack = requireFromApp('webpack');
+
+function splitConfig(webpackConf) {
   return [
-    { webpack: webpackConfig.server, name: 'Server' },
-    { webpack: webpackConfig.client, name: 'Client' },
+    ...(webpackConf.csw ? [{ webpack: webpackConf.csw, name: 'Custom Service Worker' }] : [{}]),
+    { webpack: webpackConf.generator, name: 'Generator' },
+    { webpack: webpackConf.server, name: 'Server' },
+    { webpack: webpackConf.client, name: 'Client' },
   ];
 }
 
@@ -33,36 +38,26 @@ module.exports = async function build(
   ctx,
   extensionRunner,
 ) {
-  banner(api, ctx, 'build');
-
-  const webpack = requireFromApp('webpack');
-
-  const installMissing = requireFromApp(
-    '@quasar/app/lib/mode/install-missing',
-    api.appDir,
-  );
-  await installMissing(ctx.modeName, ctx.targetName);
-
-  const Generator = requireFromApp('@quasar/app/lib/generator');
   const artifacts = requireFromApp('@quasar/app/lib/artifacts');
-  const regenerateTypesFeatureFlags = requireFromApp(
-    '@quasar/app/lib/helpers/types-feature-flags',
-    api.appDir,
-  );
+  const regenerateTypesFeatureFlags = requireFromApp('@quasar/app/lib/helpers/types-feature-flags');
 
   const generator = new Generator(quasarConfFile);
-
-  const webpackConfig = hasNewQuasarConfFile(api)
-    ? quasarConfFile.webpackConf
-    : quasarConfFile.getWebpackConfig();
 
   const quasarConf = hasNewQuasarConfFile(api)
     ? quasarConfFile.quasarConf
     : quasarConfFile.getquasarConf();
 
+  const webpackConfig = await require('./webpack')(quasarConf);
+
+  if (hasNewQuasarConfFile) {
+    quasarConfFile.webpackConf = webpackConfig;
+  } else {
+    quasarConfFile.getWebpackConfig = () => webpackConfig;
+  }
+
   regenerateTypesFeatureFlags(quasarConf);
 
-  const outputFolder = quasarConf.build.distDir;
+  const outputFolder = quasarConf.ssg.buildDir;
 
   artifacts.clean(outputFolder);
   generator.build();
@@ -128,10 +123,7 @@ module.exports = async function build(
     process.exit(1);
   });
 
-  const printWebpackStats = requireFromApp(
-    '@quasar/app/lib/helpers/print-webpack-stats',
-    api.appDir,
-  );
+  const printWebpackStats = requireFromApp('@quasar/app/lib/helpers/print-webpack-stats');
 
   console.log();
 
@@ -144,7 +136,6 @@ module.exports = async function build(
   });
 
   // free up memory
-  // eslint-disable-next-line no-void
   webpackData = void 0;
 
   banner(api, ctx, 'build', {

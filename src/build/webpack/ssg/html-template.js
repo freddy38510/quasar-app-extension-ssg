@@ -43,7 +43,7 @@ function injectSsrInterpolation(html) {
     );
 }
 
-module.exports.getIndexHtml = function getIndexHtml(api, template, cfg) {
+module.exports.getIndexHtml = function getIndexHtml(template, cfg) {
   const compileTemplate = requireFromApp('lodash.template');
   const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin');
 

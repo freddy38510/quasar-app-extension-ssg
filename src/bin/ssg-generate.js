@@ -17,8 +17,9 @@ const { redBright } = require('chalk');
 const requireFromApp = require('../helpers/require-from-app');
 const { fatal, warn } = require('../helpers/logger');
 const ensureBuild = require('../helpers/ensure-build');
-const banner = require('../helpers/banner').generate;
+const banner = require('../helpers/banner');
 const { hasNewQuasarConfFile } = require('../helpers/compatibility');
+const getQuasarCtx = require('../helpers/get-quasar-ctx');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -49,11 +50,10 @@ if (argv.help) {
 
 module.exports = async function run(api) {
   const QuasarConfFile = requireFromApp(hasNewQuasarConfFile(api) ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config');
-  const getQuasarCtx = requireFromApp('@quasar/app/lib/helpers/get-quasar-ctx');
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
 
   const ctx = getQuasarCtx({
-    mode: 'ssr',
+    mode: 'ssg',
     target: undefined,
     arch: undefined,
     bundler: undefined,
@@ -62,9 +62,15 @@ module.exports = async function run(api) {
     publish: undefined,
   });
 
+  banner.build(api, ctx, 'build');
+
+  const installMissing = requireFromApp('@quasar/app/lib/mode/install-missing');
+  await installMissing('ssr');
+
   await extensionRunner.registerExtensions(ctx);
 
   const quasarConfFile = await new QuasarConfFile(ctx);
+  quasarConfFile.webpackConfChanged = false;
 
   try {
     await quasarConfFile.prepare();
@@ -87,5 +93,5 @@ module.exports = async function run(api) {
     fatal(redBright('Exiting with non-zero code.'));
   }
 
-  banner(quasarConf.ssg, errors);
+  banner.generate(quasarConf.ssg, errors);
 };

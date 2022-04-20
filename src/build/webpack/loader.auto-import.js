@@ -1,15 +1,15 @@
-const path = require('path');
 const requireFromApp = require('../../helpers/require-from-app');
+const { resolve: { appNodeModule } } = require('../../helpers/app-paths');
 
 module.exports = function loaderAutoImport(content, map) {
-  const { api, isServer, componentCase } = this.query;
+  const { isServer, componentCase } = this.query;
 
   const stringifyRequest = requireFromApp('loader-utils/lib/stringifyRequest');
   const getDevlandFile = requireFromApp('@quasar/app/lib/helpers/get-devland-file');
 
   const data = getDevlandFile('quasar/dist/babel-transforms/auto-import.json');
   const importTransform = getDevlandFile('quasar/dist/babel-transforms/imports.js');
-  const runtimePath = require.resolve(path.join(api.appDir, 'node_modules', '@quasar/app/lib/webpack', 'runtime.auto-import.js'));
+  const runtimePath = appNodeModule('@quasar/app/lib/webpack/runtime.auto-import.js');
 
   const compRegex = {
     kebab: new RegExp(data.regex.kebabComponents || data.regex.components, 'g'),

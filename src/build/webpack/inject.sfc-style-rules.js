@@ -2,6 +2,7 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
 const requireFromApp = require('../../helpers/require-from-app');
+const appPaths = require('../../helpers/app-paths');
 
 function create(
   rule,
@@ -189,12 +190,9 @@ function injectRule(
   create(vueNormalRule, false, pref, args, loader, loaderOptions);
 }
 
-module.exports = function injectSFCStyleRules(api, chain, pref) {
-  const cssVariables = requireFromApp(
-    '@quasar/app/lib/helpers/css-variables',
-    api.appDir,
-  );
-  const postCssConfigFile = api.resolve.app('.postcssrc.js');
+module.exports = function injectSFCStyleRules(chain, pref) {
+  const cssVariables = requireFromApp('@quasar/app/lib/helpers/css-variables');
+  const postCssConfigFile = appPaths.resolve.app('.postcssrc.js');
   const quasarCssPaths = [path.join('node_modules', 'quasar'), path.join('node_modules', '@quasar')];
 
   let cssnano;
