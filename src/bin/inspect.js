@@ -51,7 +51,7 @@ function getCfgEntries(webpackConf) {
   ];
 }
 
-async function inspect(api) {
+async function inspect() {
   requireFromApp('@quasar/app/lib/helpers/banner')(argv, 'production');
 
   const getMode = requireFromApp('@quasar/app/lib/mode/index');
@@ -59,7 +59,7 @@ async function inspect(api) {
     fatal('Requested mode for inspection is NOT installed.\n');
   }
 
-  const QuasarConfFile = requireFromApp(hasNewQuasarConfFile(api) ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config');
+  const QuasarConfFile = requireFromApp(hasNewQuasarConfFile ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config');
 
   const depth = parseInt(argv.depth, 10) || Infinity;
 
@@ -91,7 +91,7 @@ async function inspect(api) {
   const util = require('util');
 
   let cfgEntries = getCfgEntries(
-    hasNewQuasarConfFile(api)
+    hasNewQuasarConfFile
       ? quasarConfFile.webpackConf
       : quasarConfFile.getWebpackConfig(),
   );
@@ -121,6 +121,4 @@ async function inspect(api) {
   console.log(`\n  Depth used: ${depth}. You can change it with "-d" parameter.\n`);
 }
 
-module.exports = (api) => {
-  inspect(api);
-};
+inspect();

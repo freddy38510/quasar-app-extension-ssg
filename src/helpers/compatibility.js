@@ -1,19 +1,10 @@
-const semverSatisfies = require('semver/functions/satisfies');
+const { hasPackage } = require('./packages');
 
-const isCompatible = function isCompatible(api, pkg, semverCondition) {
-  return semverSatisfies(api.getPackageVersion(pkg), semverCondition);
-};
+const hasNewQuasarConfFile = hasPackage('@quasar/app', '>=2.0.1');
 
-const hasNewQuasarConfFile = function hasNewQuasarConfFile(api) {
-  return isCompatible(api, '@quasar/app', '>=2.0.1');
-};
-
-const hasBrowsersSupportFile = function hasBrowsersSupportFile(api) {
-  return isCompatible(api, '@quasar/app', '>=2.0.0');
-};
+const hasBrowsersSupportFile = hasPackage('@quasar/app', '>=2.0.0');
 
 module.exports = {
-  isCompatible,
   hasNewQuasarConfFile,
   hasBrowsersSupportFile,
 };

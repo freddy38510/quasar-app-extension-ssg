@@ -6,12 +6,13 @@ const {
 } = require('chalk');
 const path = require('path');
 const requireFromApp = require('./require-from-app');
+const { getPackageVersion } = require('./packages');
 const { hasBrowsersSupportFile } = require('./compatibility');
 
-module.exports.build = function build(api, ctx, cmd, details) {
-  const quasarVersion = api.getPackageVersion('quasar');
-  const cliAppVersion = api.getPackageVersion('@quasar/app');
-  const ssgVersion = api.getPackageVersion('quasar-app-extension-ssg');
+module.exports.build = function build(ctx, details) {
+  const quasarVersion = getPackageVersion('quasar');
+  const cliAppVersion = getPackageVersion('@quasar/app');
+  const ssgVersion = getPackageVersion('quasar-app-extension-ssg');
 
   let banner = '';
 
@@ -26,7 +27,7 @@ module.exports.build = function build(api, ctx, cmd, details) {
  Pkg ssg........... ${green(`v${ssgVersion}`)}
  Pkg quasar........ ${green(`v${quasarVersion}`)}
  Pkg @quasar/app... ${green(`v${cliAppVersion}`)}
- Debugging......... ${cmd === 'dev' || ctx.debug ? green('enabled') : grey('no')}`;
+ Debugging......... ${ctx.debug ? green('enabled') : grey('no')}`;
 
   if (details) {
     banner += `\n Transpiled JS..... ${details.transpileBanner}`;
@@ -37,7 +38,7 @@ module.exports.build = function build(api, ctx, cmd, details) {
 
   console.log(`${banner}\n`);
 
-  if (!details && hasBrowsersSupportFile(api)) {
+  if (!details && hasBrowsersSupportFile) {
     const { getBrowsersBanner } = requireFromApp('@quasar/app/lib/helpers/browsers-support');
     console.log(getBrowsersBanner());
   }

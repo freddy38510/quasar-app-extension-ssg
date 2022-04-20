@@ -19,14 +19,12 @@ const {
 } = require('../helpers/normalize-slash');
 
 class Generator {
-  constructor(api, quasarConf, ctx) {
+  constructor(quasarConf) {
     const renderer = require(`${quasarConf.ssg.buildDir}/renderer`);
 
     renderer.mergeRendererOptions(quasarConf.ssg.rendererOptions);
 
     this.renderer = renderer;
-
-    this.api = api;
 
     this.options = {
       ...quasarConf.ssg,
@@ -42,8 +40,8 @@ class Generator {
       },
       vueRouterBase: quasarConf.build.vueRouterBase,
       sourceFiles: quasarConf.sourceFiles,
-      failOnError: ctx.failOnError,
-      debug: ctx.debug,
+      failOnError: quasarConf.ctx.failOnError,
+      debug: quasarConf.ctx.debug,
     };
 
     this.generatedRoutes = new Set();
@@ -57,7 +55,7 @@ class Generator {
       this.beastcss = new Beastcss(
         {
           noscriptFallback: false,
-          logLevel: ctx.debug ? 'debug' : 'info',
+          logLevel: quasarConf.ctx.debug ? 'debug' : 'info',
           ...quasarConf.ssg.inlineCriticalCss || {},
           path: this.options.__distDir,
           publicPath: this.options.build.publicPath,

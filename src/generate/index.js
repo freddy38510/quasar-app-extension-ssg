@@ -7,10 +7,10 @@ const requireFromApp = require('../helpers/require-from-app');
 const banner = require('../helpers/banner').generate;
 const { log, error } = require('../helpers/logger');
 
-module.exports = async (api, quasarConf, ctx) => {
+module.exports = async (quasarConf) => {
   const { add, clean } = requireFromApp('@quasar/app/lib/artifacts');
 
-  const generator = new Generator(api, quasarConf, ctx);
+  const generator = new Generator(quasarConf);
 
   banner();
 
@@ -26,7 +26,7 @@ module.exports = async (api, quasarConf, ctx) => {
     const buildWorkbox = require('./workbox.js');
 
     try {
-      await buildWorkbox(api, quasarConf, ctx);
+      await buildWorkbox(quasarConf);
     } catch (err) {
       error(err.stack || err);
 

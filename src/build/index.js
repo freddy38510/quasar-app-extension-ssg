@@ -31,18 +31,14 @@ function parseWebpackConfig(cfg) {
   };
 }
 
-module.exports = async function build(
-  api,
-  quasarConfFile,
-  ctx,
-  extensionRunner,
-) {
+module.exports = async function build(quasarConfFile) {
+  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
   const artifacts = requireFromApp('@quasar/app/lib/artifacts');
   const regenerateTypesFeatureFlags = requireFromApp('@quasar/app/lib/helpers/types-feature-flags');
 
   const generator = new Generator(quasarConfFile);
 
-  const quasarConf = hasNewQuasarConfFile(api)
+  const quasarConf = hasNewQuasarConfFile
     ? quasarConfFile.quasarConf
     : quasarConfFile.getquasarConf();
 
@@ -131,7 +127,7 @@ module.exports = async function build(
   // free up memory
   webpackData = void 0;
 
-  banner(api, ctx, 'build', {
+  banner(quasarConf.ctx, {
     outputFolder,
     transpileBanner: quasarConf.__transpileBanner,
   });

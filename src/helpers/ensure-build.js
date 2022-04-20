@@ -2,24 +2,27 @@
 const destr = require('destr');
 const fs = require('fs-extra');
 const path = require('path');
+const { makeSnapshot, compareSnapshots } = require('../build/snapshot');
 const build = require('../build');
 const { log } = require('./logger');
-const { makeSnapshot, compareSnapshots } = require('../build/snapshot');
+const { appDir } = require('./app-paths');
+const { getPackageVersion } = require('./packages');
 const { hasNewQuasarConfFile } = require('./compatibility');
 
-async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild = false) {
-  const quasarConf = hasNewQuasarConfFile(api)
+async function ensureBuild(quasarConfFile) {
+  const quasarConf = hasNewQuasarConfFile
     ? quasarConfFile.quasarConf : quasarConfFile.getBuildConfig();
+
   const options = quasarConf.ssg;
 
-  if (options.cache === false || forceBuild) {
-    await build(api, quasarConfFile, ctx, extensionRunner);
+  if (options.cache === false || quasarConfFile.opts['force-build']) {
+    await build(quasarConfFile);
     return;
   }
 
   // Take a snapshot of current project
   const snapshotOptions = {
-    rootDir: api.appDir,
+    rootDir: appDir,
     ignore: options.cache.ignore.map(path.posix.normalize),
     globbyOptions: options.cache.globbyOptions,
   };
@@ -28,10 +31,10 @@ async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild
 
   // Current build meta
   const currentBuild = {
-    quasarVersion: api.getPackageVersion('quasar'),
-    quasarAppVersion: api.getPackageVersion('@quasar/app'),
-    quasarExtrasVersion: api.getPackageVersion('@quasar/extras'),
-    ssgAppExtensionVersion: api.getPackageVersion('quasar-app-extension-ssg'),
+    quasarVersion: getPackageVersion('quasar'),
+    quasarAppVersion: getPackageVersion('@quasar/app'),
+    quasarExtrasVersion: getPackageVersion('@quasar/extras'),
+    ssgAppExtensionVersion: getPackageVersion('quasar-app-extension-ssg'),
     ssr: quasarConf.ssr,
     snapshot: currentBuildSnapshot,
   };
@@ -72,7 +75,7 @@ async function ensureBuild(api, quasarConfFile, ctx, extensionRunner, forceBuild
     }
   }
 
-  await build(api, quasarConfFile, ctx, extensionRunner);
+  await build(quasarConfFile);
 
   // Write build.json
   fs.writeFileSync(quasarBuildFile, JSON.stringify(currentBuild, null, 2), 'utf-8');

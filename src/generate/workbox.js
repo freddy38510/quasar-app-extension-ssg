@@ -78,7 +78,7 @@ const handleSuccess = (isGenerateSW, size, count, diffTime) => {
   log(`${prefix}, which will precache ${count} files, totaling ${(size / 1024).toFixed(2)} kB • ${diffTime}ms`, 'DONE');
 };
 
-module.exports = async function buildWorkbox(api, quasarConf) {
+module.exports = async function buildWorkbox(quasarConf) {
   const mode = quasarConf.pwa.workboxPluginMode;
   const isGenerateSW = mode === 'GenerateSW';
   const opts = getOptions(quasarConf, mode);

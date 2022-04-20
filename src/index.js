@@ -104,9 +104,9 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
 };
 
 module.exports = function run(api) {
-  api.registerCommand('generate', () => require('./bin/ssg-generate')(api));
+  api.registerCommand('generate', () => require('./bin/ssg-generate'));
 
-  api.registerCommand('inspect', () => require('./bin/inspect')(api));
+  api.registerCommand('inspect', () => require('./bin/inspect'));
 
   api.registerCommand('serve', () => require('./bin/server'));
 

@@ -3,7 +3,6 @@
 /* eslint-disable no-console */
 /* eslint-disable global-require */
 
-// eslint-disable-next-line no-void
 if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'production';
 }
@@ -13,13 +12,6 @@ if (process.env.STATIC === void 0) {
 }
 
 const parseArgs = require('minimist');
-const { redBright, yellowBright } = require('chalk');
-const requireFromApp = require('../helpers/require-from-app');
-const { warn, error, fatal } = require('../helpers/logger');
-const ensureBuild = require('../helpers/ensure-build');
-const banner = require('../helpers/banner');
-const { hasNewQuasarConfFile } = require('../helpers/compatibility');
-const getQuasarCtx = require('../helpers/get-quasar-ctx');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -48,28 +40,36 @@ if (argv.help) {
   process.exit(0);
 }
 
-module.exports = async function run(api) {
-  const QuasarConfFile = requireFromApp(hasNewQuasarConfFile(api) ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config');
-  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
+const { redBright, yellowBright } = require('chalk');
+const requireFromApp = require('../helpers/require-from-app');
+const { warn, error, fatal } = require('../helpers/logger');
+const ensureBuild = require('../helpers/ensure-build');
+const banner = require('../helpers/banner');
+const { hasNewQuasarConfFile } = require('../helpers/compatibility');
+const getQuasarCtx = require('../helpers/get-quasar-ctx');
 
+async function run() {
+  const QuasarConfFile = requireFromApp(hasNewQuasarConfFile ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config');
+  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
   const ctx = getQuasarCtx({
     mode: 'ssg',
     target: undefined,
     arch: undefined,
     bundler: undefined,
     debug: argv.debug,
+    failOnError: argv['fail-on-error'],
     prod: true,
     publish: undefined,
   });
 
-  banner.build(api, ctx, 'build');
+  banner.build(ctx);
 
   const installMissing = requireFromApp('@quasar/app/lib/mode/install-missing');
   await installMissing('ssr');
 
   await extensionRunner.registerExtensions(ctx);
 
-  const quasarConfFile = await new QuasarConfFile(ctx);
+  const quasarConfFile = await new QuasarConfFile(ctx, argv);
   quasarConfFile.webpackConfChanged = false;
 
   try {
@@ -81,12 +81,12 @@ module.exports = async function run(api) {
 
   await quasarConfFile.compile();
 
-  await ensureBuild(api, quasarConfFile, ctx, extensionRunner, argv['force-build']);
+  await ensureBuild(quasarConfFile);
 
-  const quasarConf = hasNewQuasarConfFile(api)
+  const quasarConf = hasNewQuasarConfFile
     ? quasarConfFile.quasarConf : quasarConfFile.getBuildConfig();
 
-  const { errors, warnings } = await require('../generate')(api, quasarConf, { failOnError: argv['fail-on-error'], debug: ctx.debug });
+  const { errors, warnings } = await require('../generate')(quasarConf);
 
   if (errors.length > 0) {
     error(redBright('[FAIL] Generating pages failed. Check log above.\n'));
@@ -101,4 +101,6 @@ module.exports = async function run(api) {
   }
 
   banner.generate(quasarConf.ssg, errors);
-};
+}
+
+run();
