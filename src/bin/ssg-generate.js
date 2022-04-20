@@ -100,7 +100,7 @@ async function run() {
     warn(yellowBright('[WARNING] Generating pages with warning(s). Check log above.\n'));
   }
 
-  banner.generate(quasarConf.ssg, errors);
+  banner.generate(quasarConf.ssg, errors, warnings);
 }
 
 run();

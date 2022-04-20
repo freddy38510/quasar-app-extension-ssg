@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-void */
 const {
-  redBright, green, grey, underline,
+  redBright, yellowBright, green, grey, underline,
 } = require('chalk');
 const path = require('path');
 const requireFromApp = require('./require-from-app');
@@ -44,7 +44,7 @@ module.exports.build = function build(ctx, details) {
   }
 };
 
-module.exports.generate = function generate(options, errors) {
+module.exports.generate = function generate(options, errors, warnings) {
   let banner = '\n';
 
   if (!options) {
@@ -52,12 +52,21 @@ module.exports.generate = function generate(options, errors) {
   } else {
     const relativeDistDir = path.posix.relative('', options.__distDir);
     const hasErrors = errors.length > 0;
+    const hasWarnings = warnings.length > 0;
 
-    const successMessage = ` ${underline('Generation succeeded')}`;
+    const successMessage = ` ${underline('Generation succeeded')}\n`;
 
-    const failMessage = ` ${underline('Generation failed')} with ${errors.length} error(s), check log above.\n`;
+    const successWithWarnsMessage = ` ${underline('Generation succeeded')}, but with ${warnings.length} warning(s). Check log above.\n`;
 
-    banner += `${hasErrors ? ` ⚠️ ${redBright(failMessage)}` : successMessage}`;
+    const failMessage = ` ${underline('Generation failed')} with ${errors.length} error(s). Check log above.\n`;
+
+    if (hasErrors) {
+      banner += ` ⚠️ ${redBright(failMessage)}`;
+    } else if (hasWarnings && !hasErrors) {
+      banner += ` ⚠️ ${yellowBright(successWithWarnsMessage)}`;
+    } else {
+      banner += `${successMessage}`;
+    }
 
     banner += `
  Fallback.......... ${green(options.fallback)}
