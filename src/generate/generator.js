@@ -84,17 +84,19 @@ class Generator {
       warnings.push(err);
     }
 
-    try {
-      appRoutes = flatRoutes(await require('./get-app-routes')(
-        {
-          serverManifest: require(path.join(this.options.buildDir, './quasar.server-manifest.json')),
-          basedir: appDir,
-        },
-      ));
-    } catch (err) {
-      err.message = ` Could not get static routes from router:\n\n ${err.message}`;
+    if (this.options.includeStaticRoutes !== false) {
+      try {
+        appRoutes = flatRoutes(await require('./get-app-routes')(
+          {
+            serverManifest: require(path.join(this.options.buildDir, './quasar.server-manifest.json')),
+            basedir: appDir,
+          },
+        ));
+      } catch (err) {
+        err.message = ` Could not get static routes from router:\n\n ${err.message}`;
 
-      warnings.push(err);
+        warnings.push(err);
+      }
     }
 
     // remove duplicate routes between userRoutes and appRoutes
