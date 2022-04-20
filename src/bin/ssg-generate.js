@@ -13,9 +13,9 @@ if (process.env.STATIC === void 0) {
 }
 
 const parseArgs = require('minimist');
-const { redBright } = require('chalk');
+const { redBright, yellowBright } = require('chalk');
 const requireFromApp = require('../helpers/require-from-app');
-const { fatal, warn } = require('../helpers/logger');
+const { warn, error, fatal } = require('../helpers/logger');
 const ensureBuild = require('../helpers/ensure-build');
 const banner = require('../helpers/banner');
 const { hasNewQuasarConfFile } = require('../helpers/compatibility');
@@ -86,11 +86,18 @@ module.exports = async function run(api) {
   const quasarConf = hasNewQuasarConfFile(api)
     ? quasarConfFile.quasarConf : quasarConfFile.getBuildConfig();
 
-  const { errors } = await require('../generate')(api, quasarConf, { failOnError: argv['fail-on-error'], debug: ctx.debug });
+  const { errors, warnings } = await require('../generate')(api, quasarConf, { failOnError: argv['fail-on-error'], debug: ctx.debug });
 
-  if (argv['fail-on-error'] && errors.length > 0) {
-    warn(redBright('[FAIL] Generating pages failed. Check log above.\n'));
-    fatal(redBright('Exiting with non-zero code.'));
+  if (errors.length > 0) {
+    error(redBright('[FAIL] Generating pages failed. Check log above.\n'));
+
+    if (argv['fail-on-error']) {
+      fatal(redBright('Exiting with non-zero code.'));
+    }
+  }
+
+  if (warnings.length > 0) {
+    warn(yellowBright('[WARNING] Generating pages with warning(s). Check log above.\n'));
   }
 
   banner.generate(quasarConf.ssg, errors);

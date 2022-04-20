@@ -7,7 +7,7 @@ const pify = require('pify');
 const Generator = require('./generator');
 const requireFromApp = require('../helpers/require-from-app');
 const banner = require('../helpers/banner').build;
-const { log, warn } = require('../helpers/logger');
+const { log, error } = require('../helpers/logger');
 const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 
 const webpack = requireFromApp('webpack');
@@ -101,15 +101,15 @@ module.exports = async function build(
     const errNumber = info.errors.length;
     const errDetails = `${errNumber} error${errNumber > 1 ? 's' : ''}`;
 
-    warn();
-    warn(chalk.red(`${errDetails} encountered:\n`));
+    error();
+    error(chalk.red(`${errDetails} encountered:\n`));
 
-    info.errors.forEach((error) => {
-      console.error(error);
+    info.errors.forEach((e) => {
+      console.error(e);
     });
 
-    warn();
-    warn(
+    error();
+    error(
       chalk.red(`[FAIL] Build failed with ${errDetails}. Check log above.\n`),
     );
 

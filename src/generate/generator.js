@@ -71,15 +71,17 @@ class Generator {
   }
 
   async initRoutes(...args) {
+    const warnings = [];
+
     let userRoutes = ['/'];
     let appRoutes = ['/'];
 
     try {
       userRoutes = await promisifyRoutes(this.options.routes, ...args);
-    } catch (error) {
-      warn(error.stack || error);
+    } catch (err) {
+      err.message = ` Could not resolve provided routes:\n\n ${err.message}`;
 
-      fatal('Could not resolve routes');
+      warnings.push(err);
     }
 
     try {
@@ -90,7 +92,9 @@ class Generator {
         },
       ));
     } catch (err) {
-      appRoutes = ['/'];
+      err.message = ` Could not get static routes from router:\n\n ${err.message}`;
+
+      warnings.push(err);
     }
 
     // remove duplicate routes between userRoutes and appRoutes
@@ -100,14 +104,27 @@ class Generator {
         && !appRoutes.includes(withoutTrailingSlash(route)),
     );
 
-    return [...new Set([...userRoutes, ...appRoutes])]
+    const routes = [...new Set([...userRoutes, ...appRoutes])]
       .filter((route) => !this.isRouteExcluded(route));
+
+    return {
+      routes,
+      warnings,
+    };
   }
 
   async generate() {
     log('Initializing routes...');
 
-    const routes = await this.initRoutes();
+    const { routes, warnings } = await this.initRoutes();
+
+    warnings.forEach((warning, idx) => {
+      let msg = idx === 0 ? 'Warning when initializing routes\n' : '';
+
+      msg += `${warning.stack || warning}`;
+
+      warn(msg);
+    });
 
     log('Generating routes...');
 
@@ -122,10 +139,10 @@ class Generator {
 
       msg += `${error.stack || error}`;
 
-      warn(msg);
+      error(msg);
     });
 
-    return { errors };
+    return { errors, warnings };
   }
 
   async generateRoutes(routes) {

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const { green, redBright } = require('chalk');
+const { green, redBright, yellowBright } = require('chalk');
 const isUnicodeSupported = require('./is-unicode-supported');
 
 const banner = 'Extension(ssg) ·';
@@ -10,7 +10,11 @@ const log = function log(msg) {
 };
 
 const warn = function warn(msg) {
-  console.warn(msg ? ` ${redBright(banner)} ⚠️  ${msg}` : '');
+  console.warn(msg ? ` ${yellowBright(banner)} ⚠️  ${msg}` : '');
+};
+
+const error = function error(msg) {
+  console.error(msg ? ` ${redBright(banner)} ⚠️  ${msg}` : '');
 };
 
 const fatal = function fatal(msg) {
@@ -29,6 +33,7 @@ const logBeastcss = (messages, level) => {
 module.exports = {
   log,
   warn,
+  error,
   fatal,
   logBeastcss,
 };

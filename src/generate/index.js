@@ -5,7 +5,7 @@ const { join } = require('path');
 const Generator = require('./generator');
 const requireFromApp = require('../helpers/require-from-app');
 const banner = require('../helpers/banner').generate;
-const { log, warn } = require('../helpers/logger');
+const { log, error } = require('../helpers/logger');
 
 module.exports = async (api, quasarConf, ctx) => {
   const { add, clean } = requireFromApp('@quasar/app/lib/artifacts');
@@ -20,15 +20,17 @@ module.exports = async (api, quasarConf, ctx) => {
 
   await fs.copy(join(quasarConf.build.distDir, 'www'), quasarConf.ssg.__distDir);
 
-  const { errors } = await generator.generate();
+  const { errors, warnings } = await generator.generate();
 
   if (quasarConf.ctx.mode.pwa) {
     const buildWorkbox = require('./workbox.js');
 
     try {
       await buildWorkbox(api, quasarConf, ctx);
-    } catch (error) {
-      warn(error.stack || error);
+    } catch (err) {
+      error(err.stack || err);
+
+      errors.push(err);
     }
   }
 
@@ -44,12 +46,14 @@ module.exports = async (api, quasarConf, ctx) => {
       log('Running afterGenerate hook...');
 
       await quasarConf.ssg.afterGenerate(files, quasarConf.ssg.__distDir);
-    } catch (error) {
-      warn(error);
+    } catch (err) {
+      error(err.stack || err);
+
+      errors.push(err);
     }
   }
 
   add(quasarConf.ssg.__distDir);
 
-  return { errors };
+  return { errors, warnings };
 };
