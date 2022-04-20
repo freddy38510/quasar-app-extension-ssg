@@ -8,13 +8,9 @@ const path = require('path');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright } = require('chalk');
-const {
-  log,
-  warn,
-  fatal,
-  logBeastcss,
-} = require('../helpers/logger');
+const { log, warn, logBeastcss } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
+const { appDir } = require('../helpers/app-paths');
 const isRouteValid = require('../helpers/is-route-valid');
 const flatRoutes = require('../helpers/flat-routes');
 const {
@@ -75,7 +71,8 @@ class Generator {
   }
 
   async initRoutes(...args) {
-    let userRoutes = [];
+    let userRoutes = ['/'];
+    let appRoutes = ['/'];
 
     try {
       userRoutes = await promisifyRoutes(this.options.routes, ...args);
@@ -85,15 +82,16 @@ class Generator {
       fatal('Could not resolve routes');
     }
 
-    let appRoutes = [];
-
     try {
-      appRoutes = flatRoutes(await this.getAppRoutes());
+      appRoutes = flatRoutes(await require('./get-app-routes')(
+        {
+          serverManifest: require(path.join(this.options.buildDir, './quasar.server-manifest.json')),
+          basedir: appDir,
+        },
+      ));
     } catch (err) {
       appRoutes = ['/'];
     }
-
-    appRoutes = appRoutes.filter((route) => !this.isRouteExcluded(route));
 
     // remove duplicate routes between userRoutes and appRoutes
     // wether trailing slash is present or not
@@ -102,19 +100,16 @@ class Generator {
         && !appRoutes.includes(withoutTrailingSlash(route)),
     );
 
-    return [...new Set([...userRoutes, ...appRoutes])];
-  }
-
-  async getAppRoutes() {
-    const { default: createRouter } = require(path.join(this.options.buildDir, 'compiled-router.js'));
-
-    const router = typeof createRouter === 'function' ? await createRouter() : createRouter;
-
-    return router.matcher.getRoutes();
+    return [...new Set([...userRoutes, ...appRoutes])]
+      .filter((route) => !this.isRouteExcluded(route));
   }
 
   async generate() {
+    log('Initializing routes...');
+
     const routes = await this.initRoutes();
+
+    log('Generating routes...');
 
     const { errors } = await this.generateRoutes(routes);
 

@@ -20,8 +20,6 @@ module.exports = async (api, quasarConf, ctx) => {
 
   await fs.copy(join(quasarConf.build.distDir, 'www'), quasarConf.ssg.__distDir);
 
-  log('Generating routes...');
-
   const { errors } = await generator.generate();
 
   if (quasarConf.ctx.mode.pwa) {
