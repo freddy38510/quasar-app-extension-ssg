@@ -69,7 +69,7 @@ async function getSSG(cfg) {
   const generator = require('./ssg/generator')(cfg, 'Generator');
 
   return {
-    ...(cfg.pwa.workboxPluginMode === 'InjectManifest' ? { csw: await getCSW(cfg) } : {}),
+    ...(cfg.ssr.pwa && cfg.pwa.workboxPluginMode === 'InjectManifest' ? { csw: await getCSW(cfg) } : {}),
 
     generator: await getWebpackConfig(generator, cfg, {
       name: 'Generator',

@@ -13,7 +13,7 @@ const webpack = requireFromApp('webpack');
 
 function splitConfig(webpackConf) {
   return [
-    ...(webpackConf.csw ? [{ webpack: webpackConf.csw, name: 'Custom Service Worker' }] : [{}]),
+    ...(webpackConf.csw ? [{ webpack: webpackConf.csw, name: 'Custom Service Worker' }] : []),
     { webpack: webpackConf.generator, name: 'Generator' },
     { webpack: webpackConf.server, name: 'Server' },
     { webpack: webpackConf.client, name: 'Client' },
