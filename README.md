@@ -476,13 +476,15 @@ It could be useful to return a non-zero status code when a page error is encount
 
 > Note: The `--fail-on-error` argument is set to `true` by default since [v2.4.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.3.0...v2.4.0).
 
-### `process.env.STATIC`
+### `process.env`
 
 The property `STATIC` is added to `process.env` once the App Extension is installed.
 
 `process.env.STATIC` is `true` when your app was built with the command `quasar ssg generate`, and `false` when it don't.
 
 It could be useful if you mixed several builds with differents modes to differentiate runtime procedures.
+
+> Note: Since the version v2.4.0 the value of `process.env.MODE` is `ssg` when your app was built with the command quasar ssg generate.
 
 ## Infos
 
