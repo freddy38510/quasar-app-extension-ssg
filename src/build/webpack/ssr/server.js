@@ -3,11 +3,19 @@ const { resolve } = require('path');
 const { hasPackage } = require('../../../helpers/packages');
 
 const requireFromApp = require('../../../helpers/require-from-app');
+const WebpackProgress = require('../plugin.progress');
 
 module.exports = function chainWebpackServer(chain, cfg) {
   requireFromApp('@quasar/app/lib/webpack/ssr/server')(chain, cfg);
 
   chain.plugins.delete('ssr-artifacts');
+
+  if (cfg.build.showProgress) {
+    chain.plugins.delete('progress');
+
+    chain.plugin('progress')
+      .use(WebpackProgress, [{ name: 'Server' }]);
+  }
 
   if (hasPackage('@quasar/app', '< 2.0.0')) {
     const VueSSRServerPlugin = requireFromApp('vue-server-renderer/server-plugin');

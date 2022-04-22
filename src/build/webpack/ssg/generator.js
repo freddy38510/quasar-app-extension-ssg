@@ -2,13 +2,13 @@
 const { existsSync } = require('fs');
 const { join, sep, normalize } = require('path');
 const RendererTemplatePlugin = require('./plugin.renderer-template');
+const WebpackProgress = require('../plugin.progress');
 const requireFromApp = require('../../../helpers/require-from-app');
 
 const webpack = requireFromApp('webpack');
 const WebpackChain = requireFromApp('webpack-chain');
 
 const appPaths = requireFromApp('@quasar/app/lib/app-paths');
-const WebpackProgress = requireFromApp('@quasar/app/lib/webpack/plugin.progress');
 const nodeExternals = requireFromApp('webpack-node-externals');
 
 const flattenObject = (obj, prefix = 'process.env') => Object.keys(obj)

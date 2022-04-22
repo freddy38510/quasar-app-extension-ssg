@@ -40,15 +40,14 @@ if (argv.help) {
   process.exit(0);
 }
 
+const QuasarConfFile = require('../conf');
 const requireFromApp = require('../helpers/require-from-app');
 const { fatal } = require('../helpers/logger');
 const ensureBuild = require('../helpers/ensure-build');
 const banner = require('../helpers/banner');
-const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 const getQuasarCtx = require('../helpers/get-quasar-ctx');
 
 async function run() {
-  const QuasarConfFile = requireFromApp(hasNewQuasarConfFile ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config');
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
   const ctx = getQuasarCtx({
     mode: 'ssg',
@@ -66,10 +65,17 @@ async function run() {
   const installMissing = requireFromApp('@quasar/app/lib/mode/install-missing');
   await installMissing('ssr');
 
+  // do not run ssg extension again
+  // TODO: extend ExtensionRunner class
+  extensionRunner.extensions.splice(
+    extensionRunner.extensions
+      .findIndex((extension) => extension.extId === 'ssg'),
+    1,
+  );
+
   await extensionRunner.registerExtensions(ctx);
 
-  const quasarConfFile = await new QuasarConfFile(ctx, argv);
-  quasarConfFile.webpackConfChanged = false;
+  const quasarConfFile = new QuasarConfFile(ctx, argv);
 
   try {
     await quasarConfFile.prepare();
@@ -82,10 +88,7 @@ async function run() {
 
   await ensureBuild(quasarConfFile);
 
-  const quasarConf = hasNewQuasarConfFile
-    ? quasarConfFile.quasarConf : quasarConfFile.getBuildConfig();
-
-  await require('../generate')(quasarConf);
+  await require('../generate')(quasarConfFile.quasarConf);
 }
 
 run();

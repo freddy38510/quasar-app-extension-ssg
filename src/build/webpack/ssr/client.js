@@ -4,9 +4,17 @@ const { join, resolve } = require('path');
 const { merge } = require('webpack-merge');
 const requireFromApp = require('../../../helpers/require-from-app');
 const { hasPackage } = require('../../../helpers/packages');
+const WebpackProgress = require('../plugin.progress');
 
 module.exports = function chainWebpackClient(chain, cfg) {
   requireFromApp('@quasar/app/lib/webpack/ssr/client')(chain, cfg);
+
+  if (cfg.build.showProgress) {
+    chain.plugins.delete('progress');
+
+    chain.plugin('progress')
+      .use(WebpackProgress, [{ name: 'Client' }]);
+  }
 
   if (hasPackage('@quasar/app', '< 2.0.0')) {
     const VueSSRClientPlugin = requireFromApp('vue-server-renderer/client-plugin');

@@ -3,11 +3,11 @@ const path = require('path');
 const requireFromApp = require('../../../helpers/require-from-app');
 const { resolve: { appNodeModule } } = require('../../../helpers/app-paths');
 const { hasPackage } = require('../../../helpers/packages');
+const WebpackProgress = require('../plugin.progress');
 
 const appPaths = requireFromApp('@quasar/app/lib/app-paths');
 const webpack = requireFromApp('webpack');
 const WebpackChain = requireFromApp('webpack-chain');
-const WebpackProgress = requireFromApp('@quasar/app/lib/webpack/plugin.progress');
 
 function getDependenciesRegex(list) {
   const deps = list.map((dep) => {

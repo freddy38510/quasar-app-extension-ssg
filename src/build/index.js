@@ -6,7 +6,6 @@ const Generator = require('./generator');
 const requireFromApp = require('../helpers/require-from-app');
 const banner = require('../helpers/banner').build;
 const { log, error } = require('../helpers/logger');
-const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 const { hasPackage } = require('../helpers/packages');
 
 const webpack = requireFromApp('webpack');
@@ -36,17 +35,9 @@ module.exports = async function build(quasarConfFile) {
 
   const generator = new Generator(quasarConfFile);
 
-  const quasarConf = hasNewQuasarConfFile
-    ? quasarConfFile.quasarConf
-    : quasarConfFile.getquasarConf();
+  await quasarConfFile.addWebpackConf();
 
-  const webpackConfig = await require('./webpack')(quasarConf);
-
-  if (hasNewQuasarConfFile) {
-    quasarConfFile.webpackConf = webpackConfig;
-  } else {
-    quasarConfFile.getWebpackConfig = () => webpackConfig;
-  }
+  const { quasarConf, webpackConf } = quasarConfFile;
 
   if (hasPackage('@quasar/app', '>=1.5.4')) {
     const regenerateTypesFeatureFlags = requireFromApp('@quasar/app/lib/helpers/types-feature-flags');
@@ -69,7 +60,7 @@ module.exports = async function build(quasarConfFile) {
     await hook.fn(hook.api, { quasarConf });
   });
 
-  let webpackData = parseWebpackConfig(webpackConfig);
+  let webpackData = parseWebpackConfig(webpackConf);
 
   const compiler = webpack(webpackData.configs);
 

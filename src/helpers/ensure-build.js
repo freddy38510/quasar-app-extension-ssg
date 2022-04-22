@@ -6,11 +6,9 @@ const { makeSnapshot, compareSnapshots } = require('../build/snapshot');
 const { log } = require('./logger');
 const { appDir } = require('./app-paths');
 const { getPackageVersion } = require('./packages');
-const { hasNewQuasarConfFile } = require('./compatibility');
 
 async function ensureBuild(quasarConfFile) {
-  const quasarConf = hasNewQuasarConfFile
-    ? quasarConfFile.quasarConf : quasarConfFile.getBuildConfig();
+  const { quasarConf } = quasarConfFile;
 
   const options = quasarConf.ssg;
 

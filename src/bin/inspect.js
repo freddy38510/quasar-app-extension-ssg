@@ -5,7 +5,6 @@
 const parseArgs = require('minimist');
 const requireFromApp = require('../helpers/require-from-app');
 const { log, fatal } = require('../helpers/logger');
-const { hasNewQuasarConfFile } = require('../helpers/compatibility');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -59,25 +58,33 @@ async function inspect() {
     fatal('Requested mode for inspection is NOT installed.\n');
   }
 
-  const QuasarConfFile = requireFromApp(hasNewQuasarConfFile ? '@quasar/app/lib/quasar-conf-file' : '@quasar/app/lib/quasar-config');
+  const QuasarConfFile = require('../conf');
 
   const depth = parseInt(argv.depth, 10) || Infinity;
 
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
-  const getQuasarCtx = requireFromApp('@quasar/app/lib/helpers/get-quasar-ctx');
+  const getQuasarCtx = require('../helpers/get-quasar-ctx');
 
   const ctx = getQuasarCtx({
-    mode: 'ssr',
+    mode: 'ssg',
     target: undefined,
     debug: argv.debug,
     dev: false,
     prod: true,
   });
 
+  // do not run ssg extension again
+  // TODO: extend ExtensionRunner class
+  extensionRunner.extensions.splice(
+    extensionRunner.extensions
+      .findIndex((extension) => extension.extId === 'ssg'),
+    1,
+  );
+
   // register app extensions
   await extensionRunner.registerExtensions(ctx);
 
-  const quasarConfFile = new QuasarConfFile(ctx);
+  const quasarConfFile = new QuasarConfFile(ctx, argv);
 
   try {
     await quasarConfFile.prepare();
@@ -88,13 +95,11 @@ async function inspect() {
 
   await quasarConfFile.compile();
 
+  await quasarConfFile.addWebpackConf();
+
   const util = require('util');
 
-  let cfgEntries = getCfgEntries(
-    hasNewQuasarConfFile
-      ? quasarConfFile.webpackConf
-      : quasarConfFile.getWebpackConfig(),
-  );
+  let cfgEntries = getCfgEntries(quasarConfFile.webpackConf);
 
   if (argv.path) {
     const dot = require('dot-prop');
