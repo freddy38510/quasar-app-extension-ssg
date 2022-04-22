@@ -462,6 +462,8 @@ Can use async/await or directly return a Promise.
 
 It could be useful to return a non-zero status code when a page error is encountered and let the CI/CD fail the deployment or build. To achieve that use the [`--fail-on-error`](#generate-options) argument.
 
+> Note: The `--fail-on-error` argument is set to `true` by default since [v2.4.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.3.0...v2.4.0).
+
 ### `process.env.STATIC`
 
 The property `STATIC` is added to `process.env` once the App Extension is installed.
