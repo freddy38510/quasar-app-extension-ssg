@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.3.0...v2.4.0) (2022-04-22)
+
+
+### Features
+
+* allow custom beastcss options ([2618cd2](https://github.com/freddy38510/quasar-app-extension-ssg/commit/2618cd24cbe304fa9475b12cdba79d632367c15a))
+* **banner:** print hint in case of warnings ([e8dee8a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e8dee8ad18b0d0652f75206247b5bfc3732ad409))
+* **build:** split webpack compilation into client, server, generator and custom-sw ([ef4f9ff](https://github.com/freddy38510/quasar-app-extension-ssg/commit/ef4f9ff73872dc75b3a197d81806bd9aa3ad9cfc))
+* exit with non-zero status code by default on error ([ea0cb18](https://github.com/freddy38510/quasar-app-extension-ssg/commit/ea0cb1807c2d6c80545d4d0a79dae806d2363eed))
+* extend quasarConf from ssg command instead of Index API extension ([6e1da52](https://github.com/freddy38510/quasar-app-extension-ssg/commit/6e1da522306b7f6696f7fce92e94af6fc90e11fa))
+* improve error and warning handling ([3ab604a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3ab604a92cfdf627c2ff8f058a8d7d0670abbf54))
+* improve readability of printing beastcss logs and refactor a bit ([56906e5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/56906e55b1c6a6815c2ab5a428f6f9162c64ef75))
+* provide an option to disable getting routes from the router app ([f335073](https://github.com/freddy38510/quasar-app-extension-ssg/commit/f3350731fdb0af0e7abd635d2588b23a3248b44c))
+* rework logger to improve readability ([e449b65](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e449b653861c110d371f1828091d23633b47206d))
+
+
+### Bug Fixes
+
+* **build:** compile custom service worker only when needed ([3d0af87](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3d0af87d01effdfe80e4a2ec3fb8b57749025184))
+* **deps:** update dependency beastcss to v1.0.7 ([#168](https://github.com/freddy38510/quasar-app-extension-ssg/issues/168)) ([6ab53aa](https://github.com/freddy38510/quasar-app-extension-ssg/commit/6ab53aa199aa5622004aecdfd0a8eb6de4392545))
+* **deps:** update dependency crc to v4.1.1 ([#211](https://github.com/freddy38510/quasar-app-extension-ssg/issues/211)) ([8e28156](https://github.com/freddy38510/quasar-app-extension-ssg/commit/8e28156dc18a18b3266608c5539a218130d7fc7f))
+* **deps:** update dependency destr to v1.1.1 ([#209](https://github.com/freddy38510/quasar-app-extension-ssg/issues/209)) ([70a6023](https://github.com/freddy38510/quasar-app-extension-ssg/commit/70a602315a588cc9dac59152302e351cdc8d64ff))
+* **deps:** update dependency express to v4.17.3 ([#182](https://github.com/freddy38510/quasar-app-extension-ssg/issues/182)) ([30f1872](https://github.com/freddy38510/quasar-app-extension-ssg/commit/30f1872c1396a61005918231fd92342e0c5c9f02))
+* **deps:** update dependency fs-extra to v10.0.1 ([#183](https://github.com/freddy38510/quasar-app-extension-ssg/issues/183)) ([4a34346](https://github.com/freddy38510/quasar-app-extension-ssg/commit/4a34346426431b142f15ae26a5f4a93bc480776f))
+* **deps:** update dependency fs-extra to v10.1.0 ([#218](https://github.com/freddy38510/quasar-app-extension-ssg/issues/218)) ([34dc47a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/34dc47a72bc62cec265848dd022388f03d943fa0))
+* **deps:** update dependency globby to v13.1.1 ([#166](https://github.com/freddy38510/quasar-app-extension-ssg/issues/166)) ([38cafc0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/38cafc0ef5e32d0e867002f3df80310250d53ac5))
+* **deps:** update dependency jiti to v1.13.0 ([#185](https://github.com/freddy38510/quasar-app-extension-ssg/issues/185)) ([d883ca8](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d883ca8a5ac0f809205866aeea1d33c09b81b982))
+* **deps:** update dependency minimist to v1.2.6 [security] ([#193](https://github.com/freddy38510/quasar-app-extension-ssg/issues/193)) ([f37f36e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/f37f36ed333fe8f564edf9e96e99fdb5afb81737))
+* **deps:** update dependency node-html-parser to v5.3.3 ([#199](https://github.com/freddy38510/quasar-app-extension-ssg/issues/199)) ([0d544ce](https://github.com/freddy38510/quasar-app-extension-ssg/commit/0d544ce44788c8c9827d8c15ac2b7a498b6b68ea))
+* **deps:** update dependency selfsigned to v2.0.1 ([#195](https://github.com/freddy38510/quasar-app-extension-ssg/issues/195)) ([aeab380](https://github.com/freddy38510/quasar-app-extension-ssg/commit/aeab3804e92dd5f8a1f38e4ceeba8c2ce412cf6b))
+* **deps:** update dependency semver to v7.3.7 ([#207](https://github.com/freddy38510/quasar-app-extension-ssg/issues/207)) ([3841f3a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3841f3a1180ecb12f0867dda89313da32c974061))
+* **deps:** update dependency workbox-build to v6.5.2 ([#186](https://github.com/freddy38510/quasar-app-extension-ssg/issues/186)) ([a117c8e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/a117c8e8082985f7ade653cf9f24394be9d86dd7))
+* **deps:** update dependency workbox-build to v6.5.3 ([#216](https://github.com/freddy38510/quasar-app-extension-ssg/issues/216)) ([5ef7fe7](https://github.com/freddy38510/quasar-app-extension-ssg/commit/5ef7fe75dd2445190cf2c53e9c6c3788578915c3))
+* get app routes from server bundle instead of compiling router ([c391681](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c391681b16c9d6a5fdfc8db9f8a346995ed78746)), closes [#214](https://github.com/freddy38510/quasar-app-extension-ssg/issues/214)
+* support @quasar/app versions from v1.5.0 to latest v2 ([10adc9b](https://github.com/freddy38510/quasar-app-extension-ssg/commit/10adc9b7414b121be00a9ad99cc344137845245b))
+* **workbox:** remove invalid default options and print more infos ([2f375f3](https://github.com/freddy38510/quasar-app-extension-ssg/commit/2f375f3a6251b210ebbf2da7d18e9eb81eaacdb7))
+
 ## [2.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v2.2.0...v2.3.0) (2022-01-28)
 
 
