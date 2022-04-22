@@ -104,6 +104,10 @@ const extendQuasarConf = function extendQuasarConf(conf, api) {
 };
 
 module.exports = function run(api) {
+  api.compatibleWith('quasar', '^1.7.1');
+
+  api.compatibleWith('@quasar/app', '^1.5.0||^2.0.0');
+  
   api.registerCommand('generate', () => require('./bin/ssg-generate'));
 
   api.registerCommand('inspect', () => require('./bin/inspect'));

@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 const { resolve } = require('path');
+const { hasPackage } = require('../../../helpers/packages');
 
 const requireFromApp = require('../../../helpers/require-from-app');
 
@@ -7,6 +8,17 @@ module.exports = function chainWebpackServer(chain, cfg) {
   requireFromApp('@quasar/app/lib/webpack/ssr/server')(chain, cfg);
 
   chain.plugins.delete('ssr-artifacts');
+
+  if (hasPackage('@quasar/app', '< 2.0.0')) {
+    const VueSSRServerPlugin = requireFromApp('vue-server-renderer/server-plugin');
+
+    chain.plugins.delete('vue-ssr-client');
+
+    chain.plugin('vue-ssr-server')
+      .use(VueSSRServerPlugin, [{
+        filename: '../quasar.server-manifest.json',
+      }]);
+  }
 
   if (cfg.ssg.inlineCssFromSFC) {
     /* Replace 'quasar-auto-import' loaders

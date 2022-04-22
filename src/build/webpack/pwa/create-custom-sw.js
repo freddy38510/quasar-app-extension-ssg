@@ -2,11 +2,11 @@
 const path = require('path');
 const requireFromApp = require('../../../helpers/require-from-app');
 const { resolve: { appNodeModule } } = require('../../../helpers/app-paths');
+const { hasPackage } = require('../../../helpers/packages');
 
 const appPaths = requireFromApp('@quasar/app/lib/app-paths');
 const webpack = requireFromApp('webpack');
 const WebpackChain = requireFromApp('webpack-chain');
-const parseBuildEnv = requireFromApp('@quasar/app/lib/helpers/parse-build-env');
 const WebpackProgress = requireFromApp('@quasar/app/lib/webpack/plugin.progress');
 
 function getDependenciesRegex(list) {
@@ -62,11 +62,13 @@ module.exports = function createCSW(cfg, configName) {
   chain.resolveLoader.modules
     .merge(resolveModules);
 
-  if (cfg.framework.importStrategy !== 'all' && configName !== 'Server') {
-    chain.module.rule('transform-quasar-imports')
-      .test(/\.(t|j)sx?$/)
-      .use('transform-quasar-imports')
-      .loader(appNodeModule('@quasar/app/lib/webpack/loader.transform-quasar-imports.js'));
+  if (hasPackage('@quasar/app', '>= 2.0.0') ? cfg.framework.importStrategy === 'auto' : cfg.framework.all === 'auto') {
+    if (hasPackage('@quasar/app', '>= 1.9.0')) {
+      chain.module.rule('transform-quasar-imports')
+        .test(/\.(t|j)sx?$/)
+        .use('transform-quasar-imports')
+        .loader(appNodeModule('@quasar/app/lib/webpack/loader.transform-quasar-imports.js'));
+    }
   }
 
   if (cfg.build.transpile === true) {
@@ -91,6 +93,19 @@ module.exports = function createCSW(cfg, configName) {
       .options({
         compact: false,
         extends: appPaths.resolve.app('babel.config.js'),
+        ...hasPackage('@quasar/app', '< 1.9.0')
+          ? {
+            plugins: cfg.framework.all !== true ? [
+              [
+                'transform-imports', {
+                  quasar: {
+                    transform: 'quasar/dist/babel-transforms/imports.js',
+                    preventFullImport: true,
+                  },
+                },
+              ],
+            ] : [],
+          } : {},
       });
   }
 
@@ -121,10 +136,17 @@ module.exports = function createCSW(cfg, configName) {
     .include
     .add(/[\\/]node_modules[\\/]/);
 
-  chain.plugin('define')
-    .use(webpack.DefinePlugin, [
-      parseBuildEnv(cfg.build.env, cfg.__rootDefines),
-    ]);
+  if (hasPackage('@quasar/app', '>= 2.0.0')) {
+    const parseBuildEnv = requireFromApp('@quasar/app/lib/helpers/parse-build-env');
+
+    chain.plugin('define')
+      .use(webpack.DefinePlugin, [
+        parseBuildEnv(cfg.build.env, cfg.__rootDefines),
+      ]);
+  } else {
+    chain.plugin('define')
+      .use(webpack.DefinePlugin, [cfg.build.env]);
+  }
 
   // we include it already in cfg.build.env
   chain.optimization

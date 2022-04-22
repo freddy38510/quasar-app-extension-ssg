@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+const { hasPackage } = require('../../../helpers/packages');
 const requireFromApp = require('../../../helpers/require-from-app');
 
 function injectSsrInterpolation(html) {
@@ -55,7 +57,13 @@ module.exports.getIndexHtml = function getIndexHtml(template, cfg) {
     template.replace('<div id="q-app"></div>', '<!--vue-ssr-outlet-->'),
   );
 
-  let html = compiled(cfg.htmlVariables);
+  const opts = hasPackage('@quasar/app', '>= 2.0.0') ? cfg.htmlVariables : {
+    htmlWebpackPlugin: {
+      options: cfg.__html.variables,
+    },
+  };
+
+  let html = compiled(opts);
 
   const data = { bodyTags: [], headTags: [] };
 
@@ -65,7 +73,19 @@ module.exports.getIndexHtml = function getIndexHtml(template, cfg) {
 
   if (data.bodyTags.length > 0 || data.headTags.length > 0) {
     const htmlCtx = { options: { xhtml: false } };
-    html = HtmlWebpackPlugin.prototype.injectAssetsIntoHtml.call(htmlCtx, html, {}, data);
+
+    if (hasPackage('@quasar/app', '>= 2.0.0')) {
+      html = HtmlWebpackPlugin.prototype.injectAssetsIntoHtml.call(htmlCtx, html, {}, data);
+    } else {
+      htmlCtx.createHtmlTag = HtmlWebpackPlugin.prototype.createHtmlTag;
+
+      html = HtmlWebpackPlugin.prototype.injectAssetsIntoHtml.call(
+        htmlCtx,
+        html,
+        {},
+        { body: data.bodyTags, head: data.headTags },
+      );
+    }
   }
 
   html = injectSsrInterpolation(html);

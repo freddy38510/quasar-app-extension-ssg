@@ -1,10 +1,23 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable global-require */
 const { join, resolve } = require('path');
 const { merge } = require('webpack-merge');
 const requireFromApp = require('../../../helpers/require-from-app');
+const { hasPackage } = require('../../../helpers/packages');
 
 module.exports = function chainWebpackClient(chain, cfg) {
   requireFromApp('@quasar/app/lib/webpack/ssr/client')(chain, cfg);
+
+  if (hasPackage('@quasar/app', '< 2.0.0')) {
+    const VueSSRClientPlugin = requireFromApp('vue-server-renderer/client-plugin');
+
+    chain.plugins.delete('vue-ssr-client');
+
+    chain.plugin('vue-ssr-client')
+      .use(VueSSRClientPlugin, [{
+        filename: '../quasar.client-manifest.json',
+      }]);
+  }
 
   if (!cfg.ctx.mode.pwa) {
     // Use webpack-html-plugin for creating html fallback file
@@ -16,6 +29,29 @@ module.exports = function chainWebpackClient(chain, cfg) {
       },
     }));
   } else {
+    if (hasPackage('@quasar/app', '< 1.9.0')) {
+      if (cfg.ctx.mode.ssr && cfg.ctx.mode.pwa) {
+        // this will generate the offline.html
+        // which runs as standalone PWA only
+        // so we need to tweak the ctx
+
+        const injectHtml = requireFromApp('@quasar/app/lib/webpack/inject.html');
+
+        const templateParam = JSON.parse(JSON.stringify(cfg.__html.variables));
+
+        templateParam.ctx.mode = { pwa: true };
+        templateParam.ctx.modeName = 'pwa';
+        if (templateParam.process && templateParam.process.env) {
+          templateParam.process.env.MODE = 'pwa';
+        }
+
+        injectHtml(chain, merge(cfg, {
+          build: {
+            distDir: join(cfg.build.distDir, 'www'),
+          },
+        }), templateParam);
+      }
+    }
     const HtmlPwaPlugin = require('../pwa/plugin.html-pwa');
     // Handle workbox after build instead of during webpack compilation
     // This way all assets could be precached, including generated html
@@ -44,7 +80,8 @@ module.exports = function chainWebpackClient(chain, cfg) {
      * Quasar has two distinct loaders 'quasar-auto-import', one for client and one server
      * This breaks vue-style-loader ssrId option
      */
-    if (cfg.framework.importStrategy === 'auto') {
+
+    if (hasPackage('@quasar/app', '>= 2.0.0') ? cfg.framework.importStrategy === 'auto' : cfg.framework.all === 'auto') {
       const vueRule = chain.module.rule('vue');
 
       if (vueRule.uses.has('quasar-auto-import')) {

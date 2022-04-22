@@ -1,6 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
 const { existsSync } = require('fs');
 const { join, sep, normalize } = require('path');
 const RendererTemplatePlugin = require('./plugin.renderer-template');

@@ -1,5 +1,5 @@
-const flatRoutes = function flatRoutes(router) {
-  return router
+const flatRoutes = function flatRoutes(routes) {
+  return routes
     .filter((r) => ![':', '*'].some((c) => r.path.includes(c) || r.path === ''))
     .map((r) => r.path);
 };

@@ -5,7 +5,7 @@
  * API: https://github.com/quasarframework/quasar/blob/master/app/lib/app-extension/InstallAPI.js
  */
 module.exports = function install(api) {
-  api.compatibleWith('quasar', '^1.8.0');
+  api.compatibleWith('quasar', '^1.7.1');
 
   api.compatibleWith('@quasar/app', '^1.5.0||^2.0.0');
 

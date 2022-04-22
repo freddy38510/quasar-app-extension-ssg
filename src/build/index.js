@@ -7,6 +7,7 @@ const requireFromApp = require('../helpers/require-from-app');
 const banner = require('../helpers/banner').build;
 const { log, error } = require('../helpers/logger');
 const { hasNewQuasarConfFile } = require('../helpers/compatibility');
+const { hasPackage } = require('../helpers/packages');
 
 const webpack = requireFromApp('webpack');
 
@@ -32,7 +33,6 @@ function parseWebpackConfig(cfg) {
 module.exports = async function build(quasarConfFile) {
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
   const artifacts = requireFromApp('@quasar/app/lib/artifacts');
-  const regenerateTypesFeatureFlags = requireFromApp('@quasar/app/lib/helpers/types-feature-flags');
 
   const generator = new Generator(quasarConfFile);
 
@@ -48,7 +48,11 @@ module.exports = async function build(quasarConfFile) {
     quasarConfFile.getWebpackConfig = () => webpackConfig;
   }
 
-  regenerateTypesFeatureFlags(quasarConf);
+  if (hasPackage('@quasar/app', '>=1.5.4')) {
+    const regenerateTypesFeatureFlags = requireFromApp('@quasar/app/lib/helpers/types-feature-flags');
+
+    regenerateTypesFeatureFlags(quasarConf);
+  }
 
   const outputFolder = quasarConf.ssg.buildDir;
 
@@ -108,7 +112,27 @@ module.exports = async function build(quasarConfFile) {
     process.exit(1);
   });
 
-  const printWebpackStats = requireFromApp('@quasar/app/lib/helpers/print-webpack-stats');
+  let printWebpackStats;
+
+  if (hasPackage('@quasar/app', '>= 1.9.0')) {
+    printWebpackStats = requireFromApp('@quasar/app/lib/helpers/print-webpack-stats');
+  } else {
+    printWebpackStats = (stat) => {
+      process.stdout.write(`\n\n${stat.toString({
+        colors: true,
+        performance: false,
+        hash: false,
+        assets: true,
+        chunks: false,
+        chunkModules: false,
+        chunkOrigins: false,
+        modules: false,
+        nestedModules: false,
+        moduleAssets: false,
+        children: false,
+      })}\n\n`);
+    };
+  }
 
   console.log();
 

@@ -1,5 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 const { createBundle } = require('bundle-runner');
+const { hasPackage } = require('../helpers/packages');
+
+const hasVueRouterGetRoutes = hasPackage('vue-router', '>=3.5.0');
 
 module.exports = async function getAppRoutes(opts) {
   const { evaluateEntry, rewriteErrorTrace } = createBundle(opts.serverManifest, {
@@ -16,9 +19,11 @@ module.exports = async function getAppRoutes(opts) {
       res: {},
     });
 
-    const routes = app._router?.matcher?.getRoutes() || [];
+    if (hasVueRouterGetRoutes) {
+      return app._router.matcher.getRoutes() || [];
+    }
 
-    return routes;
+    return app._router.options.routes || [];
   } catch (err) {
     rewriteErrorTrace(err);
 

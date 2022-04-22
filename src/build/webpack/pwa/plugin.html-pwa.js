@@ -1,10 +1,22 @@
 const requireFromApp = require('../../../helpers/require-from-app');
+const { hasPackage } = require('../../../helpers/packages');
+
+const voidTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+
+function createHtmlTagObject(tagName, attributes, innerHTML) {
+  return {
+    tagName,
+    voidTag: voidTags.indexOf(tagName) !== -1,
+    attributes: attributes || {},
+    innerHTML,
+  };
+}
 
 function fillPwaTags(data, {
   pwa: {
     manifest, metaVariables, metaVariablesFn, useCredentials,
   },
-}, createHtmlTagObject) {
+}) {
   data.headTags.push(
     // Add to home screen for Android and modern mobile browsers
     createHtmlTagObject('link', {
@@ -93,14 +105,29 @@ module.exports.plugin = class HtmlPwaPlugin {
     const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin');
 
     compiler.hooks.compilation.tap('webpack-plugin-html-pwa', (compilation) => {
-      const hooks = HtmlWebpackPlugin.getHooks(compilation);
+      if (hasPackage('@quasar/app', '>= 2.0.0')) {
+        const hooks = HtmlWebpackPlugin.getHooks(compilation);
 
-      hooks.afterTemplateExecution.tapPromise('webpack-plugin-html-pwa', async (data) => {
-        fillPwaTags(data, this.cfg, HtmlWebpackPlugin.createHtmlTagObject);
+        hooks.afterTemplateExecution.tapPromise('webpack-plugin-html-pwa', async (data) => {
+          fillPwaTags(data, this.cfg);
 
-        // finally, inform Webpack that we're ready
-        return data;
-      });
+          // finally, inform Webpack that we're ready
+          return data;
+        });
+      } else {
+        compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync('webpack-plugin-html-pwa', (data, callback) => {
+          data.headTags = data.head;
+          data.bodyTags = data.body;
+
+          delete data.head;
+          delete data.body;
+
+          fillPwaTags(data, this.cfg);
+
+          // finally, inform Webpack that we're ready
+          callback(null, { head: data.headTags, body: data.bodyTags });
+        });
+      }
     });
   }
 };
