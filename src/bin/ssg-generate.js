@@ -21,7 +21,7 @@ const argv = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'd', 'force-build', 'fail-on-error'],
   default: {
     'force-build': false,
-    'fail-on-error': false,
+    'fail-on-error': true,
   },
 });
 
