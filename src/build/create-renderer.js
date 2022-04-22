@@ -279,7 +279,7 @@ module.exports = function createRenderer(opts) {
         resourceHints: renderResourceHints(renderContext, usedAsyncFiles),
         resourceStyles: renderStyles(renderContext, usedAsyncFiles, ssrContext),
         resourceScripts: (
-          renderVuexState(ssrContext, nonce)
+          (opts.manualStoreSerialization !== true && ssrContext.state !== void 0 ? renderVuexState(ssrContext, nonce) : '')
           + renderScripts(renderContext, usedAsyncFiles, nonce)
         ),
       });

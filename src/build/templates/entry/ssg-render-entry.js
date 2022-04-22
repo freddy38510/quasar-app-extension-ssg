@@ -14,6 +14,7 @@ const render = createRenderer({
   basedir: __dirname,
   serverManifest,
   clientManifest,
+  manualStoreSerialization: <%= ssr.manualStoreSerialization === true %>,
   shouldPrefetch: <%= ssg.shouldPrefetch %>,
   shouldPreload: <%= ssg.shouldPreload %>,
 });
