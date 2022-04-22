@@ -40,9 +40,8 @@ if (argv.help) {
   process.exit(0);
 }
 
-const { redBright, yellowBright } = require('chalk');
 const requireFromApp = require('../helpers/require-from-app');
-const { warn, error, fatal } = require('../helpers/logger');
+const { fatal } = require('../helpers/logger');
 const ensureBuild = require('../helpers/ensure-build');
 const banner = require('../helpers/banner');
 const { hasNewQuasarConfFile } = require('../helpers/compatibility');
@@ -86,21 +85,7 @@ async function run() {
   const quasarConf = hasNewQuasarConfFile
     ? quasarConfFile.quasarConf : quasarConfFile.getBuildConfig();
 
-  const { errors, warnings } = await require('../generate')(quasarConf);
-
-  if (errors.length > 0) {
-    error(redBright('[FAIL] Generating pages failed. Check log above.\n'));
-
-    if (argv['fail-on-error']) {
-      fatal(redBright('Exiting with non-zero code.'));
-    }
-  }
-
-  if (warnings.length > 0) {
-    warn(yellowBright('[WARNING] Generating pages with warning(s). Check log above.\n'));
-  }
-
-  banner.generate(quasarConf.ssg, errors, warnings);
+  await require('../generate')(quasarConf);
 }
 
 run();

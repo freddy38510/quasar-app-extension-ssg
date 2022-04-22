@@ -8,7 +8,7 @@ const path = require('path');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright } = require('chalk');
-const { log, warn, logBeastcss } = require('../helpers/logger');
+const { log, logBeastcss } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const { appDir } = require('../helpers/app-paths');
 const isRouteValid = require('../helpers/is-route-valid');
@@ -91,7 +91,7 @@ class Generator {
           },
         ));
       } catch (err) {
-        err.message = ` Could not get static routes from router:\n\n ${err.message}`;
+        err.message = ` Could not get static routes from router: ${err.message}`;
 
         warnings.push(err);
       }
@@ -113,38 +113,6 @@ class Generator {
     };
   }
 
-  async generate() {
-    log('Initializing routes...');
-
-    const { routes, warnings } = await this.initRoutes();
-
-    warnings.forEach((warning, idx) => {
-      let msg = idx === 0 ? 'Warning when initializing routes\n' : '';
-
-      msg += `${warning.stack || warning}`;
-
-      warn(msg);
-    });
-
-    log('Generating routes...');
-
-    const { errors } = await this.generateRoutes(routes);
-
-    if (this.options.inlineCriticalCss) {
-      this.beastcss.clear();
-    }
-
-    errors.forEach(({ route, error }) => {
-      let msg = `Error when generating route ${cyanBright(route)}\n`;
-
-      msg += `${error.stack || error}`;
-
-      error(msg);
-    });
-
-    return { errors, warnings };
-  }
-
   async generateRoutes(routes) {
     const errors = [];
 
@@ -154,7 +122,7 @@ class Generator {
         try {
           await this.generateRoute(route);
 
-          log(`Generated route ${cyanBright(route)}`);
+          log(`Generated page for route ${cyanBright(route)}`);
 
           if (this.options.inlineCriticalCss) {
             logBeastcss(this.beastcssLogs[route], 'warn');

@@ -67,7 +67,7 @@ async function ensureBuild(quasarConfFile) {
       const changed = compareSnapshots(previousBuild.snapshot, currentBuild.snapshot);
 
       if (!changed) {
-        log('Skipping webpack build as no changes detected');
+        log('Skipping webpack build as no changes detected \n');
         return;
       }
 

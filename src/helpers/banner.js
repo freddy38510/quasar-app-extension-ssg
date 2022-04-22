@@ -1,25 +1,22 @@
 /* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-void */
 const {
-  redBright, yellowBright, green, grey, underline,
+  bgBlue, green, grey, underline,
 } = require('chalk');
 const path = require('path');
 const requireFromApp = require('./require-from-app');
-const { getPackageVersion } = require('./packages');
-const { hasBrowsersSupportFile } = require('./compatibility');
+const { getPackageVersion, hasPackage } = require('./packages');
+
+const quasarVersion = getPackageVersion('quasar');
+const cliAppVersion = getPackageVersion('@quasar/app');
+const ssgVersion = getPackageVersion('quasar-app-extension-ssg');
 
 module.exports.build = function build(ctx, details) {
-  const quasarVersion = getPackageVersion('quasar');
-  const cliAppVersion = getPackageVersion('@quasar/app');
-  const ssgVersion = getPackageVersion('quasar-app-extension-ssg');
-
   let banner = '';
 
   if (details) {
     banner += ` ${underline('Build succeeded')}\n`;
   } else {
-    banner += '\n ================== Build ================== \n';
+    banner += ` ${bgBlue('================== BUILD ==================')} \n`;
   }
 
   banner += `
@@ -30,7 +27,9 @@ module.exports.build = function build(ctx, details) {
  Debugging......... ${ctx.debug ? green('enabled') : grey('no')}`;
 
   if (details) {
-    banner += `\n Transpiled JS..... ${details.transpileBanner}`;
+    if (details.transpileBanner) {
+      banner += `\n Transpiled JS..... ${details.transpileBanner}`;
+    }
     banner += `
  ==================
  Output folder..... ${green(details.outputFolder)}`;
@@ -38,40 +37,30 @@ module.exports.build = function build(ctx, details) {
 
   console.log(`${banner}\n`);
 
-  if (!details && hasBrowsersSupportFile) {
+  if (!details && hasPackage('@quasar/app', '>=2.0.0')) {
     const { getBrowsersBanner } = requireFromApp('@quasar/app/lib/helpers/browsers-support');
     console.log(getBrowsersBanner());
   }
 };
 
-module.exports.generate = function generate(options, errors, warnings) {
-  let banner = '\n';
+module.exports.generate = function generate(ctx, details) {
+  let banner = '';
 
-  if (!options) {
-    banner += ' ================== Generate ==================';
+  if (!details) {
+    banner += ` ${bgBlue('================ GENERATE =================')}`;
   } else {
-    const relativeDistDir = path.posix.relative('', options.__distDir);
-    const hasErrors = errors.length > 0;
-    const hasWarnings = warnings.length > 0;
+    const relativeDistDir = path.posix.relative('', details.distDir);
 
-    const successMessage = ` ${underline('Generation succeeded')}\n`;
-
-    const successWithWarnsMessage = ` ${underline('Generation succeeded')}, but with ${warnings.length} warning(s). Check log above.\n`;
-
-    const failMessage = ` ${underline('Generation failed')} with ${errors.length} error(s). Check log above.\n`;
-
-    if (hasErrors) {
-      banner += ` ⚠️ ${redBright(failMessage)}`;
-    } else if (hasWarnings && !hasErrors) {
-      banner += ` ⚠️ ${yellowBright(successWithWarnsMessage)}`;
-    } else {
-      banner += `${successMessage}`;
-    }
+    banner += `\n ${underline('Generate succeeded')}\n`;
 
     banner += `
- Fallback.......... ${green(options.fallback)}
- Output folder..... ${green(options.__distDir)}`;
-    banner += `
+ Pkg ssg........... ${green(`v${ssgVersion}`)}
+ Pkg quasar........ ${green(`v${quasarVersion}`)}
+ Pkg @quasar/app... ${green(`v${cliAppVersion}`)}
+ Debugging......... ${ctx.debug ? green('enabled') : grey('no')}
+ SPA Fallback...... ${green(details.fallback)}
+ ==================
+ Output folder..... ${green(details.distDir)}
 
  Tip: You can use "$ quasar ssg serve ${relativeDistDir}" command to create
       a web server for testing. Type "$ quasar ssg serve -h" for parameters.

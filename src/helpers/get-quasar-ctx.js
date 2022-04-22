@@ -7,5 +7,7 @@ module.exports = function getQuasarCtx(opts) {
   // ssr mode is still needed
   ctx.mode.ssr = true;
 
+  ctx.failOnError = opts.failOnError;
+
   return ctx;
 };

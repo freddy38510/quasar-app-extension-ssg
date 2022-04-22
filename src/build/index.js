@@ -1,8 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
-/* eslint-disable global-require */
 /* eslint-disable no-void */
-const chalk = require('chalk');
 const pify = require('pify');
 const Generator = require('./generator');
 const requireFromApp = require('../helpers/require-from-app');
@@ -98,16 +96,14 @@ module.exports = async function build(quasarConfFile) {
     const errDetails = `${errNumber} error${errNumber > 1 ? 's' : ''}`;
 
     error();
-    error(chalk.red(`${errDetails} encountered:\n`));
+    error(`${errDetails} encountered:\n`);
 
     info.errors.forEach((e) => {
       console.error(e);
     });
 
     error();
-    error(
-      chalk.red(`[FAIL] Build failed with ${errDetails}. Check log above.\n`),
-    );
+    error(`[FAIL] Build failed with ${errDetails}. Check log above.\n`);
 
     process.exit(1);
   });

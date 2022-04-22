@@ -4,9 +4,10 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable no-void */
 const path = require('path');
+const { green } = require('chalk');
 const { merge } = require('webpack-merge');
 const { generateSW, injectManifest } = require('workbox-build');
-const { log, warn } = require('../helpers/logger');
+const { log } = require('../helpers/logger');
 const { resolve } = require('../helpers/app-paths');
 
 const getOptions = (quasarConf, mode) => {
@@ -64,10 +65,10 @@ const getOptions = (quasarConf, mode) => {
 
 const handleWarnings = (warnings) => {
   if (warnings.length > 0) {
-    warnings.forEach((workboxWarning) => {
-      console.log();
+    console.warn();
 
-      warn(workboxWarning);
+    warnings.forEach((err) => {
+      console.warn(err.stack || err);
     });
   }
 };
@@ -75,7 +76,7 @@ const handleWarnings = (warnings) => {
 const handleSuccess = (isGenerateSW, size, count, diffTime) => {
   const prefix = isGenerateSW ? 'Generated service-worker file' : 'Injected Manifest to custom service-worker file';
 
-  log(`${prefix}, which will precache ${count} files, totaling ${(size / 1024).toFixed(2)} kB • ${diffTime}ms`, 'DONE');
+  log(green(`${prefix}, which will precache ${count} files, totaling ${(size / 1024).toFixed(2)} kB • ${diffTime}ms`));
 };
 
 module.exports = async function buildWorkbox(quasarConf) {
