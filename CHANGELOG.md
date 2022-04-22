@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.0.0...v4.1.0) (2022-04-22)
+
+
+### Features
+
+* **build:** reduce server bundle size by externalizing quasar node modules when possible ([0da74ae](https://github.com/freddy38510/quasar-app-extension-ssg/commit/0da74ae9bf572246b7febaa644fafb42d49cf767))
+* support new manualStoreSerialization option ([a9e864d](https://github.com/freddy38510/quasar-app-extension-ssg/commit/a9e864dd1cde808a4d776b26140c620f74a99481))
+
+
+### Bug Fixes
+
+* **build:** compile custom service worker only when needed ([28405ea](https://github.com/freddy38510/quasar-app-extension-ssg/commit/28405ea424039a7cc2ea275d60d5e14f16314b9c))
+* **deps:** update dependency fs-extra to v10.1.0 ([#217](https://github.com/freddy38510/quasar-app-extension-ssg/issues/217)) ([c3f6b0e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c3f6b0e4ca89548e4f68db11c506d8f47a6f3690))
+* **workbox:** merge common default options ([1fbd0ea](https://github.com/freddy38510/quasar-app-extension-ssg/commit/1fbd0ea650641610451b06faccc85043a8becfbd))
+
 ## [4.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.4.0...v4.0.0) (2022-04-18)
 
 
