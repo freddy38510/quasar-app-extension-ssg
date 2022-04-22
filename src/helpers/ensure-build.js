@@ -3,7 +3,6 @@ const destr = require('destr');
 const fs = require('fs-extra');
 const path = require('path');
 const { makeSnapshot, compareSnapshots } = require('../build/snapshot');
-const build = require('../build');
 const { log } = require('./logger');
 const { appDir } = require('./app-paths');
 const { getPackageVersion } = require('./packages');
@@ -16,7 +15,7 @@ async function ensureBuild(quasarConfFile) {
   const options = quasarConf.ssg;
 
   if (options.cache === false || quasarConfFile.opts['force-build']) {
-    await build(quasarConfFile);
+    await require('../build')(quasarConfFile);
     return;
   }
 
@@ -75,7 +74,7 @@ async function ensureBuild(quasarConfFile) {
     }
   }
 
-  await build(quasarConfFile);
+  await require('../build')(quasarConfFile);
 
   // Write build.json
   fs.writeFileSync(quasarBuildFile, JSON.stringify(currentBuild, null, 2), 'utf-8');
