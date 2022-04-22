@@ -12,27 +12,21 @@ const {
 const { resolve } = require('../helpers/app-paths');
 
 const getOptions = (quasarConf, mode) => {
-  let defaultOptions = {
-    sourcemap: quasarConf.build.sourceMap,
-    dontCacheBustUrlsMatching: /\.\w{8}\./,
+  const defaultOptions = {
+    dontCacheBustURLsMatching: /\.\w{8}\./,
+    modifyURLPrefix: {
+      '': quasarConf.build.publicPath,
+    },
+    globPatterns: ['**/*.{js,css,html}'], // precache js, css and html files
+    globIgnores: ['service-worker.js', 'workbox-*.js', 'asset-manifest.json'],
+    globDirectory: quasarConf.ssg.__distDir,
   };
 
   if (mode === 'GenerateSW') {
     const pkg = require(resolve.app('package.json'));
 
-    defaultOptions = {
-      cacheId: pkg.name || 'quasar-pwa-app',
-      globPatterns: ['**/*.{js,css,html}'], // precache js, css and html files
-      globIgnores: ['service-worker.js', 'workbox-*.js', 'asset-manifest.json', '../quasar.client-manifest.json'],
-      directoryIndex: 'index.html',
-      modifyURLPrefix: {
-        '': quasarConf.build.publicPath,
-      },
-    };
-  } else {
-    defaultOptions = {
-      swSrc: path.join(quasarConf.ssg.buildDir, 'www', 'service-worker.js'),
-    };
+    defaultOptions.cacheId = pkg.name || 'quasar-pwa-app';
+    defaultOptions.directoryIndex = 'index.html';
   }
 
   // merge with custom options from user
@@ -47,6 +41,7 @@ const getOptions = (quasarConf, mode) => {
   }
 
   delete opts.exclude; // replaced by globIgnores with workbox-build
+  opts.swDest = path.join(quasarConf.ssg.__distDir, 'service-worker.js');
 
   if (mode === 'GenerateSW') {
     if (opts.navigateFallback === false) {
@@ -62,10 +57,9 @@ const getOptions = (quasarConf, mode) => {
         /workbox-(.)*\.js$/,
       );
     }
+  } else {
+    opts.swSrc = opts.swDest;
   }
-
-  opts.globDirectory = quasarConf.ssg.__distDir;
-  opts.swDest = path.join(quasarConf.ssg.__distDir, 'service-worker.js');
 
   return opts;
 };
