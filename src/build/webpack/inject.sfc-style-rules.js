@@ -4,13 +4,14 @@ const { merge } = require('webpack-merge');
 const requireFromApp = require('../../helpers/require-from-app');
 const appPaths = require('../../helpers/app-paths');
 
+const cssVariables = requireFromApp('@quasar/app/lib/helpers/css-variables');
+const postCssConfigFile = appPaths.resolve.app('.postcssrc.js');
+const quasarCssPaths = [path.join('node_modules', 'quasar'), path.join('node_modules', '@quasar')];
+
 function create(
   rule,
   modules,
   pref,
-  {
-    cssnano, postCssConfigFile, postcssRTL, quasarCssPaths, cssVariables,
-  },
   loader,
   loaderOptions,
 ) {
@@ -81,7 +82,7 @@ function create(
       .options({
         sourceMap: pref.sourceMap,
         plugins: [
-          cssnano({
+          requireFromApp('cssnano')({
             preset: [
               'default',
               {
@@ -105,17 +106,21 @@ function create(
     const postCssOpts = { sourceMap: pref.sourceMap, ...postCssConfig };
 
     if (pref.rtl) {
+      const postcssRTL = requireFromApp('postcss-rtl');
       const postcssRTLOptions = pref.rtl === true ? {} : pref.rtl;
+
       if (
         typeof postCssConfig.plugins !== 'function'
         && (postcssRTLOptions.fromRTL === true || typeof postcssRTLOptions === 'function')
       ) {
         postCssConfig.plugins = postCssConfig.plugins || [];
+
         postCssOpts.plugins = (ctx) => {
           const plugins = [...postCssConfig.plugins];
           const isClientCSS = quasarCssPaths.every(
             (item) => ctx.resourcePath.indexOf(item) === -1,
           );
+
           plugins.push(postcssRTL(
             typeof postcssRTLOptions === 'function'
               ? postcssRTLOptions(isClientCSS, ctx.resourcePath)
@@ -124,6 +129,7 @@ function create(
                 fromRTL: isClientCSS,
               },
           ));
+
           return plugins;
         };
       } else {
@@ -131,7 +137,9 @@ function create(
       }
     }
 
-    rule.use('postcss-loader').loader('postcss-loader').options(postCssOpts);
+    rule.use('postcss-loader')
+      .loader('postcss-loader')
+      .options(postCssOpts);
   }
 
   if (loader && !rule.uses.has(loader)) {
@@ -168,7 +176,6 @@ function create(
 function injectRule(
   chain,
   pref,
-  args,
   lang,
   test,
   loader = undefined,
@@ -185,34 +192,15 @@ function injectRule(
     .resourceQuery(/\?vue/)
     .before('modules-query');
 
-  create(modulesRule, true, pref, args, loader, loaderOptions);
+  create(modulesRule, true, pref, loader, loaderOptions);
 
-  create(vueNormalRule, false, pref, args, loader, loaderOptions);
+  create(vueNormalRule, false, pref, loader, loaderOptions);
 }
 
 module.exports = function injectSFCStyleRules(chain, pref) {
-  const cssVariables = requireFromApp('@quasar/app/lib/helpers/css-variables');
-  const postCssConfigFile = appPaths.resolve.app('.postcssrc.js');
-  const quasarCssPaths = [path.join('node_modules', 'quasar'), path.join('node_modules', '@quasar')];
-
-  let cssnano;
-  let postcssRTL;
-
-  if (pref.minify) {
-    cssnano = requireFromApp('cssnano');
-  }
-  if (pref.rtl) {
-    postcssRTL = requireFromApp('postcss-rtl');
-  }
-
-  const args = {
-    cssVariables, postCssConfigFile, quasarCssPaths, cssnano, postcssRTL,
-  };
-
   injectRule(
     chain,
     pref,
-    args,
     'css',
     /\.css$/,
   );
@@ -220,7 +208,6 @@ module.exports = function injectSFCStyleRules(chain, pref) {
   injectRule(
     chain,
     pref,
-    args,
     'stylus',
     /\.styl(us)?$/,
     'stylus-loader',
@@ -233,7 +220,6 @@ module.exports = function injectSFCStyleRules(chain, pref) {
   injectRule(
     chain,
     pref,
-    args,
     'scss',
     /\.scss$/,
     'sass-loader',
@@ -246,7 +232,6 @@ module.exports = function injectSFCStyleRules(chain, pref) {
   injectRule(
     chain,
     pref,
-    args,
     'sass',
     /\.sass$/,
     'sass-loader',
@@ -264,7 +249,6 @@ module.exports = function injectSFCStyleRules(chain, pref) {
   injectRule(
     chain,
     pref,
-    args,
     'less',
     /\.less$/,
     'less-loader',
