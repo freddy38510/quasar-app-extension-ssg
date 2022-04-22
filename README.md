@@ -413,7 +413,7 @@ Type: `Object`
 
 Default: `{}`
 
-The options merged with Quasar [defaults options](https://github.com/quasarframework/quasar/blob/934a6080290c219706f043fdf68f3ca9089ecc5d/app/lib/ssr/template.prod-webserver.js#L26), then passed to the `BundleRenderer`. See the [Vue SSR Guide](https://ssr.vuejs.org/api/#renderer-options) for available options.
+The options merged with [defaults options](https://github.com/freddy38510/quasar-app-extension-ssg/blob/2.x/src/build/templates/entry/ssg-renderer-entry.js#L26&L34), then passed to the [BundleRenderer](https://github.com/vuejs/vue/blob/dev/src/server/bundle-renderer/create-bundle-renderer.js). See the [Vue SSR Guide](https://ssr.vuejs.org/api/#renderer-options) for available options.
 
 ### `inlineCriticalCss`
 
