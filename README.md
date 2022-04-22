@@ -71,21 +71,21 @@ Install dependencies:
 yarn
 ```
 
-Create a new Quasar project then link the App Extension:
+Create a new Quasar project then install the App Extension:
 
 ```bash
 quasar create --branch v1 <project-name> && cd <project-name>
 
+quasar ext add ssg@quasar-v1
+```
+
+Finally link the locally developed App Extension:
+
+```bash
 yarn link quasar-app-extension-ssg
 ```
 
-Finally install the App Extension:
-
-```bash
-quasar ext invoke ssg
-```
-
-Now, you can developp this App Extension without uninstall/install it each time you change something in it.
+Now, you can develop this App Extension without uninstall/install it each time you change something in it.
 
 ## Usage
 
