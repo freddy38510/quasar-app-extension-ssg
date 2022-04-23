@@ -65,7 +65,7 @@ module.exports = async function build(quasarConfFile) {
   const compiler = webpack(webpackData.configs);
 
   compiler.run = pify(compiler.run);
-  const { err, stats } = await compiler.run();
+  const { err, stats: statsArray } = await compiler.run();
 
   if (err) {
     console.error(err.stack || err);
@@ -79,14 +79,12 @@ module.exports = async function build(quasarConfFile) {
 
   artifacts.add(outputFolder);
 
-  const statsArray = stats.stats || stats;
-
-  statsArray.forEach((stat) => {
-    if (stat.hasErrors() !== true) {
+  statsArray.forEach((stats) => {
+    if (stats.hasErrors() !== true) {
       return;
     }
 
-    const info = stat.toJson();
+    const info = stats.toJson();
     const errNumber = info.errors.length;
     const errDetails = `${errNumber} error${errNumber > 1 ? 's' : ''}`;
 
@@ -108,8 +106,8 @@ module.exports = async function build(quasarConfFile) {
   if (hasPackage('@quasar/app', '>= 1.9.0')) {
     printWebpackStats = requireFromApp('@quasar/app/lib/helpers/print-webpack-stats');
   } else {
-    printWebpackStats = (stat) => {
-      process.stdout.write(`\n\n${stat.toString({
+    printWebpackStats = (stats) => {
+      process.stdout.write(`\n\n${stats.toString({
         colors: true,
         performance: false,
         hash: false,
@@ -127,9 +125,9 @@ module.exports = async function build(quasarConfFile) {
 
   console.log();
 
-  statsArray.forEach((stat, index) => {
+  statsArray.forEach((stats, index) => {
     printWebpackStats(
-      stat,
+      stats,
       webpackData.folder[index],
       webpackData.name[index],
     );
