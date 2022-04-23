@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.1.0...v4.1.1) (2022-04-23)
+
+
+### Bug Fixes
+
+* **build:** pass correct parameter to print webpack errors summary ([63cc2d0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/63cc2d0ba90cd61b76570598b8b1080ca87e575f))
+
 ## [4.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.0.0...v4.1.0) (2022-04-22)
 
 
