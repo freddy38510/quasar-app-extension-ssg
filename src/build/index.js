@@ -56,7 +56,7 @@ module.exports = async function build(api, quasarConfFile) {
   const compiler = webpack(webpackData.configs);
 
   compiler.run = pify(compiler.run);
-  const { err, stats } = await compiler.run();
+  const { err, stats: statsArray } = await compiler.run();
 
   if (err) {
     console.error(err.stack || err);
@@ -70,10 +70,8 @@ module.exports = async function build(api, quasarConfFile) {
 
   artifacts.add(outputFolder);
 
-  const statsArray = stats.stats || stats;
-
-  statsArray.forEach((stat, index) => {
-    if (stat.hasErrors() !== true) {
+  statsArray.forEach((stats, index) => {
+    if (stats.hasErrors() !== true) {
       return;
     }
 
@@ -86,9 +84,9 @@ module.exports = async function build(api, quasarConfFile) {
 
   console.log();
 
-  statsArray.forEach((stat, index) => {
+  statsArray.forEach((stats, index) => {
     printWebpackStats(
-      stat,
+      stats,
       webpackData.folder[index],
       webpackData.name[index],
     );
