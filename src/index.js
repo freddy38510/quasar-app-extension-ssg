@@ -19,5 +19,5 @@ module.exports = function run(api) {
 
   api.registerCommand('inspect', () => require('./cmd/inspect'));
 
-  api.registerCommand('serve', () => require('./cmd/server'));
+  api.registerCommand('serve', () => require('./cmd/serve'));
 };
