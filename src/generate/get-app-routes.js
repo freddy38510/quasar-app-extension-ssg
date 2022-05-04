@@ -15,7 +15,7 @@ module.exports = async function getAppRoutes(opts) {
       res: {},
     });
 
-    const routes = provides[routerKey]?.getRoutes() || [];
+    const routes = provides[routerKey].getRoutes() || [];
 
     return routes;
   } catch (err) {
