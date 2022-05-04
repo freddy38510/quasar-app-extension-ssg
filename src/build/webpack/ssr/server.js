@@ -5,11 +5,9 @@ const { join, sep, normalize } = require('path');
 const requireFromApp = require('../../../helpers/require-from-app');
 const appPaths = require('../../../helpers/app-paths');
 const { QuasarSSRServerPlugin } = require('./plugin.server-side');
+const { hasPackage } = require('../../../helpers/packages');
 
 const nodeExternals = requireFromApp('webpack-node-externals');
-const API = requireFromApp('@quasar/app/lib/app-extension/IndexAPI.js');
-
-const { hasPackage } = new API({});
 
 function getModuleDirs() {
   const folders = [];

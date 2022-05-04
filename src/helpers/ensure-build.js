@@ -4,20 +4,22 @@ const fs = require('fs-extra');
 const path = require('path');
 const { log } = require('./logger');
 const { makeSnapshot, compareSnapshots } = require('../build/snapshot');
+const { appDir } = require('./app-paths');
+const { getPackageVersion } = require('./packages');
 
-module.exports = async function ensureBuild(api, quasarConfFile) {
+module.exports = async function ensureBuild(quasarConfFile) {
   const { quasarConf } = quasarConfFile;
   const options = quasarConf.ssg;
 
   if (options.cache === false || quasarConfFile.opts['force-build']) {
-    await require('../build')(api, quasarConfFile);
+    await require('../build')(quasarConfFile);
 
     return;
   }
 
   // Take a snapshot of current project
   const snapshotOptions = {
-    rootDir: api.appDir,
+    rootDir: appDir,
     ignore: options.cache.ignore.map(path.posix.normalize),
     globbyOptions: options.cache.globbyOptions,
   };
@@ -26,10 +28,10 @@ module.exports = async function ensureBuild(api, quasarConfFile) {
 
   // Current build meta
   const currentBuild = {
-    quasarVersion: api.getPackageVersion('quasar'),
-    quasarAppVersion: api.getPackageVersion('@quasar/app'),
-    quasarExtrasVersion: api.getPackageVersion('@quasar/extras'),
-    ssgAppExtensionVersion: api.getPackageVersion('quasar-app-extension-ssg'),
+    quasarVersion: getPackageVersion('quasar'),
+    quasarAppVersion: getPackageVersion('@quasar/app'),
+    quasarExtrasVersion: getPackageVersion('@quasar/extras'),
+    ssgAppExtensionVersion: getPackageVersion('quasar-app-extension-ssg'),
     ssr: quasarConf.ssr,
     snapshot: currentBuildSnapshot,
   };
@@ -71,7 +73,7 @@ module.exports = async function ensureBuild(api, quasarConfFile) {
     }
   }
 
-  await require('../build')(api, quasarConfFile);
+  await require('../build')(quasarConfFile);
 
   // Write build.json
   await fs.writeFile(quasarBuildFile, JSON.stringify(currentBuild, null, 2), 'utf-8');

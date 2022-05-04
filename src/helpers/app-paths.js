@@ -7,7 +7,6 @@ const {
 
 let quasarConfigFilename;
 let appDir;
-let hasNewQuasarPackage;
 
 function getAppDir() {
   if (appDir !== undefined) {
@@ -34,26 +33,10 @@ function getAppDir() {
   return fatal('Error. This command must be executed inside a Quasar project folder.');
 }
 
-function canResolveNewQuasarPkg() {
-  if (hasNewQuasarPackage !== undefined) {
-    return hasNewQuasarPackage;
-  }
-
-  let isResolved = true;
-
-  try {
-    require.resolve('@quasar/app-webpack/package.json', {
-      paths: [appDir],
-    });
-  } catch (e) {
-    isResolved = false;
-  }
-
-  return isResolved;
-}
-
 function getModuleNameOrPath(moduleNameOrPath) {
   if (moduleNameOrPath.startsWith('@quasar/app/')) {
+    const { hasNewQuasarPackage } = require('./packages'); // load here to avoid circular dependency
+
     return hasNewQuasarPackage ? moduleNameOrPath.replace('@quasar/app/', '@quasar/app-webpack/') : moduleNameOrPath;
   }
 
@@ -61,7 +44,6 @@ function getModuleNameOrPath(moduleNameOrPath) {
 }
 
 appDir = getAppDir();
-hasNewQuasarPackage = canResolveNewQuasarPkg();
 
 module.exports = {
   appDir,

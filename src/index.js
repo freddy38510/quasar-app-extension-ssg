@@ -14,9 +14,10 @@ module.exports = function run(api) {
 
   api.compatibleWith('@quasar/app', '^3.0.0');
 
-  api.registerCommand('generate', () => require('./cmd/ssg-generate')(api));
+  api.registerCommand('generate', () => require('./cmd/ssg-generate'));
 
-  api.registerCommand('inspect', () => require('./cmd/inspect')(api));
+
+  api.registerCommand('inspect', () => require('./cmd/inspect'));
 
   api.registerCommand('serve', () => require('./cmd/server'));
 };

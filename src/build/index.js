@@ -24,7 +24,7 @@ function parseWebpackConfig(cfg, mode) {
   };
 }
 
-module.exports = async function build(api, quasarConfFile) {
+module.exports = async function build(quasarConfFile) {
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
 
   await quasarConfFile.addWebpackConf();
@@ -95,7 +95,7 @@ module.exports = async function build(api, quasarConfFile) {
   // free up memory
   webpackData = void 0;
 
-  logBuildBanner(api, quasarConfFile.ctx, {
+  logBuildBanner(quasarConfFile.ctx, 'build', {
     outputFolder,
     transpileBanner: quasarConf.__transpileBanner,
   });

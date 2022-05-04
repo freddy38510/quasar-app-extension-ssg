@@ -46,8 +46,9 @@ if (argv.help) {
 }
 
 const { splitWebpackConfig } = require('../build/webpack/symbols');
+const { hasPackage } = require('../helpers/packages');
 
-module.exports = async function inspect(api) {
+async function inspect() {
   requireFromApp('@quasar/app/lib/helpers/banner')(argv, 'production');
 
   const getMode = requireFromApp('@quasar/app/lib/mode/index');
@@ -67,7 +68,7 @@ module.exports = async function inspect(api) {
     prod: true,
   });
 
-  if (api.hasPackage('@quasar/app', '< 3.4.0')) {
+  if (hasPackage('@quasar/app', '< 3.4.0')) {
     const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
 
     const directivesBuilder = new SSRDirectives();
@@ -79,7 +80,7 @@ module.exports = async function inspect(api) {
   // TODO: extend ExtensionRunner class
   extensionRunner.extensions.splice(
     extensionRunner.extensions
-      .findIndex((extension) => extension.extId === api.extId),
+      .findIndex((extension) => extension.extId === 'ssg'),
     1,
   );
 
@@ -125,4 +126,6 @@ module.exports = async function inspect(api) {
   });
 
   console.log(`\n  Depth used: ${depth}. You can change it with "-d" parameter.\n`);
-};
+}
+
+inspect();

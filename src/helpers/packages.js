@@ -1,0 +1,72 @@
+/* eslint-disable no-void */
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
+const semver = require('semver');
+const appPaths = require('./app-paths');
+
+let hasNewQuasarPackage;
+
+function canResolveNewQuasarPkg() {
+  if (hasNewQuasarPackage !== undefined) {
+    return hasNewQuasarPackage;
+  }
+
+  let isResolved = true;
+
+  try {
+    require.resolve('@quasar/app-webpack/package.json', {
+      paths: [appPaths.appDir],
+    });
+  } catch (e) {
+    isResolved = false;
+  }
+
+  return isResolved;
+}
+
+function getPackageName(packageName) {
+  if (packageName === '@quasar/app') {
+    return hasNewQuasarPackage ? '@quasar/app-webpack'
+      : packageName;
+  }
+
+  return packageName;
+}
+
+const getPackageJson = (pkgName, folder = appPaths.appDir) => {
+  try {
+    return require(
+      require.resolve(`${pkgName}/package.json`, {
+        paths: [folder],
+      }),
+    );
+  } catch (e) {
+    return void 0;
+  }
+};
+
+hasNewQuasarPackage = canResolveNewQuasarPkg();
+
+module.exports.hasNewQuasarPackage = hasNewQuasarPackage;
+
+module.exports.hasPackage = function hasPackage(packageName, semverCondition) {
+  const name = getPackageName(packageName);
+  const json = getPackageJson(name);
+
+  if (json === void 0) {
+    return false;
+  }
+
+  return semverCondition !== void 0
+    ? semver.satisfies(json.version, semverCondition)
+    : true;
+};
+
+module.exports.getPackageVersion = function getPackageVersion(packageName) {
+  const name = getPackageName(packageName);
+  const json = getPackageJson(name);
+
+  return json !== void 0
+    ? json.version
+    : void 0;
+};

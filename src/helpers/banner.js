@@ -4,17 +4,13 @@ const {
 } = require('chalk');
 const path = require('path');
 const requireFromApp = require('./require-from-app');
+const { getPackageVersion, hasNewQuasarPkg } = require('./packages');
 
-module.exports.logBuildBanner = function logBuildBanner(
-  { getPackageVersion, hasPackage },
-  argv,
-  details,
-) {
-  const quasarVersion = getPackageVersion('quasar');
-  const cliAppVersion = getPackageVersion('@quasar/app');
-  const ssgVersion = getPackageVersion('quasar-app-extension-ssg');
-  const hasNewQuasarPkg = hasPackage('@quasar/app', '>=3.4.0');
+const quasarVersion = getPackageVersion('quasar');
+const cliAppVersion = getPackageVersion('@quasar/app');
+const ssgVersion = getPackageVersion('quasar-app-extension-ssg');
 
+module.exports.logBuildBanner = function logBuildBanner(argv, cmd, details) {
   let banner = '';
 
   if (details) {
@@ -48,20 +44,11 @@ module.exports.logBuildBanner = function logBuildBanner(
   }
 };
 
-module.exports.logGenerateBanner = function logGenerateBanner(
-  { getPackageVersion, hasPackage },
-  ctx,
-  details,
-) {
-  const quasarVersion = getPackageVersion('quasar');
-  const cliAppVersion = getPackageVersion('@quasar/app');
-  const ssgVersion = getPackageVersion('quasar-app-extension-ssg');
-
+module.exports.logGenerateBanner = function logGenerateBanner(ctx, details) {
   let banner = '';
 
   if (details) {
     const relativeOutputFolder = path.posix.relative('', details.outputFolder);
-    const hasNewQuasarPkg = hasPackage('@quasar/app', '>=3.4.0');
 
     banner += `\n ${underline('Generate succeeded')}\n`;
 

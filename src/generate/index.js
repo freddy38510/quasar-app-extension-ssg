@@ -1,3 +1,4 @@
+/* eslint-disable import/no-dynamic-require */
 /* eslint-disable no-console */
 /* eslint-disable global-require */
 /* eslint-disable no-underscore-dangle */
@@ -11,7 +12,7 @@ const {
 } = require('../helpers/logger');
 const { printGeneratorErrors, printGeneratorWarnings } = require('../helpers/print-generator-issue');
 
-module.exports = async (api, quasarConf) => {
+module.exports = async (quasarConf) => {
   const { add, clean } = requireFromApp('@quasar/app/lib/artifacts');
 
   const generator = new Generator(quasarConf);
@@ -22,7 +23,7 @@ module.exports = async (api, quasarConf) => {
     startTime: null,
   };
 
-  logGenerateBanner(api, quasarConf.ctx);
+  logGenerateBanner(quasarConf.ctx);
 
   clean(quasarConf.ssg.__distDir);
 
@@ -104,7 +105,7 @@ module.exports = async (api, quasarConf) => {
 
   add(quasarConf.ssg.__distDir);
 
-  logGenerateBanner(api, quasarConf.ctx, {
+  logGenerateBanner(quasarConf.ctx, {
     outputFolder: quasarConf.ssg.__distDir,
     fallback: quasarConf.ssg.fallback,
   });

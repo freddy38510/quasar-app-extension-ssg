@@ -1,3 +1,4 @@
+/* eslint-disable import/no-dynamic-require */
 /* eslint-disable no-void */
 /* eslint-disable no-console */
 /* eslint-disable global-require */
@@ -40,16 +41,17 @@ const ensureBuild = require('../helpers/ensure-build');
 const getQuasarCtx = require('../helpers/get-quasar-ctx');
 const { fatal } = require('../helpers/logger');
 const { logBuildBanner } = require('../helpers/banner');
+const { hasPackage } = require('../helpers/packages');
 
-module.exports = async function run(api) {
+async function run() {
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
 
-  if (api.hasPackage('@quasar/app', '>=3.3.0')) {
+  if (hasPackage('@quasar/app', '>=3.3.0')) {
     const ensureVueDeps = requireFromApp('@quasar/app/lib/helpers/ensure-vue-deps');
     ensureVueDeps();
   }
 
-  logBuildBanner(api, argv);
+  logBuildBanner(argv, 'build');
 
   const installMissing = requireFromApp('@quasar/app/lib/mode/install-missing');
 
@@ -65,7 +67,7 @@ module.exports = async function run(api) {
 
   await installMissing('ssr');
 
-  if (api.hasPackage('@quasar/app', '< 3.4.0')) {
+  if (hasPackage('@quasar/app', '< 3.4.0')) {
     const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
 
     const directivesBuilder = new SSRDirectives();
@@ -77,7 +79,7 @@ module.exports = async function run(api) {
   // TODO: extend ExtensionRunner class
   extensionRunner.extensions.splice(
     extensionRunner.extensions
-      .findIndex((extension) => extension.extId === api.extId),
+      .findIndex((extension) => extension.extId === 'ssg'),
     1,
   );
 
@@ -94,7 +96,9 @@ module.exports = async function run(api) {
 
   await quasarConfFile.compile();
 
-  await ensureBuild(api, quasarConfFile);
+  await ensureBuild(quasarConfFile);
 
-  await require('../generate')(api, quasarConfFile.quasarConf);
-};
+  await require('../generate')(quasarConfFile.quasarConf);
+}
+
+run();
