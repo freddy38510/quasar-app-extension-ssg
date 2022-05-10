@@ -15,7 +15,15 @@ module.exports = class ExtendedQuasarConfFile extends QuasarConfFile {
   async compile() {
     extendQuasarConf(this.sourceCfg);
 
+    this.ctx.modeName = 'ssr';
+
     await super.compile();
+
+    this.ctx.modeName = 'ssg';
+
+    Object.assign(this.quasarConf.build.env, {
+      MODE: this.ctx.modeName,
+    });
   }
 
   async addWebpackConf() {
