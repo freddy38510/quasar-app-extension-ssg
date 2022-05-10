@@ -105,7 +105,7 @@ async function inspect() {
   const cfgEntries = splitWebpackConfig(quasarConfFile.webpackConf, 'ssg');
 
   if (argv.path) {
-    const dot = require('dot-prop');
+    const dot = requireFromApp('dot-prop');
     cfgEntries.forEach((entry) => {
       entry.webpack = dot.get(entry.webpack, argv.path);
     });
