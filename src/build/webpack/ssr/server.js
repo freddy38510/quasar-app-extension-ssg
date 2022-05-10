@@ -46,18 +46,20 @@ module.exports = function chainWebpackServer(chain, cfg) {
 
     vueRule.use('vue-loader').loader('@freddy38510/vue-loader');
     chain.plugin('vue-loader').use(VueLoaderPlugin);
-
-    // support server-side style injection with vue-style-loader
-    require('../inject.sfc-style-rules')(chain, {
-      rtl: cfg.build.rtl,
-      sourceMap: cfg.build.sourceMap,
-      minify: cfg.build.minify,
-      stylusLoaderOptions: cfg.build.stylusLoaderOptions,
-      sassLoaderOptions: cfg.build.sassLoaderOptions,
-      scssLoaderOptions: cfg.build.scssLoaderOptions,
-      lessLoaderOptions: cfg.build.lessLoaderOptions,
-    });
   }
+
+  // support server-side style injection with vue-style-loader
+  require('../inject.sfc-style-rules')(chain, {
+    rtl: cfg.build.rtl,
+    sourceMap: cfg.build.sourceMap,
+    minify: cfg.build.minify,
+    inlineCssFromSFC: cfg.ssg.inlineCssFromSFC,
+    extract: cfg.build.extractCSS,
+    stylusLoaderOptions: cfg.build.stylusLoaderOptions,
+    sassLoaderOptions: cfg.build.sassLoaderOptions,
+    scssLoaderOptions: cfg.build.scssLoaderOptions,
+    lessLoaderOptions: cfg.build.lessLoaderOptions,
+  });
 
   if (hasPackage('quasar', '>= 2.6.1 ')
     && hasPackage('@quasar/extras', '>= 1.13.3')

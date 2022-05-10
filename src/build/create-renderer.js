@@ -15,6 +15,28 @@ const queryRE = /\?.*/;
 const extRE = /[^./]+\.[^./]+$/;
 const trailingSlashRE = /([^/])$/;
 
+function isPlainObject(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]';
+}
+
+function deepClone(val) {
+  if (isPlainObject(val)) {
+    const res = {};
+
+    Object.keys(val).forEach((key) => {
+      res[key] = deepClone(val[key]);
+    });
+
+    return res;
+  }
+
+  if (Array.isArray(val)) {
+    return val.slice();
+  }
+
+  return val;
+}
+
 function mapIdToFile(id, clientManifest) {
   const files = [];
   const fileIndices = clientManifest.modules[id];
@@ -229,11 +251,39 @@ module.exports = function createRenderer(opts) {
   const createBundle = requireFromApp('@quasar/ssr-helpers/lib/create-bundle');
 
   const renderContext = createRenderContext(opts);
+
+  global.__VUE_SSR_CONTEXT__ = {};
+
+  const initialContext = global.__VUE_SSR_CONTEXT__;
+
+  opts.runningScriptOptions = global;
+
   const { evaluateEntry, rewriteErrorTrace } = createBundle(opts);
 
   async function runApp(ssrContext) {
     try {
       const entry = await evaluateEntry();
+
+      // On subsequent renders, __VUE_SSR_CONTEXT__ will not be available
+      // to prevent cross-request pollution.
+      delete global.__VUE_SSR_CONTEXT__;
+
+      // vue-style-loader styles imported outside of component lifecycle hooks
+      if (initialContext._styles) {
+        ssrContext._styles = deepClone(initialContext._styles);
+        // https://github.com/vuejs/vue/issues/6353
+        // ensure "styles" is exposed even if no styles are injected
+        // in component lifecycles.
+        // the renderStyles fn is exposed by vue-style-loader >= 3.0.3
+        if (initialContext._renderStyles) {
+          Object.defineProperty(ssrContext, 'styles', {
+            enumerable: true,
+            get() {
+              return initialContext._renderStyles(ssrContext._styles);
+            },
+          });
+        }
+      }
 
       const app = await entry(ssrContext);
 

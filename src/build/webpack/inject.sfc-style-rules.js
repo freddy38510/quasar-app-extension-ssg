@@ -209,19 +209,26 @@ function injectRule(
   loader = undefined,
   loaderOptions = undefined,
 ) {
-  const baseRule = chain.module.rule(lang).test(test).before('vue');
+  const baseRule = chain.module.rule(lang).test(test).after('mjs');
 
-  // rules for Vue SFC <style module>
-  const modulesRule = baseRule.oneOf('modules-query').resourceQuery(/module/);
+  if (pref.inlineCssFromSFC) {
+    // rules for Vue SFC <style module>
+    const modulesRule = baseRule.oneOf('modules-query').resourceQuery(/module/);
+    create(modulesRule, true, pref, loader, loaderOptions);
 
-  // rules for Vue SFC <style>
-  const vueNormalRule = baseRule
-    .oneOf('vue')
-    .resourceQuery(/\?vue/)
-    .after('modules-query');
+    // rules for Vue SFC <style>
+    const vueNormalRule = baseRule.oneOf('vue').resourceQuery(/\?vue/).after('modules-query');
+    create(vueNormalRule, false, pref, loader, loaderOptions);
+  }
 
-  create(modulesRule, true, pref, loader, loaderOptions);
-  create(vueNormalRule, false, pref, loader, loaderOptions);
+  if (!pref.extract) {
+    // rules for *.module.* files
+    const modulesExtRule = baseRule.oneOf('modules-ext').test(/\.module\.\w+$/);
+    create(modulesExtRule, true, pref, loader, loaderOptions);
+
+    const normalRule = baseRule.oneOf('normal');
+    create(normalRule, false, pref, loader, loaderOptions);
+  }
 }
 
 module.exports = function injectSFCStyleRules(chain, pref) {
