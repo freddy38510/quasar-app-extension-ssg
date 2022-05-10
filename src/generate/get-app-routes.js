@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 const requireFromApp = require('../helpers/require-from-app');
 
 module.exports = async function getAppRoutes(opts) {

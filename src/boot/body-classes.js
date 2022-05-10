@@ -1,5 +1,5 @@
 /* eslint-disable no-void */
-import { isRuntimeSsrPreHydration, client } from 'quasar/src/plugins/Platform.js';
+import { isRuntimeSsrPreHydration, client } from 'quasar/src/plugins/Platform';
 
 function getMobilePlatform(is) {
   if (is.ios === true) {

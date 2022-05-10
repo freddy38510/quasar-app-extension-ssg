@@ -20,11 +20,9 @@ const infoPill = (msg) => inverse('', msg, '');
 const errorPill = (msg) => bgRed.white('', msg, '');
 const warningPill = (msg) => bgYellow.black('', msg, '');
 
-const log = function log(msg) {
+module.exports.log = function log(msg) {
   console.log(msg ? ` ${greenBanner} ${msg}` : '');
 };
-
-module.exports.log = log;
 
 module.exports.warn = function warn(msg, pill) {
   if (msg !== void 0) {

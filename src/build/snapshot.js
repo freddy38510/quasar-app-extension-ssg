@@ -1,4 +1,4 @@
-const crc32 = require('crc/crc32');
+const { crc32 } = require('crc');
 const fs = require('fs-extra');
 const path = require('path');
 const esmRequire = require('jiti')(__filename);
@@ -11,11 +11,13 @@ const compareSnapshots = function compareSnapshots(from, to) {
     ...Object.keys(to).sort(),
   ]));
 
-  let changed = false;
+  let changed;
 
   allKeys.some((key) => {
     if (JSON.stringify(from[key]) !== JSON.stringify(to[key])) {
       changed = key;
+
+      return true;
     }
 
     return false;

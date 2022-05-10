@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable global-require */
 const requireFromApp = require('../../../helpers/require-from-app');
 
@@ -78,8 +79,8 @@ const bodyRegExp = /(<\/body\s*>)/i;
  * it's no longer exporting this method
  */
 function injectAssetsIntoHtml(html, assetTags) {
-  const body = assetTags.bodyTags.map((entry) => htmlTagObjectToString(entry, false));
-  const head = assetTags.headTags.map((entry) => htmlTagObjectToString(entry, false));
+  const body = assetTags.bodyTags.map((entry) => htmlTagObjectToString(entry));
+  const head = assetTags.headTags.map((entry) => htmlTagObjectToString(entry));
 
   if (body.length) {
     if (bodyRegExp.test(html)) {
