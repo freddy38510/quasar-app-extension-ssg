@@ -4,11 +4,11 @@
 const semver = require('semver');
 const appPaths = require('./app-paths');
 
-let hasNewQuasarPackage;
+let hasNewQuasarPkg;
 
 function canResolveNewQuasarPkg() {
-  if (hasNewQuasarPackage !== undefined) {
-    return hasNewQuasarPackage;
+  if (hasNewQuasarPkg !== undefined) {
+    return hasNewQuasarPkg;
   }
 
   let isResolved = true;
@@ -26,7 +26,7 @@ function canResolveNewQuasarPkg() {
 
 function getPackageName(packageName) {
   if (packageName === '@quasar/app') {
-    return hasNewQuasarPackage ? '@quasar/app-webpack'
+    return hasNewQuasarPkg ? '@quasar/app-webpack'
       : packageName;
   }
 
@@ -45,9 +45,9 @@ const getPackageJson = (pkgName, folder = appPaths.appDir) => {
   }
 };
 
-hasNewQuasarPackage = canResolveNewQuasarPkg();
+hasNewQuasarPkg = canResolveNewQuasarPkg();
 
-module.exports.hasNewQuasarPackage = hasNewQuasarPackage;
+module.exports.hasNewQuasarPkg = hasNewQuasarPkg;
 
 module.exports.hasPackage = function hasPackage(packageName, semverCondition) {
   const name = getPackageName(packageName);

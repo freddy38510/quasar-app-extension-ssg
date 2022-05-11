@@ -35,9 +35,9 @@ function getAppDir() {
 
 function getModuleNameOrPath(moduleNameOrPath) {
   if (moduleNameOrPath.startsWith('@quasar/app/')) {
-    const { hasNewQuasarPackage } = require('./packages'); // load here to avoid circular dependency
+    const { hasNewQuasarPkg } = require('./packages'); // load here to avoid circular dependency
 
-    return hasNewQuasarPackage ? moduleNameOrPath.replace('@quasar/app/', '@quasar/app-webpack/') : moduleNameOrPath;
+    return hasNewQuasarPkg ? moduleNameOrPath.replace('@quasar/app/', '@quasar/app-webpack/') : moduleNameOrPath;
   }
 
   return moduleNameOrPath;
