@@ -19,7 +19,7 @@ const getOptions = (quasarConf, mode) => {
     },
     globPatterns: ['**/*.{js,css,html}'], // precache js, css and html files
     globIgnores: ['service-worker.js', 'workbox-*.js', 'asset-manifest.json'],
-    globDirectory: quasarConf.ssg.__distDir,
+    globDirectory: quasarConf.ssg.distDir,
   };
 
   if (mode === 'GenerateSW') {
@@ -41,7 +41,7 @@ const getOptions = (quasarConf, mode) => {
   }
 
   delete opts.exclude; // replaced by globIgnores with workbox-build
-  opts.swDest = path.join(quasarConf.ssg.__distDir, 'service-worker.js');
+  opts.swDest = path.join(quasarConf.ssg.distDir, 'service-worker.js');
 
   if (mode === 'GenerateSW') {
     if (opts.navigateFallback === false) {

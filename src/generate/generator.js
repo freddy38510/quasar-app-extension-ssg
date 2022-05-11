@@ -45,7 +45,7 @@ class Generator {
       this.beastcss = new Beastcss({
         noscriptFallback: false,
         ...quasarConf.ssg.inlineCriticalCss || {},
-        path: quasarConf.ssg.__distDir,
+        path: quasarConf.ssg.distDir,
         publicPath: quasarConf.build.publicPath,
         logger: this.createBeastcssLogger(),
       });
@@ -184,7 +184,7 @@ class Generator {
         html = await this.options.onRouteRendered(
           html,
           route,
-          this.options.__distDir,
+          this.options.distDir,
         );
       } catch (e) {
         e.message = `Could not process onRouteRendered hook\n\n${e.message}`;
@@ -203,7 +203,8 @@ class Generator {
       }
     }
 
-    const dest = path.join(this.options.__distDir, route, 'index.html');
+    const dest = path.join(this.options.distDir, route, 'index.html');
+
 
     await fs.mkdir(path.dirname(dest), { recursive: true });
 

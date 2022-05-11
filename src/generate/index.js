@@ -25,14 +25,14 @@ module.exports = async (quasarConf) => {
 
   logGenerateBanner(quasarConf.ctx);
 
-  clean(quasarConf.ssg.__distDir);
+  clean(quasarConf.ssg.distDir);
 
   log('Copying assets...');
 
   try {
     await fs.copy(
       join(quasarConf.ssg.buildDir, 'www'),
-      quasarConf.ssg.__distDir,
+      quasarConf.ssg.distDir,
     );
   } catch (err) {
     err.message = `Could not copy assets\n\n${err.message}`;
@@ -96,19 +96,19 @@ module.exports = async (quasarConf) => {
     const { globbySync } = esmRequire('globby');
 
     const files = globbySync('**/*.html', {
-      cwd: quasarConf.ssg.__distDir,
+      cwd: quasarConf.ssg.distDir,
       absolute: true,
     });
 
     log('Running afterGenerate hook...');
 
-    await quasarConf.ssg.afterGenerate(files, quasarConf.ssg.__distDir);
+    await quasarConf.ssg.afterGenerate(files, quasarConf.ssg.distDir);
   }
 
-  add(quasarConf.ssg.__distDir);
+  add(quasarConf.ssg.distDir);
 
   logGenerateBanner(quasarConf.ctx, {
-    outputFolder: quasarConf.ssg.__distDir,
+    outputFolder: quasarConf.ssg.distDir,
     fallback: quasarConf.ssg.fallback,
   });
 };

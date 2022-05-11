@@ -37,23 +37,21 @@ module.exports = function extendQuasarConf(conf) {
   }
 
   // Set SSG distDir
-  conf.ssg.__distDir = conf.build.distDir || join(appPaths.appDir, 'dist', 'ssg');
+  conf.ssg.distDir = conf.ssg.distDir || join(appPaths.appDir, 'dist', 'ssg');
 
-  if (!isAbsolute(conf.ssg.__distDir)) {
-    conf.ssg.__distDir = join(appPaths.appDir, conf.ssg.__distDir);
+  if (!isAbsolute(conf.ssg.distDir)) {
+    conf.ssg.distDir = join(appPaths.appDir, conf.ssg.distDir);
   }
-
-  // Overrides it to expect build output folder in SSR mode being SSG buildDir
-  conf.build.distDir = conf.ssg.buildDir;
 
   // Set SSG cache.ignore
   if (conf.ssg.cache !== false) {
     const ignore = [
-      join(conf.ssg.__distDir, '/**'),
+      join(conf.ssg.distDir, '/**'),
       join(conf.ssg.buildDir, '/**'),
+      ...conf.build.distDir ? [join(conf.build.distDir, '/**')] : [],
       'dist/**',
       'public/**',
-      'src-ssr/middlewares/**',
+      'src-ssr/**',
       'src-cordova/**',
       'src-electron/**',
       'src-bex/**',
