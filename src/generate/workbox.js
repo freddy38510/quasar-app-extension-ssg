@@ -1,10 +1,8 @@
 /* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable no-void */
 const path = require('path');
-const { merge } = require('webpack-merge');
 const { generateSW, injectManifest } = require('workbox-build');
 const {
   info, error, fatal, success, warn,
@@ -14,12 +12,6 @@ const { resolve } = require('../helpers/app-paths');
 const getOptions = (quasarConf, mode) => {
   const defaultOptions = {
     dontCacheBustURLsMatching: /\.\w{8}\./,
-    modifyURLPrefix: {
-      '': quasarConf.build.publicPath,
-    },
-    globPatterns: ['**/*.{js,css,html}'], // precache js, css and html files
-    globIgnores: ['service-worker.js', 'workbox-*.js', 'asset-manifest.json'],
-    globDirectory: quasarConf.ssg.distDir,
   };
 
   if (mode === 'GenerateSW') {
@@ -27,6 +19,7 @@ const getOptions = (quasarConf, mode) => {
 
     defaultOptions.cacheId = pkg.name || 'quasar-pwa-app';
     defaultOptions.directoryIndex = 'index.html';
+    defaultOptions.sourcemap = quasarConf.build.sourceMap;
   }
 
   // merge with custom options from user
@@ -37,17 +30,19 @@ const getOptions = (quasarConf, mode) => {
 
   // if Object form:
   if (quasarConf.ssr.pwa && quasarConf.ssr.pwa !== true) {
+    const { merge } = require('webpack-merge');
     opts = merge(opts, quasarConf.ssr.pwa);
   }
 
   delete opts.exclude; // replaced by globIgnores with workbox-build
-  opts.swDest = path.join(quasarConf.ssg.distDir, 'service-worker.js');
+  opts.globIgnores = opts.globIgnores || [];
+  opts.globIgnores.push('service-worker.js', '**/workbox-*.js', '**/workbox.*.js', '**/manifest.*.js', '**/*.map');
 
   if (mode === 'GenerateSW') {
     if (opts.navigateFallback === false) {
       delete opts.navigateFallback;
     } else if (opts.navigateFallback === void 0) {
-      const htmlFile = quasarConf.build.ssrPwaHtmlFilename;
+      const htmlFile = quasarConf.ssg.fallback;
 
       opts.navigateFallback = `${quasarConf.build.publicPath}${htmlFile}`;
 
@@ -55,19 +50,21 @@ const getOptions = (quasarConf, mode) => {
       opts.navigateFallbackDenylist.push(
         /service-worker\.js$/,
         /workbox-(.)*\.js$/,
+        /workbox\.(.)*\.js$/,
       );
     }
   } else {
-    opts.swSrc = opts.swDest;
+    opts.swSrc = path.join(quasarConf.ssg.buildDir, 'www/service-worker.js');
   }
+
+  opts.globDirectory = quasarConf.ssg.distDir;
+  opts.swDest = path.join(quasarConf.ssg.distDir, 'service-worker.js');
 
   return opts;
 };
 
 const handleError = (e, isGenerateSW, pill) => {
-  const prefix = isGenerateSW ? 'Generated service-worker file' : 'Injected Manifest';
-
-  error(`${prefix} with error`, 'DONE');
+  error(`Failed to ${isGenerateSW ? 'generate service-worker file' : 'inject manifest'}`, 'DONE');
 
   console.error();
 
@@ -87,7 +84,7 @@ const handleWarnings = (warnings, pill) => {
 };
 
 const handleSuccess = (isGenerateSW, size, count, diffTime) => {
-  const prefix = isGenerateSW ? 'Generated service-worker file' : 'Injected Manifest to custom service-worker file';
+  const prefix = isGenerateSW ? 'service-worker file generated' : 'Manifest injected to custom service-worker file';
 
   success(`${prefix}, which will precache ${count} files, totaling ${(size / 1024).toFixed(2)} kB • ${diffTime}ms`, 'DONE');
 };
