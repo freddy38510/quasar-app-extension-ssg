@@ -13,6 +13,11 @@ class Generator extends QuasarGenerator {
     super(quasarConfFile);
 
     const paths = [
+      // forked Quasar entries adding full SPA fallback support
+      'app.js',
+      'client-entry.js',
+      'client-prefetch.js',
+      // new entry for ssg
       'ssg-render-entry.js',
     ];
 
@@ -32,14 +37,12 @@ class Generator extends QuasarGenerator {
     });
 
     this.files = [
+      ...newFiles,
       ...this.files.filter(({ filename }) => [
-        'app.js',
-        'client-entry.js',
-        'client-prefetch.js',
+        // keep only these Quasar entries
         'quasar-user-options.js',
         'server-entry.js',
       ].includes(filename)),
-      ...newFiles,
     ];
   }
 }
