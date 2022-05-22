@@ -3,9 +3,17 @@ const { join } = require('path');
 const { merge } = require('webpack-merge');
 const requireFromApp = require('../../../helpers/require-from-app');
 const { QuasarSSRClientPlugin } = require('./plugin.client-side');
+const WebpackProgressPlugin = require('../plugin.progress');
 
-module.exports = function chainWebpackClient(chain, cfg) {
-  requireFromApp('@quasar/app/lib/webpack/ssr/client')(chain, cfg);
+module.exports = function chainWebpackClient(chain, cfg, configName) {
+  chain.name(configName);
+
+  chain.output.delete('path');
+
+  if (cfg.ctx.prod) {
+    chain.output
+      .path(join(cfg.ssg.buildDir, 'www'));
+  }
 
   // @see https://github.com/freddy38510/quasar-app-extension-ssg/issues/110
   chain.plugin('define').tap((args) => [{
@@ -13,28 +21,36 @@ module.exports = function chainWebpackClient(chain, cfg) {
     __QUASAR_SSR_PWA__: true,
   }]);
 
-  chain.plugin('quasar-ssr-client')
-    .use(QuasarSSRClientPlugin, [{
-      filename: '../quasar.client-manifest.json',
-    }]);
+  if (cfg.ctx.prod) {
+    chain.plugin('quasar-ssr-client')
+      .use(QuasarSSRClientPlugin, [{
+        filename: '../quasar.client-manifest.json',
+      }]);
+  }
 
-  if (!cfg.ctx.mode.pwa) {
-    // Use webpack-html-plugin for creating html fallback file
-    const injectHtml = requireFromApp('@quasar/app/lib/webpack/inject.html');
+  // Use webpack-html-plugin for creating html fallback file
+  const injectHtml = requireFromApp('@quasar/app/lib/webpack/inject.html');
 
-    injectHtml(chain, merge(cfg, {
-      build: {
-        distDir: join(cfg.ssg.buildDir, 'www'),
-      },
-    }));
-  } else {
+  let templateParam;
+
+  if (cfg.ctx.mode.pwa) {
+    templateParam = JSON.parse(JSON.stringify(cfg.htmlVariables));
+
+    templateParam.ctx.mode = { pwa: true };
+    templateParam.ctx.modeName = 'pwa';
+    if (templateParam.process && templateParam.process.env) {
+      templateParam.process.env.MODE = 'pwa';
+    }
+  }
+
+  injectHtml(chain, merge(cfg, {
+    build: {
+      distDir: cfg.ctx.mode.pwa ? cfg.ssg.buildDir : join(cfg.ssg.buildDir, 'www'),
+    },
+  }), templateParam);
+
+  if (cfg.ctx.mode.pwa) {
     const HtmlPwaPlugin = require('../pwa/plugin.html-pwa').plugin;
-    // Handle workbox after build instead of during webpack compilation
-    // This way all assets could be precached, including generated html
-    chain.plugins.delete('workbox');
-
-    // The meta tags inserted have close tags resulting in invalid HTML markup
-    chain.plugins.delete('html-pwa');
 
     chain.plugin('html-pwa')
       .use(HtmlPwaPlugin, [cfg]);
@@ -70,4 +86,7 @@ module.exports = function chainWebpackClient(chain, cfg) {
   // https://github.com/quasarframework/quasar/commit/425c451b7a0f71cdfd9fcf49b5a9caff18bfd398
   chain.optimization
     .concatenateModules(true);
+
+  chain.plugin('progress')
+    .use(WebpackProgressPlugin, [{ name: configName, cfg, hasExternalWork: false }]);
 };

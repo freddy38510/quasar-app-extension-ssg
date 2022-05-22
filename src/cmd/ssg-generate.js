@@ -21,6 +21,7 @@ const argv = parseArgs(process.argv.slice(2), {
 });
 
 if (argv.help) {
+  console.log();
   console.log(` Description
    Generate static site of your app.
  Usage

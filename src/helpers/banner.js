@@ -15,17 +15,25 @@ module.exports.logBuildBanner = function logBuildBanner(argv, cmd, details) {
 
   if (details) {
     banner += ` ${underline('Build succeeded')}\n`;
-  } else {
+  } else if (cmd !== 'dev') {
     banner += ` ${bgBlue('================== BUILD ==================')} \n`;
   }
 
+  const getModeString = () => {
+    if (cmd === 'dev') {
+      return hasNewQuasarPkg ? 'Dev mode..................' : 'Dev mode..........';
+    }
+
+    return hasNewQuasarPkg ? 'Build mode................' : 'Build mode........';
+  };
+
   banner += `
- ${hasNewQuasarPkg ? 'Build mode................' : 'Build mode........'} ${green('ssg')}
+ ${getModeString()} ${green('ssg')}
  ${hasNewQuasarPkg ? 'Pkg ssg...................' : 'Pkg ssg...........'} ${green(`v${ssgVersion}`)}
  ${hasNewQuasarPkg ? 'Pkg quasar................' : 'Pkg quasar........'} ${green(`v${quasarVersion}`)}
  ${hasNewQuasarPkg ? 'Pkg @quasar/app-webpack...' : 'Pkg @quasar/app...'} ${green(`v${cliAppVersion}`)}
  ${hasNewQuasarPkg ? 'Pkg webpack...............' : 'Pkg webpack.......'} ${green('v5')}
- ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${argv.debug ? green('enabled') : grey('no')}`;
+ ${hasNewQuasarPkg ? 'Debugging.................' : 'Debugging.........'} ${cmd === 'dev' || argv.debug ? green('enabled') : grey('no')}`;
 
   if (details) {
     banner += `\n ${hasNewQuasarPkg ? 'Transpiled JS.............' : 'Transpiled JS.....'} ${details.transpileBanner}`;
@@ -69,3 +77,7 @@ module.exports.logGenerateBanner = function logGenerateBanner(ctx, details) {
 
   console.log(`${banner}\n`);
 };
+
+module.exports.quasarVersion = quasarVersion;
+module.exports.cliAppVersion = cliAppVersion;
+module.exports.ssgVersion = ssgVersion;

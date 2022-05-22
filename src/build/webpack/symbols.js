@@ -4,9 +4,7 @@ const requireFromApp = require('../../helpers/require-from-app');
 const { webpackNames } = requireFromApp('@quasar/app/lib/webpack/symbols');
 
 webpackNames.ssg = {
-  // workbox-webpack-plugin is not used, so no need to compile CSW first via Runner
-  csw: webpackNames.pwa.csw,
-  generator: 'Generator',
+  renderer: 'Renderer',
   serverSide: webpackNames.ssr.serverSide,
   clientSide: webpackNames.ssr.clientSide,
 };

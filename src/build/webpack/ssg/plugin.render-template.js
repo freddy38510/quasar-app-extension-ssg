@@ -1,5 +1,5 @@
-const fs = require('fs').promises;
-const { getIndexHtml } = require('./html-template');
+const fs = require('fs');
+const { getIndexHtml } = require('../../../renderer/html-template');
 const requireFromApp = require('../../../helpers/require-from-app');
 const { resolve } = require('../../../helpers/app-paths');
 
@@ -13,17 +13,18 @@ module.exports = class RenderTemplatePlugin {
 
     compiler.hooks.thisCompilation.tap('render-template', (compilation) => {
       compilation.hooks.processAssets.tapPromise({ name: 'render-template', state: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL }, async () => {
-        const htmlTemplate = await this.getHtmlTemplate();
-        const content = new sources.RawSource(htmlTemplate);
+        if (this.cfg.ctx.dev) {
+          compilation.fileDependencies.add(resolve.app(this.cfg.sourceFiles.indexHtmlTemplate));
+        }
 
-        compilation.emitAsset('render-template.js', content);
+        compilation.emitAsset('render-template.js', new sources.RawSource(this.getHtmlTemplate()));
       });
     });
   }
 
-  async getHtmlTemplate() {
+  getHtmlTemplate() {
     const htmlFile = resolve.app(this.cfg.sourceFiles.indexHtmlTemplate);
-    const renderTemplate = getIndexHtml(await fs.readFile(htmlFile, 'utf-8'), this.cfg);
+    const renderTemplate = getIndexHtml(fs.readFileSync(htmlFile, 'utf-8'), this.cfg);
 
     return `module.exports=${renderTemplate.source}`;
   }

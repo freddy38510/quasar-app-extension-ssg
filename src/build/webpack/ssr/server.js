@@ -6,6 +6,7 @@ const requireFromApp = require('../../../helpers/require-from-app');
 const appPaths = require('../../../helpers/app-paths');
 const { QuasarSSRServerPlugin } = require('./plugin.server-side');
 const { hasPackage } = require('../../../helpers/packages');
+const WebpackProgressPlugin = require('../plugin.progress');
 
 const nodeExternals = requireFromApp('webpack-node-externals');
 
@@ -27,13 +28,23 @@ function getModuleDirs() {
 
 const additionalModuleDirs = getModuleDirs();
 
-module.exports = function chainWebpackServer(chain, cfg) {
+module.exports = function chainWebpackServer(chain, cfg, configName) {
   requireFromApp('@quasar/app/lib/webpack/ssr/server')(chain, cfg);
 
-  chain.plugin('quasar-ssr-server')
-    .use(QuasarSSRServerPlugin, [{
-      filename: '../quasar.server-manifest.json',
-    }]);
+  chain.name(configName);
+
+  chain.output.delete('path');
+
+  if (cfg.ctx.prod) {
+    chain.output.path(cfg.ssg.buildDir);
+  }
+
+  if (cfg.ctx.prod) {
+    chain.plugin('quasar-ssr-server')
+      .use(QuasarSSRServerPlugin, [{
+        filename: 'quasar.server-manifest.json',
+      }]);
+  }
 
   if (cfg.ssg.inlineCssFromSFC) {
     /**
@@ -81,4 +92,7 @@ module.exports = function chainWebpackServer(chain, cfg) {
   // https://github.com/quasarframework/quasar/commit/425c451b7a0f71cdfd9fcf49b5a9caff18bfd398
   chain.optimization
     .concatenateModules(true);
+
+  chain.plugin('progress')
+    .use(WebpackProgressPlugin, [{ name: configName, cfg, hasExternalWork: false }]);
 };

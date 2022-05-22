@@ -2,12 +2,11 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 const path = require('path');
-const fs = require('fs').promises;
 const { minify } = require('html-minifier');
 const Beastcss = require('beastcss');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
-const { cyanBright } = require('chalk');
+const { cyanBright, green, bold } = require('chalk');
 const { appDir } = require('../helpers/app-paths');
 const { log, beastcssLog } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
@@ -17,29 +16,37 @@ const {
   withTrailingSlash,
   withoutTrailingSlash,
 } = require('../helpers/normalize-slash');
+const appPaths = require('../helpers/app-paths');
 
 class Generator {
-  constructor(quasarConf) {
-    this.render = require(path.join(quasarConf.ssg.buildDir, 'render.js'));
+  constructor(quasarConf, renderToString, fs) {
+    this.init(quasarConf, renderToString, fs);
+  }
+
+  init(quasarConf, renderToString, fs) {
+    this.renderToString = renderToString;
+    this.fs = fs || require('fs').promises;
 
     this.options = {
       ...quasarConf.ssg,
-      minify: quasarConf.build.minify
-        ? {
-          ...quasarConf.__html.minifyOptions,
-          ignoreCustomComments: [/^(\]?|\[?)$/], // avoid client-side hydration error
-          conservativeCollapse: true, // avoid client-side hydration error
-          minifyCSS: true,
-        } : false,
-      build: {
-        publicPath: quasarConf.build.publicPath,
-      },
       vueRouterBase: quasarConf.build.vueRouterBase,
-      sourceFiles: quasarConf.sourceFiles,
-      debug: quasarConf.ctx.debug,
+      minifyOptions: quasarConf.__html.minifyOptions ? {
+        ...quasarConf.__html.minifyOptions,
+        ignoreCustomComments: [/^(\]?|\[?)$/], // avoid client-side hydration error
+        conservativeCollapse: true, // avoid client-side hydration error
+        minifyCSS: true,
+      } : false,
     };
 
-    this.generatedRoutes = new Set();
+    this.ctx = quasarConf.ctx;
+
+    this.routesToGenerate = new Set();
+    this.skippedRoutes = new Set();
+
+    if (this.ctx.dev) {
+      this.queue = new Set();
+      this.queue.push = (route) => this.queue.add(route);
+    }
 
     if (quasarConf.ssg.inlineCriticalCss) {
       this.beastcss = new Beastcss({
@@ -54,7 +61,7 @@ class Generator {
     }
   }
 
-  async initRoutes() {
+  async initRoutes(serverManifest) {
     const warnings = [];
 
     let userRoutes = ['/'];
@@ -62,6 +69,10 @@ class Generator {
 
     try {
       userRoutes = await promisifyRoutes(this.options.routes);
+      userRoutes = userRoutes.map((route) => route
+        .split('?')[0]
+        .replace(/\/+$/, '')
+        .trim());
     } catch (err) {
       err.hint = 'Could not resolve provided routes';
 
@@ -72,7 +83,7 @@ class Generator {
       try {
         appRoutes = flatRoutes(await require('./get-app-routes')({
           basedir: appDir,
-          serverManifest: require(path.join(this.options.buildDir, './quasar.server-manifest.json')),
+          serverManifest,
         }));
       } catch (err) {
         err.hint = 'Could not get static routes from router';
@@ -106,6 +117,11 @@ class Generator {
         try {
           await this.generateRoute(route);
 
+          if (this.skippedRoutes.has(route)) {
+            // 404 or redirected
+            return;
+          }
+
           log(`Generated page for route "${cyanBright(route)}"`);
 
           if (this.options.inlineCriticalCss) {
@@ -136,13 +152,11 @@ class Generator {
       };
     }
 
-    // push routes to queue
     routes.forEach((route) => {
-      route = decodeURI(route);
+      // Add route to the tracked routes to generate (for crawler)
+      this.routesToGenerate.add(route);
 
-      // Add routes to the tracked generated routes (for crawler)
-      this.generatedRoutes.add(route);
-
+      // push route to queue
       this.queue.push(route);
     });
 
@@ -161,7 +175,9 @@ class Generator {
 
     html = await this.renderRoute(route);
 
-    if (!html) {
+    if (html === null) {
+      this.skippedRoutes.add(route);
+
       return;
     }
 
@@ -178,7 +194,7 @@ class Generator {
         html = await this.options.onRouteRendered(
           html,
           route,
-          this.options.distDir,
+          this.ctx.prod ? this.options.distDir : appPaths.resolve.app('dist'),
         );
       } catch (e) {
         e.hint = `Could not process "onRouteRendered" hook for route "${bold(route)}"`;
@@ -189,7 +205,7 @@ class Generator {
 
     if (this.options.minify !== false) {
       try {
-        html = minify(html, this.options.minify);
+        html = minify(html, this.options.minifyOptions);
       } catch (e) {
         e.hint = `Could not minify html string of pre-rendered route "${green(route)}"`;
 
@@ -197,12 +213,11 @@ class Generator {
       }
     }
 
-    const dest = path.join(this.options.distDir, route, 'index.html');
+    const dest = path.join(this.ctx.prod ? this.options.distDir : appPaths.resolve.app('dist'), route, 'index.html');
 
+    await this.fs.mkdir(path.dirname(dest), { recursive: true });
 
-    await fs.mkdir(path.dirname(dest), { recursive: true });
-
-    await fs.writeFile(dest, html, 'utf8');
+    await this.fs.writeFile(dest, html, 'utf8');
   }
 
   async renderRoute(route) {
@@ -212,13 +227,17 @@ class Generator {
     };
 
     try {
-      return await this.render(ssrContext);
+      return await this.renderToString(ssrContext);
     } catch (e) {
       if (e.url) {
         const redirectedRoute = decodeURI(e.url);
 
         if (this.shouldGenerateRoute(redirectedRoute)) {
-          this.generatedRoutes.add(redirectedRoute);
+          if (this.ctx.dev) {
+            log(`New route ${green(redirectedRoute)} found. Redirected from the route ${green(route)}`);
+          }
+
+          this.routesToGenerate.add(redirectedRoute);
 
           this.queue.push(redirectedRoute);
         }
@@ -259,7 +278,7 @@ class Generator {
       return false;
     }
 
-    return !this.generatedRoutes.has(route);
+    return !this.routesToGenerate.has(route);
   }
 
   crawl(html) {
@@ -276,7 +295,12 @@ class Generator {
         const foundRoute = decodeURI(sanitizedHref);
 
         if (this.shouldGenerateRoute(foundRoute)) {
-          this.generatedRoutes.add(foundRoute);
+          if (this.ctx.dev) {
+            log(`Crawler found new route ${green(foundRoute)}`);
+          }
+
+          this.routesToGenerate.add(foundRoute);
+
           this.queue.push(foundRoute);
         }
       });

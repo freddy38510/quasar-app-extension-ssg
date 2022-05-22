@@ -248,6 +248,14 @@ function renderScripts(renderContext, usedAsyncFiles, nonce) {
 }
 
 module.exports = function createRenderer(opts) {
+  if (!opts.serverManifest) {
+    throw new Error('Missing server bundle');
+  }
+
+  if (!opts.clientManifest) {
+    throw new Error('Missing client manifest');
+  }
+
   const createBundle = requireFromApp('@quasar/ssr-helpers/lib/create-bundle');
 
   const renderContext = createRenderContext(opts);
@@ -285,9 +293,7 @@ module.exports = function createRenderer(opts) {
         }
       }
 
-      const app = await entry(ssrContext);
-
-      return app;
+      return await entry(ssrContext);
     } catch (err) {
       await rewriteErrorTrace(err);
 

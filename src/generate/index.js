@@ -18,7 +18,13 @@ requireFromApp('pretty-error').stop();
 module.exports = async function generate(quasarConf) {
   const { add, clean } = requireFromApp('@quasar/app/lib/artifacts');
 
-  const generator = new Generator(quasarConf);
+  const renderToString = require(join(quasarConf.ssg.buildDir, './render-to-string.js'));
+  const serverManifest = require(join(quasarConf.ssg.buildDir, './quasar.server-manifest.json'));
+
+  const generator = new Generator(
+    quasarConf,
+    renderToString,
+  );
 
   const state = {
     errors: [],
@@ -48,7 +54,7 @@ module.exports = async function generate(quasarConf) {
 
     log('Initializing routes...');
 
-    const { routes, warnings } = await generator.initRoutes();
+    const { routes, warnings } = await generator.initRoutes(serverManifest);
 
     state.warnings = warnings;
 

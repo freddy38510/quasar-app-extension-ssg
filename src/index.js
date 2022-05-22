@@ -1,6 +1,4 @@
 /* eslint-disable global-require */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-void */
 /**
  * Quasar App Extension index/runner script
  * (runs on each dev/build)
@@ -16,6 +14,7 @@ module.exports = function run(api) {
 
   api.registerCommand('generate', () => require('./cmd/ssg-generate'));
 
+  api.registerCommand('dev', () => require('./cmd/dev'));
 
   api.registerCommand('inspect', () => require('./cmd/inspect'));
 

@@ -7,13 +7,22 @@ const QuasarConfFile = requireFromApp('@quasar/app/lib/quasar-conf-file');
 module.exports = class ExtendedQuasarConfFile extends QuasarConfFile {
   constructor(ctx, opts = {}) {
     super(ctx, opts);
+  }
 
-    // trick to not let Quasar create webpackConf
-    this.webpackConfChanged = false;
+  async reboot() {
+    const result = await super.reboot();
+
+    if (this.webpackConfChanged !== false) {
+      await this.addWebpackConf();
+    }
+
+    return result;
   }
 
   async compile() {
     extendQuasarConf(this.sourceCfg);
+
+    this.webpackConfChanged = false;
 
     this.ctx.modeName = 'ssr';
 

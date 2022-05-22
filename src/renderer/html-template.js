@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable global-require */
-const requireFromApp = require('../../../helpers/require-from-app');
+const requireFromApp = require('../helpers/require-from-app');
 
 function injectSsrInterpolation(html) {
   return html
@@ -114,7 +114,7 @@ module.exports.getIndexHtml = function getIndexHtml(template, cfg) {
   const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin');
 
   const { fillBaseTag } = requireFromApp('@quasar/app/lib/webpack/plugin.html-addons');
-  const { fillPwaTags } = require('../pwa/plugin.html-pwa');
+  const { fillPwaTags } = require('../build/webpack/pwa/plugin.html-pwa');
 
   const compiled = compileTemplate(template);
 
@@ -135,17 +135,6 @@ module.exports.getIndexHtml = function getIndexHtml(template, cfg) {
   }
 
   html = injectSsrInterpolation(html);
-
-  /*
-  if (cfg.build.minify) {
-    const { minify } = requireFromApp('html-minifier');
-    html = minify(html, {
-      // eslint-disable-next-line no-underscore-dangle
-      ...cfg.__html.minifyOptions,
-      ignoreCustomFragments: [/{{ [\s\S]*? }}/],
-    });
-  }
-  */
 
   return compileTemplate(html, { interpolate: /{{([\s\S]+?)}}/g });
 };

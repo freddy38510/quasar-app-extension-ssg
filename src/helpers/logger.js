@@ -7,6 +7,9 @@ const {
   inverse,
 } = require('chalk');
 const isUnicodeSupported = require('./is-unicode-supported');
+const requireFromApp = require('./require-from-app');
+
+const readline = requireFromApp('readline');
 
 const dot = '•';
 const pointer = isUnicodeSupported ? '❯' : '>';
@@ -19,6 +22,16 @@ const successPill = (msg) => bgGreen.black('', msg, '');
 const infoPill = (msg) => inverse('', msg, '');
 const errorPill = (msg) => bgRed.white('', msg, '');
 const warningPill = (msg) => bgYellow.black('', msg, '');
+
+module.exports.clearConsole = process.stdout.isTTY
+  ? () => {
+    // Fill screen with blank lines. Then move to 0 (beginning of visible part) and clear it
+    const blank = '\n'.repeat(process.stdout.rows);
+    console.log(blank);
+    readline.cursorTo(process.stdout, 0, 0);
+    readline.clearScreenDown(process.stdout);
+  }
+  : () => { };
 
 module.exports.log = function log(msg) {
   console.log(msg ? ` ${greenBanner} ${msg}` : '');

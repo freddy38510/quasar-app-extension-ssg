@@ -18,7 +18,7 @@ class Generator extends QuasarGenerator {
       'client-entry.js',
       'client-prefetch.js',
       // new entry for ssg
-      'ssg-render-entry.js',
+      'ssg-renderer-entry.js',
     ];
 
     const newFiles = paths.map((file) => {

@@ -4,6 +4,7 @@
 const { existsSync } = require('fs');
 const { join, sep, normalize } = require('path');
 const RenderTemplatePlugin = require('./plugin.render-template');
+const WebpackProgressPlugin = require('../plugin.progress');
 const requireFromApp = require('../../../helpers/require-from-app');
 
 const webpack = requireFromApp('webpack');
@@ -11,7 +12,6 @@ const WebpackChain = requireFromApp('webpack-chain');
 
 const appPaths = requireFromApp('@quasar/app/lib/app-paths');
 const injectNodeTypescript = requireFromApp('@quasar/app/lib/webpack/inject.node-typescript');
-const WebpackProgressPlugin = requireFromApp('@quasar/app/lib/webpack/plugin.progress');
 const nodeExternals = requireFromApp('webpack-node-externals');
 
 const nodeEnvBanner = 'process.env.NODE_ENV=\'development\';';
@@ -59,23 +59,31 @@ module.exports = function createChain(cfg, configName) {
 
   chain.resolve.alias.set('quasar$', 'quasar/dist/quasar.cjs.prod.js');
 
-  chain.entry('render')
-    .add(appPaths.resolve.app('.quasar/ssg-render-entry.js'));
+  chain.entry('renderer')
+    .add(appPaths.resolve.app('.quasar/ssg-renderer-entry.js'));
+
+  if (cfg.ctx.dev) {
+    chain.output
+      .filename('create-renderer.js')
+      .path(appPaths.resolve.app('.quasar/ssg'));
+  } else {
+    chain.output
+      .filename('render-to-string.js')
+      .path(cfg.ssg.buildDir);
+  }
 
   chain.output
-    .filename('[name].js')
-    .path(cfg.ssg.buildDir)
+    .libraryTarget('commonjs2')
     .library({
       type: 'commonjs2',
-      export: 'default',
     });
 
   chain.externals([
     nodeExternals({
       additionalModuleDirs,
     }),
-    'quasar-app-extension-ssg/src/build/create-renderer',
-    './render-template',
+    'quasar-app-extension-ssg/src/renderer/create-renderer',
+    './render-template.js',
     './quasar.server-manifest.json',
     './quasar.client-manifest.json',
   ]);
@@ -122,9 +130,6 @@ module.exports = function createChain(cfg, configName) {
 
   injectNodeTypescript(cfg, chain);
 
-  chain.plugin('progress')
-    .use(WebpackProgressPlugin, [{ name: configName, cfg }]);
-
   chain.plugin('limitChunk')
     .use(webpack.optimize.LimitChunkCountPlugin, [{
       maxChunks: 1,
@@ -150,6 +155,9 @@ module.exports = function createChain(cfg, configName) {
 
   chain.performance
     .hints(false);
+
+  chain.plugin('progress')
+    .use(WebpackProgressPlugin, [{ name: configName, cfg, hasExternalWork: true }]);
 
   return chain;
 };

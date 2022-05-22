@@ -76,6 +76,16 @@ module.exports = function extendQuasarConf(conf) {
     conf.ssg.inlineCssFromSFC = prompts.inlineCssFromSFC;
   }
 
+  if (conf.ctx.dev) {
+    // force css inlining in development
+    conf.build.extractCSS = false;
+    conf.ssg.inlineCssFromSFC = true;
+
+    // force disable beastcss
+    // in development vue-style-loader remove styles at client-side before re-injecting it
+    conf.inlineCriticalCss = false;
+  }
+
   if (conf.ssg.shouldPrefetch === void 0) {
     conf.ssg.shouldPrefetch = () => false;
   }
@@ -99,4 +109,20 @@ module.exports = function extendQuasarConf(conf) {
       whitespace: 'condense',
     },
   };
+
+  if (conf.ctx.dev) {
+    if (conf.devServer.client.webSocketTransport === undefined || typeof conf.devServer.client.webSocketTransport === 'string') {
+      conf.devServer.client = conf.devServer.client || {};
+
+      let customClient;
+
+      if (conf.devServer.webSocketServer === 'sockjs' || conf.devServer.client.webSocketTransport === 'sockjs') {
+        customClient = require.resolve('../dev/SockJSClient.js');
+      } else {
+        customClient = require.resolve('../dev/WebSocketClient.js');
+      }
+
+      conf.devServer.client.webSocketTransport = customClient;
+    }
+  }
 };

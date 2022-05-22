@@ -64,30 +64,30 @@ function getCSW(cfg) {
 }
 
 async function getSSG(cfg) {
+  const renderer = require('./ssg/renderer')(cfg, webpackNames.ssg.renderer);
+
   const client = createChain(cfg, webpackNames.ssg.clientSide);
 
   if (cfg.ctx.mode.pwa) {
-    requireFromApp('@quasar/app/lib/webpack/pwa')(client, cfg); // extending a PWA
+    require('./pwa')(client, cfg); // extending a PWA
   }
 
-  require('./ssr/client')(client, cfg);
+  require('./ssr/client')(client, cfg, webpackNames.ssg.clientSide);
 
   const server = createChain(cfg, webpackNames.ssg.serverSide);
-  require('./ssr/server')(server, cfg);
-
-  const generator = require('./ssg/generator')(cfg, webpackNames.ssg.generator);
+  require('./ssr/server')(server, cfg, webpackNames.ssg.serverSide);
 
   return {
-    ...(cfg.ssr.pwa && cfg.pwa.workboxPluginMode === 'InjectManifest' ? { csw: await getCSW(cfg) } : {}),
+    ...(cfg.pwa.workboxPluginMode === 'InjectManifest' ? { csw: await getCSW(cfg) } : {}),
 
-    generator: await getWebpackConfig(generator, cfg, {
-      name: webpackNames.ssg.generator,
+    renderer: await getWebpackConfig(renderer, cfg, {
+      name: webpackNames.ssg.renderer,
       cfgExtendBase: cfg.ssg,
       // not supported yet without adding ssg hooks to Index API
-      hookSuffix: 'SsgGenerator',
+      hookSuffix: 'SSGRenderer',
       // supported (but not documented)
-      // quasarConf.ssg.chainWebpackGenerator / quasarConf.ssg.extendWebpackGenerator
-      cmdSuffix: 'Generator',
+      // quasarConf.ssg.chainWebpackRenderer / quasarConf.ssg.extendWebpackRenderer
+      cmdSuffix: 'Renderer',
       invokeParams: { isClient: false, isServer: true },
     }),
 
