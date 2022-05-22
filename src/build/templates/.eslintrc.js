@@ -1,37 +1,32 @@
 module.exports = {
-  overrides: [
-    {
-      files: 'entry/*.js',
+  root: true,
 
-      parserOptions: {
-        ecmaVersion: 2018,
-        sourceType: 'module',
-      },
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: 'module',
+  },
 
-      env: {
-        node: false,
-        browser: true,
-      },
+  env: {
+    node: true,
+    browser: true,
+    es2020: true,
+  },
 
-      globals: {
-        __dirname: 'readonly',
-      },
-
-      extends: [
-        'airbnb-base',
-        'plugin:lodash-template/recommended-with-script',
-      ],
-
-      settings: {
-        'lodash-template/globals': [
-          'ssr',
-          'ssg',
-        ],
-      },
-
-      rules: {
-        'import/no-unresolved': 'off',
-      },
-    },
+  extends: [
+    'airbnb-base',
+    'plugin:lodash-template/base',
   ],
+
+  processor: 'lodash-template/script',
+
+  settings: {
+    'lodash-template/ignoreRules': ['no-undef', 'no-tabs'],
+  },
+
+  rules: {
+    'import/no-unresolved': 'off',
+    'import/extensions': 'off',
+    'no-unused-expressions': ['error', { allowShortCircuit: true }],
+    'max-len': ['error', 150],
+  },
 };

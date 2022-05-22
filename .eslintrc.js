@@ -2,20 +2,20 @@ module.exports = {
   root: true,
 
   parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'commonjs',
+    ecmaVersion: 2020,
+    sourceType: 'module',
   },
 
   env: {
-    browser: false,
+    browser: true,
     node: true,
+    es2020: true,
   },
 
   extends: [
     'airbnb-base',
   ],
 
-  // add your custom rules here
   rules: {
     'no-param-reassign': ['error', { props: false }],
     'import/no-unresolved': ['error', { commonjs: true }],
@@ -23,17 +23,7 @@ module.exports = {
 
   overrides: [
     {
-      files: 'src/boot/*.js',
-
-      parserOptions: {
-        ecmaVersion: 2018,
-        sourceType: 'module',
-      },
-
-      env: {
-        node: false,
-        browser: true,
-      },
+      files: ['src/boot/*.js', 'src/dev/WebSocketClient.js', 'src/dev/SockJSClient.js'],
 
       rules: {
         'import/no-unresolved': 'off',
