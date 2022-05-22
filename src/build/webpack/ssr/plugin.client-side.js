@@ -4,7 +4,6 @@
  */
 
 const requireFromApp = require('../../../helpers/require-from-app');
-const getAssetName = require('../../../helpers/get-asset-name');
 
 const jsCssRE = /\.(js|css)(\?[^.]+)?$/;
 const swRE = /\|\w+$/;
@@ -23,15 +22,13 @@ function getClientManifest(compilation) {
 
   const initialFiles = uniq(
     Object.keys(stats.entrypoints)
-      .map((name) => stats.entrypoints[name].assets)
+      .map((name) => stats.entrypoints[name].assets.map((asset) => asset.name))
       .reduce((assets, all) => all.concat(assets), [])
-      .map(getAssetName)
       .filter((file) => jsCssRE.test(file) === true && hotUpdateRE.test(file) === false)
       .concat(
         Object.keys(stats.entrypoints)
-          .map((name) => stats.entrypoints[name].auxiliaryAssets)
+          .map((name) => stats.entrypoints[name].auxiliaryAssets.map((asset) => asset.name))
           .reduce((auxiliaryAssets, all) => all.concat(auxiliaryAssets), [])
-          .map(getAssetName)
           .filter((file) => hotUpdateRE.test(file) === false),
       ),
   );
@@ -49,7 +46,7 @@ function getClientManifest(compilation) {
   };
 
   const assetModules = stats.modules.filter((m) => m.assets.length);
-  const fileToIndex = (asset) => manifest.all.indexOf(getAssetName(asset));
+  const fileToIndex = (file) => manifest.all.indexOf(file);
 
   stats.modules.forEach((m) => {
     // ignore modules duplicated in multiple chunks
@@ -62,15 +59,13 @@ function getClientManifest(compilation) {
       }
 
       const id = m.identifier.replace(swRE, ''); // remove appended hash
-
-      const files = chunk.files.map(fileToIndex);
-      manifest.modules[hash(id)] = files;
+      // eslint-disable-next-line no-multi-assign
+      const files = manifest.modules[hash(id)] = chunk.files.map(fileToIndex);
 
       // find all asset modules associated with the same chunk
       assetModules.forEach((assetModule) => {
         if (assetModule.chunks.includes(cid)) {
-          // eslint-disable-next-line prefer-spread
-          files.push.apply(files, assetModule.assets.map(fileToIndex));
+          files.push(...assetModule.assets.map(fileToIndex));
         }
       });
     }
@@ -79,13 +74,15 @@ function getClientManifest(compilation) {
   return manifest;
 }
 
+module.exports.getClientManifest = getClientManifest;
+
 module.exports.QuasarSSRClientPlugin = class QuasarSSRClientPlugin {
   constructor(cfg = {}) {
     this.cfg = cfg;
   }
 
   apply(compiler) {
-    const { sources, Compilation } = requireFromApp('webpack');
+    const { sources } = requireFromApp('webpack');
 
     compiler.hooks.thisCompilation.tap('quasar-ssr-client-plugin', (compilation) => {
       if (compilation.compiler !== compiler) {
@@ -93,10 +90,15 @@ module.exports.QuasarSSRClientPlugin = class QuasarSSRClientPlugin {
         return;
       }
 
-      compilation.hooks.processAssets.tapAsync(
-        { name: 'quasar-ssr-client-plugin', stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL },
-        (_, callback) => {
+      compilation.hooks.afterProcessAssets.tap(
+        'quasar-ssr-client-plugin',
+        () => {
           const manifest = getClientManifest(compilation);
+
+          if (!manifest) {
+            return;
+          }
+
           const json = JSON.stringify(manifest, null, 2);
           const content = new sources.RawSource(json);
 
@@ -105,8 +107,6 @@ module.exports.QuasarSSRClientPlugin = class QuasarSSRClientPlugin {
           } else {
             compilation.emitAsset(this.cfg.filename, content);
           }
-
-          callback();
         },
       );
     });

@@ -4,7 +4,8 @@
  */
 
 const requireFromApp = require('../../../helpers/require-from-app');
-const getAssetName = require('../../../helpers/get-asset-name');
+
+const { sources } = requireFromApp('webpack');
 
 const jsRE = /\.js(\?[^.]+)?$/;
 const jsMapRE = /\.js\.map$/;
@@ -30,9 +31,7 @@ function getServerManifest(compilation) {
     return false;
   }
 
-  const entryAssets = entryInfo.assets
-    .map(getAssetName)
-    .filter((file) => jsRE.test(file));
+  const entryAssets = entryInfo.assets.filter((file) => jsRE.test(file.name));
 
   if (entryAssets.length > 1) {
     throw new Error(
@@ -42,30 +41,30 @@ function getServerManifest(compilation) {
   }
 
   const entry = entryAssets[0];
-  if (!entry || typeof entry !== 'string') {
+  if (!entry || typeof entry.name !== 'string') {
     throw new Error(
       (`Entry "${entryName}" not found. Did you specify the correct entry option?`),
     );
   }
 
   const serverManifest = {
-    entry,
+    entry: entry.name,
     files: {},
     maps: {},
   };
 
-  Object.keys(compilation.assets)
-    .forEach((name) => {
-      if (jsRE.test(name)) {
-        serverManifest.files[name] = compilation.getAsset(name).source.source();
-      } else if (name.match(jsMapRE)) {
-        serverManifest.maps[name.replace(mapRE, '')] = JSON.parse(
-          compilation.getAsset(name).source.source(),
+  compilation.getAssets()
+    .forEach((asset) => {
+      if (jsRE.test(asset.name)) {
+        serverManifest.files[asset.name] = asset.source.source();
+      } else if (asset.name.match(jsMapRE)) {
+        serverManifest.maps[asset.name.replace(mapRE, '')] = JSON.parse(
+          asset.source.source(),
         );
       }
 
       // do not emit anything else for server
-      compilation.deleteAsset(name);
+      compilation.deleteAsset(asset.name);
     });
 
   return serverManifest;
@@ -94,21 +93,19 @@ module.exports.QuasarSSRServerPlugin = class QuasarSSRServerPlugin {
       );
     }
 
-    const { sources, Compilation } = requireFromApp('webpack');
-
     compiler.hooks.thisCompilation.tap('quasar-ssr-server-plugin', (compilation) => {
       if (compilation.compiler !== compiler) {
         // Ignore child compilers
         return;
       }
 
-      compilation.hooks.processAssets.tapAsync(
-        { name: 'quasar-ssr-server-plugin', stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL },
-        (_, callback) => {
+      compilation.hooks.afterProcessAssets.tap(
+        'quasar-ssr-server-plugin',
+        () => {
           const serverManifest = getServerManifest(compilation);
 
           if (!serverManifest) {
-            callback();
+            return;
           }
 
           const json = JSON.stringify(serverManifest, null, 2);
@@ -120,8 +117,6 @@ module.exports.QuasarSSRServerPlugin = class QuasarSSRServerPlugin {
           } else {
             compilation.emitAsset(this.cfg.filename, content);
           }
-
-          callback();
         },
       );
     });
