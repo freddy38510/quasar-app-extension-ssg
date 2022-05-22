@@ -103,7 +103,7 @@ quasar ssg generate
 
 ### Dev
 
-:new: _Added in [v4.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.0.0...v4.1.0)_
+:new: _Added in [v4.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.1.1...v4.2.0)_
 
 Starts the app in development mode (live reloading, error reporting, etc):
 
@@ -325,7 +325,7 @@ Include the application router static routes to generate the corresponding pages
 
 ### `distDir`
 
-:new: _Added in [v4.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.0.0...v4.1.0)_
+:new: _Added in [v4.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.1.1...v4.2.0)_
 
 Type: `String`
 
