@@ -408,7 +408,7 @@ The filename of the full SPA or PWA page as a fallback when an index.html file d
 > Notes:
 >
 > - Overrides `build.htmlFilename` and `build.ssrPwaHtmlFilename`.
-> - This file is created with `html-webpack-plugin` with [defaults options](https://github.com/quasarframework/quasar/blob/dev/app/lib/webpack/inject.html.js) set by Quasar. You can extend it with some [plugins](https://github.com/jantimon/html-webpack-plugin#plugins).
+> - This file is created with `html-webpack-plugin` with [defaults options](https://github.com/quasarframework/quasar/blob/dev/app-webpack/lib/webpack/inject.html.js) set by Quasar. You can extend it with some [plugins](https://github.com/jantimon/html-webpack-plugin#plugins).
 
 ### `crawler`
 
