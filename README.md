@@ -509,6 +509,10 @@ ssg: {
 }
 ```
 
+> Notes:
+>
+> The value is force to `true` when using the [dev](#dev) command.
+
 ### `inlineCssFromSFC`
 
 :new: _Added in [v3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0)_
@@ -520,6 +524,10 @@ Default: `false`
 Inline css from Vue Single-File Component (SFC) `<style>` blocks.
 
 Note: This option works even if build.extractCSS is set to `true` in quasar.config.js file.
+
+> Notes:
+>
+> The value is force to `true` when using the [dev](#dev) command.
 
 ### `onRouteRendered(html, route, distDir)`
 
@@ -560,7 +568,7 @@ This is necessary because the server used to prerender pages can't know the plat
 Quasar is using [workbox-webpack-plugin](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-webpack-plugin) to generate a complete service worker and a list of assets to precache that is injected into a service worker file.
 
 This means that all generated pages could not be precached when webpack is compiling because they do not exist yet at this time.
-To fix this issue, the extension uses [workbox-build](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-build) instead after all pages have been generated.
+To fix this issue, **when running the command [generate](#generate)**, the extension uses [workbox-build](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-build) instead after all pages have been generated.
 
 Consequently, when PWA is enabled in Quasar, you should pass options from [workbox-build](https://developers.google.com/web/tools/workbox/modules/workbox-build) for [generateSW mode](https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build#.generateSW) or [injectManifest mode](https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build#.injectManifest) in the key `pwa.workboxOptions` in `quasar.config.js` file instead of options from [workbox-webpack-plugin](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin). All others PWA options from the key `pwa` in `quasar.config.js` file are valids and used following [Quasar documentation](https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa#quasar-conf-js).
 
