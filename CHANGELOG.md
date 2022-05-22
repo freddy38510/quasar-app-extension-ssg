@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.2.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.2.0...v4.2.1) (2022-05-22)
+
+
+### Bug Fixes
+
+* **conf:** create devServer.client option if not set ([96394a5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/96394a5ab95d22f80a4452eec4200acba0fc1bb0))
+
 ## [4.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.1.1...v4.2.0) (2022-05-22)
 
 
