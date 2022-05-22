@@ -101,6 +101,36 @@ quasar ssg generate
 - `--force-build`: Force to build the application with webpack.
 - `-d, --debug`: Build for debugging purposes.
 
+### Dev
+
+:new: _Added in [v4.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.0.0...v4.1.0)_
+
+Starts the app in development mode (live reloading, error reporting, etc):
+
+```bash
+quasar ssg dev
+```
+
+The development server allows you to develop your App by compiling and maintaining code in-memory. A web server will serve your App while offering live-reload out of the box. Running in-memory offers faster rebuilds when you change your code.
+
+Each static page is generated when the corresponding route is first loaded from the browser.
+
+You can configure the server by editing your `/quasar.config.js’ file:
+
+```javascript
+devServer: {
+  host: '...',
+  port: ...
+}
+```
+
+#### Dev Options
+
+- `-h, --help`: Display usage instructions.
+- `--port, -p`: A port number on which to start the application.
+- `--hostname, -H`: A hostname to use for serving the application.
+- `--devtools, -d`: Open remote Vue Devtools.
+
 ### Serve
 
 This extension provides a command to create a server for testing your static site locally:
@@ -294,6 +324,8 @@ Include the application router static routes to generate the corresponding pages
 > Note: In case of warnings issued when initializing routes you can disable this option and let the crawler find your static and dynamic routes or provide them via the option `ssg.routes`.
 
 ### `distDir`
+
+:new: _Added in [v4.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.0.0...v4.1.0)_
 
 Type: `String`
 

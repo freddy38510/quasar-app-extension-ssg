@@ -28,7 +28,7 @@ const argv = parseArgs(process.argv.slice(2), {
 if (argv.help) {
   console.log(`
   Description
-    Starts the app in development mode (hot-code reloading, error
+    Starts the app in development mode (live reloading, error
     reporting, etc)
 
   Usage
