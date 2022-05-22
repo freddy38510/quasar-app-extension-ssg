@@ -14,6 +14,8 @@ const injectNodeTypescript = requireFromApp('@quasar/app/lib/webpack/inject.node
 const WebpackProgressPlugin = requireFromApp('@quasar/app/lib/webpack/plugin.progress');
 const nodeExternals = requireFromApp('webpack-node-externals');
 
+const nodeEnvBanner = 'process.env.NODE_ENV=\'development\';';
+
 const flattenObject = (obj, prefix = 'process.env') => Object.keys(obj)
   .reduce((acc, k) => {
     const pre = prefix.length ? `${prefix}.` : '';
@@ -127,6 +129,14 @@ module.exports = function createChain(cfg, configName) {
     .use(webpack.optimize.LimitChunkCountPlugin, [{
       maxChunks: 1,
     }]);
+
+  // we need to set process.env.NODE_ENV to 'development'
+  // in order for externalized vue/vuex/etc packages to run the
+  // development code (*.cjs.js) instead of the prod one
+  chain.plugin('node-env-banner')
+    .use(webpack.BannerPlugin, [
+      { banner: nodeEnvBanner, raw: true, entryOnly: true },
+    ]);
 
   chain.plugin('render-template-plugin')
     .use(RenderTemplatePlugin, [cfg]);
