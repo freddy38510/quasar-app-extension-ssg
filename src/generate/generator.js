@@ -218,7 +218,7 @@ class Generator {
     };
 
     try {
-      return this.render(ssrContext);
+      return await this.render(ssrContext);
     } catch (error) {
       if (error.url) {
         const redirectedRoute = decodeURI(error.url);

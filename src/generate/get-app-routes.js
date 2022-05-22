@@ -18,7 +18,7 @@ module.exports = async function getAppRoutes(opts) {
 
     return routes;
   } catch (err) {
-    rewriteErrorTrace(err);
+    await rewriteErrorTrace(err);
 
     throw err;
   }
