@@ -67,8 +67,8 @@
   "devDependencies": {
     "@babel/core": "7.17.9",
     "@babel/eslint-parser": "7.17.0",
-    "@commitlint/cli": "16.2.3",
-    "@commitlint/config-conventional": "16.2.1",
+    "@commitlint/cli": "16.3.0",
+    "@commitlint/config-conventional": "16.2.4",
     "@quasar/babel-preset-app": "2.0.1",
     "commitizen": "4.2.4",
     "cz-conventional-changelog": "3.3.0",
