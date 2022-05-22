@@ -11,8 +11,11 @@ const {
   log, info, warn, error, warning, fatal, success,
 } = require('../helpers/logger');
 const { printGeneratorErrors, printGeneratorWarnings } = require('../helpers/print-generator-issue');
+const renderPrettyError = require('../helpers/render-pretty-error');
 
-module.exports = async (quasarConf) => {
+requireFromApp('pretty-error').stop();
+
+module.exports = async function generate(quasarConf) {
   const { add, clean } = requireFromApp('@quasar/app/lib/artifacts');
 
   const generator = new Generator(quasarConf);
@@ -35,9 +38,7 @@ module.exports = async (quasarConf) => {
       quasarConf.ssg.distDir,
     );
   } catch (err) {
-    err.message = `Could not copy assets\n\n${err.message}`;
-
-    console.error(err.stack || err);
+    renderPrettyError(err);
 
     process.exit(1);
   }
@@ -57,7 +58,7 @@ module.exports = async (quasarConf) => {
 
     state.errors = errors;
   } catch (err) {
-    console.error(err.stack || err);
+    renderPrettyError(err);
 
     process.exit(1);
   }

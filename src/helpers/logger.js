@@ -51,7 +51,7 @@ module.exports.fatal = function fatal(msg, pill) {
 };
 
 /**
- * Extended approach - Generartion status & pills
+ * Extended approach - Generation status & pills
  */
 
 module.exports.successPill = successPill;
@@ -86,7 +86,11 @@ module.exports.getWarning = function getWarning(msg, title = 'WARNING') {
   return ` ${yellowBanner} ${warningPill(title)} ${yellow(`${dot} ${msg}`)}`;
 };
 
-module.exports.logBeastcss = function logBeastcss(messages, level) {
+module.exports.beastcssLog = function beastcssLog(messages, level) {
+  if (!Array.isArray(messages)) {
+    return;
+  }
+
   messages.forEach(({ level: msgLevel, msg, color }) => {
     if (msgLevel === level) {
       console.log(`        ${color(`${pointer} Beastcss: ${msg}`)}`);

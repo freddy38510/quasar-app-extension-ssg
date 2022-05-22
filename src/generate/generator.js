@@ -9,7 +9,7 @@ const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright } = require('chalk');
 const { appDir } = require('../helpers/app-paths');
-const { log, logBeastcss } = require('../helpers/logger');
+const { log, beastcssLog } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
 const flatRoutes = require('../helpers/flat-routes');
@@ -63,7 +63,7 @@ class Generator {
     try {
       userRoutes = await promisifyRoutes(this.options.routes);
     } catch (err) {
-      err.message = ` Could not resolve provided routes:\n\n ${err.message}`;
+      err.hint = 'Could not resolve provided routes';
 
       warnings.push(err);
     }
@@ -75,7 +75,7 @@ class Generator {
           serverManifest: require(path.join(this.options.buildDir, './quasar.server-manifest.json')),
         }));
       } catch (err) {
-        err.message = ` Could not get static routes from router:\n\n ${err.message}`;
+        err.hint = 'Could not get static routes from router';
 
         warnings.push(err);
       }
@@ -109,11 +109,11 @@ class Generator {
           log(`Generated page for route "${cyanBright(route)}"`);
 
           if (this.options.inlineCriticalCss) {
-            logBeastcss(this.beastcssLogs[route], 'warn');
-            logBeastcss(this.beastcssLogs[route], 'info');
+            beastcssLog(this.beastcssLogs[route], 'warn');
+            beastcssLog(this.beastcssLogs[route], 'info');
           }
         } catch (e) {
-          errors.push({ route, error: e });
+          errors.push(e);
 
           this.queue.killAndDrain();
         }
@@ -159,13 +159,7 @@ class Generator {
   async generateRoute(route) {
     let html;
 
-    try {
-      html = await this.renderRoute(route);
-    } catch (e) {
-      e.message = `Could not pre-render route\n\n${e.message}`;
-
-      throw e;
-    }
+    html = await this.renderRoute(route);
 
     if (!html) {
       return;
@@ -187,7 +181,7 @@ class Generator {
           this.options.distDir,
         );
       } catch (e) {
-        e.message = `Could not process onRouteRendered hook\n\n${e.message}`;
+        e.hint = `Could not process "onRouteRendered" hook for route "${bold(route)}"`;
 
         throw e;
       }
@@ -197,7 +191,7 @@ class Generator {
       try {
         html = minify(html, this.options.minify);
       } catch (e) {
-        e.message = `Could not minify html\n\n${e.message}`;
+        e.hint = `Could not minify html string of pre-rendered route "${green(route)}"`;
 
         throw e;
       }
@@ -219,18 +213,31 @@ class Generator {
 
     try {
       return await this.render(ssrContext);
-    } catch (error) {
-      if (error.url) {
-        const redirectedRoute = decodeURI(error.url);
+    } catch (e) {
+      if (e.url) {
+        const redirectedRoute = decodeURI(e.url);
 
-        return this.renderRoute(redirectedRoute);
-      }
+        if (this.shouldGenerateRoute(redirectedRoute)) {
+          this.generatedRoutes.add(redirectedRoute);
 
-      if (error.code === 404) {
+          this.queue.push(redirectedRoute);
+        }
+
         return null;
       }
 
-      throw error;
+      if (e.code === 404) {
+        // hmm, Vue Router could not find the requested route
+
+        // Should reach here only if no "catch-all" route
+        // is defined in /src/routes
+
+        return null;
+      }
+
+      e.hint = `Could not pre-render route ${bold(route)}`;
+
+      throw e;
     }
   }
 
@@ -258,7 +265,7 @@ class Generator {
   crawl(html) {
     parse(html)
       .querySelectorAll('a')
-      .map((el) => {
+      .forEach((el) => {
         const sanitizedHref = (el.getAttribute('href') || '')
           .replace(this.options.vueRouterBase, '/')
           .split('?')[0]
@@ -272,8 +279,6 @@ class Generator {
           this.generatedRoutes.add(foundRoute);
           this.queue.push(foundRoute);
         }
-
-        return null;
       });
   }
 
@@ -281,14 +286,12 @@ class Generator {
     this.beastcssLogs[route] = [];
 
     try {
-      html = await this.beastcss.process(html, route);
+      return await this.beastcss.process(html, route);
     } catch (e) {
-      e.message = `Could not inline critical css\n\n${e.message}`;
+      e.hint = `Could not inline critical css of pre-rendered route "${green(route)}"`;
 
       throw e;
     }
-
-    return html;
   }
 
   createBeastcssLogger() {

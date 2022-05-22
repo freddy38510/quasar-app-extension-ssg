@@ -8,6 +8,7 @@ const {
   info, error, fatal, success, warn,
 } = require('../helpers/logger');
 const { resolve } = require('../helpers/app-paths');
+const renderPrettyError = require('../helpers/render-pretty-error');
 
 const getOptions = (quasarConf, mode) => {
   const defaultOptions = {
@@ -68,7 +69,7 @@ const handleError = (e, isGenerateSW, pill) => {
 
   console.error();
 
-  console.error(e.stack || e);
+  renderPrettyError(e);
 
   fatal('Please check the log above.', `${pill} FAILED`);
 };
