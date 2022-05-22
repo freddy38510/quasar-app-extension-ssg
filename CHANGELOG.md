@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.1.1...v4.2.0) (2022-05-22)
+
+
+### Features
+
+* add dev command ([d5986e6](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d5986e6249a07d42cdfbc577e04f3db67fbbdfe1)), closes [#2](https://github.com/freddy38510/quasar-app-extension-ssg/issues/2)
+* add distDir option ([9b0528e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/9b0528eb5c1a0a74345c7d4b3d860b221e353c90))
+* support inlining styles with vue-style-loader for css imported outside of Vue components ([3e7aa28](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3e7aa28c8685f760ec84735519559a90e6a74a4f))
+
+
+### Bug Fixes
+
+* add full SPA fallback support ([c5f2545](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c5f254578b89f128a0c4e7e293d23ce041c38c6e))
+* add missing await statements ([0bca2c8](https://github.com/freddy38510/quasar-app-extension-ssg/commit/0bca2c8af295da5fd9ac3c7b909608b0bf8b41f4))
+* **deps:** update dependency ci-info to v3.3.1 ([#238](https://github.com/freddy38510/quasar-app-extension-ssg/issues/238)) ([edfc572](https://github.com/freddy38510/quasar-app-extension-ssg/commit/edfc572e0050c3982f88bc61160021f08210b8d8))
+* **deps:** update dependency express to v4.18.1 ([#224](https://github.com/freddy38510/quasar-app-extension-ssg/issues/224)) ([cf780fa](https://github.com/freddy38510/quasar-app-extension-ssg/commit/cf780fad43e92906399ddfa379214762f6c5474a))
+* export and import the correctly named function hasNewQuasarPkg ([413542b](https://github.com/freddy38510/quasar-app-extension-ssg/commit/413542b12dc023429407fa45c9d0e46230599d8c))
+* force externalized packages to run development code to throw exceptions at build time ([45a6d97](https://github.com/freddy38510/quasar-app-extension-ssg/commit/45a6d97738fe772088d30f40a6ec99ea8ee59850))
+* **generate:** load dependency globby instead of glob before running afterGenerate hook ([3e7166e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3e7166e160678169b669bd51b180a868890547ff))
+* give a chance for client and server manifests to handle all assets including source maps ([df5c758](https://github.com/freddy38510/quasar-app-extension-ssg/commit/df5c7585553c6041752370c303a8fbd88f9a2d78))
+* improve error handling, output printing and rewriting stack traces ([1aafc13](https://github.com/freddy38510/quasar-app-extension-ssg/commit/1aafc13ed1a70a60060afa892219a75847695d6e))
+* **inspect:** load dot-prop package dependency from app instead of extension ([9e5bc1c](https://github.com/freddy38510/quasar-app-extension-ssg/commit/9e5bc1c2a9c8664dcb9adcbee76aa3a03c9f6368))
+* let set the public path correctly ([83cdf67](https://github.com/freddy38510/quasar-app-extension-ssg/commit/83cdf67bfd6bf9017fac06fce9f44e2e673fb41f))
+* remove babel and its config file for transpilation to work as originally intended ([be0ff46](https://github.com/freddy38510/quasar-app-extension-ssg/commit/be0ff4692b07f0014b99f7742436e065db03e7e1))
+* remove potential duplicate logging output when initializing routes ([2c63c3a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/2c63c3a91efca80895083bedcb9eabdfdbb08557))
+* tweak and optimize workbox-build default options ([dc6fc9f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/dc6fc9f4434187ee93a879d20fbf863402dbbc5e))
+
 ### [4.1.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.1.0...v4.1.1) (2022-04-23)
 
 
