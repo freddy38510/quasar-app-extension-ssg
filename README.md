@@ -293,6 +293,14 @@ Include the application router static routes to generate the corresponding pages
 
 > Note: In case of warnings issued when initializing routes you can disable this option and let the crawler find your static and dynamic routes or provide them via the option `ssg.routes`.
 
+### `distDir`
+
+Type: `String`
+
+Default: `'<project-folder>/dist/ssg'`
+
+Folder where the extension should generate the distributables. Relative path to project root directory.
+
 ### `buildDir`
 
 Type: `String`
@@ -310,8 +318,9 @@ Default:
 ```javascript
 {
   ignore: [
-    join(ssg.__distDir, '/**'), // dist/ssg
-    join(ssg.buildDir, '/**'), // node_modules/.cache/quasar-app-extension-ssg
+    join(conf.ssg.distDir, '/**'), // dist/ssg
+    join(conf.ssg.buildDir, '/**'), // node_modules/.cache/quasar-app-extension-ssg
+    ...conf.build.distDir ? [join(conf.build.distDir, '/**')] : [],
     'dist/**',
     'public/**',
     'src-ssr/**',
