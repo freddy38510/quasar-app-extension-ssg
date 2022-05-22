@@ -111,9 +111,9 @@ module.exports = function extendQuasarConf(conf) {
   };
 
   if (conf.ctx.dev) {
-    if (conf.devServer.client.webSocketTransport === undefined || typeof conf.devServer.client.webSocketTransport === 'string') {
-      conf.devServer.client = conf.devServer.client || {};
+    conf.devServer.client = conf.devServer.client || {};
 
+    if (conf.devServer.client.webSocketTransport === undefined || typeof conf.devServer.client.webSocketTransport === 'string') {
       let customClient;
 
       if (conf.devServer.webSocketServer === 'sockjs' || conf.devServer.client.webSocketTransport === 'sockjs') {
