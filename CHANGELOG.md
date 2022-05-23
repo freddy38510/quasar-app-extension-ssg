@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.2.2](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.2.1...v4.2.2) (2022-05-23)
+
+
+### Bug Fixes
+
+* **dev:** do not let Quasar set webpackConf when watching for changes ([2ac7f86](https://github.com/freddy38510/quasar-app-extension-ssg/commit/2ac7f86f0c45962d0e3bcacbde5fa0f8c8259a53))
+* **dev:** stop the custom service worker compiler properly when needed ([8548160](https://github.com/freddy38510/quasar-app-extension-ssg/commit/8548160c62858cfab7dfb3c1a4776ffb8807e70f))
+
 ### [4.2.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.2.0...v4.2.1) (2022-05-22)
 
 
