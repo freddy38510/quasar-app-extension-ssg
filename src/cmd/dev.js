@@ -192,6 +192,9 @@ async function goLive() {
 
   const generator = new Generator(quasarConfFile);
 
+  const PwaRunner = requireFromApp('@quasar/app/lib/pwa');
+  const runPwa = () => PwaRunner.run(quasarConfFile);
+
   function startDev(oldDevServer) {
     let devServer;
 
@@ -212,14 +215,9 @@ async function goLive() {
     // using quasarConfFile.ctx instead of argv.mode
     // because SSR might also have PWA enabled but we
     // can only know it after parsing the quasar.config.js file
-    if (quasarConfFile.quasarConf.ctx.mode.pwa === true) {
-      const PwaRunner = requireFromApp('@quasar/app/lib/pwa');
-      const runPwa = () => PwaRunner.run(quasarConfFile);
-
-      promise = promise.then(runPwa).then(runMain);
-    } else {
-      promise = promise.then(runMain);
-    }
+    promise = quasarConfFile.ctx.mode.pwa === true
+      ? promise.then(runPwa).then(runMain)
+      : promise.then(runMain).then(runPwa);
 
     return promise.then(() => devServer); // Pass new builder to watch chain
   }
