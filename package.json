@@ -58,7 +58,7 @@
     "minimist": "1.2.6",
     "node-html-parser": "5.3.3",
     "open": "8.4.0",
-    "pify": "5.0.0",
+    "pify": "6.0.0",
     "route-cache": "0.4.7",
     "selfsigned": "2.0.1",
     "semver": "7.3.7",
