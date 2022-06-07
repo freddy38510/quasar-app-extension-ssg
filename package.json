@@ -80,7 +80,7 @@
     "standard-version": "9.5.0"
   },
   "resolutions": {
-    "async": "3.2.3",
+    "async": "3.2.4",
     "minimist": "1.2.6"
   }
 }
