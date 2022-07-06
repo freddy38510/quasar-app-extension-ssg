@@ -2715,10 +2715,10 @@ eslint-plugin-import@2.26.0:
     resolve "^1.22.0"
     tsconfig-paths "^3.14.1"
 
-eslint-plugin-vue@9.0.1:
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-9.0.1.tgz#66ba4a6e4085a26a724adcde06eaf72b178285c9"
-  integrity sha512-/w/9/vzz+4bSYtp5UqXgJ0CfycXTMtpp6lkz7/fMp0CcJxPWyRP6Pr88ihhrsNEcVt2ZweMupWRNYa+5Md41LQ==
+eslint-plugin-vue@9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-9.2.0.tgz#b7ca02b2ce8218b7586346440fc61c2655db353a"
+  integrity sha512-W2hc+NUXoce8sZtWgZ45miQTy6jNyuSdub5aZ1IBune4JDeAyzucYX0TzkrQ1jMO52sNUDYlCIHDoaNePe0p5g==
   dependencies:
     eslint-utils "^3.0.0"
     natural-compare "^1.4.0"
