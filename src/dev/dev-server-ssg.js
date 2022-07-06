@@ -172,22 +172,21 @@ module.exports = class DevServer {
         }
       }
 
-      return !this.generator.skippedRoutes.has(route)
-        && this.generator.routesToGenerate.has(route);
+      return !this.generator.skippedRoutes.has(route) && this.generator.routesToGenerate.has(route);
     };
 
     clientCompiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
       compilation.hooks.afterProcessAssets.tap(
         pluginName,
         () => {
-          if (compilation.errors.length === 0) {
+          if (!compilation.getStats().hasErrors()) {
             clientManifest = getClientManifest(compilation);
           }
         },
       );
 
       HtmlWebpackPlugin.getHooks(compilation).afterEmit.tapPromise(pluginName, async (data) => {
-        if (compilation.errors.length === 0) {
+        if (!compilation.getStats().hasErrors()) {
           fallbackHtml = compilation.getAsset(data.outputName).source.source();
         }
 
@@ -199,42 +198,37 @@ module.exports = class DevServer {
       this.isClientCompilerRunning = true;
     });
 
-    clientCompiler.hooks.done.tapPromise(pluginName, async () => {
-      this.isClientCompilerRunning = false;
-
-      if (this.isServerCompilerRunning === true) {
-        return;
+    clientCompiler.hooks.done.tapPromise(pluginName, async (stats) => {
+      if (this.isServerCompilerRunning === false && !stats.hasErrors()) {
+        await update();
       }
 
-      // eslint-disable-next-line no-use-before-define
-      update();
+      this.isClientCompilerRunning = false;
     });
 
-    this.handlers.push(
-      rendererCompiler.watch({}, () => { }),
-    );
+    serverCompiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
+      compilation.hooks.afterProcessAssets.tap(pluginName, () => {
+        if (!compilation.getStats().hasErrors()) {
+          serverManifest = getServerManifest(compilation);
+        }
+      });
+    });
 
     serverCompiler.hooks.watchRun.tapPromise(pluginName, async () => {
       this.isServerCompilerRunning = true;
     });
 
-    serverCompiler.hooks.done.tapPromise(pluginName, async () => {
-      this.isServerCompilerRunning = false;
-
-      if (this.isClientCompilerRunning === true) {
-        return;
+    serverCompiler.hooks.done.tapPromise(pluginName, async (stats) => {
+      if (this.isClientCompilerRunning === false && !stats.hasErrors()) {
+        update();
       }
 
-      update();
+      this.isServerCompilerRunning = false;
     });
 
-    serverCompiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
-      compilation.hooks.afterProcessAssets.tap(pluginName, () => {
-        if (compilation.errors.length === 0) {
-          serverManifest = getServerManifest(compilation);
-        }
-      });
-    });
+    this.handlers.push(
+      rendererCompiler.watch({}, () => { }),
+    );
 
     this.handlers.push(
       serverCompiler.watch({}, () => { }),
