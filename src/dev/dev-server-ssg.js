@@ -259,11 +259,6 @@ module.exports = class DevServer {
         setupMiddlewares: (middlewares, devServer) => {
           const { app } = devServer;
 
-          // obsolete hot updates & js maps should be discarded immediately
-          app.get(/(\.hot-update\.json|\.js\.map)$/, (_, res) => {
-            res.status(404).send('404');
-          });
-
           if (cfg.build.ignorePublicFolder !== true) {
             app.use(resolveUrlPath('/'), serveStatic('.', { maxAge: 0 }));
           }
