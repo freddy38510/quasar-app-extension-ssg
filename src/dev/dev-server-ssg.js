@@ -218,7 +218,7 @@ module.exports = class DevServer {
 
     serverCompiler.hooks.done.tapPromise(pluginName, async (stats) => {
       if (this.isClientCompilerRunning === false && !stats.hasErrors()) {
-        update();
+        await update();
       }
 
       this.isServerCompilerRunning = false;
