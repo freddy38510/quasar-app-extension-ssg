@@ -16,9 +16,7 @@ module.exports = ({
 
     generateRoute(route)
       .then((isSSG) => {
-        console.log();
         console.log(`${banner} GET ${green(req.url)} ${grey(`[${isSSG ? 'SSG' : 'SPA Fallback'}]`)}\n`);
-        console.log();
 
         if (!isSSG) {
           serve.fallback(res);

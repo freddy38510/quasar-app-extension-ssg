@@ -126,12 +126,10 @@ module.exports = class DevServer {
         clientCompiler.outputFileSystem.promises,
       );
 
-      log('Initializing routes to generate...');
-
       const { routes, warnings } = await this.generator.initRoutes(serverManifest);
 
       warnings.forEach((err) => {
-        warning(err.hint || 'Warning during initialize routes');
+        warning(err.hint || 'Warning when initializing routes');
         console.warn();
         console.warn(renderPrettyError(err));
       });
