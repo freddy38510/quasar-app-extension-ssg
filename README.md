@@ -72,7 +72,9 @@ yarn
 Create a new Quasar project then install the App Extension:
 
 ```bash
-quasar create <project-name> && cd <project-name>
+yarn create quasar
+
+cd <project-name>
 
 quasar ext add ssg
 ```
