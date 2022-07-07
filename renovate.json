@@ -5,6 +5,10 @@
     {
       "matchPackageNames": ["chalk"],
       "allowedVersions": "<5.0.0"
+    },
+    {
+      "matchPackageNames": ["pify"],
+      "allowedVersions": "<6.0.0"
     }
   ]
 }
