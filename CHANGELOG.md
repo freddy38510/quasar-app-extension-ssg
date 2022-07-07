@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.2.3](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.2.2...v4.2.3) (2022-07-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ci-info to v3.3.2 ([#257](https://github.com/freddy38510/quasar-app-extension-ssg/issues/257)) ([4f5c9d6](https://github.com/freddy38510/quasar-app-extension-ssg/commit/4f5c9d6326ba4b9340194218179c80d6ca415d73))
+* **deps:** update dependency globby to v13.1.2 ([#258](https://github.com/freddy38510/quasar-app-extension-ssg/issues/258)) ([60a7eec](https://github.com/freddy38510/quasar-app-extension-ssg/commit/60a7eec6305757ecb24537bc6d6d17b219e87649))
+* **deps:** update dependency jiti to v1.14.0 ([#259](https://github.com/freddy38510/quasar-app-extension-ssg/issues/259)) ([65c94e7](https://github.com/freddy38510/quasar-app-extension-ssg/commit/65c94e7be72bfc6abfacbb92c071ca8154112366))
+* **dev:** add missing await statement ([1235f29](https://github.com/freddy38510/quasar-app-extension-ssg/commit/1235f2908cdfc227f605e942d2efcd4e9383b744))
+* **dev:** compile ssr directives when required by @quasar/app package version ([ad1f2c5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/ad1f2c50e72a38785bb227fee477a5842efcacf2))
+* **dev:** do not update generator if compilation has errors ([d2aad3e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d2aad3e3fac47a38cac10ac4e770590615439934))
+* **dev:** improve readability of console output ([6b96080](https://github.com/freddy38510/quasar-app-extension-ssg/commit/6b96080d4505dee877abc72eb904be6e47d18f81))
+* **dev:** remove obsolete code that discarded hot updates and source maps ([c5cddc7](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c5cddc7a8e915cb762a5060b054517bfb7e225a7))
+* make sure quasar and @quasar/app packages are compatible with each other ([b7c3a01](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b7c3a01d97593cbf77ff4ff844cb169d84928780)), closes [#255](https://github.com/freddy38510/quasar-app-extension-ssg/issues/255)
+* point Flex Addon to sass instead of css when Quasar not configured for sass ([f7734cd](https://github.com/freddy38510/quasar-app-extension-ssg/commit/f7734cddd9d35c3f162b9e94f998a388b544b4af))
+* use correct lodash package according to package version @quasar/app ([bac735c](https://github.com/freddy38510/quasar-app-extension-ssg/commit/bac735cf10b29dc7dd6e796eb38a3201bb07f565)), closes [#256](https://github.com/freddy38510/quasar-app-extension-ssg/issues/256)
+
 ### [4.2.2](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.2.1...v4.2.2) (2022-05-23)
 
 
