@@ -11,6 +11,7 @@ if (process.env.NODE_ENV === void 0) {
 
 const requireFromApp = require('../helpers/require-from-app');
 const { log, warn, fatal } = require('../helpers/logger');
+const { hasPackage } = require('../helpers/packages');
 
 const parseArgs = requireFromApp('minimist');
 
@@ -146,6 +147,22 @@ async function goLive() {
 
   // register app extensions
   await extensionRunner.registerExtensions(ctx);
+
+  if (hasPackage('@quasar/app', '< 3.4.0')) {
+    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
+
+    const directivesBuilder = new SSRDirectives(async () => {
+      log('Changes on the SSR directives detected. Rebuilding app...');
+
+      const result = await quasarConfFile.reboot();
+
+      if (result !== false) {
+        dev = dev.then(startDev);
+      }
+    });
+
+    await directivesBuilder.run();
+  }
 
   const quasarConfFile = new QuasarConfFile(ctx, {
     port: argv.port,
