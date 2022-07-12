@@ -270,7 +270,7 @@ module.exports = function createRenderer(opts) {
 
   async function runApp(ssrContext) {
     try {
-      const entry = await evaluateEntry();
+      const { renderApp } = await evaluateEntry();
 
       // On subsequent renders, __VUE_SSR_CONTEXT__ will not be available
       // to prevent cross-request pollution.
@@ -293,7 +293,7 @@ module.exports = function createRenderer(opts) {
         }
       }
 
-      return await entry(ssrContext);
+      return await renderApp(ssrContext);
     } catch (err) {
       await rewriteErrorTrace(err);
 

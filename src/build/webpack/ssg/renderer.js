@@ -62,17 +62,9 @@ module.exports = function createChain(cfg, configName) {
   chain.entry('renderer')
     .add(appPaths.resolve.app('.quasar/ssg-renderer-entry.js'));
 
-  if (cfg.ctx.dev) {
-    chain.output
-      .filename('create-renderer.js')
-      .path(appPaths.resolve.app('.quasar/ssg'));
-  } else {
-    chain.output
-      .filename('render-to-string.js')
-      .path(cfg.ssg.buildDir);
-  }
-
   chain.output
+    .filename(cfg.ctx.dev ? 'create-renderer.js' : 'render-to-string.js')
+    .path(cfg.ctx.dev ? appPaths.resolve.app('.quasar/ssg') : cfg.ssg.buildDir)
     .libraryTarget('commonjs2')
     .library({
       type: 'commonjs2',

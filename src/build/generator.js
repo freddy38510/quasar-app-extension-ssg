@@ -18,6 +18,8 @@ class Generator extends QuasarGenerator {
       'app.js',
       'client-entry.js',
       'client-prefetch.js',
+      // forked Quasar entry exporting routes from router
+      'server-entry.js',
       // new entry for ssg
       'ssg-renderer-entry.js',
     ];
@@ -42,7 +44,6 @@ class Generator extends QuasarGenerator {
       ...this.files.filter(({ filename }) => [
         // keep only these Quasar entries
         'quasar-user-options.js',
-        'server-entry.js',
       ].includes(filename)),
     ];
   }

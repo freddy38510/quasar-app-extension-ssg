@@ -24,9 +24,7 @@ const opts = {
 
 <% if (ctx.prod) { %>
 const renderer = createRenderer(opts);
-<% } %>
 
-<% if (ctx.prod) { %>
 module.exports = async (ssrContext) => renderer(ssrContext, renderTemplate);
 <% } else { %>
 module.exports = (serverManifest, clientManifest) => createRenderer({ ...opts, serverManifest, clientManifest });

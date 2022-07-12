@@ -9,7 +9,6 @@
  *
  * Boot files are your "main.js"
  * */
-
 <% if (__vueDevtools !== false) { %>
 import vueDevtools from '@vue/devtools';
 <% } %>
@@ -45,6 +44,14 @@ const RootComponent = defineComponent({
 
 export const ssrIsRunningOnClientPWA = typeof window !== 'undefined'
   && document.body.getAttribute('data-server-rendered') === null;
+
+export const getRoutesFromRouter = async () => {
+  const router = typeof createRouter === 'function'
+    ? await createRouter()
+      : createRouter;
+
+  return router.getRoutes();
+}
 
 export default async function (createAppFn, quasarUserOptions, ssrContext) {
   // Create the app instance.

@@ -7,7 +7,6 @@ const Beastcss = require('beastcss');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { cyanBright, green, bold } = require('chalk');
-const { appDir } = require('../helpers/app-paths');
 const { log, beastcssLog } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
@@ -81,10 +80,7 @@ class Generator {
 
     if (this.options.includeStaticRoutes !== false) {
       try {
-        appRoutes = flatRoutes(await require('./get-app-routes')({
-          basedir: appDir,
-          serverManifest,
-        }));
+        appRoutes = flatRoutes(await require('./get-app-routes')(serverManifest));
       } catch (err) {
         err.hint = 'Could not get static routes from router';
 
