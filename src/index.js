@@ -10,7 +10,11 @@
 module.exports = function run(api) {
   api.compatibleWith('quasar', '^2.0.0');
 
-  api.compatibleWith('@quasar/app', '^3.0.0');
+  if (api.hasPackage('@quasar/app-webpack') || api.hasPackage('@quasar/app-vite')) {
+    api.compatibleWith('@quasar/app-webpack', '^3.0.0');
+  } else {
+    api.compatibleWith('@quasar/app', '^3.0.0');
+  }
 
   if (api.hasPackage('@quasar/app-webpack', '>= 3.4.0')) {
     api.compatibleWith('quasar', '>= 2.6.0');
