@@ -9,6 +9,7 @@ const { hasPackage } = require('../../../helpers/packages');
 const WebpackProgressPlugin = require('../plugin.progress');
 
 const nodeExternals = requireFromApp('webpack-node-externals');
+const { NormalModuleReplacementPlugin } = requireFromApp('webpack');
 
 function getModuleDirs() {
   const folders = [];
@@ -45,6 +46,11 @@ module.exports = function chainWebpackServer(chain, cfg, configName) {
         filename: 'quasar.server-manifest.json',
       }]);
   }
+
+  chain.plugin('runtime-inject-module-id').use(NormalModuleReplacementPlugin, [
+    /runtime\.inject-module-id\.js/,
+    join(__dirname, '../runtime-inject-module-id.js'),
+  ]);
 
   if (cfg.ssg.inlineCssFromSFC) {
     /**

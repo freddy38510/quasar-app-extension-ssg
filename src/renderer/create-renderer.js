@@ -234,10 +234,13 @@ function renderVuexState(ssrContext, nonce) {
   return '';
 }
 
-function renderScripts(renderContext, usedAsyncFiles, nonce) {
+function renderScripts(renderContext, usedAsyncFiles, lazilyHydratedComponents, nonce) {
   if (renderContext.preloadFiles.length > 0) {
     const initial = renderContext.preloadFiles.filter(({ file }) => jsRE.test(file));
-    const async = usedAsyncFiles.filter(({ file }) => jsRE.test(file));
+
+    const async = usedAsyncFiles
+      .filter(({ file }) => jsRE.test(file))
+      .filter(({ file }) => !lazilyHydratedComponents.some((f) => f.file === file));
 
     return [initial[0]].concat(async, initial.slice(1))
       .map(({ file }) => `<script${nonce} src="${renderContext.publicPath}${file}" defer></script>`)
@@ -307,6 +310,7 @@ module.exports = function createRenderer(opts) {
 
       Object.assign(ssrContext, {
         _modules: new Set(),
+        _lazilyHydratedComponents: new Set(),
         _meta: {},
         onRendered: (fn) => { onRenderedList.push(fn); },
       });
@@ -316,6 +320,10 @@ module.exports = function createRenderer(opts) {
 
       const usedAsyncFiles = renderContext
         .mapFiles(Array.from(ssrContext._modules))
+        .map(normalizeFile);
+
+      const lazilyHydratedComponents = renderContext
+        .mapFiles(Array.from(ssrContext._lazilyHydratedComponents))
         .map(normalizeFile);
 
       onRenderedList.forEach((fn) => { fn(); });
@@ -336,7 +344,7 @@ module.exports = function createRenderer(opts) {
         resourceStyles: renderStyles(renderContext, usedAsyncFiles, ssrContext),
         resourceScripts: (
           (opts.manualStoreSerialization !== true && ssrContext.state !== void 0 ? renderVuexState(ssrContext, nonce) : '')
-          + renderScripts(renderContext, usedAsyncFiles, nonce)
+          + renderScripts(renderContext, usedAsyncFiles, lazilyHydratedComponents, nonce)
         ),
       });
 
