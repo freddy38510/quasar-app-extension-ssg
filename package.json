@@ -70,7 +70,7 @@
     "@commitlint/cli": "17.0.3",
     "@commitlint/config-conventional": "17.0.3",
     "@quasar/babel-preset-app": "2.0.1",
-    "commitizen": "4.2.4",
+    "commitizen": "4.2.5",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "8.19.0",
     "eslint-config-airbnb-base": "15.0.0",
