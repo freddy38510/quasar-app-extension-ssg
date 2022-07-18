@@ -28,7 +28,6 @@ const createRendererFile = appPaths.resolve.app('.quasar/ssg/create-renderer.js'
 const renderTemplateFile = appPaths.resolve.app('.quasar/ssg/render-template.js');
 const Generator = require('../generate/generator');
 const ssgMiddleware = require('./ssg-middleware');
-const renderPrettyError = require('../helpers/render-pretty-error');
 const { log, warning, error } = require('../helpers/logger');
 
 const renderError = ({ err, req, res }) => {
@@ -36,7 +35,7 @@ const renderError = ({ err, req, res }) => {
     console.error();
     error(err.hint || `${req.url} -> error during pre-render`);
     console.error();
-    console.error(renderPrettyError(err));
+    console.error(err.stack || err);
   });
 };
 
@@ -131,7 +130,7 @@ module.exports = class DevServer {
       warnings.forEach((err) => {
         warning(err.hint || 'Warning when initializing routes');
         console.warn();
-        console.warn(renderPrettyError(err));
+        console.warn(err.stack || err);
       });
 
       routes.forEach((route) => {
