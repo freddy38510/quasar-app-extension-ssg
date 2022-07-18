@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.2.3...v4.3.0) (2022-07-18)
+
+
+### Features
+
+* **dev:** do not prettify errors ([21213ea](https://github.com/freddy38510/quasar-app-extension-ssg/commit/21213eaa7f0b89a250ff2396c8b8c5274d16c7a1))
+* do not preload async comp hydrated with "vue3-lazy-hydration" package ([3fc7cd5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3fc7cd59815a40f2c4e10f5e348dcb0934440d99))
+
+
+### Bug Fixes
+
+* **dev:** avoid "Cannot access before initialization" error after reloading ([c6ffc3f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c6ffc3f61b825f9d4b2c8306794ad48814152697))
+
 ### [4.2.3](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.2.2...v4.2.3) (2022-07-07)
 
 
