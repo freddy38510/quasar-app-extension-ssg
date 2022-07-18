@@ -1,8 +1,8 @@
 /* eslint-disable no-void */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-const requireFromApp = require('../../../helpers/require-from-app');
-const appPaths = require('../../../helpers/app-paths');
+const requireFromApp = require('../../helpers/require-from-app');
+const appPaths = require('../../helpers/app-paths');
 
 const PwaManifestPlugin = requireFromApp('@quasar/app/lib/webpack/pwa/plugin.pwa-manifest');
 const HtmlPwaPlugin = require('./plugin.html-pwa').plugin;
@@ -15,7 +15,7 @@ function addWorkboxPlugin(chain, cfg) {
   };
 
   const pluginMode = cfg.pwa.workboxPluginMode;
-  const { log } = require('../../../helpers/logger');
+  const { log } = require('../../helpers/logger');
 
   if (pluginMode === 'GenerateSW') {
     const pkg = require(appPaths.resolve.app('package.json'));

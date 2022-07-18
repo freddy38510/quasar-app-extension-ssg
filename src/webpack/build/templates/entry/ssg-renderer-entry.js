@@ -4,7 +4,7 @@
  * */
 
 const { renderToString: vueRenderToString } = require('@vue/server-renderer');
-const createRenderer = require('quasar-app-extension-ssg/src/renderer/create-renderer');
+const createRenderer = require('quasar-app-extension-ssg/src/webpack/renderer/create-renderer');
 
 <% if (ctx.prod) { %>
 const renderTemplate = require('./render-template.js');

@@ -69,6 +69,6 @@ module.exports = class ExtendedQuasarConfFile extends QuasarConfFile {
   }
 
   async addWebpackConf() {
-    this.webpackConf = await require('../build/webpack')(this.quasarConf);
+    this.webpackConf = await require('../build/create-chain')(this.quasarConf);
   }
 };

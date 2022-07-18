@@ -23,7 +23,7 @@ module.exports = {
 
   overrides: [
     {
-      files: ['src/boot/*.js', 'src/dev/WebSocketClient.js', 'src/dev/SockJSClient.js'],
+      files: ['src/boot/*.js', 'src/**/WebSocketClient.js', 'src/**/SockJSClient.js'],
 
       rules: {
         'import/no-unresolved': 'off',

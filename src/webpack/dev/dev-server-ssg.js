@@ -11,10 +11,10 @@ const webpack = requireFromApp('webpack');
 const WebpackDevServer = requireFromApp('webpack-dev-server');
 
 const express = requireFromApp('express');
-const { getClientManifest } = require('../build/webpack/ssr/plugin.client-side');
-const { getServerManifest } = require('../build/webpack/ssr/plugin.server-side');
-const { doneExternalWork } = require('../build/webpack/plugin.progress');
-const { webpackNames } = require('../build/webpack/symbols');
+const { getClientManifest } = require('../build/ssr/plugin.client-side');
+const { getServerManifest } = require('../build/ssr/plugin.server-side');
+const { doneExternalWork } = require('../build/plugin.progress');
+const { webpackNames } = require('../build/symbols');
 
 const appPaths = require('../helpers/app-paths');
 

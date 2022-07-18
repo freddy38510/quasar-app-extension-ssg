@@ -115,7 +115,7 @@ module.exports.getIndexHtml = function getIndexHtml(template, cfg) {
   const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin');
 
   const { fillBaseTag } = requireFromApp('@quasar/app/lib/webpack/plugin.html-addons');
-  const { fillPwaTags } = require('../build/webpack/pwa/plugin.html-pwa');
+  const { fillPwaTags } = require('../build/pwa/plugin.html-pwa');
 
   const compiled = compileTemplate(template);
 

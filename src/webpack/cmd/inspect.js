@@ -45,7 +45,7 @@ if (argv.help) {
   process.exit(0);
 }
 
-const { splitWebpackConfig } = require('../build/webpack/symbols');
+const { splitWebpackConfig } = require('../build/symbols');
 const { hasPackage } = require('../helpers/packages');
 
 async function inspect() {

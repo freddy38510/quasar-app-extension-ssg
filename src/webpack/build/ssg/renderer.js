@@ -5,7 +5,7 @@ const { existsSync } = require('fs');
 const { join, sep, normalize } = require('path');
 const RenderTemplatePlugin = require('./plugin.render-template');
 const WebpackProgressPlugin = require('../plugin.progress');
-const requireFromApp = require('../../../helpers/require-from-app');
+const requireFromApp = require('../../helpers/require-from-app');
 
 const webpack = requireFromApp('webpack');
 const WebpackChain = requireFromApp('webpack-chain');
@@ -74,7 +74,7 @@ module.exports = function createChain(cfg, configName) {
     nodeExternals({
       additionalModuleDirs,
     }),
-    'quasar-app-extension-ssg/src/renderer/create-renderer',
+    'quasar-app-extension-ssg/src/webpack/renderer/create-renderer',
     './render-template.js',
     './quasar.server-manifest.json',
     './quasar.client-manifest.json',

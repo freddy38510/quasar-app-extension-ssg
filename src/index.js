@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable global-require */
 /**
  * Quasar App Extension index/runner script
@@ -8,27 +9,56 @@
  */
 
 module.exports = function run(api) {
-  api.compatibleWith('quasar', '^2.0.0');
-
-  if (api.hasPackage('@quasar/app-webpack') || api.hasPackage('@quasar/app-vite')) {
-    api.compatibleWith('@quasar/app-webpack', '^3.0.0');
-  } else {
-    api.compatibleWith('@quasar/app', '^3.0.0');
-  }
-
-  if (api.hasPackage('@quasar/app-webpack', '>= 3.4.0')) {
+  if (api.hasVite) {
+    api.compatibleWith('@quasar/app-vite', '^1.0.0');
     api.compatibleWith('quasar', '>= 2.6.0');
+  } else {
+    api.compatibleWith('quasar', '^2.0.0');
+
+    if (api.hasPackage('@quasar/app-webpack')) {
+      api.compatibleWith('@quasar/app-webpack', '^3.0.0');
+    } else {
+      api.compatibleWith('@quasar/app', '^3.0.0');
+    }
+
+    if (api.hasPackage('@quasar/app-webpack', '>= 3.4.0')) {
+      api.compatibleWith('quasar', '>= 2.6.0');
+    }
+
+    if (api.hasPackage('quasar', '>= 2.6.0')) {
+      api.compatibleWith('@quasar/app-webpack', '>= 3.4.0');
+    }
   }
 
-  if (api.hasPackage('quasar', '>= 2.6.0')) {
-    api.compatibleWith('@quasar/app-webpack', '>= 3.4.0');
-  }
+  api.registerCommand('generate', () => {
+    if (api.hasVite) {
+      console.warn('Vite.js is not supported yet!');
+    } else {
+      require('./webpack/cmd/ssg-generate');
+    }
+  });
 
-  api.registerCommand('generate', () => require('./cmd/ssg-generate'));
+  api.registerCommand('dev', () => {
+    if (api.hasVite) {
+      console.warn('Vite.js is not supported yet!');
+    } else {
+      require('./webpack/cmd/dev');
+    }
+  });
 
-  api.registerCommand('dev', () => require('./cmd/dev'));
+  api.registerCommand('inspect', () => {
+    if (api.hasVite) {
+      console.warn('Vite.js is not supported yet!');
+    } else {
+      require('./webpack/cmd/inspect');
+    }
+  });
 
-  api.registerCommand('inspect', () => require('./cmd/inspect'));
-
-  api.registerCommand('serve', () => require('./cmd/serve'));
+  api.registerCommand('serve', () => {
+    if (api.hasVite) {
+      console.warn('Vite.js is not supported yet!');
+    } else {
+      require('./webpack/cmd/serve');
+    }
+  });
 };

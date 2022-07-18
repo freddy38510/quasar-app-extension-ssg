@@ -3,18 +3,18 @@
 /* eslint-disable prefer-spread */
 /* eslint-disable no-void */
 /* eslint-disable no-underscore-dangle */
-const requireFromApp = require('../../helpers/require-from-app');
-const { hasPackage } = require('../../helpers/packages');
+const requireFromApp = require('../helpers/require-from-app');
+const { hasPackage } = require('../helpers/packages');
 
 const { ProgressPlugin } = requireFromApp('webpack');
 const throttle = requireFromApp(hasPackage('@quasar/app', '>= 3.5.7') ? 'lodash/throttle' : 'lodash.throttle');
 const chalk = requireFromApp('chalk');
 
-const appPaths = require('../../helpers/app-paths');
+const appPaths = require('../helpers/app-paths');
 const {
   success, info, error, warning, clearConsole,
-} = require('../../helpers/logger');
-const { quasarVersion, cliAppVersion, ssgVersion } = require('../../helpers/banner');
+} = require('../helpers/logger');
+const { quasarVersion, cliAppVersion, ssgVersion } = require('../helpers/banner');
 
 const isMinimalTerminal = requireFromApp('@quasar/app/lib/helpers/is-minimal-terminal');
 const { printWebpackWarnings, printWebpackErrors } = requireFromApp('@quasar/app/lib/helpers/print-webpack-issue');

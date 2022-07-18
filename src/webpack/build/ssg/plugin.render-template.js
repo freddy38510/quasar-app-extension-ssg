@@ -1,7 +1,7 @@
 const fs = require('fs');
-const { getIndexHtml } = require('../../../renderer/html-template');
-const requireFromApp = require('../../../helpers/require-from-app');
-const { resolve } = require('../../../helpers/app-paths');
+const { getIndexHtml } = require('../../renderer/html-template');
+const requireFromApp = require('../../helpers/require-from-app');
+const { resolve } = require('../../helpers/app-paths');
 
 module.exports = class RenderTemplatePlugin {
   constructor(cfg = {}) {

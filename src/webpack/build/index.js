@@ -7,7 +7,7 @@ const Generator = require('./generator');
 const requireFromApp = require('../helpers/require-from-app');
 const { logBuildBanner } = require('../helpers/banner');
 const { log, fatal } = require('../helpers/logger');
-const { splitWebpackConfig } = require('./webpack/symbols');
+const { splitWebpackConfig } = require('./symbols');
 
 const webpack = requireFromApp('webpack');
 const { printWebpackErrors } = requireFromApp('@quasar/app/lib/helpers/print-webpack-issue');

@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
-const requireFromApp = require('../../helpers/require-from-app');
-const { log } = require('../../helpers/logger');
+const requireFromApp = require('../helpers/require-from-app');
+const { log } = require('../helpers/logger');
 const { webpackNames } = require('./symbols');
 
 const createChain = requireFromApp('@quasar/app/lib/webpack/create-chain');
