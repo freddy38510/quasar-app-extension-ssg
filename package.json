@@ -76,9 +76,5 @@
     "eslint-plugin-lodash-template": "0.21.0",
     "husky": "8.0.1",
     "standard-version": "9.5.0"
-  },
-  "resolutions": {
-    "async": "3.2.4",
-    "minimist": "1.2.6"
   }
 }
