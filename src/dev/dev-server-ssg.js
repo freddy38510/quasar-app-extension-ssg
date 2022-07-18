@@ -105,7 +105,10 @@ module.exports = class DevServer {
         : opts.maxAge,
     });
 
-    const update = async () => {
+    const update = async (
+      reload = (this.webpackServer.webSocketServer
+        && cfg.devServer.liveReload !== false),
+    ) => {
       tryToFinalize();
 
       // always get updated config
@@ -125,7 +128,9 @@ module.exports = class DevServer {
         clientCompiler.outputFileSystem.promises,
       );
 
-      const { routes, warnings } = await this.generator.initRoutes(serverManifest);
+      const { routes, warnings } = await this.generator.initRoutes(
+        serverManifest,
+      );
 
       warnings.forEach((err) => {
         warning(err.hint || 'Warning when initializing routes');
@@ -139,8 +144,7 @@ module.exports = class DevServer {
       });
 
       if (
-        this.webpackServer.webSocketServer
-        && cfg.devServer.liveReload !== false
+        reload
         && openedBrowser
       ) {
         this.webpackServer.sendMessage(
@@ -156,12 +160,16 @@ module.exports = class DevServer {
 
         log(`Generating route... ${green(route)}`);
 
-        // throw error if render failed
-        // route added to skippedRoutes if 404 or redirect
-        await this.generator.generateRoute(route);
+        try {
+          // route added to skippedRoutes if 404 or redirect
+          await this.generator.generateRoute(route);
+        } catch (e) {
+          // avoid "Cannot access before initialization" error after reloading
+          await update(false);
 
-        // only delete from queue if rendering route not failed
-        // this way the error could be thrown again if page is refreshed
+          throw e;
+        }
+
         this.generator.queue.delete(route);
 
         if (!this.generator.skippedRoutes.has(route)) {
