@@ -75,7 +75,7 @@
     "eslint": "8.20.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-vue": "9.2.0",
+    "eslint-plugin-vue": "9.3.0",
     "husky": "8.0.1",
     "standard-version": "9.5.0"
   },
