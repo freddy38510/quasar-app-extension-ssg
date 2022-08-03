@@ -1,0 +1,36 @@
+{
+  "name": "demo-quasar-ssg-vite",
+  "version": "0.0.1",
+  "description": "A demo for Quasar project with quasar-app-extension-ssg",
+  "productName": "Demo Quasar ssg vite",
+  "author": "Freddy <freddyescobar@hotmail.fr>",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.vue ./",
+    "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0",
+    "build:ssg": "quasar ssg generate",
+    "dev:ssg": "quasar ssg dev",
+    "serve:ssg": "quasar ssg serve dist/ssg"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "quasar": "^2.6.0",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0"
+  },
+  "devDependencies": {
+    "@quasar/app-vite": "^1.0.0",
+    "autoprefixer": "^10.4.2",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "prettier": "^2.5.1",
+    "quasar-app-extension-ssg": "^4.4.0"
+  },
+  "engines": {
+    "node": "^18 || ^16 || ^14.19",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}
