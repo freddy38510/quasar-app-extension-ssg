@@ -148,7 +148,7 @@ function createRenderContext({ clientManifest, shouldPrefetch, shouldPreload }) 
   };
 }
 
-function renderPreloadLinks(renderContext, usedAsyncFiles) {
+function renderPreloadLinks(renderContext, usedAsyncFiles, lazilyHydratedComponents) {
   const { shouldPreload, preloadFiles } = renderContext;
 
   const files = (preloadFiles || []).concat(usedAsyncFiles || []);
@@ -162,7 +162,12 @@ function renderPreloadLinks(renderContext, usedAsyncFiles) {
   }) => {
     let extra = '';
 
-    if (!shouldPreload(fileWithoutQuery, asType, extension)) {
+    if (!shouldPreload(
+      fileWithoutQuery,
+      asType,
+      extension,
+      lazilyHydratedComponents.some((f) => f.file === file),
+    )) {
       return '';
     }
 
@@ -174,7 +179,7 @@ function renderPreloadLinks(renderContext, usedAsyncFiles) {
   }).join('');
 }
 
-function renderPrefetchLinks(renderContext, usedAsyncFiles) {
+function renderPrefetchLinks(renderContext, usedAsyncFiles, lazilyHydratedComponents) {
   const { shouldPrefetch } = renderContext;
 
   if (!(renderContext.prefetchFiles.length > 0)) {
@@ -186,7 +191,12 @@ function renderPrefetchLinks(renderContext, usedAsyncFiles) {
   return renderContext.prefetchFiles.map(({
     file, fileWithoutQuery, asType, extension,
   }) => {
-    if (!shouldPrefetch(fileWithoutQuery, asType, extension)) {
+    if (!shouldPrefetch(
+      fileWithoutQuery,
+      asType,
+      extension,
+      lazilyHydratedComponents.some((f) => f.file === file),
+    )) {
       return '';
     }
 
@@ -198,9 +208,9 @@ function renderPrefetchLinks(renderContext, usedAsyncFiles) {
   }).join('');
 }
 
-function renderResourceHints(renderContext, usedAsyncFiles) {
-  return renderPreloadLinks(renderContext, usedAsyncFiles)
-    + renderPrefetchLinks(renderContext, usedAsyncFiles);
+function renderResourceHints(renderContext, usedAsyncFiles, lazilyHydratedComponents) {
+  return renderPreloadLinks(renderContext, usedAsyncFiles, lazilyHydratedComponents)
+    + renderPrefetchLinks(renderContext, usedAsyncFiles, lazilyHydratedComponents);
 }
 
 function renderStyles(renderContext, usedAsyncFiles, ssrContext) {
@@ -340,7 +350,7 @@ module.exports = function createRenderer(opts) {
 
       Object.assign(ssrContext._meta, {
         resourceApp,
-        resourceHints: renderResourceHints(renderContext, usedAsyncFiles),
+        resourceHints: renderResourceHints(renderContext, usedAsyncFiles, lazilyHydratedComponents),
         resourceStyles: renderStyles(renderContext, usedAsyncFiles, ssrContext),
         resourceScripts: (
           (opts.manualStoreSerialization !== true && ssrContext.state !== void 0 ? renderVuexState(ssrContext, nonce) : '')
