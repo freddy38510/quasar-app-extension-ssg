@@ -1,6 +1,6 @@
-# Demo Quasar ssg vite (demo-quasar-ssg-vite)
+# [Demo Quasar-app-extension-ssg with vite](https://quasar-app-extension-ssg-vite.netlify.app/)
 
-A demo for Quasar project with quasar-app-extension-ssg
+A demo for Quasar project with quasar-app-extension-ssg for vite.
 
 ## Install the dependencies
 
