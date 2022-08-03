@@ -4202,10 +4202,10 @@ pify@^3.0.0:
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
   integrity sha512-C3FsVNH1udSEX48gGX1xfvwTWfsYWj5U+8/uK15BGzIGrKoUpghX8hWZwa/OFnakBiiVNmBvemTJR5mcy7iPcg==
 
-pony-cause@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/pony-cause/-/pony-cause-2.0.0.tgz#30abb5a683df60b04744524b2b7c0255c22f68b2"
-  integrity sha512-4hgFdnFP+sBokFSMpm95gYUILGEVnJ80LxL8wZTTZX6YvYLPZ5ffCcOc+B9jFFC7tm7A5NssqxMhbrSzkcgzig==
+pony-cause@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/pony-cause/-/pony-cause-2.1.0.tgz#08133893526fa93edcef0a6c6b432db17f34c404"
+  integrity sha512-PZz6LRmjNX62ST5keyWRW9vLpboY3PulzPU6ABgjvH8NS+aDzu4GrCLQ9lZdB1ABj61PQRKjSCwyDY+716eJvw==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
