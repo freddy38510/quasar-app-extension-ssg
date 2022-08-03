@@ -6,23 +6,28 @@
 
 This project was created to fill this [Feature Request](https://github.com/quasarframework/quasar/issues/2299) from Quasar.
 
-:warning: If you are using [Quasar v1](https://v1.quasar.dev/), please use and see the corresponding [quasar-app-extension-ssg v2](https://github.com/freddy38510/quasar-app-extension-ssg/tree/2.x) documentation instead of the latest version.
+:warning: Looking for [Quasar v1](https://v1.quasar.dev/) with Vue 2 ? See corresponding [quasar-app-extension-ssg v2](https://github.com/freddy38510/quasar-app-extension-ssg/tree/2.x) documentation instead of latest version.
+
+:new: Supports Vite since [v4.4.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.3.0...v4.4.0).
 
 [Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [Infos](#infos)
 
 ## Installing
 
-Run this command into your Quasar project:
+Run this command into the Quasar project:
 
 ```bash
 quasar ext add ssg
 ```
 
-This will find and install the extension’s module. After installation is complete, there will be prompts asking you to make choices.
+This will find and install the extension’s module. Once the installation is complete, interactive [prompts](#prompts) will wait for responses.
 
 ### Prompts
 
-- `add scripts into your package.json?`: Extends your package.json by adding scripts.
+<details>
+  <summary>Vite</summary>
+
+- `add scripts into package.json?`: Extends package.json by adding scripts.
 
   ```javascript
   scripts: {
@@ -31,9 +36,25 @@ This will find and install the extension’s module. After installation is compl
   }
   ```
 
-- `Inline critical css and async load the rest ?`: Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
+- `Inline critical css and async load the rest ?`: Uses [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated page.
+</details>
 
-- `Inline CSS from Vue SFC <style> blocks ?`: Inline css from Vue Single-File Component (SFC) `<style>` blocks.
+<details>
+  <summary>Webpack</summary>
+
+- `add scripts into package.json?`: Extends package.json by adding scripts.
+
+  ```javascript
+  scripts: {
+    'build:ssg': 'quasar ssg generate',
+    'serve:ssg': 'quasar ssg serve dist/ssg'
+  }
+  ```
+
+- `Inline critical css and async load the rest ?`: Uses [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated page.
+
+- `Inline CSS from Vue SFC <style> blocks ?`: Inlines css from Vue Single-File Component (SFC) `<style>` blocks.
+</details>
 
 ## Uninstalling
 
@@ -43,15 +64,15 @@ quasar ext remove ssg
 
 ## Upgrading
 
-This is done with the same command as used for installation:
+This is done with the same command used for installation:
 
 ```bash
 quasar ext add ssg
 ```
 
-## Developing
+## Developing/Contributing
 
-To help developing the extension, start by cloning this repository:
+To contribute to the development of the extension, start by cloning this repository:
 
 ```bash
 git clone https://github.com/freddy38510/quasar-app-extension-ssg.git && cd quasar-app-extension-ssg
@@ -85,13 +106,13 @@ Finally link the locally developed App Extension:
 yarn link quasar-app-extension-ssg
 ```
 
-Now, you can develop this App Extension without uninstall/install it each time you change something in it.
+Now the app extension can be developed without uninstalling/installing it every time something changes in it.
 
 ## Usage
 
 ### Generate
 
-To generate a static site run this command from your quasar project folder:
+To generate a static site run this command from the quasar project folder:
 
 ```bash
 quasar ssg generate
@@ -113,11 +134,11 @@ Starts the app in development mode (live reloading, error reporting, etc):
 quasar ssg dev
 ```
 
-The development server allows you to develop your App by compiling and maintaining code in-memory. A web server will serve your App while offering live-reload out of the box. Running in-memory offers faster rebuilds when you change your code.
+The development server allows to develop the app by compiling and maintaining code in-memory. A web server will serve the app while offering live-reload out of the box. Running in-memory offers faster rebuilds when the code is changed.
 
 Each static page is generated when the corresponding route is first loaded from the browser.
 
-You can configure the server by editing your `/quasar.config.js’ file:
+The server can be configured by editing the `/quasar.config.js’ file:
 
 ```javascript
 devServer: {
@@ -135,13 +156,13 @@ devServer: {
 
 ### Serve
 
-This extension provides a command to create a server for testing your static site locally:
+This extension provides a command to create a server to locally test the generated static site:
 
 ```bash
 quasar ssg serve <dist-folder>
 ```
 
-> Notes: This server is based on the [Quasar cli server](https://github.com/quasarframework/quasar/blob/dev/cli/bin/quasar-serve) adapted for static site. It handles SPA or PWA fallback.
+> Notes: This server is based on the [Quasar cli server](https://github.com/quasarframework/quasar/blob/dev/cli/bin/quasar-serve) adapted for static site. It serves the SPA fallback file (404.html) when a page has not been generated for a given route.
 
 #### Serve Options
 
@@ -182,9 +203,30 @@ quasar ssg inspect
 
 #### Inspect Options
 
+<details>
+  <summary>Vite</summary>
+
+- `--cmd, -c`: Quasar SSG command [dev|generate] (default: dev)
+- `-d, --depth`: Number of levels deep (default: 2).
+- `-p, --path`: Path of config in dot notation.
+
+  Examples:
+
+  ```bash
+  quasar ssg inspect -p build.rollupOptions
+  quasar ssg inspect -p plugins
+  ```
+
+- `--colors`: Style output with ANSI color codes (default: true).
+- `--thread, -t`: Display only one specific ssg config thread
+- `-h, --help`: Display usage instructions.
+</details>
+
+<details>
+  <summary>Webpack</summary>
+
 - `-d, --depth`: Number of levels deep (default: 5).
 - `-p, --path`: Path of config in dot notation.
-- `--colors`: Style output with ANSI color codes.
 
   Examples:
 
@@ -193,11 +235,13 @@ quasar ssg inspect
   quasar ssg inspect -p plugins
   ```
 
+- `--colors`: Style output with ANSI color codes (default: true).
 - `-h, --help`: Display usage instructions.
+</details>
 
 ## Configuration
 
-You can pass options with `ssg` key in `/quasar.config.js`.
+Options can be passed with `ssg` key in `/quasar.config.js` file.
 
 ```javascript
 // quasar.config.js
@@ -215,7 +259,10 @@ module.exports = function (/* ctx */) {
 };
 ```
 
-See all availables options below:
+See all available options below:
+
+<details>
+  <summary>Webpack</summary>
 
 ### `concurrency`
 
@@ -223,7 +270,7 @@ Type: `Number`
 
 Default: `10`
 
-The generation of routes are concurrent, `ssg.concurrency` specifies the amount of routes that run in one thread.
+Page generation is concurrent, `ssg.concurrency` specifies the amount of page generation that runs in one thread.
 
 ### `interval`
 
@@ -231,11 +278,12 @@ Type: `Number`
 
 Default: `0`
 
-Interval in **milliseconds** between two batches of concurrently pages generation to avoid flooding a potential API with API calls from the web application.
+Interval in **milliseconds** between two batches of concurrent page generation to avoid flooding a potential API with calls to the API from the web application.
 
 > Notes:
 >
 > This option is intended to be used in conjunction with the `concurrency` option.
+> For example, setting `concurrency` to `10` and `interval` to `5000` will execute the generation of 10 pages in parallel every 5 seconds.
 
 ### `routes`
 
@@ -243,11 +291,11 @@ Type: `String[]` or `Function`
 
 Default: `[]`
 
-An `Array` of `Strings` for routes to be generated.
+A list of routes to generate the corresponding pages.
 
-> Note: As of quasar-app-extension-ssg [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0) this option is no longer necessary thanks to the crawler feature and the ability to include static routes from the router using `ssg.includeStaticRoutes` option.
+> Note: As of quasar-app-extension-ssg [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0) this option is optionnal due to the crawler feature and the ability to include static routes from the app's router using the `ssg.includeStaticRoutes` option.
 >
-> If have unlinked pages (such as secret pages) and you would like these to also be generated then you can use the ssg.routes property.
+> If the app has unlinked pages (such as secret pages) and these also need to be generated, the `ssg.routes` property can be used.
 
 Example:
 
@@ -321,9 +369,9 @@ Type: `Boolean`
 
 Default: `true`
 
-Include the application router static routes to generate the corresponding pages.
+Include the application's router static routes to generate the corresponding pages.
 
-> Note: In case of warnings issued when initializing routes you can disable this option and let the crawler find your static and dynamic routes or provide them via the option `ssg.routes`.
+> Note: In case of warnings issued when initializing routes, this option can be disabled. Then the `crawler` feature and the `ssg.routes` options can be used to provide the static and dynamic routes.
 
 ### `distDir`
 
@@ -341,7 +389,7 @@ Type: `String`
 
 Default: `'<project-folder>/node_modules/.cache/quasar-app-extension-ssg'` or `'<project-folder>/.ssg-build'` if `cache` is set to false.
 
-The webpack build output folder from where the extension can prerender pages.
+The webpack compilation output folder from where the extension can prerender pages.
 
 ### `cache`
 
@@ -372,9 +420,9 @@ Default:
 }
 ```
 
-This option is used to avoid re-building when no tracked file has been changed.
+This option caches the compilation output folder and skips recompilation when no tracked file has changed.
 
-- `ignore` is a [Globby](https://github.com/sindresorhus/globby#patterns) patterns to ignore tracked files. If an array is provided, it will be merged with default options, you can give a function to return an array that will remove the defaults.
+- `ignore` is a [Globby](https://github.com/sindresorhus/globby#patterns) patterns to ignore tracked files. If an array is provided, it will be merged with default options. A function can be passed to return an array that will remove the defaults.
 
   Example with an `Array`:
 
@@ -405,12 +453,13 @@ Type: `String`
 
 Default: `'404.html'`
 
-The filename of the full SPA or PWA page as a fallback when an index.html file does not exist for a given route.
+The name of the SPA/PWA fallback file intended to be served when an index.html file does not exist for a given route.
 
 > Notes:
 >
 > - Overrides `build.htmlFilename` and `build.ssrPwaHtmlFilename`.
-> - This file is created with `html-webpack-plugin` with [defaults options](https://github.com/quasarframework/quasar/blob/dev/app-webpack/lib/webpack/inject.html.js) set by Quasar. You can extend it with some [plugins](https://github.com/jantimon/html-webpack-plugin#plugins).
+> - This file is created with the webpack plugin [`html-webpack-plugin`](https://github.com/jantimon/html-webpack-plugin) via [this Quasar file](https://github.com/quasarframework/quasar/blob/dev/app-webpack/lib/webpack/inject.html.js). It can be extended with some [plugins](https://github.com/jantimon/html-webpack-plugin#plugins).
+> - Multiple services (e.g. Netlify, Vercel) detect a 404.html automatically. For custom web server, an error page must be set up and set to the 404.html file.
 
 ### `crawler`
 
@@ -420,7 +469,7 @@ Type: `Boolean`
 
 Default: `true`
 
-Crawl your relative links and generate your dynamic links based on these links.
+Crawls html links as each page is generated to find dynamic and static routes to add to the page generation queue.
 
 ### `exclude`
 
@@ -428,7 +477,7 @@ Crawl your relative links and generate your dynamic links based on these links.
 
 Type: `String[] | Regexp[]`
 
-It accepts an array of string or regular expressions and will prevent generation of routes matching them.
+An array of routes or regular expressions matching them to prevent corresponding pages from being generated.
 
 Example with an `Array of String`:
 
@@ -448,7 +497,7 @@ ssg: {
 }
 ```
 
-### `shouldPreload`
+### `shouldPreload(file, type, ext, isLazilyHydrated)`
 
 :new: _Added in [v3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0)_
 
@@ -480,7 +529,7 @@ ssg: {
 }
 ```
 
-### `shouldPrefetch`
+### `shouldPrefetch(file, type, ext, isLazilyHydrated)`
 
 :new: _Added in [v3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0)_
 
@@ -488,7 +537,7 @@ Type: `Function`
 
 A function to control what files should have <link rel="prefetch"> resource hints generated.
 
-By default, no assets will be prefetched; however you can customize what to prefetch in order to better control bandwidth usage. This option expects the same function signature as shouldPreload.
+By default no assets will be prefetched. However this is possible to customize what to prefetch in order to better control bandwidth usage. This option expects the same function signature as shouldPreload.
 
 ### `inlineCriticalCss`
 
@@ -496,9 +545,9 @@ Type: `Boolean` or `Object`
 
 Default: `true`
 
-Use [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated route.
+Uses [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated page.
 
-You can customize the default beastcss options by passing it to `inlineCriticalCss`.
+The default beastcss options can be customized by passing them to `inlineCriticalCss`.
 
 Example:
 
@@ -513,7 +562,7 @@ ssg: {
 
 > Notes:
 >
-> The value is force to `true` when using the [dev](#dev) command.
+> The value is forced to `false` when using the [dev](#dev) command.
 
 ### `inlineCssFromSFC`
 
@@ -529,13 +578,15 @@ Note: This option works even if build.extractCSS is set to `true` in quasar.conf
 
 > Notes:
 >
-> The value is force to `true` when using the [dev](#dev) command.
+> The value is forced to `true` when using the [dev](#dev) command.
 
 ### `onRouteRendered(html, route, distDir)`
 
 Type: `Function`
 
-Run hook after a route is pre-rendered just before writing it to `index.html`.
+Hook executed after pre-rendering a page just before writing it to the filesystem.
+
+This function must return the html string.
 
 Can use async/await or directly return a Promise.
 
@@ -543,38 +594,409 @@ Can use async/await or directly return a Promise.
 
 Type: `Function`
 
-Run hook after all pages has been generated.
+Hook executed after all pages has been generated.
 
 Can use async/await or directly return a Promise.
 
-> Note: `files` parameter is an `Array` of all generated routes paths + filenames (including the fallback file).
+> Note: The `files` parameter is an `Array` of all generated page paths + filenames (including the fallback file).
+
+</details>
+
+<details>
+  <summary>Vite</summary>
+
+### `concurrency`
+
+Type: `Number`
+
+Default: `10`
+
+Page generation is concurrent, `ssg.concurrency` specifies the amount of page generation that runs in one thread.
+
+### `interval`
+
+Type: `Number`
+
+Default: `0`
+
+Interval in **milliseconds** between two batches of concurrent page generation to avoid flooding a potential API with calls to the API from the web application.
+
+> Notes:
+>
+> This option is intended to be used in conjunction with the `concurrency` option.
+> For example, setting `concurrency` to `10` and `interval` to `5000` will execute the generation of 10 pages in parallel every 5 seconds.
+
+### `routes`
+
+Type: `String[]` or `Function`
+
+Default: `[]`
+
+A list of routes to generate the corresponding pages.
+
+> Note: This option is optionnal due to the crawler feature and the ability to include static routes from the app's router using the `ssg.includeStaticRoutes` option.
+>
+> If the app has unlinked pages (such as secret pages) and these also need to be generated, the `ssg.routes` property can be used.
+
+Example:
+
+```javascript
+ssg: {
+  routes: ["/", "/about", "/users", "/users/someone"];
+}
+```
+
+With a `Function` which returns a `Promise`:
+
+```javascript
+// quasar.config.js
+
+const axios = require("axios");
+
+module.exports = function (/* ctx */) {
+  return {
+    // ...
+
+    ssg: {
+      routes() {
+        return axios.get("https://my-api/users").then((res) => {
+          return res.data.map((user) => {
+            return "/users/" + user.id;
+          });
+        });
+      },
+    },
+
+    // ...
+  };
+};
+```
+
+With a `Function` which returns a `callback(err, params)`:
+
+```javascript
+// quasar.config.js
+
+const axios = require("axios");
+
+module.exports = function (/* ctx */) {
+  return {
+    // ...
+
+    ssg: {
+      routes(callback) {
+        axios
+          .get("https://my-api/users")
+          .then((res) => {
+            const routes = res.data.map((user) => {
+              return "/users/" + user.id;
+            });
+            callback(null, routes);
+          })
+          .catch(callback);
+      },
+    },
+
+    // ...
+  };
+};
+```
+
+### `includeStaticRoutes`
+
+Type: `Boolean`
+
+Default: `true`
+
+Include the application's router static routes to generate the corresponding pages.
+
+> Note: In case of warnings issued when initializing routes, this option can be disabled. Then the [`crawler`](#crawler) feature and the [`ssg.routes`](#routes) options can be used to provide the static and dynamic routes.
+
+### `distDir`
+
+Type: `String`
+
+Default: `'<project-folder>/dist/ssg'`
+
+Folder where the extension should generate the distributables. Relative path to project root directory.
+
+### `compilationDir`
+
+Type: `String`
+
+Default: `'<project-folder>/node_modules/.cache/quasar-app-extension-ssg'` or `'<project-folder>/.ssg-compilation'` if `cache` is set to false.
+
+The Vite compilation output folder from where the extension can prerender pages.
+
+### `cache`
+
+Type: `Object` or `false`
+
+Default:
+
+```javascript
+{
+  ignore: [
+    join(conf.ssg.distDir, '/**'), // dist/ssg
+    join(conf.ssg.compilationDir, '/**'), // node_modules/.cache/quasar-app-extension-ssg
+    join(conf.build.distDir, '/**'),
+    'dist/**',
+    'public/**',
+    'src-ssr/**',
+    'src-cordova/**',
+    'src-electron/**',
+    'src-bex/**',
+    'node_modules/**',
+    '.**/*',
+    '.*',
+    'README.md'
+  ],
+  globbyOptions: {
+    gitignore: true
+  }
+}
+```
+
+This option caches the compilation output folder and skips recompilation when no tracked file has changed.
+
+- `ignore` is a [Globby](https://github.com/sindresorhus/globby#patterns) patterns to ignore tracked files. If an array is provided, it will be merged with default options. A function can be passed to return an array that will remove the defaults.
+
+  Example with an `Array`:
+
+  ```javascript
+  ssg: {
+    cache: {
+      ignore: ["renovate.json"]; // ignore changes applied on this file
+    }
+  }
+  ```
+
+  With a `Function`:
+
+  ```javascript
+  ssg: {
+    cache: {
+      ignore: (defaultIgnore) =>
+        defaultIgnore.push("renovate.json") && defaultIgnore;
+    }
+  }
+  ```
+
+- `globbyOptions` can be used to add [globby options](https://github.com/sindresorhus/globby#options).
+
+### `fallback`
+
+Type: `String`
+
+Default: `'404.html'`
+
+The name of the SPA/PWA fallback file intended to be served when an index.html file does not exist for a given route.
+
+> Notes:
+>
+> - Overrides `build.htmlFilename` and `build.ssrPwaHtmlFilename`.
+> - This file is created with the webpack plugin [`html-webpack-plugin`](https://github.com/jantimon/html-webpack-plugin) via [this Quasar file](https://github.com/quasarframework/quasar/blob/dev/app-webpack/lib/webpack/inject.html.js). It can be extended with some [plugins](https://github.com/jantimon/html-webpack-plugin#plugins).
+> - Multiple services (e.g. Netlify, Vercel) detect a 404.html automatically. For custom web server, an error page must be set up and set to the 404.html file.
+
+### `crawler`
+
+Type: `Boolean`
+
+Default: `true`
+
+Crawls html links as each page is generated to find dynamic and static routes to add to the page generation queue.
+
+### `exclude`
+
+Type: `String[] | Regexp[]`
+
+An array of routes or regular expressions matching them to prevent corresponding pages from being generated.
+
+Example with an `Array of String`:
+
+```javascript
+ssg: {
+  exclude: ["/my-secret-page"];
+}
+```
+
+With an `Array of Regexp`:
+
+```javascript
+ssg: {
+  exclude: [
+    /^\/admin/, // path starts with /admin
+  ];
+}
+```
+
+### `shouldPreload({ file, type, extension, isLazilyHydrated })`
+
+Type: `Function`
+
+A function to control what files should have <link rel="preload"> resource hints generated.
+
+By default, no assets will be preloaded.
+
+Example to preload assets:
+
+```javascript
+ssg: {
+  shouldPreload: ({ file, type, extension, isLazilyHydrated }) => {
+    // type is inferred based on the file extension.
+    // https://fetch.spec.whatwg.org/#concept-request-destination
+    if (type === "script" || type === "style") {
+      return true;
+    }
+
+    if (type === "font" && ext === "woff2") {
+      // only preload woff2 fonts
+      return file;
+    }
+
+    if (type === "image") {
+      // only preload important images
+      return file === "hero.jpg";
+    }
+
+    // do not preload anything else
+    return false;
+  };
+}
+```
+
+### `shouldPrefetch({ file, type, extension, isLazilyHydrated })`
+
+Type: `Function`
+
+A function to control what files should have <link rel="prefetch"> resource hints generated.
+
+By default no assets will be prefetched. However this is possible to customize what to prefetch in order to better control bandwidth usage. This option expects the same function signature as shouldPreload.
+
+### `inlineCriticalCss`
+
+Type: `Boolean` or `Object`
+
+Default: `true`
+
+Uses [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated page.
+
+The default beastcss options can be customized by passing them to `inlineCriticalCss`.
+
+Example:
+
+```javascript
+ssg: {
+  inlineCriticalCss: {
+    internal: false,
+    merge: false,
+  };
+}
+```
+
+> Notes:
+>
+> The value is forced to `false` when using the [dev](#dev) command.
+
+### `onPageGenerated({ html, route, path })`
+
+Type: `Function`
+
+Hook executed after pre-rendering a page just before writing it to the filesystem. This hook can be used to update html string and/or the generated page output path.
+
+This function must return an `Object` containing `html` and `path` properties.
+
+Can use async/await or directly return a Promise.
+
+Example:
+
+```js
+const { join, sep } = require('path');
+
+// skipped code...
+
+ssg: {
+  onPageGenerated(page) {
+    // do not write generated pages in subfolders
+
+    // replace dist/ssg/some-route/index.html
+    // by dist/ssg/some-route.html
+
+    const normalizedRoute = page.route.replace(/\/$/, '');
+
+    const fileName = page.route.length > 1 ? join(sep, normalizedRoute + '.html') : join(sep, 'index.html')
+
+    return {
+      html: page.html,
+      path: page.path.replace(join(page.route, 'index.html'), fileName),
+    };
+  },
+}
+```
+
+### `afterGenerate(files, distDir)`
+
+Type: `Function`
+
+Hook executed after all pages has been generated.
+
+Can use async/await or directly return a Promise.
+
+> Note: The `files` parameter is an `Array` of all generated page paths + filenames (including the fallback file).
+
+</details>
 
 ## Tips
 
-### `process.env`
+### Lazy/partial Hydration
 
-Since the version [v4.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.4.0...v4.0.0) the value of `process.env.MODE` is `ssg` when your app was built with the command `quasar ssg generate`.
+It is possible to lazy hydrate components using the [vue3-lazy-hydration](https://github.com/freddy38510/vue3-lazy-hydration) package.
 
-It could be useful if you mixed several builds with differents modes to differentiate runtime procedures.
+In production, when generating pages, the extension does not inject script/preload tags for split chunks corresponding to lazily hydrated components. In this way, these components are loaded client-side, on-demand, when hydration occurs.
+
+### Identify running mode
+
+Since the version [v4.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.4.0...v4.0.0) the value of `process.env.MODE` is `ssg` when the app was built with the command `quasar ssg generate` or `quasar ssg dev`.
+
+Below [v4.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/tree/v4.0.0), `process.env.STATIC` can be used instead.
+
+It could be useful if multiple builds are mixed with different modes to differentiate runtime procedures.
 
 ## Infos
 
 ### About Boot File
 
-This Extension is using a boot file called [`body-classes.js`](https://github.com/freddy38510/quasar-app-extension-ssg/blob/master/src/boot/body-classes.js), only at client-side, to set platform classes to `<body>` tag like [Quasar does it](https://github.com/quasarframework/quasar/blob/dev/ui/src/body.js) originally.
+This Extension uses a boot file [`ssg-corrections.js`](https://github.com/freddy38510/quasar-app-extension-ssg/blob/master/src/boot/ssg-corrections.js) at client-side to apply corrections to the [`<body>` tag classes](https://quasar.dev/style/body-classes#introduction).
 
-This is necessary because the server used to prerender pages can't know the platform (desktop or mobile, etc) of the client at build time.
+This is necessary because the running [platform](https://quasar.dev/options/platform-detection#introduction) is unknown at build time.
 
 ### About PWA
 
-Quasar is using [workbox-webpack-plugin](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-webpack-plugin) to generate a complete service worker and a list of assets to precache that is injected into a service worker file.
+SSG + PWA can be enabled by setting `ssr.pwa` to `true` inside `quasar.config.js` file.
 
-This means that all generated pages could not be precached when webpack is compiling because they do not exist yet at this time.
-To fix this issue, **when running the command [generate](#generate)**, the extension uses [workbox-build](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-build) instead after all pages have been generated.
+<details>
+  <summary>Vite</summary>
 
-Consequently, when PWA is enabled in Quasar, you should pass options from [workbox-build](https://developers.google.com/web/tools/workbox/modules/workbox-build) for [generateSW mode](https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build#.generateSW) or [injectManifest mode](https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build#.injectManifest) in the key `pwa.workboxOptions` in `quasar.config.js` file instead of options from [workbox-webpack-plugin](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin). All others PWA options from the key `pwa` in `quasar.config.js` file are valids and used following [Quasar documentation](https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa#quasar-conf-js).
+Quasar uses [workbox-build](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-build) package to generate a complete service worker and a list of assets to precache which is injected into the service worker file.
+
+This means that all generated pages cannot be precached when Vite is compiling because they do not yet exist at this time.
+To fix this, **when running the [generate](#generate) command**, the extension moves the execution of [workbox-build](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-build) methods after all pages have been generated.
+
+</details>
+
+<details>
+  <summary>Webpack</summary>
+
+Quasar uses [workbox-webpack-plugin](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-webpack-plugin) package to generate a complete service worker and a list of assets to precache which is injected into the service worker file.
+
+This means that all generated pages cannot be precached when webpack is compiling because they do not yet exist at this time.
+To fix this, **when running the [generate](#generate) command**, the extension instead uses [workbox-build](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-build) package after all pages have been generated.
+
+Therefore, [workbox-build](https://developers.google.com/web/tools/workbox/modules/workbox-build) options must be passed in the key `pwa.workboxOptions` of `quasar.config.js` file instead of the [workbox-webpack-plugin](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin) options. All other PWA options of the `pwa` key in the `quasar.config.js` file are valid and used according to the [Quasar documentation](https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa#quasar-conf-js).
+
+</details>
 
 ### About Cache Feature
 
-The cache mechanism to avoid rebuilding the app when this is not necessary is heavily inspired by [Nuxt](https://nuxtjs.org).
-See the Nuxt [blog post](https://fr.nuxtjs.org/blog/nuxt-static-improvements#faster-static-deployments) about that feature.
+The cache mechanism to avoid recompiling the app when it is not necessary is strongly inspired by [Nuxt](https://nuxtjs.org).
+See the Nuxt [blog post](https://fr.nuxtjs.org/blog/nuxt-static-improvements#faster-static-deployments) about this feature.
