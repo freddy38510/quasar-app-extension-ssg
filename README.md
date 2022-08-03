@@ -257,10 +257,10 @@ module.exports = function (/* ctx */) {
 };
 ```
 
-See all available options below:
+### Webpack
 
 <details>
-  <summary>Webpack</summary>
+  <summary>See all available options</summary>
 
 ### `concurrency`
 
@@ -600,8 +600,10 @@ Can use async/await or directly return a Promise.
 
 </details>
 
+### Vite
+
 <details>
-  <summary>Vite</summary>
+  <summary>See all available options</summary>
 
 ### `concurrency`
 
