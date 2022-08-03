@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.4.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.3.0...v4.4.0) (2022-08-03)
+
+
+### Features
+
+* add Vite.js support ([6f847cf](https://github.com/freddy38510/quasar-app-extension-ssg/commit/6f847cf799f0f950598a8c1ddaa679b1147d28cf)), closes [#263](https://github.com/freddy38510/quasar-app-extension-ssg/issues/263)
+* do not inject script/preload tags for components hydrated with vue3-lazy-hydration package ([ec8c27e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/ec8c27ef1daaf43ba0041cce5ac195820bb5ee81))
+
+
+### Bug Fixes
+
+* **deps:** update dependency pony-cause to v2.1.0 ([#276](https://github.com/freddy38510/quasar-app-extension-ssg/issues/276)) ([9918aa4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/9918aa4706bcb973be4eecf77feda24aa68849f1))
+* **deps:** update dependency workbox-build to v6.5.4 ([#271](https://github.com/freddy38510/quasar-app-extension-ssg/issues/271)) ([38417ba](https://github.com/freddy38510/quasar-app-extension-ssg/commit/38417ba39a8d66d422f54c6e739d1cc21da384eb))
+* **install:** add missing compatibility checks ([13aaa6f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/13aaa6f803962eb9511303b3e914f45e6d0b5ee5))
+* use correct package name when checking api compatibility ([e6669d5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e6669d5273529ac2afcc143273f6e9d75038fc17))
+
 ## [4.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.2.3...v4.3.0) (2022-07-18)
 
 
