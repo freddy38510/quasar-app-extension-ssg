@@ -26,18 +26,21 @@ module.exports = function install(api) {
     }
   }
 
-  let command = '$ quasar ssg generate';
+  let generateCommand = '$ quasar ssg generate';
+  let devCommand = '$ quasar ssg dev';
 
   if (api.prompts.scripts) {
-    command = '$ yarn build:ssg';
+    generateCommand = '$ yarn build:ssg';
+    devCommand = '$ yarn dev:ssg';
 
     api.extendPackageJson({
       scripts: {
         'build:ssg': 'quasar ssg generate',
+        'dev:ssg': 'quasar ssg dev',
         'serve:ssg': 'quasar ssg serve dist/ssg',
       },
     });
   }
 
-  api.onExitLog(`See https://github.com/freddy38510/quasar-app-extension-ssg/#configuration to configure the extension then run "${command}"`);
+  api.onExitLog(`See https://github.com/freddy38510/quasar-app-extension-ssg/#configuration to configure the extension then run "${generateCommand}" or "${devCommand}`);
 };
