@@ -136,8 +136,6 @@ quasar ssg dev
 
 The development server allows to develop the app by compiling and maintaining code in-memory. A web server will serve the app while offering live-reload out of the box. Running in-memory offers faster rebuilds when the code is changed.
 
-Each static page is generated when the corresponding route is first loaded from the browser.
-
 The server can be configured by editing the `/quasar.config.js’ file:
 
 ```javascript
