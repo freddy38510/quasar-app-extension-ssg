@@ -1,6 +1,7 @@
 {
   "extends": ["config:base", ":semanticCommits"],
   "baseBranches": ["master", "2.x"],
+  "ignorePaths": ["**/node_modules/**", "**/demos/**"],
   "packageRules": [
     {
       "matchPackageNames": ["chalk"],
