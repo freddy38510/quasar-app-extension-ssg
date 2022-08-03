@@ -94,9 +94,9 @@ module.exports = function extendQuasarConf(conf) {
     conf.ssg.shouldPreload = () => false;
   }
 
-  // Set body tag classes (desktop/mobile, q-ios-padding, etc...) at client-side
-  // The client platform is unknown at build-time
-  conf.boot.push({ server: false, path: '~quasar-app-extension-ssg/src/boot/body-classes' });
+  // Apply corrections to the body tag classes at client-side
+  // because the client platform (mobile, desktop, ios, etc) is unknown at build-time.
+  conf.boot.push({ server: false, path: '~quasar-app-extension-ssg/src/boot/ssg-corrections' });
 
   conf.build.transpileDependencies.push(/quasar-app-extension-ssg[\\/]src[\\/]boot/);
 

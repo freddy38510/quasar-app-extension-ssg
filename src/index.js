@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable global-require */
 /**
  * Quasar App Extension index/runner script
@@ -32,7 +31,7 @@ module.exports = function run(api) {
 
   api.registerCommand('generate', () => {
     if (api.hasVite) {
-      console.warn('Vite.js is not supported yet!');
+      require('./vite/cmd/generate');
     } else {
       require('./webpack/cmd/ssg-generate');
     }
@@ -40,7 +39,7 @@ module.exports = function run(api) {
 
   api.registerCommand('dev', () => {
     if (api.hasVite) {
-      console.warn('Vite.js is not supported yet!');
+      require('./vite/cmd/dev');
     } else {
       require('./webpack/cmd/dev');
     }
@@ -48,7 +47,7 @@ module.exports = function run(api) {
 
   api.registerCommand('inspect', () => {
     if (api.hasVite) {
-      console.warn('Vite.js is not supported yet!');
+      require('./vite/cmd/inspect');
     } else {
       require('./webpack/cmd/inspect');
     }
@@ -56,7 +55,7 @@ module.exports = function run(api) {
 
   api.registerCommand('serve', () => {
     if (api.hasVite) {
-      console.warn('Vite.js is not supported yet!');
+      require('./vite/cmd/serve');
     } else {
       require('./webpack/cmd/serve');
     }

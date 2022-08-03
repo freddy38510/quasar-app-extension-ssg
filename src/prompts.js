@@ -39,6 +39,10 @@
 
  */
 
+const { hasPackage } = require('./webpack/helpers/packages');
+
+const hasVite = hasPackage('@quasar/app-vite');
+
 module.exports = function prompts() {
   return [
     {
@@ -55,12 +59,13 @@ module.exports = function prompts() {
         'Inline critical css and async load the rest ?',
       default: true,
     },
-    {
-      name: 'inlineCssFromSFC',
-      type: 'confirm',
-      message:
-        'Inline CSS from Vue SFC <style> blocks ?',
-      default: false,
-    },
+    ...hasVite ? []
+      : [{
+        name: 'inlineCssFromSFC',
+        type: 'confirm',
+        message:
+          'Inline CSS from Vue SFC <style> blocks ?',
+        default: false,
+      }],
   ];
 };
