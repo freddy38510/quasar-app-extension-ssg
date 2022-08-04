@@ -2,21 +2,19 @@
 
 > A [Quasar v2](https://quasar.dev/) App Extension to generate static site AKA [JAMstack](https://jamstack.org).
 
+> :new: Supports Vite since [v4.4.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.3.0...v4.4.0).
+
 ![npm](https://img.shields.io/npm/v/quasar-app-extension-ssg) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/freddy38510/quasar-app-extension-ssg) ![GitHub repo size](https://img.shields.io/github/repo-size/freddy38510/quasar-app-extension-ssg) ![npm](https://img.shields.io/npm/dt/quasar-app-extension-ssg) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 This project was created to fill this [Feature Request](https://github.com/quasarframework/quasar/issues/2299) from Quasar.
 
 :warning: Looking for [Quasar v1](https://v1.quasar.dev/) with Vue 2 ? See corresponding [quasar-app-extension-ssg v2](https://github.com/freddy38510/quasar-app-extension-ssg/tree/2.x) documentation instead of latest version.
 
-:new: Supports Vite since [v4.4.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.3.0...v4.4.0).
-
-## Table of Contents
-
 [Live Demo](#live-demo) | [Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [Infos](#infos)
 
 ## Live Demo
 
-A live demo built from a fresh new [Quasar project (with Vite)](demos/quasar-ssg-vite/README.md) is available at [https://quasar-app-extension-ssg-vite.netlify.app](https://quasar-app-extension-ssg-vite.netlify.app/).
+A live demo built from a fresh new [Quasar project (with Vite)](demos/quasar-ssg-vite) is available at [https://quasar-app-extension-ssg-vite.netlify.app](https://quasar-app-extension-ssg-vite.netlify.app/).
 
 The demo achieves a [Google PageSpeed ​​Insights](https://pagespeed.web.dev) score of **100** for mobile and desktop platforms.
 
