@@ -10,7 +10,29 @@ This project was created to fill this [Feature Request](https://github.com/quasa
 
 :new: Supports Vite since [v4.4.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.3.0...v4.4.0).
 
-[Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [Infos](#infos)
+## Table of Contents
+
+[Live Demo](#live-demo) | [Installing](#installing) | [Uninstalling](#uninstalling) | [Upgrading](#upgrading) | [Developing](#developing) | [Usage](#usage) | [Configuration](#configuration) | [Infos](#infos)
+
+## Live Demo
+
+A live demo built from a fresh new [Quasar project (with Vite)](demos/quasar-ssg-vite/README.md) is available at [https://quasar-app-extension-ssg-vite.netlify.app](https://quasar-app-extension-ssg-vite.netlify.app/).
+
+The demo achieves a [Google PageSpeed ​​Insights](https://pagespeed.web.dev) score of **100** for mobile and desktop platforms.
+
+<details>
+  <summary>View mobile report</summary>
+
+[![mobile report](demos/quasar-ssg-vite/pagespeed-report-mobile.png)](https://pagespeed.web.dev/report?url=https%3A%2F%2Fquasar-app-extension-ssg-vite.netlify.app%2F&form_factor=mobile)
+
+</details>
+
+<details>
+  <summary>View desktop report</summary>
+
+[![desktop report](demos/quasar-ssg-vite/pagespeed-report-desktop.png)](https://pagespeed.web.dev/report?url=https%3A%2F%2Fquasar-app-extension-ssg-vite.netlify.app%2F&form_factor=desktop)
+
+</details>
 
 ## Installing
 
@@ -70,9 +92,9 @@ This is done with the same command used for installation:
 quasar ext add ssg
 ```
 
-## Developing/Contributing
+## Developing
 
-To contribute to the development of the extension, start by cloning this repository:
+To develop the extension start by cloning this repository:
 
 ```bash
 git clone https://github.com/freddy38510/quasar-app-extension-ssg.git && cd quasar-app-extension-ssg
