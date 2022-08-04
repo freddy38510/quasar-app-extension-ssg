@@ -2,6 +2,16 @@
 
 A demo for Quasar project with quasar-app-extension-ssg for vite.
 
+## PageSpeed Insights reports
+
+### mobile
+
+[![mobile report](pagespeed-report-mobile.png)](https://pagespeed.web.dev/report?url=https%3A%2F%2Fquasar-app-extension-ssg-vite.netlify.app%2F&form_factor=mobile)
+
+### desktop
+
+[![desktop report](pagespeed-report-desktop.png)](https://pagespeed.web.dev/report?url=https%3A%2F%2Fquasar-app-extension-ssg-vite.netlify.app%2F&form_factor=desktop)
+
 ## Install the dependencies
 
 ```bash
