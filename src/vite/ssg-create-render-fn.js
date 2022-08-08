@@ -5,7 +5,7 @@
 
 const { basename, join } = require('path');
 const { requireFromApp } = require('./helpers/packages');
-const createRenderHintsTag = require('./create-render-hints-tag');
+const createRenderHintTag = require('./create-render-hint-tag');
 const appPaths = require('./app-paths');
 
 const { renderToString } = requireFromApp('vue/server-renderer');
@@ -28,15 +28,14 @@ module.exports = function createRenderFn(quasarConf, viteDevServer) {
     : require(serverEntryFile).renderApp;
 
   // used only in production
-  function renderModulesHints({ modules, _lazilyHydratedComponents }) {
-    const renderHintsTag = createRenderHintsTag(
+  function renderModulesHint({ modules, _lazilyHydratedComponents }) {
+    const renderHintTag = createRenderHintTag(
       quasarConf.ssg.shouldPreload,
       quasarConf.ssg.shouldPrefetch,
     );
 
+    let hintLinks = '';
     const seen = new Set();
-
-    let hintsLinks = '';
 
     modules.forEach((id) => {
       const files = clientManifest[id];
@@ -57,16 +56,16 @@ module.exports = function createRenderFn(quasarConf, viteDevServer) {
 
         if (clientManifest[filename] !== void 0) {
           clientManifest[filename].forEach((depFile) => {
-            hintsLinks += renderHintsTag(depFile, isLazilyHydrated);
+            hintLinks += renderHintTag(depFile, isLazilyHydrated);
             seen.add(depFile);
           });
         }
 
-        hintsLinks += renderHintsTag(file, isLazilyHydrated);
+        hintLinks += renderHintTag(file, isLazilyHydrated);
       });
     });
 
-    return hintsLinks;
+    return hintLinks;
   }
 
   function renderStoreState(ssrContext) {
@@ -121,7 +120,7 @@ module.exports = function createRenderFn(quasarConf, viteDevServer) {
       // @vitejs/plugin-vue injects code into a component's setup() that registers
       // itself on ctx.modules. After the render, ctx.modules would contain all the
       // components that have been instantiated during this render call.
-      ssrContext._meta.endingHeadTags += renderModulesHints(ssrContext);
+      ssrContext._meta.endingHeadTags += renderModulesHint(ssrContext);
 
       return renderTemplate(ssrContext);
     }

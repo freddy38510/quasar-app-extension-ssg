@@ -37,7 +37,7 @@ function normalizeFile(file) {
   return { fileWithoutQuery, type: getFileType(extension), extension };
 }
 
-module.exports = function createRenderHintsTag(shouldPreload, shouldPrefetch) {
+module.exports = function createRenderHintTag(shouldPreload, shouldPrefetch) {
   return function renderHintsTag(file, isLazilyHydrated) {
     if (cssRE.test(file) === true) {
       // always preload css to avoid FOUC
