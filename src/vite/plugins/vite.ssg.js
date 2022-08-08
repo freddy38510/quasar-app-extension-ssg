@@ -174,7 +174,7 @@ function getRobotoFontPlugin(fontDisplayValue) {
         // remove non latin fonts
         .substring(idx)
         // add font-display property
-        .replaceAll(fontFaceRE, (match) => [match, `  font-display: ${fontDisplayValue};`].join('\n'))
+        .replace(fontFaceRE, (match) => [match, `  font-display: ${fontDisplayValue};`].join('\n'))
     );
   }
 
