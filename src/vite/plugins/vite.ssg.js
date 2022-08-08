@@ -237,6 +237,7 @@ function getAutoImportSvgIconsPlugin(iconSet) {
       },
     ],
     vueTemplate: true,
+    dts: false,
   });
 }
 
