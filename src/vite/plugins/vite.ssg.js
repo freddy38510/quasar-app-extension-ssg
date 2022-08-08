@@ -211,7 +211,7 @@ function getRobotoFontPlugin(fontDisplayValue) {
  * @see https://quasar.dev/vue-components/icon#svg-usage
  */
 function getAutoImportSvgIconsPlugin(iconSet) {
-  if (!iconSet.startsWith('svg')) {
+  if (!iconSet || !iconSet.startsWith('svg')) {
     return {};
   }
 
