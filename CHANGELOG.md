@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [4.5.3](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.2...v4.5.3) (2022-08-08)
+
+
+### Bug Fixes
+
+* **vite:** do not generate typescript declaration file for auto imported svg icons ([9a65f42](https://github.com/freddy38510/quasar-app-extension-ssg/commit/9a65f426bde4f950a02649d391000d551c5cdc58))
+
 ### [4.5.2](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.1...v4.5.2) (2022-08-08)
 
 
