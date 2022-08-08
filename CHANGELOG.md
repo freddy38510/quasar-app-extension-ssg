@@ -1,6 +1,20 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [4.5.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.4.0...v4.5.0) (2022-08-08)
+
+
+### Features
+
+* **install:** add "dev:ssg" to package.json scripts for positive answer to the corresponding prompt ([dc0f6e4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/dc0f6e44a8c5191edca635ad9462db1ed5238169))
+* **vite:** add an option to auto import svg icons from @quasar/extras package ([c79b6a0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c79b6a0eec5994184a0cd606213c4f755f70f16e))
+* **vite:** add option to set css font-display descriptor of roboto font ([8c5663f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/8c5663f6256f61962f10425901637556afcdcab2))
+
+
+### Bug Fixes
+
+* **deps:** update dependency pony-cause to v2.1.1 ([#278](https://github.com/freddy38510/quasar-app-extension-ssg/issues/278)) ([41d0632](https://github.com/freddy38510/quasar-app-extension-ssg/commit/41d0632af985810789585a4c44b87e0e38c56b34))
 
 ## [4.4.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.3.0...v4.4.0) (2022-08-03)
 
