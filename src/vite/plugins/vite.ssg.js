@@ -4,6 +4,7 @@ const path = require('path');
 const { default: MagicString } = require('magic-string');
 const { requireFromApp } = require('../helpers/packages');
 const getHash = require('../helpers/get-hash');
+const appPaths = require('../app-paths');
 
 const { normalizePath } = requireFromApp('vite');
 
@@ -44,8 +45,7 @@ function getLazyHydrationPlugin() {
 
     transform(code, id) {
       if (
-        (vueTransformRegex.test(id)
-          || jsTransformRegex.test(id))
+        (vueTransformRegex.test(id) || jsTransformRegex.test(id))
         && setupRE.test(code)
       ) {
         const [filename] = id.split('?', 2);
@@ -75,9 +75,9 @@ function getRemoveSSRStylesPlugin() {
   function generateCode(code, id) {
     return code.replace(updateStyleRE, (match) => [
       match,
-      `const __ssg__el = document.querySelector('style[ssr-id=${JSON.stringify(getHash(
-        id,
-      ))}]');`,
+      `const __ssg__el = document.querySelector('style[ssr-id=${JSON.stringify(
+        getHash(id),
+      )}]');`,
       'if (__ssg__el) { __ssg__el.remove(); }',
     ].join('\n'));
   }
@@ -115,7 +115,9 @@ function getCSSModulesPlugin() {
 
   function generateCode(code, id) {
     return [
-      `export * as ${importName} from ${JSON.stringify(id.replace('vue&type=style', 'vue&type=style&inline'))}`,
+      `export * as ${importName} from ${JSON.stringify(
+        id.replace('vue&type=style', 'vue&type=style&inline'),
+      )}`,
       code,
     ].join('\n');
   }
@@ -129,7 +131,11 @@ function getCSSModulesPlugin() {
         return null;
       }
 
-      if (cssModuleRE.test(id) && id.includes('vue&type=style') && !inlineRE.test(id)) {
+      if (
+        cssModuleRE.test(id)
+        && id.includes('vue&type=style')
+        && !inlineRE.test(id)
+      ) {
         const magicString = new MagicString(generateCode(code, id));
 
         return {
@@ -143,12 +149,67 @@ function getCSSModulesPlugin() {
   };
 }
 
+/**
+ * Replace the roboto font from @quasar/extras with its woff2 variant and
+ * add font-display css descriptor to each font.
+ *
+ * Non-latin fonts are removed to prevent small ones from being inlined to the css chunk.
+ *
+ * The browser downloads latin and/or latin-ext fonts depending on the characters used in the page.
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/unicode-range
+ */
+function getRobotoFontPlugin(fontDisplayValue) {
+  const quasarRobotoCssRE = /@quasar\/extras\/roboto-font.*\.css$/;
+  const fontFaceRE = /@font-face\s*{/gi;
+  const latinExtRE = /\/\* latin-ext \*\//i;
+
+  const resolvedId = appPaths.resolve.appNodeModule(
+    'quasar-app-extension-ssg/roboto-font/roboto-font.css',
+  );
+
+  function generateCode(code) {
+    return (
+      code
+        // remove non latin fonts
+        .substring(code.search(latinExtRE))
+        // add font-display property
+        .replaceAll(fontFaceRE, (match) => [match, `  font-display: ${fontDisplayValue};`].join('\n'))
+    );
+  }
+
+  return {
+    name: 'quasar-ssg:roboto-font',
+    enforce: 'pre',
+    resolveId(id) {
+      if (quasarRobotoCssRE.test(id)) {
+        // replace the roboto font from @quasar/extras with its woff2 variant
+        return resolvedId;
+      }
+
+      return null;
+    },
+    transform(code, id) {
+      if (id === resolvedId) {
+        const magicString = new MagicString(generateCode(code));
+
+        return {
+          code: magicString.toString(),
+          map: magicString.generateMap(),
+        };
+      }
+
+      return null;
+    },
+  };
+}
 module.exports.cssLangRE = cssLangRE;
 
-module.exports.plugin = function QuasarSSGVitePlugin(runMode, isDev) {
-  const plugins = [];
+module.exports.plugin = function QuasarSSGVitePlugin(quasarConf, runMode) {
+  const plugins = [
+    getRobotoFontPlugin(quasarConf.ssg.robotoFontDisplay),
+  ];
 
-  if (isDev) {
+  if (quasarConf.ctx.dev) {
     if (runMode === 'ssr-server') {
       plugins.push(getCSSModulesPlugin());
     }

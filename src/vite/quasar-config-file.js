@@ -118,6 +118,7 @@ module.exports = class ExtendedQuasarConfFile extends QuasarConfFile {
           routes: [],
           crawler: true,
           exclude: [],
+          robotoFontDisplay: 'optional',
         },
       },
       await super.read(),

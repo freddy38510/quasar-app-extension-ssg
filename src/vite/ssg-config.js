@@ -5,11 +5,9 @@ const appPaths = require('./app-paths');
 const { requireFromApp } = require('./helpers/packages');
 const { plugin: ssgVitePlugin } = require('./plugins/vite.ssg');
 
-const {
-  createViteConfig,
-  extendViteConfig,
-  mergeViteConfig,
-} = requireFromApp('@quasar/app-vite/lib/config-tools.js');
+const { createViteConfig, extendViteConfig, mergeViteConfig } = requireFromApp(
+  '@quasar/app-vite/lib/config-tools.js',
+);
 const pwaConfig = requireFromApp('@quasar/app-vite/lib/modes/pwa/pwa-config');
 const quasarVitePluginPwaResources = requireFromApp(
   '@quasar/app-vite/lib/modes/pwa/vite-plugin.pwa-resources',
@@ -41,10 +39,12 @@ module.exports = {
     // dev has js entry-point, while prod has index.html
     if (quasarConf.ctx.dev) {
       cfg.build.rollupOptions = cfg.build.rollupOptions || {};
-      cfg.build.rollupOptions.input = appPaths.resolve.app('.quasar/client-entry.js');
+      cfg.build.rollupOptions.input = appPaths.resolve.app(
+        '.quasar/client-entry.js',
+      );
     }
 
-    cfg.plugins.push(ssgVitePlugin('ssr-client', quasarConf.ctx.dev));
+    cfg.plugins.push(ssgVitePlugin(quasarConf, 'ssr-client'));
 
     return extendViteConfig(cfg, quasarConf, { isClient: true });
   },
@@ -78,7 +78,7 @@ module.exports = {
       },
     });
 
-    cfg.plugins.push(ssgVitePlugin('ssr-server', quasarConf.ctx.dev));
+    cfg.plugins.push(ssgVitePlugin(quasarConf, 'ssr-server'));
 
     return extendViteConfig(cfg, quasarConf, { isServer: true });
   },
@@ -99,7 +99,9 @@ module.exports = {
     const promise = pwaConfig.customSw(quasarConf);
 
     return promise.then((cfg) => {
-      cfg.define['process.env.PWA_FALLBACK_HTML'] = JSON.stringify(quasarConf.ssg.fallback);
+      cfg.define['process.env.PWA_FALLBACK_HTML'] = JSON.stringify(
+        quasarConf.ssg.fallback,
+      );
 
       if (quasarConf.ctx.dev) {
         const customSWEnsureSSGModePlugin = require('./plugins/esbuild.custom-sw-ensure-ssg-mode');
