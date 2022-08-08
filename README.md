@@ -934,6 +934,18 @@ This [blog post](https://developer.chrome.com/blog/font-display/#which-font-disp
 >
 > With the help of the [unicode-range](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/unicode-range) css descriptor the browser will download latin and/or latin-ext variants depending on the characters used in the page.
 
+#### `autoImportSvgIcons`
+
+:new: _Added in [v4.5.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.4.0...v4.5.0)_
+
+Type: `Boolean`
+
+Default: `true`
+
+Auto import svg icons from @quasar/extras package.
+
+> Notes: For better performance when compiling the application, only icons from the configured [Quasar Icon Set](https://quasar.dev/options/quasar-icon-sets) are auto imported.
+
 #### `onPageGenerated({ html, route, path })`
 
 Type: `Function`
@@ -997,6 +1009,64 @@ Since the version [v4.0.0](https://github.com/freddy38510/quasar-app-extension-s
 Below [v4.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/tree/v4.0.0), `process.env.STATIC` can be used instead.
 
 It could be useful if multiple builds are mixed with different modes to differentiate runtime procedures.
+
+### Svg Icons
+
+Svg icons are highly recommended for SSG. The extension tries to reduce the disavantage of using svg by [auto importing them](#autoimportsvgicons).
+
+Example:
+
+```js
+// quasar.config.js
+module.exports = configure(function (/* ctx */) {
+  return {
+    // skipped codes...
+    framework: {
+      iconSet: "svg-material-icons",
+    },
+  };
+});
+```
+
+```html
+<!--- default MainLayout.vue --->
+<template>
+  <q-layout view="lHh Lpr lFf">
+    <q-header elevated>
+      <q-toolbar>
+        <!--- matMenu icon is auto imported -->
+        <q-btn
+          flat
+          dense
+          round
+          :icon="matMenu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+        />
+        <!--- skipped code -->
+      </q-toolbar>
+    </q-header>
+  </q-layout>
+</template>
+
+<script>
+  // skipped code...
+
+  const linksList = [
+    {
+      title: "Docs",
+      caption: "quasar.dev",
+      icon: matSchool, // auto imported icon
+      link: "https://quasar.dev",
+    },
+    // skipped code...
+  ];
+
+  export default defineComponent({
+    // skipped code....
+  });
+</script>
+```
 
 ## Infos
 
