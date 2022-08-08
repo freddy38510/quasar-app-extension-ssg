@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [4.5.2](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.1...v4.5.2) (2022-08-08)
+
+
+### Bug Fixes
+
+* **vite:** add stricter check before applying transform to roboto font css file ([522575f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/522575fba94152fedd37bc88374647b664ef4d35))
+* **vite:** do not use replaceAll function not supported by Node.js v14 ([b0dfc47](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b0dfc47e5f441449ab635614157e8e6c99c7c38d))
+
 ### [4.5.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.0...v4.5.1) (2022-08-08)
 
 
