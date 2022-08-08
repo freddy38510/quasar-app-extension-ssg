@@ -168,11 +168,11 @@ function getRobotoFontPlugin(fontDisplayValue) {
     'quasar-app-extension-ssg/roboto-font/roboto-font.css',
   );
 
-  function generateCode(code) {
+  function generateCode(code, idx) {
     return (
       code
         // remove non latin fonts
-        .substring(code.search(latinExtRE))
+        .substring(idx)
         // add font-display property
         .replaceAll(fontFaceRE, (match) => [match, `  font-display: ${fontDisplayValue};`].join('\n'))
     );
@@ -191,7 +191,13 @@ function getRobotoFontPlugin(fontDisplayValue) {
     },
     transform(code, id) {
       if (id === resolvedId) {
-        const magicString = new MagicString(generateCode(code));
+        const idx = code.search(latinExtRE);
+
+        if (idx === -1) {
+          return null;
+        }
+
+        const magicString = new MagicString(generateCode(code, idx));
 
         return {
           code: magicString.toString(),
