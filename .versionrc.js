@@ -1,20 +1,15 @@
 module.exports = {
   bumpFiles: [
     {
-      filename: "demos/quasar-ssg-vite/package.json",
+      filename: "demos/quasar-ssg-vite/.quasar-ssg-version.json",
       updater: {
         readVersion: (contents) => {
-          console.log(
-            JSON.parse(contents).devDependencies["quasar-app-extension-ssg"]
-          );
-          return JSON.parse(contents).devDependencies[
-            "quasar-app-extension-ssg"
-          ];
+          return JSON.parse(contents).version;
         },
         writeVersion: (contents, version) => {
           const json = JSON.parse(contents);
 
-          json.devDependencies["quasar-app-extension-ssg"] = version;
+          json.version = version;
 
           return JSON.stringify(json, null, 2);
         },
