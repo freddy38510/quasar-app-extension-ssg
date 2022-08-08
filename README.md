@@ -282,7 +282,7 @@ module.exports = function (/* ctx */) {
 <details>
   <summary>See all available options</summary>
 
-### `concurrency`
+#### `concurrency`
 
 Type: `Number`
 
@@ -290,7 +290,7 @@ Default: `10`
 
 Page generation is concurrent, `ssg.concurrency` specifies the amount of page generation that runs in one thread.
 
-### `interval`
+#### `interval`
 
 Type: `Number`
 
@@ -303,7 +303,7 @@ Interval in **milliseconds** between two batches of concurrent page generation t
 > This option is intended to be used in conjunction with the `concurrency` option.
 > For example, setting `concurrency` to `10` and `interval` to `5000` will execute the generation of 10 pages in parallel every 5 seconds.
 
-### `routes`
+#### `routes`
 
 Type: `String[]` or `Function`
 
@@ -379,7 +379,7 @@ module.exports = function (/* ctx */) {
 };
 ```
 
-### `includeStaticRoutes`
+#### `includeStaticRoutes`
 
 :new: _Added in [v4.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.4.0...v4.0.0)_
 
@@ -391,7 +391,7 @@ Include the application's router static routes to generate the corresponding pag
 
 > Note: In case of warnings issued when initializing routes, this option can be disabled. Then the `crawler` feature and the `ssg.routes` options can be used to provide the static and dynamic routes.
 
-### `distDir`
+#### `distDir`
 
 :new: _Added in [v4.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.1.1...v4.2.0)_
 
@@ -401,7 +401,7 @@ Default: `'<project-folder>/dist/ssg'`
 
 Folder where the extension should generate the distributables. Relative path to project root directory.
 
-### `buildDir`
+#### `buildDir`
 
 Type: `String`
 
@@ -409,7 +409,7 @@ Default: `'<project-folder>/node_modules/.cache/quasar-app-extension-ssg'` or `'
 
 The webpack compilation output folder from where the extension can prerender pages.
 
-### `cache`
+#### `cache`
 
 Type: `Object` or `false`
 
@@ -465,7 +465,7 @@ This option caches the compilation output folder and skips recompilation when no
 
 - `globbyOptions` can be used to add [globby options](https://github.com/sindresorhus/globby#options).
 
-### `fallback`
+#### `fallback`
 
 Type: `String`
 
@@ -479,7 +479,7 @@ The name of the SPA/PWA fallback file intended to be served when an index.html f
 > - This file is created with the webpack plugin [`html-webpack-plugin`](https://github.com/jantimon/html-webpack-plugin) via [this Quasar file](https://github.com/quasarframework/quasar/blob/dev/app-webpack/lib/webpack/inject.html.js). It can be extended with some [plugins](https://github.com/jantimon/html-webpack-plugin#plugins).
 > - Multiple services (e.g. Netlify, Vercel) detect a 404.html automatically. For custom web server, an error page must be set up and set to the 404.html file.
 
-### `crawler`
+#### `crawler`
 
 :new: _Added in [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0)_
 
@@ -489,7 +489,7 @@ Default: `true`
 
 Crawls html links as each page is generated to find dynamic and static routes to add to the page generation queue.
 
-### `exclude`
+#### `exclude`
 
 :new: _Added in [v2.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v1.2.0...v2.0.0)_
 
@@ -515,7 +515,7 @@ ssg: {
 }
 ```
 
-### `shouldPreload(file, type, ext, isLazilyHydrated)`
+#### `shouldPreload(file, type, ext, isLazilyHydrated)`
 
 :new: _Added in [v3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0)_
 
@@ -547,7 +547,7 @@ ssg: {
 }
 ```
 
-### `shouldPrefetch(file, type, ext, isLazilyHydrated)`
+#### `shouldPrefetch(file, type, ext, isLazilyHydrated)`
 
 :new: _Added in [v3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0)_
 
@@ -557,7 +557,7 @@ A function to control what files should have <link rel="prefetch"> resource hint
 
 By default no assets will be prefetched. However this is possible to customize what to prefetch in order to better control bandwidth usage. This option expects the same function signature as shouldPreload.
 
-### `inlineCriticalCss`
+#### `inlineCriticalCss`
 
 Type: `Boolean` or `Object`
 
@@ -582,7 +582,7 @@ ssg: {
 >
 > The value is forced to `false` when using the [dev](#dev) command.
 
-### `inlineCssFromSFC`
+#### `inlineCssFromSFC`
 
 :new: _Added in [v3.3.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v3.2.1...v3.3.0)_
 
@@ -598,7 +598,7 @@ Note: This option works even if build.extractCSS is set to `true` in quasar.conf
 >
 > The value is forced to `true` when using the [dev](#dev) command.
 
-### `onRouteRendered(html, route, distDir)`
+#### `onRouteRendered(html, route, distDir)`
 
 Type: `Function`
 
@@ -608,7 +608,7 @@ This function must return the html string.
 
 Can use async/await or directly return a Promise.
 
-### `afterGenerate(files, distDir)`
+#### `afterGenerate(files, distDir)`
 
 Type: `Function`
 
@@ -625,7 +625,7 @@ Can use async/await or directly return a Promise.
 <details>
   <summary>See all available options</summary>
 
-### `concurrency`
+#### `concurrency`
 
 Type: `Number`
 
@@ -633,7 +633,7 @@ Default: `10`
 
 Page generation is concurrent, `ssg.concurrency` specifies the amount of page generation that runs in one thread.
 
-### `interval`
+#### `interval`
 
 Type: `Number`
 
@@ -646,7 +646,7 @@ Interval in **milliseconds** between two batches of concurrent page generation t
 > This option is intended to be used in conjunction with the `concurrency` option.
 > For example, setting `concurrency` to `10` and `interval` to `5000` will execute the generation of 10 pages in parallel every 5 seconds.
 
-### `routes`
+#### `routes`
 
 Type: `String[]` or `Function`
 
@@ -722,7 +722,7 @@ module.exports = function (/* ctx */) {
 };
 ```
 
-### `includeStaticRoutes`
+#### `includeStaticRoutes`
 
 Type: `Boolean`
 
@@ -732,7 +732,7 @@ Include the application's router static routes to generate the corresponding pag
 
 > Note: In case of warnings issued when initializing routes, this option can be disabled. Then the [`crawler`](#crawler) feature and the [`ssg.routes`](#routes) options can be used to provide the static and dynamic routes.
 
-### `distDir`
+#### `distDir`
 
 Type: `String`
 
@@ -740,7 +740,7 @@ Default: `'<project-folder>/dist/ssg'`
 
 Folder where the extension should generate the distributables. Relative path to project root directory.
 
-### `compilationDir`
+#### `compilationDir`
 
 Type: `String`
 
@@ -748,7 +748,7 @@ Default: `'<project-folder>/node_modules/.cache/quasar-app-extension-ssg'` or `'
 
 The Vite compilation output folder from where the extension can prerender pages.
 
-### `cache`
+#### `cache`
 
 Type: `Object` or `false`
 
@@ -804,7 +804,7 @@ This option caches the compilation output folder and skips recompilation when no
 
 - `globbyOptions` can be used to add [globby options](https://github.com/sindresorhus/globby#options).
 
-### `fallback`
+#### `fallback`
 
 Type: `String`
 
@@ -818,7 +818,7 @@ The name of the SPA/PWA fallback file intended to be served when an index.html f
 > - This file is created with the webpack plugin [`html-webpack-plugin`](https://github.com/jantimon/html-webpack-plugin) via [this Quasar file](https://github.com/quasarframework/quasar/blob/dev/app-webpack/lib/webpack/inject.html.js). It can be extended with some [plugins](https://github.com/jantimon/html-webpack-plugin#plugins).
 > - Multiple services (e.g. Netlify, Vercel) detect a 404.html automatically. For custom web server, an error page must be set up and set to the 404.html file.
 
-### `crawler`
+#### `crawler`
 
 Type: `Boolean`
 
@@ -826,7 +826,7 @@ Default: `true`
 
 Crawls html links as each page is generated to find dynamic and static routes to add to the page generation queue.
 
-### `exclude`
+#### `exclude`
 
 Type: `String[] | Regexp[]`
 
@@ -850,7 +850,7 @@ ssg: {
 }
 ```
 
-### `shouldPreload({ file, type, extension, isLazilyHydrated })`
+#### `shouldPreload({ file, type, extension, isLazilyHydrated })`
 
 Type: `Function`
 
@@ -885,7 +885,7 @@ ssg: {
 }
 ```
 
-### `shouldPrefetch({ file, type, extension, isLazilyHydrated })`
+#### `shouldPrefetch({ file, type, extension, isLazilyHydrated })`
 
 Type: `Function`
 
@@ -893,7 +893,7 @@ A function to control what files should have <link rel="prefetch"> resource hint
 
 By default no assets will be prefetched. However this is possible to customize what to prefetch in order to better control bandwidth usage. This option expects the same function signature as shouldPreload.
 
-### `inlineCriticalCss`
+#### `inlineCriticalCss`
 
 Type: `Boolean` or `Object`
 
@@ -918,7 +918,23 @@ ssg: {
 >
 > The value is forced to `false` when using the [dev](#dev) command.
 
-### `onPageGenerated({ html, route, path })`
+#### `robotoFontDisplay`
+
+:new: _Added in [v4.5.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.4.0...v4.5.0)_
+
+Type: `String`
+
+Default: `'Optional'`
+
+Set the font-display css descriptor of Roboto font imported from @quasar/extras package.
+
+This [blog post](https://developer.chrome.com/blog/font-display/#which-font-display-is-right-for-you) from the Chrome Developers website can help to choose the best value.
+
+> Notes: The Roboto font imported from @quasar/extras package is replaced by its [woff2](https://www.w3.org/TR/WOFF2/) version (instead of [woff](https://www.w3.org/TR/WOFF/)) which reduces its weight by half.
+>
+> With the help of the [unicode-range](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/unicode-range) css descriptor the browser will download latin and/or latin-ext variants depending on the characters used in the page.
+
+#### `onPageGenerated({ html, route, path })`
 
 Type: `Function`
 
@@ -954,7 +970,7 @@ ssg: {
 }
 ```
 
-### `afterGenerate(files, distDir)`
+#### `afterGenerate(files, distDir)`
 
 Type: `Function`
 
