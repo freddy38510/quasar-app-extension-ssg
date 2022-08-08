@@ -2,6 +2,7 @@
 
 const path = require('path');
 const { default: MagicString } = require('magic-string');
+const { vite: autoImportPlugin } = require('unplugin-auto-import');
 const { requireFromApp } = require('../helpers/packages');
 const getHash = require('../helpers/get-hash');
 const appPaths = require('../app-paths');
@@ -202,12 +203,47 @@ function getRobotoFontPlugin(fontDisplayValue) {
     },
   };
 }
+
+/**
+ * Auto import svg icons from @quasar/extras package.
+ *
+ * For better performance only icons from the configured Quasar Icon Set are auto imported.
+ * @see https://quasar.dev/vue-components/icon#svg-usage
+ */
+function getAutoImportSvgIconsPlugin(iconSet) {
+  if (!iconSet.startsWith('svg')) {
+    return {};
+  }
+
+  const idx = 'svg-'.length;
+  const iconSetPath = `@quasar/extras/${iconSet.substring(idx)}`;
+
+  const { dir, name } = path.parse(iconSetPath);
+
+  const quasarIconSetPath = path.join(dir, name);
+
+  return autoImportPlugin({
+    imports: [
+      {
+        [quasarIconSetPath]: requireFromApp(
+          path.join(quasarIconSetPath, 'icons.json'),
+        ),
+      },
+    ],
+    vueTemplate: true,
+  });
+}
+
 module.exports.cssLangRE = cssLangRE;
 
 module.exports.plugin = function QuasarSSGVitePlugin(quasarConf, runMode) {
   const plugins = [
     getRobotoFontPlugin(quasarConf.ssg.robotoFontDisplay),
   ];
+
+  if (quasarConf.ssg.autoImportSvgIcons !== false) {
+    plugins.push(getAutoImportSvgIconsPlugin(quasarConf.framework.iconSet));
+  }
 
   if (quasarConf.ctx.dev) {
     if (runMode === 'ssr-server') {
