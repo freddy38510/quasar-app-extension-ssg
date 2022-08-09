@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [4.5.5](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.4...v4.5.5) (2022-08-09)
+
+
+### Bug Fixes
+
+* **ssg-corrections:** stop adding wrong class to body tag for non ios/android mobile platforms ([ad39af5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/ad39af56d5bdd91bd9ca7f75dbbfec8a99168378)), closes [#279](https://github.com/freddy38510/quasar-app-extension-ssg/issues/279)
+
 ### [4.5.4](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.3...v4.5.4) (2022-08-09)
 
 
