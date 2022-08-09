@@ -1,0 +1,30 @@
+name: Update demos deps
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  run:
+    name: Update demos dependencies
+    if: contains(github.event.head_commit.message, 'chore(release)')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Update dependencies
+        run: yarn --cwd demos/quasar-ssg-vite upgrade
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: freddy38510
+          author_email: freddy.escobar88@gmail.com
+          message: "chore(demos-deps): bump dependencies"
+          add: "demos/quasar-ssg-vite"
