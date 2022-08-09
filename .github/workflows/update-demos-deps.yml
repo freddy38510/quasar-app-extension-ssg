@@ -12,19 +12,22 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 14
+          cache: "yarn"
 
       - name: Update dependencies
         run: yarn --cwd demos/quasar-ssg-vite upgrade
 
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
         with:
-          author_name: freddy38510
-          author_email: freddy.escobar88@gmail.com
-          message: "chore(demos-deps): bump dependencies"
-          add: "demos/quasar-ssg-vite"
+          add-paths: demos/quasar-ssg-vite
+          commit-message: "chore(demos-deps): bump dependencies"
+          branch: demos/update-deps
+          title: update demos deps
