@@ -7,7 +7,7 @@ on:
 jobs:
   run:
     name: Update demos dependencies
-    if: contains(github.event.head_commit.message, 'chore(release)')
+    if: ${{ (github.event_name == 'workflow_dispatch') || (contains(github.event.head_commit.message, 'chore(release)')) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
