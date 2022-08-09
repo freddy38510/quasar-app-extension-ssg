@@ -3925,7 +3925,7 @@ qs@6.10.3:
     side-channel "^1.0.4"
 
 "quasar-app-extension-ssg@file:../..":
-  version "4.5.3"
+  version "4.5.4"
   dependencies:
     "@freddy38510/vue-loader" "17.1.0"
     "@freddy38510/vue-style-loader" "4.2.0"
