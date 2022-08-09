@@ -38,7 +38,6 @@ function extendQuasarConf(conf) {
       join(conf.ssg.compilationDir, '/**'),
       join(conf.build.distDir, '/**'),
       'dist/**',
-      'public/**',
       'src-ssr/**',
       'src-cordova/**',
       'src-electron/**',
