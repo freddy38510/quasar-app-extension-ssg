@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [4.5.4](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.3...v4.5.4) (2022-08-09)
+
+
+### Bug Fixes
+
+* **vite:** remove public folder from ignored tracked files list for compilation caching ([6d0abe0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/6d0abe05f12267224fe5fe3f43f6665ffd1bbf5b))
+
 ### [4.5.3](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.2...v4.5.3) (2022-08-08)
 
 
