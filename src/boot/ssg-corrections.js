@@ -9,7 +9,7 @@ function getMobilePlatform(is) {
     return 'android';
   }
 
-  return '';
+  return void 0;
 }
 
 export default ({ app }) => {
