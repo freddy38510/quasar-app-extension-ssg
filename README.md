@@ -761,7 +761,6 @@ Default:
     join(conf.ssg.compilationDir, '/**'), // node_modules/.cache/quasar-app-extension-ssg
     join(conf.build.distDir, '/**'),
     'dist/**',
-    'public/**',
     'src-ssr/**',
     'src-cordova/**',
     'src-electron/**',
