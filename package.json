@@ -58,7 +58,7 @@
     "jiti": "1.14.0",
     "magic-string": "0.26.2",
     "minimist": "1.2.6",
-    "node-html-parser": "5.3.3",
+    "node-html-parser": "5.4.1",
     "open": "8.4.0",
     "pify": "5.0.0",
     "pony-cause": "2.1.1",
