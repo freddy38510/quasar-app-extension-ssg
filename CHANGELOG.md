@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [4.5.6](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.5...v4.5.6) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency beastcss to v1.1.1 ([#286](https://github.com/freddy38510/quasar-app-extension-ssg/issues/286)) ([0f1d9f4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/0f1d9f49ddd379cf7181a75f45ff029318cdf06b))
+* **deps:** update dependency node-html-parser to v5.4.1 ([#281](https://github.com/freddy38510/quasar-app-extension-ssg/issues/281)) ([ee155a0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/ee155a0babb50ee1022b977a6641f78ed9eeddd3))
+
 ### [4.5.5](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.4...v4.5.5) (2022-08-09)
 
 
