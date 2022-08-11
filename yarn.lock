@@ -1797,10 +1797,10 @@ commander@^2.19.0, commander@^2.20.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-commit-and-tag-version@10.0.1:
-  version "10.0.1"
-  resolved "https://registry.yarnpkg.com/commit-and-tag-version/-/commit-and-tag-version-10.0.1.tgz#c203b355e07adb45eb7b3c08955d28f6c9f78d8f"
-  integrity sha512-LC+0L9HInxmNd9yp1GVuz5FOtQJP6hteofHC36FaRAniaaWaN7LzP4BDKxsxw7AkH3l4akWglpNICv8YUbyHsQ==
+commit-and-tag-version@10.1.0:
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/commit-and-tag-version/-/commit-and-tag-version-10.1.0.tgz#48b45cc3e533343b3c9c33649eeb97bd1d5659e6"
+  integrity sha512-np3lR90bqFfOmxJtgqQc5UVBKFNdO06fRRTZm128QhEQ/ilXm3s/PXxZWheq2PUn5Qac2z+dWJJa+OqjxYsOpA==
   dependencies:
     chalk "^2.4.2"
     conventional-changelog "3.1.25"
