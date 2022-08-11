@@ -1091,10 +1091,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@freddy38510/dropcss@2.3.2":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@freddy38510/dropcss/-/dropcss-2.3.2.tgz#432036af1e1a64bd5275c9b0b9237c07f8a781bb"
-  integrity sha512-1PY+W3Lflv/KfSTVRn7obWfUqA/3Nn9G/tjA9N2E0UQlWKEBGutD1TPc4//wsom47RbqppK58I9TIuXtWcu+AQ==
+"@freddy38510/dropcss@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@freddy38510/dropcss/-/dropcss-2.4.0.tgz#92ec225f1142117f9385896fdb6e5e365409fdf5"
+  integrity sha512-ZQIWUj9YzJpQNsjDvIPeM+Di3SQcr+2mNJIk0fxRFqKDI6PmEZiCS+Y9r+6W2K8MxuaIyl9WD4TSlzsTe7dqQQ==
 
 "@freddy38510/vue-loader@17.1.0":
   version "17.1.0"
@@ -1522,15 +1522,15 @@ base64-js@^1.3.1:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
-beastcss@1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.0.7.tgz#a69ddcb6d9a32dc2b6bf1695e8b0f0d6a33146de"
-  integrity sha512-NHnKD90qu8wrOvpyyzsAhcFXhKzKj8D3n8VI2d/CKIBdNRJnkKN9Y7aoY6TePSomtYMOJ/VNmHbOalzvBPCmRg==
+beastcss@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.1.1.tgz#b29b0972577edeceb1653544b64d69270ec46fac"
+  integrity sha512-wiVgJHzCWby7VYtpqxWryfF5Tr+sP8TkMe76mujGVYcZ06VCLP4Q2/G9qNrSCR7msk6hFysx8iTaTCAQt0duYQ==
   dependencies:
-    "@freddy38510/dropcss" "2.3.2"
+    "@freddy38510/dropcss" "2.4.0"
     chalk "4.1.2"
     fast-glob "3.2.11"
-    node-html-parser "5.2.0"
+    node-html-parser "5.4.1"
 
 big.js@^5.2.2:
   version "5.2.2"
@@ -2160,7 +2160,7 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-css-select@^4.1.3, css-select@^4.2.1:
+css-select@^4.2.1:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/css-select/-/css-select-4.3.0.tgz#db7129b2846662fd8628cfc496abb2b59e41529b"
   integrity sha512-wPpOYtnsVontu2mODhA19JrqWxNsfdatRKd64kmpRbQgh1KtItko5sTnEpPdpSaJszTOhEMlF/RPz28qj4HqhQ==
@@ -3995,14 +3995,6 @@ node-forge@^1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.3.1.tgz#be8da2af243b2417d5f646a770663a92b7e9ded3"
   integrity sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==
-
-node-html-parser@5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/node-html-parser/-/node-html-parser-5.2.0.tgz#6f29fd00d79f65334e7e20200964644207925607"
-  integrity sha512-fmiwLfQu+J2A0zjwSEkztSHexAf5qq/WoiL/Hgo1K7JpfEP+OGWY5maG0kGaM+IFVdixF/1QbyXaQ3h4cGfeLw==
-  dependencies:
-    css-select "^4.1.3"
-    he "1.2.0"
 
 node-html-parser@5.4.1:
   version "5.4.1"
