@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [4.5.7](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.6...v4.5.7) (2022-08-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency beastcss to v1.2.0 ([#289](https://github.com/freddy38510/quasar-app-extension-ssg/issues/289)) ([33d4824](https://github.com/freddy38510/quasar-app-extension-ssg/commit/33d4824edfd161e9c8d79a925914e6d89e959256))
+* **deps:** update dependency pony-cause to v2.1.2 ([#291](https://github.com/freddy38510/quasar-app-extension-ssg/issues/291)) ([e6e2d57](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e6e2d57f37597e7005b559d5bbdf82a7787890c7))
+
 ### [4.5.6](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.5...v4.5.6) (2022-08-11)
 
 
