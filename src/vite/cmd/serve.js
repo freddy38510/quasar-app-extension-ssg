@@ -333,7 +333,7 @@ function getServer() {
     fakeCert = fs.readFileSync(certPath);
   }
 
-  return requireFromApp('https').createServer({
+  return require('https').createServer({
     key: key || fakeCert,
     cert: cert || fakeCert,
   }, app);
