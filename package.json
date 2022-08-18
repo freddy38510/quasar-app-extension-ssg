@@ -5,6 +5,9 @@
   "author": "freddy38510 <freddyescobar@hotmail.fr>",
   "license": "MIT",
   "main": "src/index.js",
+  "files": [
+    "src/"
+  ],
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
     "release": "HUSKY=0 standard-version",
