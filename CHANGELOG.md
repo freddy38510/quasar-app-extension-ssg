@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [4.5.8](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.7...v4.5.8) (2022-08-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency beastcss to v1.2.1 ([#296](https://github.com/freddy38510/quasar-app-extension-ssg/issues/296)) ([e5818b8](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e5818b804f5d9840b512537ce16649356fc2be14))
+* **vite:serve:** use built-in https Node.js module instead of obsolete https package ([ba0e8e7](https://github.com/freddy38510/quasar-app-extension-ssg/commit/ba0e8e7d41186c3aab24fc93b1ffd7595458a07b)), closes [#295](https://github.com/freddy38510/quasar-app-extension-ssg/issues/295)
+* **vite:** prevent preFetch from throwing error with new vue-router v4.1.0 ([e52470f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e52470fddaa8972e07f51dcf353cc5b115b1518b))
+* **webpack:** prevent preFetch from throwing error with new vue-router v4.1.0 ([3afabc3](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3afabc39804175b576aec40758ce18ee58425b03))
+
 ### [4.5.7](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.6...v4.5.7) (2022-08-14)
 
 
