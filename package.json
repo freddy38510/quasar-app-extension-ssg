@@ -5,6 +5,10 @@
   "author": "freddy38510 <freddyescobar@hotmail.fr>",
   "license": "MIT",
   "main": "src/index.js",
+  "files": [
+    "src/",
+    "roboto-font/"
+  ],
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
     "build:roboto-font": "node build-roboto-font.js",
