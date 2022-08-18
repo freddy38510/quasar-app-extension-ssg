@@ -1,12 +1,8 @@
-const { log } = require('./logger');
-
 module.exports = function promisifyRoutes(fn, ...args) {
   // If routes is an array
   if (Array.isArray(fn)) {
     return Promise.resolve(fn);
   }
-
-  log('Preparing routes to generate...');
 
   // If routes is a function expecting a callback
   if (fn.length === arguments.length) {
