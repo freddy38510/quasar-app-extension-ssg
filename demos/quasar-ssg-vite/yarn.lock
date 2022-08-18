@@ -1562,10 +1562,10 @@ base64-js@^1.3.1:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
-beastcss@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.2.0.tgz#fea63ccc39f0f3fc247354b8007b73b6787ee358"
-  integrity sha512-ROMIHMASs5fU6U+/pqTuWL3lbWJFsTiNLtSGVILiojzVbt49ykT+zE+pKOJXDjcPXFQIuDemFdEDBzYYrfpCdg==
+beastcss@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.2.1.tgz#99d2e9ea87131f91201221bc50bae54d5bab6a74"
+  integrity sha512-fvB17Lk+i8Oz+GNjoYLFl7XXEfLbpMbynt76F6SVmgyIWpo0dph4bWCy8qGNf0+nfOl1QYH5Qzv5cEI90CHi8g==
   dependencies:
     "@freddy38510/dropcss" "2.4.0"
     chalk "4.1.2"
@@ -3913,11 +3913,11 @@ qs@6.10.3:
     side-channel "^1.0.4"
 
 "quasar-app-extension-ssg@file:../..":
-  version "4.5.7"
+  version "4.5.8"
   dependencies:
     "@freddy38510/vue-loader" "17.1.0"
     "@freddy38510/vue-style-loader" "4.2.0"
-    beastcss "1.2.0"
+    beastcss "1.2.1"
     chalk "4.1.2"
     ci-info "3.3.2"
     compression "1.7.4"
