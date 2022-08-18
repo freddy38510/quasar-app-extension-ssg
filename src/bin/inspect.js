@@ -102,7 +102,7 @@ async function inspect() {
   let cfgEntries = getCfgEntries(quasarConfFile.webpackConf);
 
   if (argv.path) {
-    const dot = require('dot-prop');
+    const dot = requireFromApp('dot-prop');
     cfgEntries = cfgEntries.map((cfgEntry) => ({
       name: cfgEntry.name,
       webpackCfg: dot.get(cfgEntry.webpackCfg, argv.path),
