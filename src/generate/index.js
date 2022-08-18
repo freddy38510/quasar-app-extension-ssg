@@ -105,9 +105,11 @@ module.exports = async (quasarConf) => {
   }
 
   if (typeof quasarConf.ssg.afterGenerate === 'function') {
-    const glob = require('glob');
+    const esmRequire = require('jiti')(__filename);
 
-    const files = glob.sync('**/*.html', {
+    const { globbySync } = esmRequire('globby');
+
+    const files = globbySync('**/*.html', {
       cwd: quasarConf.ssg.__distDir,
       absolute: true,
     });
