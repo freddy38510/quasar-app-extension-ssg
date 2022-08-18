@@ -34,11 +34,6 @@ async function getWebpackConfig(chain, cfg, {
     await cfgExtendBase.extendWebpack(webpackConfig, invokeParams);
   }
 
-  if (hot && cfg.ctx.dev && cfg.devServer.hot) {
-    // tap entries for HMR
-    require('webpack-dev-server').addDevServerEntrypoints(webpackConfig, cfg.devServer);
-  }
-
   return webpackConfig;
 }
 
