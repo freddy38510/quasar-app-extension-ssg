@@ -4,7 +4,7 @@ import { fromSSR, client } from 'quasar/src/plugins/Platform';
 function getMobilePlatform(is) {
   if (is.ios === true) return 'ios';
   if (is.android === true) return 'android';
-  return '';
+  return void 0;
 }
 
 export default ({ app }) => {
