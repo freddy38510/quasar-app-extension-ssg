@@ -7,7 +7,6 @@ const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions
 
 async function getWebpackConfig(chain, cfg, {
   name,
-  hot,
   cfgExtendBase = cfg.build,
   hookSuffix = '',
   invokeParams,
