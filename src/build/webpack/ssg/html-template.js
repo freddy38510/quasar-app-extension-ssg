@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable no-param-reassign */
 const { hasPackage } = require('../../../helpers/packages');
 const requireFromApp = require('../../../helpers/require-from-app');
 

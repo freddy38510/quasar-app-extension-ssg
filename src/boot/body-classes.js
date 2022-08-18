@@ -1,5 +1,5 @@
 /* eslint-disable no-void */
-import { fromSSR, client } from 'quasar/src/plugins/Platform.js';
+import { fromSSR, client } from 'quasar/src/plugins/Platform';
 
 function getMobilePlatform(is) {
   if (is.ios === true) return 'ios';

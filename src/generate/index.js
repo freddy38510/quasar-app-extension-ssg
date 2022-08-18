@@ -89,7 +89,7 @@ module.exports = async (quasarConf) => {
   }
 
   if (quasarConf.ctx.mode.pwa) {
-    const buildWorkbox = require('./workbox.js');
+    const buildWorkbox = require('./workbox');
 
     try {
       await buildWorkbox(quasarConf);

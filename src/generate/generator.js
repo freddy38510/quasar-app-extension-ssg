@@ -156,8 +156,6 @@ class Generator {
 
     // push routes to queue
     routes.forEach((route) => {
-      route = decodeURI(route);
-
       // Add routes to the tracked generated routes (for crawler)
       this.generatedRoutes.add(route);
 
@@ -284,14 +282,12 @@ class Generator {
     this.beastcssLogs[route] = [];
 
     try {
-      html = await this.beastcss.process(html, route);
+      return await this.beastcss.process(html, route);
     } catch (e) {
       e.message = `Could not inline critical css\n\n${e.message}`;
 
       throw e;
     }
-
-    return html;
   }
 
   createBeastcssLogger() {
