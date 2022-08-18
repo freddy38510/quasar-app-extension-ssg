@@ -55,7 +55,6 @@
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
     "html-minifier": "4.0.0",
-    "https": "1.0.0",
     "jiti": "1.14.0",
     "minimist": "1.2.6",
     "node-html-parser": "5.4.1",
