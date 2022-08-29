@@ -67,8 +67,8 @@
     "workbox-build": "6.5.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.0.3",
-    "@commitlint/config-conventional": "17.0.3",
+    "@commitlint/cli": "17.1.2",
+    "@commitlint/config-conventional": "17.1.0",
     "commit-and-tag-version": "10.1.0",
     "commitizen": "4.2.5",
     "cz-conventional-changelog": "3.3.0",
