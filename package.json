@@ -57,7 +57,7 @@
     "html-minifier": "4.0.0",
     "jiti": "1.14.0",
     "minimist": "1.2.6",
-    "node-html-parser": "5.4.1",
+    "node-html-parser": "5.4.2",
     "open": "8.4.0",
     "pify": "5.0.0",
     "route-cache": "0.4.7",
