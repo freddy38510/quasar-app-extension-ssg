@@ -8,6 +8,8 @@ const QuasarConfFile = requireFromApp(
   '@quasar/app-vite/lib/quasar-config-file',
 );
 
+const { searchForWorkspaceRoot } = requireFromApp('vite');
+
 const { merge } = requireFromApp('webpack-merge');
 
 function getUniqueArray(original) {
@@ -87,6 +89,14 @@ function extendQuasarConf(conf) {
 
   // Replace pwa html file by fallback html file
   conf.ssr.ssrPwaHtmlFilename = conf.ssg.fallback;
+
+  // In case if the app extension package is linked (yarn link) while developing it
+  // make sure to allow to serve roboto font files.
+  conf.devServer.fs.allow = conf.devServer.fs.allow || [];
+  conf.devServer.fs.allow.push(
+    searchForWorkspaceRoot(process.cwd()),
+    join(__dirname, '../../roboto-font/web-font/'),
+  );
 }
 
 module.exports = class ExtendedQuasarConfFile extends QuasarConfFile {

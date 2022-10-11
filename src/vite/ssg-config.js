@@ -32,6 +32,10 @@ module.exports = {
       },
     });
 
+    // In case if the app extension package is linked (yarn link) while developing it
+    // make sure to resolve the path correctly.
+    cfg.resolve.alias['quasar/src/plugins/Platform'] = appPaths.resolve.app('node_modules/quasar/src/plugins/Platform');
+
     if (quasarConf.ssr.pwa === true) {
       cfg.plugins.push(quasarVitePluginPwaResources(quasarConf));
     }
