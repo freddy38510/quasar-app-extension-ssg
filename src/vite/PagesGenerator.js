@@ -72,6 +72,10 @@ class PagesGenerator {
         try {
           const { html, path } = await this.generatePage(route);
 
+          if (!html) {
+            return;
+          }
+
           await fs.mkdir(dirname(path), { recursive: true });
 
           await fs.writeFile(path, html, 'utf8');
@@ -163,7 +167,7 @@ class PagesGenerator {
     let userRoutes = ['/'];
     let staticRoutes = ['/'];
 
-    const done = progress('Initializing ___ in progress...', 'routes');
+    const done = progress('Initializing ___ in progress...', 'route(s)');
 
     if (this.#opts.crawler) {
       info(
@@ -227,7 +231,7 @@ class PagesGenerator {
     html = await this.#renderPage(route);
 
     if (html === null) {
-      return html;
+      return { html };
     }
 
     if (this.#opts.crawler) {
