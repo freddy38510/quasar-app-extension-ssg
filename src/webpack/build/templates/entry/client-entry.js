@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable no-void */
+/* eslint-disable no-underscore-dangle */
 /**
  * THIS FILE IS GENERATED AUTOMATICALLY.
  * DO NOT EDIT.
@@ -14,13 +17,17 @@ import { createSSRApp, createApp } from 'vue';
 
 <% const bootEntries = boot.filter((asset) => asset.client !== false) %>
 
-<% extras.length > 0 && extras.filter((asset) => asset).forEach((asset) => { %>
+<% if (extras.length > 0) { %>
+<% extras.filter((asset) => asset).forEach((asset) => { %>
 import '@quasar/extras/<%= asset %>/<%= asset %>.css';
 <% }) %>
+<% } %>
 
-<% animations.length > 0 && animations.filter((asset) => asset).forEach((asset) => { %>
+<% if (animations.length > 0) { %>
+<% animations.filter((asset) => asset).forEach((asset) => { %>
 import '@quasar/extras/animate/<%= asset %>.css';
 <% }) %>
+<% } %>
 
 // We load Quasar stylesheet file
 import 'quasar/dist/quasar.<%= __css.quasarSrcExt %>';
@@ -30,19 +37,22 @@ import 'quasar/dist/quasar.<%= __css.quasarSrcExt %>';
 import 'quasar/src/css/flex-addon.sass';
 <% } %>
 
-<% css.length > 0 && css.filter((asset) => asset.client !== false).forEach((asset) => { %>
+<% if (css.length > 0) { %>
+<% css.filter((asset) => asset.client !== false).forEach((asset) => { %>
 import '<%= asset.path %>';
 <% }) %>
+<% } %>
 
-import createQuasarApp, { ssrIsRunningOnClientPWA } from './app.js';
-import quasarUserOptions from './quasar-user-options.js';
+import { createQuasarApp, ssrIsRunningOnClientPWA } from './app';
+// eslint-disable-next-line import/extensions
+import quasarUserOptions from './quasar-user-options';
 
 <% if (ctx.mode.pwa) { %>
 import 'app/<%= sourceFiles.registerServiceWorker %>';
 <% } %>
 
 <% if (preFetch) { %>
-import { addPreFetchHooks } from './client-prefetch.js';
+import { addPreFetchHooks } from './client-prefetch';
 <% } %>
 
 <% if (ctx.dev) { %>
@@ -60,16 +70,21 @@ if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && window.n
 <% } %>
 
 const publicPath = `<%= build.publicPath %>`;
-<% if (build.publicPath.length > 1) { %>
+<% if (build.publicPath.length > 1 && bootEntries.length > 0) { %>
 const doubleSlashRE = /\/\//;
 const addPublicPath = (url) => (publicPath + url).replace(doubleSlashRE, '/');
 <% } %>
 
-async function start ({
+async function start({
   app,
-  router
-  <%= store ? `, store${__storePackage === 'vuex' ? ', storeKey' : ''}` : '' %>
-}<%= bootEntries.length > 0 ? ', bootFiles' : '' %>) {
+  router,
+  <% if (store) { %>
+  store,
+  <% } %>
+  <% if (store && __storePackage === 'vuex') { %>
+  storeKey,
+  <% } %>
+}<% if (bootEntries.length > 0) { %>, bootFiles<% } %>) {
   <% if (store && __storePackage === 'vuex' && ssr.manualStoreHydration !== true) { %>
   // prime the store with server-initialized state.
   // the state is determined during SSR and inlined in the page markup.
@@ -81,56 +96,65 @@ async function start ({
   <% } %>
 
   <% if (bootEntries.length > 0) { %>
-  let hasRedirected = false
-  const getRedirectUrl = url => {
-    try { return <%= build.publicPath.length <= 1 ? 'router.resolve(url).href' : 'addPublicPath(router.resolve(url).href)' %> }
-    catch (err) {}
+  let hasRedirected = false;
+  const getRedirectUrl = (url) => {
+    try {
+      <% if (build.publicPath.length <= 1) { %>
+      return router.resolve(url).href;
+
+      <% } else { %>
+      return addPublicPath(router.resolve(url).href);
+      <% } %>
+    } catch (err) {
+      // continue regardless of error
+    }
 
     return Object(url) === url
       ? null
-      : url
-  }
-  const redirect = url => {
-    hasRedirected = true
+      : url;
+  };
+  const redirect = (url) => {
+    hasRedirected = true;
 
     if (typeof url === 'string' && /^https?:\/\//.test(url)) {
-      window.location.href = url
-      return
+      window.location.href = url;
+      return;
     }
 
-    const href = getRedirectUrl(url)
+    const href = getRedirectUrl(url);
 
     // continue if we didn't fail to resolve the url
     if (href !== null) {
-      window.location.href = href
+      window.location.href = href;
     }
-  }
+  };
 
-  const urlPath = window.location.href.replace(window.location.origin, '')
+  const urlPath = window.location.href.replace(window.location.origin, '');
 
-  for (let i = 0; hasRedirected === false && i < bootFiles.length; i++) {
+  for (let i = 0; hasRedirected === false && i < bootFiles.length; i += 1) {
     try {
       await bootFiles[i]({
         app,
         router,
-        <%= store ? 'store,' : '' %>
+        <% if (store) { %>
+        store,
+        <% } %>
         ssrContext: null,
         redirect,
         urlPath,
-        publicPath
-      })
-    }
-    catch (err) {
+        publicPath,
+      });
+    } catch (err) {
       if (err && err.url) {
-        redirect(err.url)
-        return
+        redirect(err.url);
+        return;
       }
-      console.error('[Quasar] boot error:', err)
-      return
+      console.error('[Quasar] boot error:', err);
+      return;
     }
   }
   if (hasRedirected === true) {
-    return
+    return;
   }
   <% } %>
   app.use(router);
@@ -154,19 +178,19 @@ async function start ({
 
 createQuasarApp(ssrIsRunningOnClientPWA ? createApp : createSSRApp, quasarUserOptions)
 <% if (bootEntries.length > 0) { %>
-  .then(app => {
+  .then((app) => {
     return Promise.all([
-      <% bootEntries.forEach((asset, index) => { %>
-      import(/* webpackMode: "eager" */ '<%= asset.path %>')<%= index < bootEntries.length - 1 ? ',' : '' %>
+      <% bootEntries.forEach((asset) => { %>
+      import(/* webpackMode: "eager" */ '<%= asset.path %>'),
       <% }) %>
-    ]).then(bootFiles => {
+    ]).then((bootFiles) => {
       const boot = bootFiles
-        .map(entry => entry.default)
-        .filter(entry => typeof entry === 'function')
+        .map((entry) => entry.default)
+        .filter((entry) => typeof entry === 'function');
 
-      start(app, boot)
-    })
-  })
+      start(app, boot);
+    });
+  });
 <% } else { %>
   .then(start);
 <% } %>

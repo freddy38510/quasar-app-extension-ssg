@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-void */
 /**
  * THIS FILE IS GENERATED AUTOMATICALLY.
  * DO NOT EDIT.
@@ -9,110 +10,131 @@
  * boot: ['file', ...] // do not add ".js" extension to it.
  *
  * Boot files are your "main.js"
- **/
+ * */
 <% if (metaConf.hasLoadingBarPlugin) { %>
-import { LoadingBar } from 'quasar'
+import { LoadingBar } from 'quasar';
 <% } %>
 
-import App from 'app/<%= sourceFiles.rootComponent %>'
-let appPrefetch = typeof App.preFetch === 'function'
-  ? App.preFetch
-  : (
-    // Class components return the component options (and the preFetch hook) inside __c property
-    App.__c !== void 0 && typeof App.__c.preFetch === 'function'
-      ? App.__c.preFetch
-      : false
-    )
+import App from 'app/<%= sourceFiles.rootComponent %>';
 
-function getMatchedComponents (to, router) {
-  const route = to
-    ? (to.matched ? to : router.resolve(to).route)
-    : router.currentRoute.value
+let appPrefetch;
 
-  if (!route) { return [] }
-
-  const matched = route.matched.filter(m => m.components !== void 0)
-
-  if (matched.length === 0) { return [] }
-
-  return Array.prototype.concat.apply([], matched.map(m => {
-    return Object.keys(m.components).map(key => {
-      const comp = m.components[key]
-      return {
-        path: m.path,
-        c: comp
-      }
-    })
-  }))
+if (typeof App.preFetch === 'function') {
+  appPrefetch = App.preFetch;
+} else {
+  // Class components return the component options (and the preFetch hook) inside __c property
+  appPrefetch = App.__c !== void 0 && typeof App.__c.preFetch === 'function'
+    ? App.__c.preFetch
+    : false;
 }
 
-export function addPreFetchHooks ({ router, ssrIsRunningOnClientPWA<%= store ? ', store' : '' %>, publicPath }) {
+function getMatchedComponents(to, router) {
+  let route = to || router.currentRoute.value;
+
+  if (to && to.matched) {
+    route = to;
+  } else {
+    route = router.resolve(to).route;
+  }
+
+  if (!route) { return []; }
+
+  const matched = route.matched.filter((m) => m.components !== void 0);
+
+  if (matched.length === 0) { return []; }
+
+  return Array.prototype.concat.apply([], matched.map((m) => Object.keys(m.components).map((key) => {
+    const comp = m.components[key];
+    return {
+      path: m.path,
+      c: comp,
+    };
+  })));
+}
+
+export function addPreFetchHooks({
+  router,
+  ssrIsRunningOnClientPWA,
+  <% if (store) { %>
+  store,
+  <% } %>
+  publicPath,
+}) {
   // Add router hook for handling preFetch.
   // Doing it after initial route is resolved so that we don't double-fetch
   // the data that we already have. Using router.beforeResolve() so that all
   // async components are resolved.
   router.beforeResolve((to, from, next) => {
-    const
-      urlPath = window.location.href.replace(window.location.origin, ''),
-      matched = getMatchedComponents(to, router),
-      prevMatched = getMatchedComponents(from, router)
+    const urlPath = window.location.href.replace(window.location.origin, '');
+    const matched = getMatchedComponents(to, router);
+    const prevMatched = getMatchedComponents(from, router);
 
-    let diffed = false
+    let diffed = false;
     const preFetchList = matched
       .filter((m, i) => {
-        return diffed || (diffed = (
-          !prevMatched[i] ||
-          prevMatched[i].c !== m.c ||
-          m.path.indexOf('/:') > -1 // does it has params?
-        ))
+        if (diffed) {
+          return diffed;
+        }
+
+        diffed = (
+          !prevMatched[i]
+          || prevMatched[i].c !== m.c
+          || m.path.indexOf('/:') > -1 // does it has params?
+        );
+
+        return diffed;
       })
-      .filter(m => m.c !== void 0 && (
+      .filter((m) => m.c !== void 0 && (
         typeof m.c.preFetch === 'function'
         // Class components return the component options (and the preFetch hook) inside __c property
         || (m.c.__c !== void 0 && typeof m.c.__c.preFetch === 'function')
       ))
-      .map(m => m.c.__c !== void 0 ? m.c.__c.preFetch : m.c.preFetch)
+      .map((m) => (m.c.__c !== void 0 ? m.c.__c.preFetch : m.c.preFetch));
 
     if (ssrIsRunningOnClientPWA === true && appPrefetch !== false) {
-      preFetchList.unshift(appPrefetch)
-      appPrefetch = false
+      preFetchList.unshift(appPrefetch);
+      appPrefetch = false;
     }
 
     if (preFetchList.length === 0) {
-      return next()
+      next();
+      return;
     }
 
-    let hasRedirected = false
-    const redirect = url => {
-      hasRedirected = true
-      next(url)
-    }
+    let hasRedirected = false;
+    const redirect = (url) => {
+      hasRedirected = true;
+      next(url);
+    };
     const proceed = () => {
       <% if (metaConf.hasLoadingBarPlugin) { %>
-      LoadingBar.stop()
+      LoadingBar.stop();
       <% } %>
-      if (hasRedirected === false) { next() }
-    }
+      if (hasRedirected === false) { next(); }
+    };
 
     <% if (metaConf.hasLoadingBarPlugin) { %>
-    LoadingBar.start()
+    LoadingBar.start();
     <% } %>
 
     preFetchList.reduce(
       (promise, preFetch) => promise.then(() => hasRedirected === false && preFetch({
-        <% if (store) { %>store,<% } %>
+        <% if (store) { %>
+        store,
+        <% } %>
         currentRoute: to,
         previousRoute: from,
         redirect,
         urlPath,
-        publicPath
+        publicPath,
       })),
-      Promise.resolve()
+      Promise.resolve(),
     )
-    .then(proceed)
-    .catch(e => {
-      console.error(e)
-      proceed()
-    })
-  })
+      .then(proceed)
+      .catch((e) => {
+        // eslint-disable-next-line no-console
+        console.error(e);
+        proceed();
+      });
+  });
 }

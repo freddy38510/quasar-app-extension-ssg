@@ -7,7 +7,8 @@ const { renderToString: vueRenderToString } = require('@vue/server-renderer');
 const createRenderer = require('quasar-app-extension-ssg/src/webpack/renderer/create-renderer');
 
 <% if (ctx.prod) { %>
-const renderTemplate = require('./render-template.js');
+// eslint-disable-next-line import/extensions
+const renderTemplate = require('./render-template');
 const serverManifest = require('./quasar.server-manifest.json');
 const clientManifest = require('./quasar.client-manifest.json');
 <% } %>

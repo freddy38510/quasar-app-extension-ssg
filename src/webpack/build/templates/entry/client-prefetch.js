@@ -1,3 +1,5 @@
+/* eslint-disable no-void */
+/* eslint-disable no-underscore-dangle */
 /**
  * THIS FILE IS GENERATED AUTOMATICALLY.
  * DO NOT EDIT.
@@ -15,23 +17,29 @@ import { LoadingBar } from 'quasar';
 
 import App from 'app/<%= sourceFiles.rootComponent %>';
 
-let appPrefetch = typeof App.preFetch === 'function'
-  ? App.preFetch
-  : (
-    // Class components return the component options (and the preFetch hook) inside __c property
-    App.__c !== void 0 && typeof App.__c.preFetch === 'function'
-      ? App.__c.preFetch
-      : false
-  );
+let appPrefetch;
+
+if (typeof App.preFetch === 'function') {
+  appPrefetch = App.preFetch;
+} else {
+  // Class components return the component options (and the preFetch hook) inside __c property
+  appPrefetch = App.__c !== void 0 && typeof App.__c.preFetch === 'function'
+    ? App.__c.preFetch
+    : false;
+}
 
 function getMatchedComponents(to, router) {
-  const route = to
-    ? (to.matched ? to : router.resolve(to).route)
-    : router.currentRoute.value;
+  let route = to || router.currentRoute.value;
+
+  if (to && to.matched) {
+    route = to;
+  } else {
+    route = router.resolve(to).route;
+  }
 
   if (!route) { return []; }
 
-  const matched = route.matched.filter((m) => m.components !== void 0)
+  const matched = route.matched.filter((m) => m.components !== void 0);
 
   if (matched.length === 0) { return []; }
 
@@ -45,7 +53,14 @@ function getMatchedComponents(to, router) {
     })));
 }
 
-export function addPreFetchHooks({ router, ssrIsRunningOnClientPWA<%= store ? ', store' : '' %>, publicPath }) {
+export function addPreFetchHooks({
+  router,
+  ssrIsRunningOnClientPWA,
+  <% if (store) { %>
+  store,
+  <% } %>
+  publicPath,
+}) {
   // Add router hook for handling preFetch.
   // Doing it after initial route is resolved so that we don't double-fetch
   // the data that we already have. Using router.beforeResolve() so that all
@@ -112,7 +127,9 @@ export function addPreFetchHooks({ router, ssrIsRunningOnClientPWA<%= store ? ',
 
     preFetchList.reduce(
       (promise, preFetch) => promise.then(() => hasRedirected === false && preFetch({
-        <% if (store) { %>store, <% } %>
+        <% if (store) { %>
+        store,
+        <% } %>
         currentRoute: to,
         previousRoute: from,
         redirect,
@@ -123,6 +140,7 @@ export function addPreFetchHooks({ router, ssrIsRunningOnClientPWA<%= store ? ',
     )
       .then(proceed)
       .catch((e) => {
+        // eslint-disable-next-line no-console
         console.error(e);
         proceed();
       });

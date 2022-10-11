@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-void */
 /**
  * THIS FILE IS GENERATED AUTOMATICALLY.
  * DO NOT EDIT.
@@ -10,19 +12,28 @@
  * Boot files are your "main.js"
  * */
 <% if (__vueDevtools !== false) { %>
+// eslint-disable-next-line no-unused-vars
 import vueDevtools from '@vue/devtools';
 <% } %>
 
 import { Quasar } from 'quasar';
-import { markRaw } from 'vue';
-import <%= __needsAppMountHook === true ? 'AppComponent' : 'RootComponent' %> from 'app/<%= sourceFiles.rootComponent %>';
+import {
+  markRaw,
+  <% if (__needsAppMountHook === true) { %>
+  defineComponent,
+  h,
+  onMounted,
+  <% if (ssr.manualPostHydrationTrigger !== true) { %>
+  getCurrentInstance,
+  <% } %>
+  <% } %>
+} from 'vue';
+import <% if (__needsAppMountHook === true) { %> AppComponent <% } else { %> RootComponent <% } %> from 'app/<%= sourceFiles.rootComponent %>';
 
 <% if (store) { %>import createStore from 'app/<%= sourceFiles.store %>'<% } %>
 import createRouter from 'app/<%= sourceFiles.router %>';
 
 <% if (__needsAppMountHook === true) { %>
-import { defineComponent, h, onMounted<%= ssr.manualPostHydrationTrigger !== true ? ', getCurrentInstance' : '' %> } from 'vue';
-
 const RootComponent = defineComponent({
   name: 'AppWrapper',
   setup(props) {
@@ -33,7 +44,9 @@ const RootComponent = defineComponent({
 
       <% if (ssr.manualPostHydrationTrigger !== true) { %>
       const { proxy: { $q } } = getCurrentInstance();
-      $q.onSSRHydrated !== void 0 && $q.onSSRHydrated();
+      if ($q.onSSRHydrated !== void 0) {
+        $q.onSSRHydrated();
+      }
       <% } %>
     });
 
@@ -47,13 +60,12 @@ export const ssrIsRunningOnClientPWA = typeof window !== 'undefined'
 
 export const getRoutesFromRouter = async () => {
   const router = typeof createRouter === 'function'
-    ? await createRouter()
-      : createRouter;
+    ? await createRouter() : createRouter;
 
   return router.getRoutes();
-}
+};
 
-export default async function (createAppFn, quasarUserOptions, ssrContext) {
+export async function createQuasarApp(createAppFn, quasarUserOptions, ssrContext) {
   // Create the app instance.
   // Here we inject into it the Quasar UI, the router & possibly the store.
   const app = createAppFn(RootComponent);
@@ -98,7 +110,7 @@ export default async function (createAppFn, quasarUserOptions, ssrContext) {
   <% if (__storePackage === 'vuex') { %>
   store.$router = router;
   <% } else if (__storePackage === 'pinia') { %>
-  store.use(({ store }) => { store.router = router; });
+  store.use(({ store: piniaStore }) => { piniaStore.router = router; });
   <% } %>
   <% } %>
 
@@ -107,7 +119,12 @@ export default async function (createAppFn, quasarUserOptions, ssrContext) {
   // different depending on whether we are in a browser or on the server.
   return {
     app,
-    <%= store ? `store,${__storePackage === 'vuex' ? ' storeKey,' : ''}` : '' %>
+    <% if (store) { %>
+    store,
+    <% } %>
+    <% if (store && __storePackage === 'vuex') { %>
+    storeKey,
+    <% } %>
     router,
   };
 }

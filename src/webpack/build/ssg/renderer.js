@@ -75,7 +75,7 @@ module.exports = function createChain(cfg, configName) {
       additionalModuleDirs,
     }),
     'quasar-app-extension-ssg/src/webpack/renderer/create-renderer',
-    './render-template.js',
+    './render-template',
     './quasar.server-manifest.json',
     './quasar.client-manifest.json',
   ]);

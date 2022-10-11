@@ -5,7 +5,7 @@
     "source.fixAll": true
   },
   "[javascript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[git-commit]": {
     "editor.rulers": [
@@ -14,6 +14,7 @@
     ],
     "editor.wordWrap": "off"
   },
+  "eslint.format.enable": true,
   "typescript.validate.enable": false,
-  "javascript.validate.enable": false
+  "javascript.validate.enable": false,
 }
