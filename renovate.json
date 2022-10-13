@@ -11,6 +11,10 @@
     {
       "matchPackageNames": ["pify"],
       "allowedVersions": "<6.0.0"
+    },
+    {
+      "matchPackageNames": ["@rollup/plugin-node-resolve"],
+      "allowedVersions": "<14.0.0"
     }
   ]
 }

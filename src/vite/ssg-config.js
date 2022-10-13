@@ -1,6 +1,8 @@
 /* eslint-disable global-require */
 
 const { join } = require('path');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
+
 const appPaths = require('./app-paths');
 const { requireFromApp } = require('./helpers/packages');
 const { plugin: ssgVitePlugin } = require('./plugins/vite.ssg');
@@ -33,8 +35,14 @@ module.exports = {
     });
 
     // In case if the app extension package is linked (yarn link) while developing it
-    // make sure to resolve the path correctly.
-    cfg.resolve.alias['quasar/src/plugins/Platform'] = appPaths.resolve.app('node_modules/quasar/src/plugins/Platform');
+    // make sure to resolve modules correctly.
+    cfg.plugins.unshift(nodeResolve({
+      moduleDirectories: [
+        'node_modules',
+        join(__dirname, '../../node_modules'),
+        appPaths.resolve.app('node_modules'),
+      ],
+    }));
 
     if (quasarConf.ssr.pwa === true) {
       cfg.plugins.push(quasarVitePluginPwaResources(quasarConf));
