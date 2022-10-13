@@ -56,6 +56,8 @@ This will find and install the extension’s module. Once the installation is co
   }
   ```
 
+- `Add auto-completion of ssg property of quasar.config.js file for IDE ?`: Augments `configure()` helper from [`quasar/wrappers`](https://github.com/quasarframework/quasar/blob/quasar-v2.9.2/ui/wrappers/index.js#L17&L19) to get a better [IDE autocomplete](https://quasar.dev/quasar-cli-vite/quasar-config-js#ide-autocompletion) experience with the extension.
+
 - `Inline critical css and async load the rest ?`: Uses [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated page.
 </details>
 
@@ -70,6 +72,8 @@ This will find and install the extension’s module. Once the installation is co
     'serve:ssg': 'quasar ssg serve dist/ssg'
   }
   ```
+
+- `Add auto-completion of ssg property of quasar.config.js file for IDE ?`: Augments `configure()` helper from [`quasar/wrappers`](https://github.com/quasarframework/quasar/blob/quasar-v2.9.2/ui/wrappers/index.js#L17&L19) to get a better [IDE autocomplete](https://quasar.dev/quasar-cli-vite/quasar-config-js#ide-autocompletion) experience with the extension.
 
 - `Inline critical css and async load the rest ?`: Uses [Beastcss](https://github.com/freddy38510/beastcss) to inline critical CSS and async load the rest for each generated page.
 
