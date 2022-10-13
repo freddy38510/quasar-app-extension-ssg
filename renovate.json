@@ -1,5 +1,6 @@
 {
-  "extends": ["config:base", ":semanticCommits"],
+  "extends": ["config:base", "schedule:weekly", "group:allNonMajor"],
+  "labels": ["dependencies"],
   "baseBranches": ["master", "2.x"],
   "ignorePaths": ["**/node_modules/**", "**/demos/**"],
   "packageRules": [
