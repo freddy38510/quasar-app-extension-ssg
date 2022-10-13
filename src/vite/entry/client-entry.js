@@ -174,13 +174,19 @@ async function start({
 createQuasarApp(ssrIsRunningOnClientPWA ? createApp : createSSRApp, quasarUserOptions)
 <% if (bootEntries.length > 0) { %>
   .then((app) => {
-    return Promise.all([
+    return Promise.allSettled([
       <% bootEntries.forEach((asset) => { %>
       import('<%= asset.path %>'),
       <% }) %>
     ]).then((bootFiles) => {
       const boot = bootFiles
-        .map((entry) => entry.default)
+        .map((result) => {
+          if (result.status === 'rejected') {
+            console.error('[Quasar] boot error:', result.reason);
+            return undefined;
+          }
+          return result.value.default;
+        })
         .filter((entry) => typeof entry === 'function');
 
       start(app, boot);
