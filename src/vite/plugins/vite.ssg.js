@@ -1,3 +1,4 @@
+/* eslint-disable no-void */
 /* eslint-disable no-underscore-dangle */
 
 const path = require('path');
@@ -6,11 +7,9 @@ const { vite: autoImportPlugin } = require('unplugin-auto-import');
 const { requireFromApp } = require('../helpers/packages');
 const getHash = require('../helpers/get-hash');
 const appPaths = require('../app-paths');
+const parseViteRequest = require('../helpers/parse-vite-request');
 
 const { normalizePath } = requireFromApp('vite');
-
-const cssLangs = '\\.(css|less|sass|scss|styl|stylus|pcss|postcss)($|\\?)';
-const cssLangRE = new RegExp(cssLangs);
 
 /**
  * In production at server-side,
@@ -24,8 +23,6 @@ const cssLangRE = new RegExp(cssLangs);
 function getLazyHydrationPlugin() {
   let root;
 
-  const jsTransformRegex = /\.[jt]sx?$/;
-  const vueTransformRegex = /\.vue(?:\?vue&type=(?:template|script)(?:&setup=true)?&lang\.(?:j|t)s)?$/;
   const setupRE = /setup.*\(.*\).*{/i;
 
   const importName = '__quasar_ssg_vue3_lazy_hydration';
@@ -45,12 +42,9 @@ function getLazyHydrationPlugin() {
     },
 
     transform(code, id) {
-      if (
-        (vueTransformRegex.test(id) || jsTransformRegex.test(id))
-        && setupRE.test(code)
-      ) {
-        const [filename] = id.split('?', 2);
+      const { is, filename } = parseViteRequest(id);
 
+      if (is.script() && setupRE.test(code)) {
         const magicString = new MagicString(
           generateCode(code, normalizePath(path.relative(root, filename))),
         );
@@ -68,7 +62,8 @@ function getLazyHydrationPlugin() {
 
 /**
  * In development at client-side right after Vite injects the style,
- * remove the corresponding style injected by the server (initially to avoid FOUC).
+ * remove the corresponding style injected by the server (initially to avoid FOUC)
+ * to avoid duplicated styles.
  */
 function getRemoveSSRStylesPlugin() {
   const updateStyleRE = /__vite__updateStyle\(.*\)/;
@@ -88,7 +83,9 @@ function getRemoveSSRStylesPlugin() {
     enforce: 'post',
 
     transform(code, id) {
-      if (cssLangRE.test(id) && updateStyleRE.test(code)) {
+      const { is } = parseViteRequest(id);
+
+      if (is.style() && updateStyleRE.test(code)) {
         const magicString = new MagicString(generateCode(code, id));
 
         return {
@@ -109,15 +106,12 @@ function getRemoveSSRStylesPlugin() {
  * to avoid FOUC.
  */
 function getCSSModulesPlugin() {
-  const cssModuleRE = new RegExp(`\\.module${cssLangs}`);
-  const inlineRE = /(\?|&)inline\b/;
-
   const importName = '__module_css';
 
   function generateCode(code, id) {
     return [
       `export * as ${importName} from ${JSON.stringify(
-        id.replace('vue&type=style', 'vue&type=style&inline'),
+        id.replace('type=style', 'type=style&inline'),
       )}`,
       code,
     ].join('\n');
@@ -132,10 +126,12 @@ function getCSSModulesPlugin() {
         return null;
       }
 
+      const { is, query } = parseViteRequest(id);
+
       if (
-        cssModuleRE.test(id)
-        && id.includes('vue&type=style')
-        && !inlineRE.test(id)
+        query.inline === void 0
+        && is.vue()
+        && is.cssModule()
       ) {
         const magicString = new MagicString(generateCode(code, id));
 
@@ -240,8 +236,6 @@ function getAutoImportSvgIconsPlugin(iconSet) {
     dts: false,
   });
 }
-
-module.exports.cssLangRE = cssLangRE;
 
 module.exports.plugin = function QuasarSSGVitePlugin(quasarConf, runMode) {
   const plugins = [

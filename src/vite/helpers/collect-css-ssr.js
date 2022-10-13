@@ -1,11 +1,13 @@
 /* eslint-disable no-underscore-dangle */
-const { cssLangRE } = require('../plugins/vite.ssg');
+const parseViteRequest = require('./parse-vite-request');
+
 const getHash = require('./get-hash');
 
-const moduleIsStyle = (mod) => (
-  (cssLangRE.test(mod.file) || mod.id?.includes('vue&type=style'))
-  && mod.ssrModule
-);
+const moduleIsStyle = (id) => {
+  const { is } = parseViteRequest(id);
+
+  return is.style();
+};
 
 const collectCss = function collectCss(entryMod, renderedCompMods) {
   const seen = new Set();
@@ -18,7 +20,7 @@ const collectCss = function collectCss(entryMod, renderedCompMods) {
 
     seen.add(mod.id + mod.url);
 
-    if (moduleIsStyle(mod)) {
+    if (mod.ssrModule && moduleIsStyle(mod.id)) {
       styles += `<style ssr-id="${getHash(mod.id)}">${mod.ssrModule.__module_css?.default || mod.ssrModule.default}</style>`;
     }
 
@@ -30,7 +32,7 @@ const collectCss = function collectCss(entryMod, renderedCompMods) {
   // process only styles directly imported from entry
   entryMod.importedModules.forEach(
     (mod) => {
-      if (mod && moduleIsStyle(mod)) {
+      if (mod && moduleIsStyle(mod.id)) {
         processMod(mod);
       }
     },
