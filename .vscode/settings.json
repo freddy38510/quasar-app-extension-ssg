@@ -14,7 +14,11 @@
     ],
     "editor.wordWrap": "off"
   },
+  "eslint.validate": [
+    "javascript",
+    "typescript"
+  ],
+  "eslint.packageManager": "yarn",
   "eslint.format.enable": true,
-  "typescript.validate.enable": false,
   "javascript.validate.enable": false,
 }

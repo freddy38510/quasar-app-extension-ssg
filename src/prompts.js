@@ -53,6 +53,13 @@ module.exports = function prompts() {
       default: true,
     },
     {
+      name: 'IDE',
+      type: 'confirm',
+      message:
+      'Add auto-completion of ssg property of quasar.config.js file for IDE ?',
+      default: true,
+    },
+    {
       name: 'inlineCriticalCss',
       type: 'confirm',
       message:

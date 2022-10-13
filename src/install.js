@@ -42,5 +42,17 @@ module.exports = function install(api) {
     });
   }
 
-  api.onExitLog(`See https://github.com/freddy38510/quasar-app-extension-ssg/#configuration to configure the extension then run "${generateCommand}" or "${devCommand}`);
+  if (api.prompts.IDE) {
+    api.renderFile(
+      `./${api.hasVite ? 'vite' : 'webpack'}/types/quasar-wrappers.d.ts`,
+      'src/ssg.d.ts',
+      api.hasVite ? {} : {
+        quasarAppPkgName: `@quasar/app${api.hasPackage('@quasar/app-webpack', '>= 3.4.0') ? '-webpack' : ''}`,
+      },
+    );
+  }
+
+  api.onExitLog(
+    `See https://github.com/freddy38510/quasar-app-extension-ssg/#configuration to configure the extension then run "${generateCommand}" or "${devCommand}`,
+  );
 };

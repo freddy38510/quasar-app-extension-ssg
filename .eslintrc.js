@@ -1,19 +1,15 @@
 module.exports = {
   root: true,
-
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-
   env: {
     browser: true,
     node: true,
     es2020: true,
   },
-
   extends: ['airbnb-base'],
-
   rules: {
     'no-param-reassign': ['error', { props: false }],
     'import/no-unresolved': ['error', { commonjs: true }],
@@ -24,11 +20,9 @@ module.exports = {
       },
     ],
   },
-
   overrides: [
     {
       files: ['src/vite/**'],
-
       parserOptions: {
         ecmaVersion: 2022,
       },
@@ -39,29 +33,23 @@ module.exports = {
         'src/**/WebSocketClient.js',
         'src/**/SockJSClient.js',
       ],
-
       rules: {
         'import/no-unresolved': 'off',
+        'import/no-extraneous-dependencies': 'off',
       },
     },
     {
       files: [
-        'src/templates/**',
         'src/vite/entry/**',
         'src/webpack/build/templates/**',
       ],
-
       parserOptions: {
         ecmaVersion: 2022,
       },
-
       extends: [
-        'airbnb-base',
         'plugin:lodash-template/recommended-with-script',
       ],
-
       settings: {
-        'lodash-template/ignoreRules': [],
         'lodash-template/globals': [
           // shared
           'ssr',
@@ -86,27 +74,23 @@ module.exports = {
           '__loadingBar',
         ],
       },
-
       rules: {
-        'no-param-reassign': ['error', { props: false }],
+        'max-len': ['error', 120],
         'import/no-unresolved': 'off',
-        // 'import/extensions': 'off',
-        // 'no-unused-expressions': ['error', { allowShortCircuit: true }],
-        'max-len': ['error', 150],
-        'lodash-template/scriptlet-indent': [
-          'error',
-          2,
-          {
-            startIndent: 0,
-          },
-        ],
-        'lodash-template/no-template-tag-in-start-tag': [
-          'error',
-          {
-            arrowEvaluateTag: false,
-          },
-        ],
+        'import/no-extraneous-dependencies': 'off',
       },
+    },
+    {
+      files: ['**/*.ts'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+      extends: [
+        'airbnb-typescript/base',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+      ],
     },
   ],
 };
