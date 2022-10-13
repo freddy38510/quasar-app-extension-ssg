@@ -55,6 +55,7 @@ module.exports = function extendQuasarConf(conf) {
       'src-cordova/**',
       'src-electron/**',
       'src-bex/**',
+      'src/ssg.d.ts',
       'node_modules/**',
       '.**/*',
       '.*',
