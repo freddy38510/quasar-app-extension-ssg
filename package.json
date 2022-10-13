@@ -59,7 +59,7 @@
     "globby": "13.1.2",
     "html-minifier": "4.0.0",
     "jiti": "1.14.0",
-    "magic-string": "0.26.2",
+    "magic-string": "0.26.7",
     "minimist": "1.2.6",
     "node-html-parser": "5.4.1",
     "open": "8.4.0",
