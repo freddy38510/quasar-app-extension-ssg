@@ -6727,10 +6727,10 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
-pony-cause@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/pony-cause/-/pony-cause-2.1.2.tgz#e470bdfb1960c5269dae8b052b13287f7f0ea524"
-  integrity sha512-0oJJHIqnrhIt9DnlOG+qa8s/Pix1HqU6beUJqjPFpJjIJRjSIc65/ePbLZO2EIMhJYAP2xebSCEP85jCVW8qlw==
+pony-cause@2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/pony-cause/-/pony-cause-2.1.4.tgz#18ef4799b5207ad0a7bacf5ea4602e6b06c75c8c"
+  integrity sha512-6jNyaeEi1I4rGD338qmNmx2yLg8N/JZJZU8JCrqDtfxCEYZttfuN6AnKhBGfMyTydW4t2iBioxDzKeZJC2mJVw==
 
 postcss-calc@^8.2.3:
   version "8.2.4"
