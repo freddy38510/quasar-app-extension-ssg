@@ -2710,15 +2710,15 @@ batch@0.6.1:
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
   integrity sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==
 
-beastcss@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-1.2.1.tgz#99d2e9ea87131f91201221bc50bae54d5bab6a74"
-  integrity sha512-fvB17Lk+i8Oz+GNjoYLFl7XXEfLbpMbynt76F6SVmgyIWpo0dph4bWCy8qGNf0+nfOl1QYH5Qzv5cEI90CHi8g==
+beastcss@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/beastcss/-/beastcss-2.0.0.tgz#07b0010475748e9f13825dc4c1b6827bd5d133fb"
+  integrity sha512-C+VPwPTFBVfipiD2ACfsyfZEsiK+b1kxgRP2itgQre/WJ4W4RDQNQq2kd726BA8fvHUV/DbVdh9ZPlmjJieFdw==
   dependencies:
     "@freddy38510/dropcss" "2.4.0"
-    chalk "4.1.2"
-    fast-glob "3.2.11"
-    node-html-parser "5.4.1"
+    fast-glob "3.2.12"
+    kolorist "1.6.0"
+    node-html-parser "6.1.1"
 
 big.js@^5.2.2:
   version "5.2.2"
@@ -3574,7 +3574,7 @@ css-minimizer-webpack-plugin@3.4.1:
     serialize-javascript "^6.0.0"
     source-map "^0.6.1"
 
-css-select@^4.1.3, css-select@^4.2.1:
+css-select@^4.1.3:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/css-select/-/css-select-4.3.0.tgz#db7129b2846662fd8628cfc496abb2b59e41529b"
   integrity sha512-wPpOYtnsVontu2mODhA19JrqWxNsfdatRKd64kmpRbQgh1KtItko5sTnEpPdpSaJszTOhEMlF/RPz28qj4HqhQ==
@@ -4698,7 +4698,7 @@ fast-glob@3.2.11, fast-glob@^3.2.11, fast-glob@^3.2.9:
     merge2 "^1.3.0"
     micromatch "^4.0.4"
 
-fast-glob@^3.2.12, fast-glob@^3.2.7:
+fast-glob@3.2.12, fast-glob@^3.2.12, fast-glob@^3.2.7:
   version "3.2.12"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.12.tgz#7f39ec99c2e6ab030337142da9e0c18f37afae80"
   integrity sha512-DVj4CQIYYow0BlaelwK1pHl5n5cRSJfM60UA0zK891sVInoPri2Ekj7+e1CT3/3qxXenpI+nBBmQAcJPJgaj4w==
@@ -5887,7 +5887,7 @@ klona@^2.0.4, klona@^2.0.5:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
   integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
-kolorist@^1.5.1:
+kolorist@1.6.0, kolorist@^1.5.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/kolorist/-/kolorist-1.6.0.tgz#f43ac794305b30032a5bedcae7799d0f91d2ff36"
   integrity sha512-dLkz37Ab97HWMx9KTes3Tbi3D1ln9fCAy2zr2YVExJasDRPGRaKcoE4fycWNtnCAJfjFqe0cnY+f8KT2JePEXQ==
@@ -6396,14 +6396,6 @@ node-forge@^1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.3.1.tgz#be8da2af243b2417d5f646a770663a92b7e9ded3"
   integrity sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==
-
-node-html-parser@5.4.1:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/node-html-parser/-/node-html-parser-5.4.1.tgz#c9938b9521ef542c2374e4923078f8f2a365f50d"
-  integrity sha512-xy/O2wOEBJsIRLs4avwa1lVY7tIpXXOoHHUJLa0GvnoPPqMG1hgBVl1tNI3GHOwRktTVZy+Y6rjghk4B9/NLyg==
-  dependencies:
-    css-select "^4.2.1"
-    he "1.2.0"
 
 node-html-parser@6.1.1:
   version "6.1.1"
