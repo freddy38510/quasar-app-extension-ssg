@@ -10,7 +10,8 @@
  * boot: ['file', ...] // do not add ".js" extension to it.
  *
  * Boot files are your "main.js"
- * */
+ */
+
 <% if (metaConf.hasLoadingBarPlugin) { %>
 import { LoadingBar } from 'quasar';
 <% } %>

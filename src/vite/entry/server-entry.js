@@ -10,7 +10,8 @@
  * boot: ['file', ...] // do not add ".js" extension to it.
  *
  * Boot files are your "main.js"
- * */
+ */
+
 import { createSSRApp<% if (store && ssr.manualStoreSsrContextInjection !== true) { %>, unref<% } %> } from 'vue';
 
 <% if (extras.length > 0) { %>
@@ -87,13 +88,16 @@ function getRedirectUrl(url, router) {
 const { components, directives, ...qUserOptions } = quasarUserOptions;
 
 <%
-const bootEntries = boot.filter((asset) => asset.server !== false);
-if (bootEntries.length !== 0) { %>
+  const bootEntries = boot.filter((asset) => asset.server !== false);
+
+  if (bootEntries.length !== 0) { %>
 const bootFiles = Promise.all([
   <% bootEntries.forEach((asset) => { %>
   import('<%= asset.path %>'),
   <% }) %>
-]).then((resolvedBootFiles) => resolvedBootFiles.map((entry) => entry.default).filter((entry) => typeof entry === 'function'));
+]).then((resolvedBootFiles) => resolvedBootFiles
+  .map((entry) => entry.default)
+  .filter((entry) => typeof entry === 'function'));
 <% } %>
 
 export { getRoutesFromRouter } from './app';

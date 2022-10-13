@@ -10,10 +10,9 @@
  * boot: ['file', ...] // do not add ".js" extension to it.
  *
  * Boot files are your "main.js"
- * */
+ */
 
-<% if (metaConf.vueDevtools !== false) { %>
-// eslint-disable-next-line no-unused-vars
+<% if (metaConf.vueDevtools !== false && metaConf.needsAppMountHook === true) { %>
 import vueDevtools from '@vue/devtools';
 <% } %>
 
@@ -30,8 +29,11 @@ import {
   <% } %>
 } from 'vue';
 
-// eslint-disable-next-line max-len
-import <% if (metaConf.needsAppMountHook === true) { %> AppComponent <% } else { %> RootComponent <% } %> from 'app/<%= sourceFiles.rootComponent %>';
+<% if (metaConf.needsAppMountHook === true) { %>
+import AppComponent from 'app/<%= sourceFiles.rootComponent %>';
+<% } else { %>
+import RootComponent from 'app/<%= sourceFiles.rootComponent %>';
+<% } %>
 
 <% if (store) { %>import createStore from 'app/<%= sourceFiles.store %>'<% } %>
 import createRouter from 'app/<%= sourceFiles.router %>';

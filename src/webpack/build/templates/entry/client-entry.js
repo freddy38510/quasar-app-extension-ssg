@@ -11,7 +11,7 @@
  * boot: ['file', ...] // do not add ".js" extension to it.
  *
  * Boot files are your "main.js"
- * */
+ */
 
 import { createSSRApp, createApp } from 'vue';
 

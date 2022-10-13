@@ -10,7 +10,8 @@
  * boot: ['file', ...] // do not add ".js" extension to it.
  *
  * Boot files are your "main.js"
- * */
+ */
+
 import { createSSRApp<% if (store && ssr.manualStoreSsrContextInjection !== true) { %>, unref<% } %> } from 'vue';
 
 <% if (extras.length > 0) { %>
@@ -59,19 +60,21 @@ if (typeof App.preFetch === 'function') {
 <% } %>
 
 <%
-const bootNames = [];
-if (boot.length > 0) {
-  const hash = function hash(str) {
-    const name = str.replace(/\W+/g, '');
-    return name.charAt(0).toUpperCase() + name.slice(1);
-  };
-  boot.filter((asset) => asset.server !== false).forEach((asset) => {
-    const importName = `qboot_${hash(asset.path)}`;
-    bootNames.push(importName);
+  const bootNames = [];
+
+  if (boot.length > 0) {
+    const hash = function hash(str) {
+      const name = str.replace(/\W+/g, '');
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    };
+
+    boot.filter((asset) => asset.server !== false).forEach((asset) => {
+      const importName = `qboot_${hash(asset.path)}`;
+      bootNames.push(importName);
 %>
 import <%= importName %> from '<%= asset.path %>';
-<% });
-} %>
+<% }); // end of forEach
+  } %> // end of if
 
 const publicPath = `<%= build.publicPath %>`;
 <% if (build.publicPath !== '/') { %>

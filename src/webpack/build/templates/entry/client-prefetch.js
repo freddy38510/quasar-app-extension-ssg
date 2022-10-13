@@ -11,6 +11,7 @@
  *
  * Boot files are your "main.js"
  */
+
 <% if (__loadingBar) { %>
 import { LoadingBar } from 'quasar';
 <% } %>

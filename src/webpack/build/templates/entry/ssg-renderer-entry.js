@@ -1,7 +1,7 @@
 /**
  * THIS FILE IS GENERATED AUTOMATICALLY.
  * DO NOT EDIT.
- * */
+ */
 
 const { renderToString: vueRenderToString } = require('@vue/server-renderer');
 const createRenderer = require('quasar-app-extension-ssg/src/webpack/renderer/create-renderer');
