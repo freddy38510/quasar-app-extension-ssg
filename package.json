@@ -46,7 +46,7 @@
   "dependencies": {
     "@freddy38510/vue-loader": "17.1.0",
     "@freddy38510/vue-style-loader": "4.2.0",
-    "beastcss": "1.2.1",
+    "beastcss": "2.0.0",
     "chalk": "4.1.2",
     "ci-info": "3.5.0",
     "compression": "1.7.4",
