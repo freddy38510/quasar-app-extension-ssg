@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [4.6.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.8...v4.6.0) (2022-10-14)
+
+
+### Features
+
+* add ability to provide types for quasar configuration ssg property when installing extension ([0994172](https://github.com/freddy38510/quasar-app-extension-ssg/commit/0994172069654fb6e648991f053c87a1272ee59c))
+
+
+### Bug Fixes
+
+* **cache:** ignore ssg declaration types file ([38d4e07](https://github.com/freddy38510/quasar-app-extension-ssg/commit/38d4e0796b581f84703993f1c299f0cac0173b07))
+* **deps:** update dependency beastcss to v2 ([#311](https://github.com/freddy38510/quasar-app-extension-ssg/issues/311)) ([5989843](https://github.com/freddy38510/quasar-app-extension-ssg/commit/598984325042c1407f3f8e3ccf6b27b572ebf409))
+* **deps:** update dependency node-html-parser to v6 ([#312](https://github.com/freddy38510/quasar-app-extension-ssg/issues/312)) ([b725794](https://github.com/freddy38510/quasar-app-extension-ssg/commit/b7257947b8a5eed78ae600982607a0a5921d8e1d))
+* **vite,webpack:** handle boot import errors gracefully ([e970291](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e97029163facdaf323b332c40c212d9f4089a18a))
+* **vite:** add missing generation of types feature flag ([3e0e605](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3e0e60597b4a0028ebbf27b16af6f7791658711e))
+* **vite:** allow dev server to serve files from extension folder ([22b3a1e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/22b3a1ea19f07db0b9182d163aa23d396732253f))
+* **vite:** avoid restarting the dev server at launch while developing the extension ([2ce1bf7](https://github.com/freddy38510/quasar-app-extension-ssg/commit/2ce1bf7ea26857021887bd50530b8bc03e111c23))
+* **vite:** check entry module before collecting the styles with the dev command ([9345a0f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/9345a0f58e02e166df1154ff8cd31d784e5bdc6e))
+* **vite:** handle properly generated html strings with null value ([3bcb383](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3bcb3837cecdab78a082dac41b04ae97b4f016d9))
+* **vite:** improve and future-proof the transform checks of ssg vite plugins ([2ac5b2e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/2ac5b2ec44b5a1fc2b6cc2163a7d55a8b90ea0c4))
+* **vite:** support linked app-extension-ssg package (via yarn link command) for development purposes ([97720f0](https://github.com/freddy38510/quasar-app-extension-ssg/commit/97720f0cf1bffb1f7bfcec72246062eaced4ce02))
+
 ### [4.5.8](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.7...v4.5.8) (2022-08-18)
 
 
