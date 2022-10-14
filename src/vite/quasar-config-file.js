@@ -92,11 +92,11 @@ function extendQuasarConf(conf) {
   conf.ssr.ssrPwaHtmlFilename = conf.ssg.fallback;
 
   // In case if the app extension package is linked (yarn link) while developing it
-  // make sure to allow to serve roboto font files.
+  // make sure to allow to serve roboto font files and ssg-corrections boot file.
   conf.devServer.fs.allow = conf.devServer.fs.allow || [];
   conf.devServer.fs.allow.push(
     searchForWorkspaceRoot(process.cwd()),
-    join(__dirname, '../../roboto-font/web-font/'),
+    join(__dirname, '../../'),
   );
 }
 
