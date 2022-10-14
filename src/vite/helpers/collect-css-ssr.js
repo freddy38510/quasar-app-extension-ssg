@@ -10,8 +10,13 @@ const moduleIsStyle = (id) => {
 };
 
 const collectCss = function collectCss(entryMod, renderedCompMods) {
-  const seen = new Set();
   let styles = '';
+
+  if (!entryMod) {
+    return styles;
+  }
+
+  const seen = new Set();
 
   const processMod = (mod) => {
     if (!mod || seen.has(mod.id + mod.url)) {
