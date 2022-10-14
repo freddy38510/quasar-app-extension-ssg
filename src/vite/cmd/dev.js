@@ -69,6 +69,10 @@ function startVueDevtools() {
 }
 
 async function goLive() {
+  // install ssr mode if it's missing
+  const { add } = requireFromApp('@quasar/app-vite/lib/modes/ssr/ssr-installation');
+  await add(true);
+
   const getQuasarCtx = require('../helpers/get-quasar-ctx');
   const ctx = getQuasarCtx({
     mode: 'ssg',
@@ -98,6 +102,9 @@ async function goLive() {
   if (quasarConf.error !== void 0) {
     fatal(quasarConf.error, 'FAIL');
   }
+
+  const regenerateTypesFeatureFlags = requireFromApp('@quasar/app-vite/lib/helpers/types-feature-flags');
+  regenerateTypesFeatureFlags(quasarConf);
 
   if (quasarConf.metaConf.vueDevtools !== false) {
     await startVueDevtools();

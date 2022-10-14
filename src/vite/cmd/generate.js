@@ -46,6 +46,10 @@ const getQuasarCtx = require('../helpers/get-quasar-ctx');
 async function run() {
   banner(argv, 'generate');
 
+  // install ssr mode if it's missing
+  const { add } = requireFromApp('@quasar/app-vite/lib/modes/ssr/ssr-installation');
+  await add(true);
+
   const ctx = getQuasarCtx({
     mode: 'ssg',
     target: undefined,
@@ -76,6 +80,9 @@ async function run() {
   if (quasarConf.error !== void 0) {
     fatal(quasarConf.error, 'FAIL');
   }
+
+  const regenerateTypesFeatureFlags = requireFromApp('@quasar/app-vite/lib/helpers/types-feature-flags');
+  regenerateTypesFeatureFlags(quasarConf);
 
   const AppProdBuilder = require('../ssg-builder');
   const appBuilder = new AppProdBuilder({ argv, quasarConf });
