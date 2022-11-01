@@ -70,19 +70,19 @@ class PagesGenerator {
       this,
       async (route) => {
         try {
-          const { html, path } = await this.generatePage(route);
+          const { html, filepath } = await this.generatePage(route);
 
           if (!html) {
             return;
           }
 
-          await fs.mkdir(dirname(path), { recursive: true });
+          await fs.mkdir(dirname(filepath), { recursive: true });
 
-          await fs.writeFile(path, html, 'utf8');
+          await fs.writeFile(filepath, html, 'utf8');
 
           info(
             `Generated page: "${underline(
-              green(relative(this.#opts.distDir, path)),
+              green(relative(this.#opts.distDir, filepath)),
             )}"`,
           );
 
@@ -115,9 +115,9 @@ class PagesGenerator {
 
     this.queue.pause();
 
-    this.queue.enqueue = (item) => {
-      this.#enqueuedPages.add(item);
-      return this.queue.push(item);
+    this.queue.enqueue = (route) => {
+      this.#enqueuedPages.add(route);
+      return this.queue.push(route);
     };
   }
 
@@ -177,7 +177,7 @@ class PagesGenerator {
 
     try {
       userRoutes = await promisifyRoutes(this.#opts.routes);
-      userRoutes = userRoutes.map((route) => route.split('?')[0].replace(/\/+$/, '').trim());
+      userRoutes = userRoutes.map((route) => this.normalizeRoute(route));
     } catch (err) {
       warn(
         stackWithCauses(
@@ -226,9 +226,7 @@ class PagesGenerator {
   }
 
   async generatePage(route) {
-    let html = null;
-
-    html = await this.#renderPage(route);
+    let html = await this.#renderPage(route);
 
     if (html === null) {
       return { html };
@@ -242,26 +240,33 @@ class PagesGenerator {
       html = await this.#inlineCriticalCss(html, route);
     }
 
-    let path = join(this.#opts.distDir, route, 'index.html');
+    let filepath = join(this.#opts.distDir, route, 'index.html');
 
     if (typeof this.#opts.onPageGenerated === 'function') {
       try {
-        ({ html, path } = await this.#opts.onPageGenerated({
+        ({ html, path: filepath } = await this.#opts.onPageGenerated({
           route,
           html,
-          path,
+          path: filepath,
         }));
       } catch (e) {
         throw new ErrorWithCause(
           `Failed to execute "onPageGenerated" hook when generating page: "${underline(
-            green(relative(this.#opts.distDir, path)),
+            green(relative(this.#opts.distDir, filepath)),
           )}"`,
           { cause: e },
         );
       }
     }
 
-    return { html, path };
+    return { html, filepath };
+  }
+
+  normalizeRoute(route) {
+    return route.replace(this.#opts.vueRouterBase, '/')
+      .split('?')[0]
+      .split('#')[0]
+      .trim();
   }
 
   async #renderPage(route) {
@@ -331,14 +336,7 @@ class PagesGenerator {
     parse(html)
       .querySelectorAll('a')
       .forEach((el) => {
-        const sanitizedHref = (el.getAttribute('href') || '')
-          .replace(this.#opts.vueRouterBase, '/')
-          .split('?')[0]
-          .split('#')[0]
-          .replace(/\/+$/, '')
-          .trim();
-
-        const foundRoute = decodeURI(sanitizedHref);
+        const foundRoute = this.normalizeRoute(decodeURI(el.getAttribute('href') || ''));
 
         if (this.#shouldGeneratePage(foundRoute)) {
           this.queue.enqueue(foundRoute);

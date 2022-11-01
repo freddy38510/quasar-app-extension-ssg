@@ -281,14 +281,15 @@ class SsgDevServer extends AppDevserver {
       let html = null;
       let isFallback = false;
 
+      const startTime = Date.now();
+      const route = this.#pagesGenerator.normalizeRoute(req.url);
+
       res.setHeader('Content-Type', 'text/html');
 
-      const startTime = Date.now();
-
       try {
-        if (this.#pagesGenerator.queue.has(req.url)) {
+        if (this.#pagesGenerator.queue.has(route)) {
           // html is null if encounters 404 or redirect
-          ({ html } = await this.#pagesGenerator.generatePage(req.url));
+          ({ html } = await this.#pagesGenerator.generatePage(route));
         }
 
         if (html === null) {
