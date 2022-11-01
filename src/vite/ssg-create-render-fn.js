@@ -8,6 +8,8 @@ const { requireFromApp } = require('./helpers/packages');
 const createRenderHintTag = require('./create-render-hint-tag');
 const appPaths = require('./app-paths');
 
+// needed before loading "vue/server-renderer" package to let Vue throw errors at build time
+delete process.env.NODE_ENV;
 const { renderToString } = requireFromApp('vue/server-renderer');
 
 module.exports = function createRenderFn(quasarConf, viteDevServer) {

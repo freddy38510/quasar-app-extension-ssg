@@ -82,11 +82,6 @@ export async function createQuasarApp(createAppFn, quasarUserOptions, ssrContext
 
   app.use(Quasar, quasarUserOptions, ssrContext);
 
-  app.config.errorHandler = (err, instance, info) => {
-    // eslint-disable-next-line no-console
-    console.error(err, info);
-  };
-
   <% if (store) { %>
   const store = typeof createStore === 'function'
     ? await createStore({ ssrContext }) : createStore;
