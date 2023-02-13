@@ -1,10 +1,11 @@
+/* eslint-disable no-void */
 /* eslint-disable global-require */
 
 const { join } = require('path');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 const appPaths = require('./app-paths');
-const { requireFromApp } = require('./helpers/packages');
+const { requireFromApp, hasPackage } = require('./helpers/packages');
 const { plugin: ssgVitePlugin } = require('./plugins/vite.ssg');
 
 const { createViteConfig, extendViteConfig, mergeViteConfig } = requireFromApp(
@@ -58,6 +59,18 @@ module.exports = {
 
     cfg.plugins.push(ssgVitePlugin(quasarConf, 'ssr-client'));
 
+    if (hasPackage('vite', '>= 3.0.0')) {
+      cfg.appType = 'custom';
+      cfg.build.modulePreload = { polyfill: quasarConf.build.polyfillModulePreload };
+      cfg.server.middlewareMode = true;
+
+      if (cfg.server.hmr === true || cfg.server.hmr === void 0) {
+        cfg.server.hmr = { port: 24681 };
+      }
+
+      delete cfg.build.polyfillModulePreload; // deprecated
+    }
+
     return extendViteConfig(cfg, quasarConf, { isClient: true });
   },
 
@@ -65,7 +78,6 @@ module.exports = {
     let cfg = createViteConfig(quasarConf, 'ssr-server');
 
     cfg = mergeViteConfig(cfg, {
-      target: quasarConf.build.target.node,
       define: {
         'process.env.CLIENT': false,
         'process.env.SERVER': true,
@@ -91,6 +103,20 @@ module.exports = {
     });
 
     cfg.plugins.push(ssgVitePlugin(quasarConf, 'ssr-server'));
+
+    if (hasPackage('vite', '>= 3.0.0')) {
+      if (!cfg.legacy) {
+        cfg.legacy = {};
+      }
+
+      cfg.appType = 'custom';
+      cfg.build.modulePreload = { polyfill: quasarConf.build.polyfillModulePreload };
+      cfg.legacy.buildSsrCjsExternalHeuristics = true;
+      cfg.server.middlewareMode = true;
+      cfg.ssr.format = 'cjs';
+
+      delete cfg.build.polyfillModulePreload; // deprecated
+    }
 
     return extendViteConfig(cfg, quasarConf, { isServer: true });
   },
