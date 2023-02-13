@@ -136,7 +136,11 @@ module.exports = class ExtendedQuasarConfFile extends QuasarConfFile {
 
     // restore ssg mode name
     this.#ctx.modeName = 'ssg';
-    cfg.ctx.modeName = 'ssg';
+
+    if (cfg.ctx) {
+      cfg.ctx.modeName = 'ssg';
+    }
+
     Object.assign(cfg.build.env, {
       MODE: this.#ctx.modeName,
     });
