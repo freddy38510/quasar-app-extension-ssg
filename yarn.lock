@@ -1810,15 +1810,15 @@ commander@^2.19.0, commander@^2.20.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-commit-and-tag-version@10.1.0:
-  version "10.1.0"
-  resolved "https://registry.yarnpkg.com/commit-and-tag-version/-/commit-and-tag-version-10.1.0.tgz#48b45cc3e533343b3c9c33649eeb97bd1d5659e6"
-  integrity sha512-np3lR90bqFfOmxJtgqQc5UVBKFNdO06fRRTZm128QhEQ/ilXm3s/PXxZWheq2PUn5Qac2z+dWJJa+OqjxYsOpA==
+commit-and-tag-version@11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/commit-and-tag-version/-/commit-and-tag-version-11.1.0.tgz#24d0dfc7b76a54c20efbb32766c9c9fec7c36b45"
+  integrity sha512-sVia6zoGNJGC69KhGEautLrShVhuYMhLGKt56mRzIkFJob78n+9DWNZEc7D7nZ1gjXJiAMgIqn2qHk/p3FuIPw==
   dependencies:
     chalk "^2.4.2"
     conventional-changelog "3.1.25"
     conventional-changelog-config-spec "2.1.0"
-    conventional-changelog-conventionalcommits "4.6.3"
+    conventional-changelog-conventionalcommits "5.0.0"
     conventional-recommended-bump "6.1.0"
     detect-indent "^6.0.0"
     detect-newline "^3.1.0"
@@ -1962,19 +1962,19 @@ conventional-changelog-config-spec@2.1.0:
   resolved "https://registry.yarnpkg.com/conventional-changelog-config-spec/-/conventional-changelog-config-spec-2.1.0.tgz#874a635287ef8b581fd8558532bf655d4fb59f2d"
   integrity sha512-IpVePh16EbbB02V+UA+HQnnPIohgXvJRxHcS5+Uwk4AT5LjzCZJm5sp/yqs5C6KZJ1jMsV4paEV13BN1pvDuxQ==
 
-conventional-changelog-conventionalcommits@4.6.3, conventional-changelog-conventionalcommits@^4.5.0:
-  version "4.6.3"
-  resolved "https://registry.yarnpkg.com/conventional-changelog-conventionalcommits/-/conventional-changelog-conventionalcommits-4.6.3.tgz#0765490f56424b46f6cb4db9135902d6e5a36dc2"
-  integrity sha512-LTTQV4fwOM4oLPad317V/QNQ1FY4Hju5qeBIM1uTHbrnCE+Eg4CdRZ3gO2pUeR+tzWdp80M2j3qFFEDWVqOV4g==
+conventional-changelog-conventionalcommits@5.0.0, conventional-changelog-conventionalcommits@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-conventionalcommits/-/conventional-changelog-conventionalcommits-5.0.0.tgz#41bdce54eb65a848a4a3ffdca93e92fa22b64a86"
+  integrity sha512-lCDbA+ZqVFQGUj7h9QBKoIpLhl8iihkO0nCTyRNzuXtcd7ubODpYB04IFy31JloiJgG0Uovu8ot8oxRzn7Nwtw==
   dependencies:
     compare-func "^2.0.0"
     lodash "^4.17.15"
     q "^1.5.1"
 
-conventional-changelog-conventionalcommits@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/conventional-changelog-conventionalcommits/-/conventional-changelog-conventionalcommits-5.0.0.tgz#41bdce54eb65a848a4a3ffdca93e92fa22b64a86"
-  integrity sha512-lCDbA+ZqVFQGUj7h9QBKoIpLhl8iihkO0nCTyRNzuXtcd7ubODpYB04IFy31JloiJgG0Uovu8ot8oxRzn7Nwtw==
+conventional-changelog-conventionalcommits@^4.5.0:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-conventionalcommits/-/conventional-changelog-conventionalcommits-4.6.3.tgz#0765490f56424b46f6cb4db9135902d6e5a36dc2"
+  integrity sha512-LTTQV4fwOM4oLPad317V/QNQ1FY4Hju5qeBIM1uTHbrnCE+Eg4CdRZ3gO2pUeR+tzWdp80M2j3qFFEDWVqOV4g==
   dependencies:
     compare-func "^2.0.0"
     lodash "^4.17.15"
