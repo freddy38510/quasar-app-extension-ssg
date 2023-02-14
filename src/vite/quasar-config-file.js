@@ -83,10 +83,12 @@ function extendQuasarConf(conf) {
 
   // Apply corrections to the body tag classes at client-side
   // because the client platform (mobile, desktop, ios, etc) is unknown at build-time.
-  conf.boot.push({
-    server: false,
-    path: 'quasar-app-extension-ssg/src/boot/ssg-corrections.js',
-  });
+  if (hasPackage('quasar', '< 2.11.2')) {
+    conf.boot.push({
+      server: false,
+      path: 'quasar-app-extension-ssg/src/boot/ssg-corrections.js',
+    });
+  }
 
   // Replace pwa html file by fallback html file
   conf.ssr.ssrPwaHtmlFilename = conf.ssg.fallback;

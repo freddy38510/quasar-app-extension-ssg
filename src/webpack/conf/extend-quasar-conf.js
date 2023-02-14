@@ -97,9 +97,10 @@ module.exports = function extendQuasarConf(conf) {
 
   // Apply corrections to the body tag classes at client-side
   // because the client platform (mobile, desktop, ios, etc) is unknown at build-time.
-  conf.boot.push({ server: false, path: '~quasar-app-extension-ssg/src/boot/ssg-corrections' });
-
-  conf.build.transpileDependencies.push(/quasar-app-extension-ssg[\\/]src[\\/]boot/);
+  if (hasPackage('quasar', '< 2.11.2')) {
+    conf.boot.push({ server: false, path: '~quasar-app-extension-ssg/src/boot/ssg-corrections' });
+    conf.build.transpileDependencies.push(/quasar-app-extension-ssg[\\/]src[\\/]boot/);
+  }
 
   conf.build.htmlFilename = conf.ssg.fallback;
 
