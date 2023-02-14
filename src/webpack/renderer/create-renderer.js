@@ -230,9 +230,9 @@ function renderStyles(renderContext, usedAsyncFiles, ssrContext) {
   );
 }
 
-const autoRemove = 'var currentScript=document.currentScript;currentScript.parentNode.removeChild(currentScript)';
+const autoRemove = 'document.currentScript.remove()';
 
-function renderVuexState(ssrContext, nonce) {
+function renderStoreState(ssrContext, nonce) {
   if (ssrContext.state !== void 0) {
     const serialize = requireFromApp('serialize-javascript');
 
@@ -353,7 +353,7 @@ module.exports = function createRenderer(opts) {
         resourceHints: renderResourceHints(renderContext, usedAsyncFiles, lazilyHydratedComponents),
         resourceStyles: renderStyles(renderContext, usedAsyncFiles, ssrContext),
         resourceScripts: (
-          (opts.manualStoreSerialization !== true && ssrContext.state !== void 0 ? renderVuexState(ssrContext, nonce) : '')
+          (opts.manualStoreSerialization !== true && ssrContext.state !== void 0 ? renderStoreState(ssrContext, nonce) : '')
           + renderScripts(renderContext, usedAsyncFiles, lazilyHydratedComponents, nonce)
         ),
       });

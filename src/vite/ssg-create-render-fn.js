@@ -73,7 +73,7 @@ module.exports = function createRenderFn(quasarConf, viteDevServer) {
   function renderStoreState(ssrContext) {
     const serialize = requireFromApp('serialize-javascript');
 
-    const autoRemove = 'var currentScript=document.currentScript;currentScript.parentNode.removeChild(currentScript)';
+    const autoRemove = 'document.currentScript.remove()';
 
     const nonce = ssrContext.nonce !== void 0 ? ` nonce="${ssrContext.nonce}" ` : '';
 
