@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [4.7.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.6.0...v4.7.0) (2023-02-14)
+
+
+### Features
+
+* add support for Vite.js versions 3 and 4 ([d880da5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d880da5cb8c62a1b7322dfb273c21ff7e806c4f9)), closes [#332](https://github.com/freddy38510/quasar-app-extension-ssg/issues/332)
+* **webpack,vite:** improve dependencies handling and ssg extension install/uninstall procedures ([aa95f08](https://github.com/freddy38510/quasar-app-extension-ssg/commit/aa95f0817996aa99096cfcb706fe4d8a8641e0df))
+
+
+### Bug Fixes
+
+* **deps:** update dependency fs-extra to v11 ([#328](https://github.com/freddy38510/quasar-app-extension-ssg/issues/328)) ([3209c9d](https://github.com/freddy38510/quasar-app-extension-ssg/commit/3209c9dd340be99d3f1cd6a1953432fb432af311))
+* **dev:** normalize the requested url before generating the corresponding page ([f523681](https://github.com/freddy38510/quasar-app-extension-ssg/commit/f523681f076f5004b5294ef764262358472e6532)), closes [#321](https://github.com/freddy38510/quasar-app-extension-ssg/issues/321)
+* let Vue throw all errors when rendering server-side at build time ([15ac18b](https://github.com/freddy38510/quasar-app-extension-ssg/commit/15ac18be3064e637ddf87c685af1ded8ffcfc39d))
+* **package:** add @rollup/plugin-node-resolve to dependencies instead of devDependencies ([9592666](https://github.com/freddy38510/quasar-app-extension-ssg/commit/9592666480af4e57d65abfcb55db4a1ee74ae20e))
+* **quasar-config:** ensure the ctx property is set ([88f2f16](https://github.com/freddy38510/quasar-app-extension-ssg/commit/88f2f16af9c3346e6d0db3d839d25317384ffd11))
+* **webpack,vite:** do not add ssg-corrections boot file if quasar is greater than v2.11.1 ([13bfa3e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/13bfa3eb639d6649c1916e5dbfc39df50e7f9e3a))
+* **webpack,vite:** do not leak currentScript when on SSR with Pinia/Vuex ([43c8aa8](https://github.com/freddy38510/quasar-app-extension-ssg/commit/43c8aa8c5747cec848f36fe4323dc8c485208bcf))
+* **webpack:** support css-loader major version 6 since @quasar/app-webpack v3.7.0 update ([4dd9489](https://github.com/freddy38510/quasar-app-extension-ssg/commit/4dd9489780b5e995366c109cc3595086102b7aa3))
+
 ## [4.6.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.5.8...v4.6.0) (2022-10-14)
 
 
