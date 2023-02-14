@@ -1,10 +1,11 @@
 /* eslint-disable no-console */
+
+const path = require('path');
+const { requireFromApp, getPackageVersion, hasNewQuasarPkg } = require('./packages');
+
 const {
   green, grey, bgBlue, underline,
-} = require('chalk');
-const path = require('path');
-const requireFromApp = require('./require-from-app');
-const { getPackageVersion, hasNewQuasarPkg } = require('./packages');
+} = requireFromApp('chalk');
 
 const quasarVersion = getPackageVersion('quasar');
 const cliAppVersion = getPackageVersion('@quasar/app');

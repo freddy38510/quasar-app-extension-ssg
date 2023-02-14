@@ -9,9 +9,8 @@ if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'development';
 }
 
-const requireFromApp = require('../helpers/require-from-app');
 const { log, warn, fatal } = require('../helpers/logger');
-const { hasPackage } = require('../helpers/packages');
+const { requireFromApp, hasPackage } = require('../helpers/packages');
 
 const parseArgs = requireFromApp('minimist');
 
@@ -121,15 +120,13 @@ function startVueDevtools() {
 }
 
 async function goLive() {
-  const installMissing = requireFromApp('@quasar/app/lib/mode/install-missing');
-  await installMissing('ssr');
-
   const DevServer = require('../dev/dev-server-ssg');
   const QuasarConfFile = require('../conf');
   const Generator = require('../build/generator');
   const getQuasarCtx = require('../helpers/get-quasar-ctx');
+  const regenerateTypesFeatureFlags = require('../helpers/types-feature-flags');
+
   const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
-  const regenerateTypesFeatureFlags = requireFromApp('@quasar/app/lib/helpers/types-feature-flags');
 
   const ctx = getQuasarCtx({
     mode: 'ssg',

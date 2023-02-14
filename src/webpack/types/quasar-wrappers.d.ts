@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import type * as beastcss from 'beastcss';
 import type { Options as GlobbyOptions } from 'fast-glob';
 import type { QuasarConf } from '<%= quasarAppPkgName %>/types/configuration/conf';

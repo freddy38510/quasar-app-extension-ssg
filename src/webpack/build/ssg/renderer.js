@@ -5,7 +5,7 @@ const { existsSync } = require('fs');
 const { join, sep, normalize } = require('path');
 const RenderTemplatePlugin = require('./plugin.render-template');
 const WebpackProgressPlugin = require('../plugin.progress');
-const requireFromApp = require('../../helpers/require-from-app');
+const { requireFromApp } = require('../../helpers/packages');
 
 const webpack = requireFromApp('webpack');
 const WebpackChain = requireFromApp('webpack-chain');

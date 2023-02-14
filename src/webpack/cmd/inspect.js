@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
 /* eslint-disable global-require */
 
-const parseArgs = require('minimist');
 const QuasarConfFile = require('../conf');
-const requireFromApp = require('../helpers/require-from-app');
+const { requireFromApp } = require('../helpers/packages');
 const { quasarConfigFilename } = require('../helpers/app-paths');
 const getQuasarCtx = require('../helpers/get-quasar-ctx');
 const { log, fatal } = require('../helpers/logger');
+
+const parseArgs = requireFromApp('minimist');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {

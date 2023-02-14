@@ -3,8 +3,7 @@
 /* eslint-disable prefer-spread */
 /* eslint-disable no-void */
 /* eslint-disable no-underscore-dangle */
-const requireFromApp = require('../helpers/require-from-app');
-const { hasPackage } = require('../helpers/packages');
+const { requireFromApp, hasPackage } = require('../helpers/packages');
 
 const { ProgressPlugin } = requireFromApp('webpack');
 const throttle = requireFromApp(hasPackage('@quasar/app', '>= 3.5.7') ? 'lodash/throttle' : 'lodash.throttle');

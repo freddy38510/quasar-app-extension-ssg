@@ -2,7 +2,6 @@
 /* eslint-disable global-require */
 
 const { join } = require('path');
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 const appPaths = require('./app-paths');
 const { requireFromApp, hasPackage } = require('./helpers/packages');
@@ -37,6 +36,8 @@ module.exports = {
 
     // In case if the app extension package is linked (yarn link) while developing it
     // make sure to resolve modules correctly.
+    const { nodeResolve } = requireFromApp('@rollup/plugin-node-resolve');
+
     cfg.plugins.unshift(nodeResolve({
       moduleDirectories: [
         'node_modules',

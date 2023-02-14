@@ -1,9 +1,10 @@
 /* eslint-disable global-require */
 const { join } = require('path');
-const { merge } = require('webpack-merge');
-const requireFromApp = require('../../helpers/require-from-app');
+const { requireFromApp } = require('../../helpers/packages');
 const { QuasarSSRClientPlugin } = require('./plugin.client-side');
 const WebpackProgressPlugin = require('../plugin.progress');
+
+const { merge } = requireFromApp('webpack-merge');
 
 module.exports = function chainWebpackClient(chain, cfg, configName) {
   chain.name(configName);

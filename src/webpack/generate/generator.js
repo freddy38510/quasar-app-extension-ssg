@@ -2,11 +2,9 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 const path = require('path');
-const { minify } = require('html-minifier');
 const Beastcss = require('beastcss');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
-const { cyanBright, green, bold } = require('chalk');
 const { log, beastcssLog } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
@@ -16,6 +14,12 @@ const {
   withoutTrailingSlash,
 } = require('../helpers/normalize-slash');
 const appPaths = require('../helpers/app-paths');
+const { requireFromApp } = require('../helpers/packages');
+
+const {
+  cyanBright, green, bold, blue, yellow, red,
+} = requireFromApp('chalk');
+const { minify } = requireFromApp('html-minifier');
 
 class Generator {
   constructor(quasarConf, renderToString, fs) {
@@ -319,14 +323,14 @@ class Generator {
 
     const getColor = (level) => {
       if (level === 'info') {
-        return require('chalk').blue;
+        return blue;
       }
 
       if (level === 'warn') {
-        return require('chalk').yellow;
+        return yellow;
       }
 
-      return require('chalk').red;
+      return red;
     };
 
     ['info', 'warn', 'error', 'trace', 'debug'].forEach((level) => {

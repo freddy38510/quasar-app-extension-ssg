@@ -6,7 +6,6 @@ const { writeFileSync } = require('fs');
 const { requireFromApp } = require('./helpers/packages');
 const config = require('./ssg-config');
 const PagesGenerator = require('./PagesGenerator');
-const { buildPwaServiceWorker } = require('./helpers/pwa-utils');
 
 const AppBuilder = requireFromApp('@quasar/app-vite/lib/app-builder');
 const {
@@ -91,6 +90,8 @@ class SsgBuilder extends AppBuilder {
     await pagesGenerator.generate();
 
     if (this.quasarConf.ctx.mode.pwa) {
+      const { buildPwaServiceWorker } = require('./helpers/pwa-utils');
+
       const workboxConfig = await config.workbox(this.quasarConf);
 
       await buildPwaServiceWorker(this.quasarConf.pwa.workboxMode, workboxConfig);

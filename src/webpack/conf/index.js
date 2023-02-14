@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 const extendQuasarConf = require('./extend-quasar-conf');
-const requireFromApp = require('../helpers/require-from-app');
+const { requireFromApp } = require('../helpers/packages');
 
 const QuasarConfFile = requireFromApp('@quasar/app/lib/quasar-conf-file');
 

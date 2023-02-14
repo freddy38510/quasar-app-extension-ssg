@@ -3,7 +3,7 @@
  * Forked from vue-server-renderer/server-plugin.js v2.6.14 NPM package
  */
 
-const requireFromApp = require('../../helpers/require-from-app');
+const { requireFromApp } = require('../../helpers/packages');
 
 const { sources } = requireFromApp('webpack');
 

@@ -1,4 +1,4 @@
-const requireFromApp = require('./require-from-app');
+const { requireFromApp } = require('./packages');
 
 const PrettyError = requireFromApp('pretty-error');
 

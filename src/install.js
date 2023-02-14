@@ -1,3 +1,7 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
+const { peerDependencies } = require('../package.json');
+
 /**
  * Quasar App Extension install script
  *
@@ -51,6 +55,30 @@ module.exports = function install(api) {
       },
     );
   }
+
+  const depsToInstall = !api.hasVite ? [
+    '@freddy38510/vue-loader',
+    '@freddy38510/vue-style-loader',
+  ] : ['@rollup/plugin-node-resolve'];
+
+  Object.keys(peerDependencies).forEach((peerDepName) => {
+    if (!depsToInstall.includes(peerDepName)) {
+      delete peerDependencies[peerDepName];
+    }
+  });
+
+  if (Object.keys(peerDependencies).length > 0) {
+    const { requireFromApp } = require(`./${api.hasVite ? 'vite' : 'webpack'}/helpers/packages`);
+
+    const nodePackager = requireFromApp(`@quasar/app${api.hasVite ? '-vite' : ''}/lib/helpers/node-packager`);
+
+    nodePackager.installPackage(
+      Object.entries(peerDependencies).map(([name, version]) => `${name}@${version}`),
+      { isDev: true, displayName: 'SSG dependencies' },
+    );
+  }
+
+  api.renderFile('./ssg-flag.d.ts', 'src/ssg-flag.d.ts'); // feature flag
 
   api.onExitLog(
     `See https://github.com/freddy38510/quasar-app-extension-ssg/#configuration to configure the extension then run "${generateCommand}" or "${devCommand}`,

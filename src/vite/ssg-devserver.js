@@ -16,7 +16,6 @@ const AppDevserver = require('./app-devserver');
 const PagesGenerator = require('./PagesGenerator');
 const printDevBanner = require('./helpers/print-dev-banner');
 const ssgCreateRenderFn = require('./ssg-create-render-fn');
-const { buildPwaServiceWorker } = require('./helpers/pwa-utils');
 
 const express = requireFromApp('express');
 const { createServer } = requireFromApp('vite');
@@ -399,6 +398,9 @@ class SsgDevServer extends AppDevserver {
 
   // also update pwa-devserver.js when changing here
   async #compilePwaServiceWorker(quasarConf, queue) {
+    // eslint-disable-next-line global-require
+    const { buildPwaServiceWorker } = require('./helpers/pwa-utils');
+
     if (this.#pwaServiceWorkerWatcher) {
       await this.#pwaServiceWorkerWatcher.close();
     }

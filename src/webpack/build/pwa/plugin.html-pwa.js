@@ -1,4 +1,4 @@
-const requireFromApp = require('../../helpers/require-from-app');
+const { requireFromApp } = require('../../helpers/packages');
 
 function fillPwaTags(data, {
   pwa: {

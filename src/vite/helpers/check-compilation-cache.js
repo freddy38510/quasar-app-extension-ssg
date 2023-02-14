@@ -1,10 +1,11 @@
 const destr = require('destr');
-const fs = require('fs-extra');
 const path = require('path');
 const { info } = require('./logger');
 const { makeSnapshot, compareSnapshots } = require('./snapshot');
 const { appDir } = require('../app-paths');
-const { getPackageVersion } = require('./packages');
+const { getPackageVersion, requireFromApp } = require('./packages');
+
+const fse = requireFromApp('fs-extra');
 
 module.exports = async function checkCompilationCache(argv, quasarConf) {
   let needCompilation = true;
@@ -32,7 +33,7 @@ module.exports = async function checkCompilationCache(argv, quasarConf) {
   };
 
   const writeCacheManifest = async () => {
-    await fs.writeFile(cacheManifestFile, JSON.stringify(currentManifest, null, 2), 'utf-8');
+    await fse.writeFile(cacheManifestFile, JSON.stringify(currentManifest, null, 2), 'utf-8');
   };
 
   if (argv['force-build']) {
@@ -44,14 +45,14 @@ module.exports = async function checkCompilationCache(argv, quasarConf) {
     };
   }
 
-  if (!fs.existsSync(cacheManifestFile)) {
+  if (!fse.existsSync(cacheManifestFile)) {
     return {
       needCompilation,
       writeCacheManifest,
     };
   }
 
-  const previousManifest = destr(fs.readFileSync(cacheManifestFile, 'utf-8')) || {};
+  const previousManifest = destr(fse.readFileSync(cacheManifestFile, 'utf-8')) || {};
 
   // Quick diff
   needCompilation = ['quasarVersion', 'quasarCliVersion', 'quasarExtrasVersion', 'ssr'].some((field) => {

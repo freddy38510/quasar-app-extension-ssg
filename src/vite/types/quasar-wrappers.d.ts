@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import type { QuasarConf } from '@quasar/app-vite/types/configuration/conf';
 import type {
   BaseQuasarContext,

@@ -1,8 +1,10 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable no-console */
 /* eslint-disable global-require */
+// eslint-disable-next-line import/order
+const { requireFromApp } = require('../helpers/packages');
 
-const parseArgs = require('minimist');
+const parseArgs = requireFromApp('minimist');
 
 const argv = parseArgs(process.argv.slice(4), {
   alias: {
@@ -80,8 +82,8 @@ if (argv.help) {
 const fs = require('fs');
 const PlatformPath = require('path');
 const esmRequire = require('jiti')(__filename);
-const express = require('express');
-const requireFromApp = require('../helpers/require-from-app');
+
+const express = requireFromApp('express');
 
 const { globbySync } = esmRequire('globby');
 
@@ -99,7 +101,7 @@ let green; let grey; let
   red;
 
 if (argv.colors) {
-  const chalk = require('chalk');
+  const chalk = requireFromApp('chalk');
   green = chalk.green;
   grey = chalk.grey;
   red = chalk.red;
@@ -147,7 +149,7 @@ if (!argv.silent) {
 }
 
 if (argv.gzip) {
-  const compression = require('compression');
+  const compression = requireFromApp('compression');
   app.use(compression({ threshold: 0 }));
 }
 
@@ -263,7 +265,7 @@ function getServer() {
       // cert is more than 30 days old
       if ((now - certStat.ctime) / certTtl > 30) {
         console.log(' SSL Certificate is more than 30 days old. Removing.');
-        const { removeSync } = require('fs-extra');
+        const { removeSync } = requireFromApp('fs-extra');
         removeSync(certPath);
         certExists = false;
       }
@@ -368,7 +370,7 @@ getServer().listen(argv.port, argv.hostname, () => {
   console.log(`\n${info.join('\n')}\n`);
 
   if (argv.open) {
-    const ci = require('ci-info');
+    const ci = requireFromApp('ci-info');
 
     const isMinimalTerminal = (
       ci.isCI
@@ -376,7 +378,7 @@ getServer().listen(argv.port, argv.hostname, () => {
       || !process.stdout.isTTY
     );
     if (!isMinimalTerminal) {
-      esmRequire('open')(fullUrl);
+      requireFromApp('open')(fullUrl, { url: true });
     }
   }
 });

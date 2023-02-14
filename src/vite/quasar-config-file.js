@@ -2,7 +2,7 @@
 
 const { join, isAbsolute } = require('path');
 const appPaths = require('./app-paths');
-const { requireFromApp } = require('./helpers/packages');
+const { requireFromApp, hasPackage } = require('./helpers/packages');
 
 const QuasarConfFile = requireFromApp(
   '@quasar/app-vite/lib/quasar-config-file',

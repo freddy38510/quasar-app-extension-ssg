@@ -1,11 +1,12 @@
 /* eslint-disable global-require */
 const destr = require('destr');
-const fs = require('fs-extra');
 const path = require('path');
 const { log } = require('./logger');
 const { makeSnapshot, compareSnapshots } = require('../build/snapshot');
 const { appDir } = require('./app-paths');
-const { getPackageVersion } = require('./packages');
+const { requireFromApp, getPackageVersion } = require('./packages');
+
+const fse = requireFromApp('fs-extra');
 
 module.exports = async function ensureBuild(quasarConfFile) {
   const { quasarConf } = quasarConfFile;
@@ -39,8 +40,8 @@ module.exports = async function ensureBuild(quasarConfFile) {
   // Check if build can be skipped
   const quasarBuildFile = path.resolve(options.buildDir, 'build.json');
 
-  if (fs.existsSync(quasarBuildFile)) {
-    const previousBuild = destr(fs.readFileSync(quasarBuildFile, 'utf-8')) || {};
+  if (fse.existsSync(quasarBuildFile)) {
+    const previousBuild = destr(fse.readFileSync(quasarBuildFile, 'utf-8')) || {};
 
     // Quick diff
     let needBuild = false;
@@ -76,5 +77,5 @@ module.exports = async function ensureBuild(quasarConfFile) {
   await require('../build')(quasarConfFile);
 
   // Write build.json
-  await fs.writeFile(quasarBuildFile, JSON.stringify(currentBuild, null, 2), 'utf-8');
+  await fse.writeFile(quasarBuildFile, JSON.stringify(currentBuild, null, 2), 'utf-8');
 };

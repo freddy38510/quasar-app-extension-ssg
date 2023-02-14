@@ -4,9 +4,9 @@
 /* eslint-disable no-void */
 /* eslint-disable no-underscore-dangle */
 const { join } = require('path');
-const { green, grey } = require('chalk');
-const requireFromApp = require('../helpers/require-from-app');
+const { requireFromApp } = require('../helpers/packages');
 
+const { green, grey } = requireFromApp('chalk');
 const webpack = requireFromApp('webpack');
 const WebpackDevServer = requireFromApp('webpack-dev-server');
 

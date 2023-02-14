@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-void */
 const { join, isAbsolute } = require('path');
-const { merge } = require('webpack-merge');
 const getUniqueArray = require('../helpers/get-unique-array');
 const appPaths = require('../helpers/app-paths');
-const requireFromApp = require('../helpers/require-from-app');
+const { requireFromApp, hasPackage } = require('../helpers/packages');
 
+const { merge } = requireFromApp('webpack-merge');
 const extensionJson = requireFromApp('@quasar/app/lib/app-extension/extension-json');
 
 module.exports = function extendQuasarConf(conf) {

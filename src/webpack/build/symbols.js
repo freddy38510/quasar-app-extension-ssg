@@ -1,5 +1,5 @@
 /* eslint-disable no-void */
-const requireFromApp = require('../helpers/require-from-app');
+const { requireFromApp } = require('../helpers/packages');
 
 const { webpackNames } = requireFromApp('@quasar/app/lib/webpack/symbols');
 

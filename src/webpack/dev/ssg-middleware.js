@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
-const { green, grey } = require('chalk');
 const isRouteValid = require('../helpers/is-route-valid');
+const { requireFromApp } = require('../helpers/packages');
+
+const { green, grey } = requireFromApp('chalk');
 
 module.exports = ({
   app, banner, resolve, generateRoute, serve,

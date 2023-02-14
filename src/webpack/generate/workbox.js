@@ -3,12 +3,14 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable no-void */
 const path = require('path');
-const { generateSW, injectManifest } = require('workbox-build');
 const {
   info, error, fatal, success, warn,
 } = require('../helpers/logger');
 const { resolve } = require('../helpers/app-paths');
 const renderPrettyError = require('../helpers/render-pretty-error');
+const { requireFromApp } = require('../helpers/packages');
+
+const { generateSW, injectManifest } = requireFromApp('workbox-build');
 
 const getOptions = (quasarConf, mode) => {
   const defaultOptions = {
@@ -31,7 +33,7 @@ const getOptions = (quasarConf, mode) => {
 
   // if Object form:
   if (quasarConf.ssr.pwa && quasarConf.ssr.pwa !== true) {
-    const { merge } = require('webpack-merge');
+    const { merge } = requireFromApp('webpack-merge');
     opts = merge(opts, quasarConf.ssr.pwa);
   }
 

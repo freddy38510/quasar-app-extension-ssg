@@ -1,7 +1,9 @@
 const { crc32 } = require('crc');
-const fs = require('fs-extra');
 const path = require('path');
 const esmRequire = require('jiti')(__filename);
+const { requireFromApp } = require('../helpers/packages');
+
+const fse = requireFromApp('fs-extra');
 
 const { globby } = esmRequire('globby');
 
@@ -39,7 +41,7 @@ const makeSnapshot = async function makeSnapshot({ globbyOptions, ignore, rootDi
   await Promise.all(files.map(async (p) => {
     const key = path.relative(rootDir, p);
     try {
-      const fileContent = await fs.readFile(p);
+      const fileContent = await fse.readFile(p);
       snapshot[key] = {
         checksum: await crc32(fileContent).toString(16),
       };

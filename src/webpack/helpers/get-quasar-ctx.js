@@ -1,4 +1,4 @@
-const requireFromApp = require('./require-from-app');
+const { requireFromApp } = require('./packages');
 
 module.exports = function getQuasarCtx(opts) {
   // opts.mode can be set to 'ssg'

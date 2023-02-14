@@ -2,10 +2,9 @@
 const { existsSync } = require('fs');
 const { join, sep, normalize } = require('path');
 
-const requireFromApp = require('../../helpers/require-from-app');
 const appPaths = require('../../helpers/app-paths');
 const { QuasarSSRServerPlugin } = require('./plugin.server-side');
-const { hasPackage } = require('../../helpers/packages');
+const { requireFromApp, hasPackage } = require('../../helpers/packages');
 const WebpackProgressPlugin = require('../plugin.progress');
 
 const nodeExternals = requireFromApp('webpack-node-externals');

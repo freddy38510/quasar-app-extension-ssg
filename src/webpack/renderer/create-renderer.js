@@ -5,7 +5,7 @@
  */
 
 const { extname } = require('path');
-const requireFromApp = require('../helpers/require-from-app');
+const { requireFromApp } = require('../helpers/packages');
 
 const jsRE = /\.js(\?[^.]+)?$/;
 const jsModuleRE = /\.mjs(\?[^.]+)?$/;

@@ -2,10 +2,9 @@
 /* eslint-disable no-console */
 /* eslint-disable global-require */
 /* eslint-disable no-underscore-dangle */
-const fs = require('fs-extra');
 const { join } = require('path');
 const Generator = require('./generator');
-const requireFromApp = require('../helpers/require-from-app');
+const { requireFromApp } = require('../helpers/packages');
 const { logGenerateBanner } = require('../helpers/banner');
 const {
   log, info, warn, error, warning, fatal, success,
@@ -13,6 +12,7 @@ const {
 const { printGeneratorErrors, printGeneratorWarnings } = require('../helpers/print-generator-issue');
 const renderPrettyError = require('../helpers/render-pretty-error');
 
+const fse = requireFromApp('fs-extra');
 requireFromApp('pretty-error').stop();
 
 module.exports = async function generate(quasarConf) {
@@ -39,7 +39,7 @@ module.exports = async function generate(quasarConf) {
   log('Copying assets...');
 
   try {
-    await fs.copy(
+    await fse.copy(
       join(quasarConf.ssg.buildDir, 'www'),
       quasarConf.ssg.distDir,
     );

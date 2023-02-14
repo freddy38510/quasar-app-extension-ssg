@@ -2,8 +2,10 @@
 /* eslint-disable no-console */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
+// eslint-disable-next-line import/order
+const { requireFromApp } = require('../helpers/packages');
 
-const parseArgs = require('minimist');
+const parseArgs = requireFromApp('minimist');
 
 const argv = parseArgs(process.argv.slice(4), {
   alias: {
@@ -84,7 +86,6 @@ const fs = require('fs');
 const path = require('path');
 
 const esmRequire = require('jiti')(__filename);
-const { requireFromApp } = require('../helpers/packages');
 
 const { globbySync } = esmRequire('globby');
 const express = requireFromApp('express');
@@ -194,7 +195,7 @@ if (fallbackFile) {
 }
 
 if (microCacheSeconds) {
-  const microcache = requireFromApp('route-cache');
+  const microcache = require('route-cache');
   app.use(
     microcache.cacheSeconds(
       microCacheSeconds,

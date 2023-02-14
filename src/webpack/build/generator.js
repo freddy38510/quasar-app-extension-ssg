@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasPackage } = require('../helpers/packages');
-const requireFromApp = require('../helpers/require-from-app');
+const { requireFromApp } = require('../helpers/packages');
 
 const compileTemplate = requireFromApp(hasPackage('@quasar/app', '>= 3.5.7') ? 'lodash/template' : 'lodash.template');
 const appPaths = requireFromApp('@quasar/app/lib/app-paths');

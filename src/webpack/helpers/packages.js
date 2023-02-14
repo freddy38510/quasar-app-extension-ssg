@@ -1,7 +1,6 @@
 /* eslint-disable no-void */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-const semver = require('semver');
 const appPaths = require('./app-paths');
 
 let hasNewQuasarPkg;
@@ -41,6 +40,10 @@ const getPackageJson = (pkgName, folder = appPaths.appDir) => {
       }),
     );
   } catch (e) {
+    if (e.code === 'ERR_PACKAGE_PATH_NOT_EXPORTED') {
+      return {};
+    }
+
     return void 0;
   }
 };
@@ -48,6 +51,10 @@ const getPackageJson = (pkgName, folder = appPaths.appDir) => {
 hasNewQuasarPkg = canResolveNewQuasarPkg();
 
 module.exports.hasNewQuasarPkg = hasNewQuasarPkg;
+
+module.exports.requireFromApp = (module) => require(appPaths.resolve.appNodeModule(module));
+
+const semver = this.requireFromApp('semver');
 
 module.exports.hasPackage = function hasPackage(packageName, semverCondition) {
   const name = getPackageName(packageName);

@@ -7,7 +7,9 @@ if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'production';
 }
 
-const parseArgs = require('minimist');
+const { requireFromApp } = require('../helpers/packages');
+
+const parseArgs = requireFromApp('minimist');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -37,7 +39,6 @@ if (argv.help) {
 
 const QuasarConfFile = require('../conf');
 const { quasarConfigFilename } = require('../helpers/app-paths');
-const requireFromApp = require('../helpers/require-from-app');
 const ensureBuild = require('../helpers/ensure-build');
 const getQuasarCtx = require('../helpers/get-quasar-ctx');
 const { fatal } = require('../helpers/logger');
@@ -54,8 +55,6 @@ async function run() {
 
   logBuildBanner(argv, 'build');
 
-  const installMissing = requireFromApp('@quasar/app/lib/mode/install-missing');
-
   const ctx = getQuasarCtx({
     mode: 'ssg',
     target: undefined,
@@ -65,8 +64,6 @@ async function run() {
     prod: true,
     publish: undefined,
   });
-
-  await installMissing('ssr');
 
   if (hasPackage('@quasar/app', '< 3.4.0')) {
     const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');

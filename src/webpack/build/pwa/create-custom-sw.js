@@ -1,6 +1,6 @@
 const { join } = require('path');
 const appPaths = require('../../helpers/app-paths');
-const requireFromApp = require('../../helpers/require-from-app');
+const { requireFromApp } = require('../../helpers/packages');
 const WebpackProgressPlugin = require('../plugin.progress');
 
 module.exports = function createCSW(cfg, configName) {

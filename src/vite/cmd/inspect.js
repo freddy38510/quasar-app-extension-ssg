@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 /* eslint-disable no-void */
 /* eslint-disable global-require */
-const parseArgs = require('minimist');
+const { requireFromApp } = require('../helpers/packages');
+
+const parseArgs = requireFromApp('minimist');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -52,7 +54,6 @@ argv.mode = 'ssg';
 require('../helpers/banner-global')(argv, argv.cmd);
 
 const { log, fatal } = require('../helpers/logger');
-const { requireFromApp } = require('../helpers/packages');
 
 const depth = parseInt(argv.depth, 10) || Infinity;
 

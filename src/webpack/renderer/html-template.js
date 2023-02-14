@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable global-require */
-const { hasPackage } = require('../helpers/packages');
-const requireFromApp = require('../helpers/require-from-app');
+const { requireFromApp, hasPackage } = require('../helpers/packages');
 
 function injectSsrInterpolation(html) {
   return html

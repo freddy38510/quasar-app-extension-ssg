@@ -2,7 +2,6 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
 
-const semver = require('semver');
 const { appDir, resolve } = require('../app-paths');
 
 const getPackageJson = (pkgName, folder = appDir) => {
@@ -13,9 +12,18 @@ const getPackageJson = (pkgName, folder = appDir) => {
       }),
     );
   } catch (e) {
+    // console.log(e);
+    if (e.code === 'ERR_PACKAGE_PATH_NOT_EXPORTED') {
+      return {};
+    }
+
     return void 0;
   }
 };
+
+module.exports.requireFromApp = (module) => require(resolve.appNodeModule(module));
+
+const semver = this.requireFromApp('semver');
 
 module.exports.hasPackage = function hasPackage(pkgName, semverCondition) {
   const json = getPackageJson(pkgName);
@@ -36,5 +44,3 @@ module.exports.getPackageVersion = function getPackageVersion(pkgName) {
     ? json.version
     : void 0;
 };
-
-module.exports.requireFromApp = (module) => require(resolve.appNodeModule(module));

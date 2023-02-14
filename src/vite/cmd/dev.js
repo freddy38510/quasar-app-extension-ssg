@@ -5,10 +5,10 @@ if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'development';
 }
 
-const parseArgs = require('minimist');
-
 const { log, fatal } = require('../helpers/logger');
 const { requireFromApp } = require('../helpers/packages');
+
+const parseArgs = requireFromApp('minimist');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -69,10 +69,6 @@ function startVueDevtools() {
 }
 
 async function goLive() {
-  // install ssr mode if it's missing
-  const { add } = requireFromApp('@quasar/app-vite/lib/modes/ssr/ssr-installation');
-  await add(true);
-
   const getQuasarCtx = require('../helpers/get-quasar-ctx');
   const ctx = getQuasarCtx({
     mode: 'ssg',
@@ -103,7 +99,7 @@ async function goLive() {
     fatal(quasarConf.error, 'FAIL');
   }
 
-  const regenerateTypesFeatureFlags = requireFromApp('@quasar/app-vite/lib/helpers/types-feature-flags');
+  const regenerateTypesFeatureFlags = require('../helpers/types-feature-flags');
   regenerateTypesFeatureFlags(quasarConf);
 
   if (quasarConf.metaConf.vueDevtools !== false) {

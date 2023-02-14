@@ -1,7 +1,7 @@
 /* eslint-disable no-void */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-const requireFromApp = require('../../helpers/require-from-app');
+const { requireFromApp } = require('../../helpers/packages');
 const appPaths = require('../../helpers/app-paths');
 
 const PwaManifestPlugin = requireFromApp('@quasar/app/lib/webpack/pwa/plugin.pwa-manifest');
@@ -41,7 +41,7 @@ function addWorkboxPlugin(chain, cfg) {
 
   // if Object form:
   if (cfg.ctx.mode.pwa && cfg.ctx.mode.pwa !== true) {
-    const { merge } = require('webpack-merge');
+    const { merge } = requireFromApp('webpack-merge');
     opts = merge({}, opts, cfg.ctx.mode.pwa);
   }
 

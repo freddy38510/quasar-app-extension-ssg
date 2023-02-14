@@ -1,15 +1,17 @@
 /* eslint-disable no-void */
 /* eslint-disable no-console */
+
+const isUnicodeSupported = require('./is-unicode-supported');
+const { requireFromApp } = require('./packages');
+
+const readline = requireFromApp('readline');
+
 const {
   bgGreen, green,
   red, bgRed,
   bgYellow, yellow,
   inverse,
-} = require('chalk');
-const isUnicodeSupported = require('./is-unicode-supported');
-const requireFromApp = require('./require-from-app');
-
-const readline = requireFromApp('readline');
+} = requireFromApp('chalk');
 
 const dot = '•';
 const pointer = isUnicodeSupported ? '❯' : '>';

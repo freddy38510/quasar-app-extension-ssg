@@ -4,15 +4,16 @@
 /* eslint-disable no-console */
 const pify = require('pify');
 const Generator = require('./generator');
-const requireFromApp = require('../helpers/require-from-app');
+const { requireFromApp } = require('../helpers/packages');
 const { logBuildBanner } = require('../helpers/banner');
 const { log, fatal } = require('../helpers/logger');
+const regenerateTypesFeatureFlags = require('../helpers/types-feature-flags');
+
 const { splitWebpackConfig } = require('./symbols');
 
 const webpack = requireFromApp('webpack');
 const { printWebpackErrors } = requireFromApp('@quasar/app/lib/helpers/print-webpack-issue');
 const artifacts = requireFromApp('@quasar/app/lib/artifacts');
-const regenerateTypesFeatureFlags = requireFromApp('@quasar/app/lib/helpers/types-feature-flags');
 
 function parseWebpackConfig(cfg, mode) {
   const data = splitWebpackConfig(cfg, mode);
