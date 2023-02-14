@@ -2,6 +2,7 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
 const requireFromApp = require('../helpers/require-from-app');
+const { hasPackage } = require('../helpers/packages');
 const { resolve } = require('../helpers/app-paths');
 
 const postCssConfigFile = resolve.app('.postcssrc.js');
@@ -81,7 +82,7 @@ function create(
 
   const cssLoaderOptions = {
     sourceMap: pref.sourceMap,
-    url: shouldRequireUrl,
+    url: hasPackage('css-loader', '< 6.0.0') ? shouldRequireUrl : { filter: shouldRequireUrl },
     importLoaders:
       1 // stylePostLoader injected by vue-loader
       + 1 // postCSS loader
