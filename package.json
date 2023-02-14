@@ -67,7 +67,7 @@
     "@quasar/app-webpack": "3.7.1",
     "@typescript-eslint/eslint-plugin": "5.52.0",
     "@typescript-eslint/parser": "5.52.0",
-    "commit-and-tag-version": "10.1.0",
+    "commit-and-tag-version": "11.1.0",
     "commitizen": "4.3.0",
     "cross-spawn": "7.0.3",
     "cz-conventional-changelog": "3.3.0",
