@@ -358,7 +358,7 @@ class SsgDevServer extends AppDevserver {
       });
     }
 
-    const listenResult = app.listen(this.#appOptions.port);
+    const listenResult = app.listen(this.#appOptions.port, quasarConf.devServer.host);
 
     this.#closeDevserver = () => listenResult.close();
 
