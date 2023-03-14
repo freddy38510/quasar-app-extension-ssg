@@ -95,9 +95,22 @@ function extendQuasarConf(conf) {
 
   // In case if the app extension package is linked (yarn link) while developing it
   // make sure to allow to serve roboto font files and ssg-corrections boot file.
+  // @see https://v2.vitejs.dev/config/#server-fs-allow
   conf.devServer.fs.allow = conf.devServer.fs.allow || [];
+
+  if (hasPackage('vite', '>= 2.6.0')) {
+    const { searchForWorkspaceRoot } = requireFromApp('vite');
+
+    conf.devServer.fs.allow.push(
+      searchForWorkspaceRoot(process.cwd()),
+    );
+  } else {
+    conf.devServer.fs.allow.push(
+      appPaths,
+    );
+  }
+
   conf.devServer.fs.allow.push(
-    searchForWorkspaceRoot(process.cwd()),
     join(__dirname, '../../'),
   );
 }
