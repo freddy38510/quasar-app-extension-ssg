@@ -4,7 +4,6 @@
 
 const { readFileSync } = require('fs');
 const path = require('path');
-const { getErrorCause } = require('pony-cause');
 const { requireFromApp } = require('./helpers/packages');
 const {
   log, warn, info, dot, progress,
@@ -16,6 +15,7 @@ const AppDevserver = require('./app-devserver');
 const PagesGenerator = require('./PagesGenerator');
 const printDevBanner = require('./helpers/print-dev-banner');
 const ssgCreateRenderFn = require('./ssg-create-render-fn');
+const extendPrettyPageHandler = require('./helpers/extend-pretty-page-handler');
 
 const express = requireFromApp('express');
 const { createServer } = requireFromApp('vite');
@@ -37,6 +37,8 @@ const { injectPwaManifest } = requireFromApp(
 
 const doubleSlashRE = /\/\//g;
 
+Ouch.handlers.PrettyPageHandler = extendPrettyPageHandler(Ouch.handlers.PrettyPageHandler);
+
 const ouchInstance = new Ouch().pushHandler(
   new Ouch.handlers.PrettyPageHandler('orange', null, 'sublime'),
 );
@@ -47,7 +49,7 @@ function logServerMessage(title, msg, additional) {
 }
 
 function renderError({ err, req, res }) {
-  ouchInstance.handleException(getErrorCause(err) || err, req, res, () => {
+  ouchInstance.handleException(err.cause || err, req, res, () => {
     log();
     warn(req.url, 'Render failed');
   });

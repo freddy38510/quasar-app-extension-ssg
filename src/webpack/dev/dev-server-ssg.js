@@ -19,7 +19,7 @@ const { webpackNames } = require('../build/symbols');
 const appPaths = require('../helpers/app-paths');
 
 const openBrowser = requireFromApp('@quasar/app/lib/helpers/open-browser');
-const ouchInstance = requireFromApp('@quasar/app/lib/helpers/cli-error-handling').getOuchInstance();
+const Ouch = requireFromApp('ouch');
 
 const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin');
 
@@ -29,6 +29,13 @@ const renderTemplateFile = appPaths.resolve.app('.quasar/ssg/render-template.js'
 const Generator = require('../generate/generator');
 const ssgMiddleware = require('./ssg-middleware');
 const { log, warning, error } = require('../helpers/logger');
+const extendPrettyPageHandler = require('../helpers/extend-pretty-page-handler');
+
+Ouch.handlers.PrettyPageHandler = extendPrettyPageHandler(Ouch.handlers.PrettyPageHandler);
+
+const ouchInstance = new Ouch().pushHandler(
+  new Ouch.handlers.PrettyPageHandler('orange', null, 'sublime'),
+);
 
 const renderError = ({ err, req, res }) => {
   ouchInstance.handleException(err, req, res, () => {
