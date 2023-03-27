@@ -58,7 +58,7 @@
     "jiti": "1.17.0",
     "minimist": "1.2.8",
     "node-html-parser": "6.1.4",
-    "open": "8.4.1",
+    "open": "9.1.0",
     "pify": "5.0.0",
     "route-cache": "0.4.7",
     "selfsigned": "2.1.1",
