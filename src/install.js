@@ -12,6 +12,7 @@ module.exports = function install(api) {
   if (api.hasVite) {
     api.compatibleWith('@quasar/app-vite', '^1.0.0');
     api.compatibleWith('quasar', '>= 2.6.0');
+    api.compatibleWith('vite', '>= 2.9.1');
   } else {
     api.compatibleWith('quasar', '^2.0.0');
 
