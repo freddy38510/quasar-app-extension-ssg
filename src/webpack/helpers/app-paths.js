@@ -1,5 +1,3 @@
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable global-require */
 const fs = require('fs');
 const {
   normalize, resolve, join, sep,
@@ -28,9 +26,10 @@ function getAppDir() {
     dir = normalize(join(dir, '..'));
   }
 
-  const { fatal } = require('./logger');
+  // eslint-disable-next-line no-console
+  console.error('\n App • ⚠️  Error. This command must be executed inside a Quasar project folder.\n');
 
-  return fatal('Error. This command must be executed inside a Quasar project folder.');
+  return process.exit(1);
 }
 
 function getModuleNameOrPath(moduleNameOrPath) {
