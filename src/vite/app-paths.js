@@ -4,13 +4,8 @@ const {
 } = require('path');
 
 let quasarConfigFilename;
-let appDir;
 
 function getAppDir() {
-  if (appDir !== undefined) {
-    return appDir;
-  }
-
   let dir = process.cwd();
 
   while (dir.length && dir[dir.length - 1] !== sep) {
@@ -32,15 +27,17 @@ function getAppDir() {
   return process.exit(1);
 }
 
-appDir = getAppDir();
+const appDir = getAppDir();
+const publicDir = resolve(appDir, 'public');
+const resolvedQuasarConfigFilename = resolve(appDir, quasarConfigFilename);
 
-module.exports = {
-  appDir,
-  quasarConfigFilename: resolve(appDir, quasarConfigFilename),
-  resolve: {
-    app: (dir) => join(appDir, dir),
-    appNodeModule: (name) => require.resolve(name, {
-      paths: [appDir],
-    }),
-  },
+module.exports.appDir = appDir;
+module.exports.quasarConfigFilename = resolvedQuasarConfigFilename;
+module.exports.publicDir = publicDir;
+
+module.exports.resolve = {
+  app: (dir) => join(appDir, dir),
+  appNodeModule: (name) => require.resolve(name, {
+    paths: [appDir],
+  }),
 };

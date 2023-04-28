@@ -4,13 +4,8 @@ const {
 } = require('path');
 
 let quasarConfigFilename;
-let appDir;
 
 function getAppDir() {
-  if (appDir !== undefined) {
-    return appDir;
-  }
-
   let dir = process.cwd();
 
   while (dir.length && dir[dir.length - 1] !== sep) {
@@ -32,25 +27,37 @@ function getAppDir() {
   return process.exit(1);
 }
 
-function getModuleNameOrPath(moduleNameOrPath) {
-  if (moduleNameOrPath.startsWith('@quasar/app/')) {
-    const { hasNewQuasarPkg } = require('./packages'); // load here to avoid circular dependency
+const appDir = getAppDir();
 
-    return hasNewQuasarPkg ? moduleNameOrPath.replace('@quasar/app/', '@quasar/app-webpack/') : moduleNameOrPath;
+function tryToResolveNewQuasarPkg() {
+  let isResolved = true;
+
+  try {
+    require.resolve('@quasar/app-webpack/package.json', {
+      paths: [appDir],
+    });
+  } catch (e) {
+    isResolved = false;
   }
 
-  return moduleNameOrPath;
+  return isResolved;
 }
 
-appDir = getAppDir();
+const hasNewQuasarPkg = tryToResolveNewQuasarPkg();
 
-module.exports = {
-  appDir,
-  quasarConfigFilename: resolve(appDir, quasarConfigFilename),
-  resolve: {
-    app: (dir) => join(appDir, dir),
-    appNodeModule: (module) => require.resolve(getModuleNameOrPath(module), {
-      paths: [appDir],
-    }),
-  },
+function getModuleId(id) {
+  if (id.startsWith('@quasar/app/')) {
+    return hasNewQuasarPkg ? id.replace('@quasar/app/', '@quasar/app-webpack/') : id;
+  }
+
+  return id;
+}
+
+module.exports.appDir = appDir;
+module.exports.quasarConfigFilename = resolve(appDir, quasarConfigFilename);
+module.exports.resolve = {
+  app: (dir) => join(appDir, dir),
+  appNodeModule: (id) => require.resolve(getModuleId(id), {
+    paths: [appDir],
+  }),
 };

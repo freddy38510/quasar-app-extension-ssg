@@ -3,29 +3,9 @@
 /* eslint-disable global-require */
 const appPaths = require('./app-paths');
 
-let hasNewQuasarPkg;
-
-function canResolveNewQuasarPkg() {
-  if (hasNewQuasarPkg !== undefined) {
-    return hasNewQuasarPkg;
-  }
-
-  let isResolved = true;
-
-  try {
-    require.resolve('@quasar/app-webpack/package.json', {
-      paths: [appPaths.appDir],
-    });
-  } catch (e) {
-    isResolved = false;
-  }
-
-  return isResolved;
-}
-
 function getPackageName(packageName) {
   if (packageName === '@quasar/app') {
-    return hasNewQuasarPkg ? '@quasar/app-webpack'
+    return appPaths.hasNewQuasarPkg ? '@quasar/app-webpack'
       : packageName;
   }
 
@@ -47,10 +27,6 @@ const getPackageJson = (pkgName, folder = appPaths.appDir) => {
     return void 0;
   }
 };
-
-hasNewQuasarPkg = canResolveNewQuasarPkg();
-
-module.exports.hasNewQuasarPkg = hasNewQuasarPkg;
 
 module.exports.requireFromApp = (module) => require(appPaths.resolve.appNodeModule(module));
 
