@@ -14,6 +14,7 @@ const config = require('./ssg-config');
 const AppDevserver = require('./app-devserver');
 const PagesGenerator = require('./PagesGenerator');
 const printDevBanner = require('./helpers/print-dev-banner');
+const getErrorRenderer = require('./helpers/get-dev-error-renderer');
 const ssgCreateRenderFn = require('./ssg-create-render-fn');
 const extendPrettyPageHandler = require('./helpers/extend-pretty-page-handler');
 
@@ -21,7 +22,6 @@ const express = requireFromApp('express');
 const { createServer } = requireFromApp('vite');
 const chokidar = requireFromApp('chokidar');
 const debounce = requireFromApp('lodash/debounce');
-const Ouch = requireFromApp('ouch');
 
 const openBrowser = requireFromApp('@quasar/app-vite/lib/helpers/open-browser');
 const {
@@ -36,23 +36,9 @@ const { injectPwaManifest } = requireFromApp(
 );
 
 const doubleSlashRE = /\/\//g;
-
-Ouch.handlers.PrettyPageHandler = extendPrettyPageHandler(Ouch.handlers.PrettyPageHandler);
-
-const ouchInstance = new Ouch().pushHandler(
-  new Ouch.handlers.PrettyPageHandler('orange', null, 'sublime'),
-);
-
 function logServerMessage(title, msg, additional) {
   log();
   info(`${msg}${additional !== void 0 ? ` ${dot} ${additional}` : ''}`, title);
-}
-
-function renderError({ err, req, res }) {
-  ouchInstance.handleException(err.cause || err, req, res, () => {
-    log();
-    warn(req.url, 'Render failed');
-  });
 }
 
 class SsgDevServer extends AppDevserver {
@@ -65,6 +51,8 @@ class SsgDevServer extends AppDevserver {
   #htmlWatcher;
 
   #renderTemplate;
+
+  #renderError;
 
   #fallbackHtml;
 
@@ -155,6 +143,8 @@ class SsgDevServer extends AppDevserver {
     this.#appOptions.resolveUrlPath = publicPath === '/'
       ? (url) => url || '/'
       : (url) => (url ? (publicPath + url).replace(doubleSlashRE, '/') : publicPath);
+
+    this.#renderError = getErrorRenderer(this.#viteDevServer);
 
     this.#viteClient = await createServer(await config.viteClient(quasarConf));
     this.#viteServer = await createServer(await config.viteServer(quasarConf));
@@ -311,7 +301,7 @@ class SsgDevServer extends AppDevserver {
 
         res.send(html);
       } catch (err) {
-        renderError({ err, req, res });
+        this.#renderError({ err, req, res });
       }
     });
 
