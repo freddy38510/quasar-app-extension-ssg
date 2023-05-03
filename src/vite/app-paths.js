@@ -1,24 +1,31 @@
-const fs = require('fs');
+const { existsSync } = require('fs');
 const {
-  normalize, resolve, join, sep,
+  normalize,
+  resolve,
+  join,
+  sep,
 } = require('path');
 
-let quasarConfigFilename;
+const quasarConfigFilenameList = [
+  'quasar.config.js',
+  'quasar.config.cjs',
+  'quasar.conf.js', // legacy
+];
 
-function getAppDir() {
-  let dir = process.cwd();
+function getAppInfo() {
+  let appDir = process.cwd();
 
-  while (dir.length && dir[dir.length - 1] !== sep) {
-    if (fs.existsSync(join(dir, 'quasar.config.js'))) {
-      quasarConfigFilename = 'quasar.config.js';
-      return dir;
+  while (appDir.length && appDir[appDir.length - 1] !== sep) {
+    const dir = appDir;
+    const quasarConfigFilename = quasarConfigFilenameList.find(
+      (name) => existsSync(join(dir, name)),
+    );
+
+    if (quasarConfigFilename) {
+      return { appDir, quasarConfigFilename };
     }
-    if (fs.existsSync(join(dir, 'quasar.conf.js'))) {
-      quasarConfigFilename = 'quasar.conf.js';
-      return dir;
-    }
 
-    dir = normalize(join(dir, '..'));
+    appDir = normalize(join(appDir, '..'));
   }
 
   // eslint-disable-next-line no-console
@@ -27,12 +34,11 @@ function getAppDir() {
   return process.exit(1);
 }
 
-const appDir = getAppDir();
+const { appDir, quasarConfigFilename } = getAppInfo();
 const publicDir = resolve(appDir, 'public');
-const resolvedQuasarConfigFilename = resolve(appDir, quasarConfigFilename);
 
 module.exports.appDir = appDir;
-module.exports.quasarConfigFilename = resolvedQuasarConfigFilename;
+module.exports.quasarConfigFilename = join(appDir, quasarConfigFilename);
 module.exports.publicDir = publicDir;
 
 module.exports.resolve = {
