@@ -30,7 +30,7 @@ module.exports = async function ensureBuild(quasarConfFile) {
   // Current build meta
   const currentBuild = {
     quasarVersion: getPackageVersion('quasar'),
-    quasarAppVersion: getPackageVersion('@quasar/app'),
+    quasarAppVersion: getPackageVersion('@quasar/app-webpack'),
     quasarExtrasVersion: getPackageVersion('@quasar/extras'),
     ssgAppExtensionVersion: getPackageVersion('quasar-app-extension-ssg'),
     ssr: quasarConf.ssr,

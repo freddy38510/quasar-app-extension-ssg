@@ -1,10 +1,10 @@
 /* eslint-disable global-require */
 const path = require('path');
-const { requireFromApp, hasPackage } = require('../helpers/packages');
+const { requireFromApp } = require('../helpers/packages');
 const { resolve } = require('../helpers/app-paths');
 
 const { merge } = requireFromApp('webpack-merge');
-const cssVariables = requireFromApp('@quasar/app/lib/helpers/css-variables');
+const cssVariables = requireFromApp('@quasar/app-webpack/lib/helpers/css-variables');
 
 const postCssConfigFile = resolve.app('.postcssrc.js');
 
@@ -82,7 +82,7 @@ function create(
 
   const cssLoaderOptions = {
     sourceMap: pref.sourceMap,
-    url: hasPackage('css-loader', '< 6.0.0') ? shouldRequireUrl : { filter: shouldRequireUrl },
+    url: { filter: shouldRequireUrl },
     importLoaders:
       1 // stylePostLoader injected by vue-loader
       + 1 // postCSS loader

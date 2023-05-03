@@ -2,7 +2,7 @@
 const extendQuasarConf = require('./extend-quasar-conf');
 const { requireFromApp } = require('../helpers/packages');
 
-const QuasarConfFile = requireFromApp('@quasar/app/lib/quasar-conf-file');
+const QuasarConfFile = requireFromApp('@quasar/app-webpack/lib/quasar-conf-file');
 
 function encode(obj) {
   return JSON.stringify(obj, (_, value) => (typeof value === 'function'

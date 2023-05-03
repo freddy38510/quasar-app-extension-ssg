@@ -29,7 +29,7 @@ module.exports = async function uninstall(api) {
     return;
   }
 
-  const nodePackager = requireFromApp(`@quasar/app${api.hasVite ? '-vite' : ''}/lib/helpers/node-packager`);
+  const nodePackager = requireFromApp(`@quasar/app-${api.hasVite ? 'vite' : 'webpack'}/lib/helpers/node-packager`);
 
   nodePackager.uninstallPackage(depsToUninstall, {
     displayName: 'SSG dependencies',

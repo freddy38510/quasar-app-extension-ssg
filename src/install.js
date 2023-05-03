@@ -9,26 +9,13 @@ const { peerDependencies } = require('../package.json');
  * API: https://github.com/quasarframework/quasar/blob/master/app/lib/app-extension/InstallAPI.js
  */
 module.exports = function install(api) {
+  api.compatibleWith('quasar', '>= 2.6.0');
+
   if (api.hasVite) {
     api.compatibleWith('@quasar/app-vite', '^1.0.0');
-    api.compatibleWith('quasar', '>= 2.6.0');
     api.compatibleWith('vite', '>= 2.9.1');
   } else {
-    api.compatibleWith('quasar', '^2.0.0');
-
-    if (api.hasPackage('@quasar/app-webpack')) {
-      api.compatibleWith('@quasar/app-webpack', '^3.0.0');
-    } else {
-      api.compatibleWith('@quasar/app', '^3.0.0');
-    }
-
-    if (api.hasPackage('@quasar/app-webpack', '>= 3.4.0')) {
-      api.compatibleWith('quasar', '>= 2.6.0');
-    }
-
-    if (api.hasPackage('quasar', '>= 2.6.0')) {
-      api.compatibleWith('@quasar/app-webpack', '>= 3.4.0');
-    }
+    api.compatibleWith('@quasar/app-webpack', '>= 3.7.0');
   }
 
   let generateCommand = '$ quasar ssg generate';
@@ -52,7 +39,7 @@ module.exports = function install(api) {
       `./${api.hasVite ? 'vite' : 'webpack'}/types/quasar-wrappers.d.ts`,
       'src/ssg.d.ts',
       api.hasVite ? {} : {
-        quasarAppPkgName: `@quasar/app${api.hasPackage('@quasar/app-webpack', '>= 3.4.0') ? '-webpack' : ''}`,
+        quasarAppPkgName: '@quasar/app-webpack',
       },
     );
   }
@@ -71,7 +58,7 @@ module.exports = function install(api) {
   if (Object.keys(peerDependencies).length > 0) {
     const { requireFromApp } = require(`./${api.hasVite ? 'vite' : 'webpack'}/helpers/packages`);
 
-    const nodePackager = requireFromApp(`@quasar/app${api.hasVite ? '-vite' : ''}/lib/helpers/node-packager`);
+    const nodePackager = requireFromApp(`@quasar/app-${api.hasVite ? 'vite' : 'webpack'}/lib/helpers/node-packager`);
 
     nodePackager.installPackage(
       Object.entries(peerDependencies).map(([name, version]) => `${name}@${version}`),

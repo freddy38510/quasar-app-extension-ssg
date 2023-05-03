@@ -6,7 +6,7 @@ const appPaths = require('../helpers/app-paths');
 const { requireFromApp, hasPackage } = require('../helpers/packages');
 
 const { merge } = requireFromApp('webpack-merge');
-const extensionJson = requireFromApp('@quasar/app/lib/app-extension/extension-json');
+const extensionJson = requireFromApp('@quasar/app-webpack/lib/app-extension/extension-json');
 
 module.exports = function extendQuasarConf(conf) {
   const prompts = extensionJson.getPrompts('ssg');

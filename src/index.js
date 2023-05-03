@@ -8,26 +8,13 @@
  */
 
 module.exports = function run(api) {
+  api.compatibleWith('quasar', '>= 2.6.0');
+
   if (api.hasVite) {
     api.compatibleWith('@quasar/app-vite', '^1.0.0');
-    api.compatibleWith('quasar', '>= 2.6.0');
     api.compatibleWith('vite', '>= 2.9.1');
   } else {
-    api.compatibleWith('quasar', '^2.0.0');
-
-    if (api.hasPackage('@quasar/app-webpack')) {
-      api.compatibleWith('@quasar/app-webpack', '^3.0.0');
-    } else {
-      api.compatibleWith('@quasar/app', '^3.0.0');
-    }
-
-    if (api.hasPackage('@quasar/app-webpack', '>= 3.4.0')) {
-      api.compatibleWith('quasar', '>= 2.6.0');
-    }
-
-    if (api.hasPackage('quasar', '>= 2.6.0')) {
-      api.compatibleWith('@quasar/app-webpack', '>= 3.4.0');
-    }
+    api.compatibleWith('@quasar/app-webpack', '>= 3.7.0');
   }
 
   api.registerCommand('generate', () => {

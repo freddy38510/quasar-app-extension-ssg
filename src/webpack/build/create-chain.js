@@ -3,9 +3,9 @@ const { requireFromApp } = require('../helpers/packages');
 const { log } = require('../helpers/logger');
 const { webpackNames } = require('./symbols');
 
-const createChain = requireFromApp('@quasar/app/lib/webpack/create-chain');
+const createChain = requireFromApp('@quasar/app-webpack/lib/webpack/create-chain');
 
-const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
+const extensionRunner = requireFromApp('@quasar/app-webpack/lib/app-extension/extensions-runner');
 
 async function getWebpackConfig(chain, cfg, {
   name,

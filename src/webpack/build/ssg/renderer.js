@@ -10,8 +10,8 @@ const { requireFromApp } = require('../../helpers/packages');
 const webpack = requireFromApp('webpack');
 const WebpackChain = requireFromApp('webpack-chain');
 
-const appPaths = requireFromApp('@quasar/app/lib/app-paths');
-const injectNodeTypescript = requireFromApp('@quasar/app/lib/webpack/inject.node-typescript');
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
+const injectNodeTypescript = requireFromApp('@quasar/app-webpack/lib/webpack/inject.node-typescript');
 const nodeExternals = requireFromApp('webpack-node-externals');
 
 const nodeEnvBanner = 'process.env.NODE_ENV=\'development\';';

@@ -4,7 +4,7 @@
 const { requireFromApp } = require('../../helpers/packages');
 const appPaths = require('../../helpers/app-paths');
 
-const PwaManifestPlugin = requireFromApp('@quasar/app/lib/webpack/pwa/plugin.pwa-manifest');
+const PwaManifestPlugin = requireFromApp('@quasar/app-webpack/lib/webpack/pwa/plugin.pwa-manifest');
 const HtmlPwaPlugin = require('./plugin.html-pwa').plugin;
 
 function addWorkboxPlugin(chain, cfg) {

@@ -30,7 +30,7 @@ module.exports = function chainWebpackClient(chain, cfg, configName) {
   }
 
   // Use webpack-html-plugin for creating html fallback file
-  const injectHtml = requireFromApp('@quasar/app/lib/webpack/inject.html');
+  const injectHtml = requireFromApp('@quasar/app-webpack/lib/webpack/inject.html');
 
   let templateParam;
 

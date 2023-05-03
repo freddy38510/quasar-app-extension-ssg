@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable global-require */
-const { requireFromApp, hasPackage } = require('../helpers/packages');
+const { requireFromApp } = require('../helpers/packages');
 
 function injectSsrInterpolation(html) {
   return html
@@ -110,10 +110,10 @@ function injectAssetsIntoHtml(html, assetTags) {
 }
 
 module.exports.getIndexHtml = function getIndexHtml(template, cfg) {
-  const compileTemplate = requireFromApp(hasPackage('@quasar/app', '>= 3.5.7') ? 'lodash/template' : 'lodash.template');
+  const compileTemplate = requireFromApp('lodash/template');
   const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin');
 
-  const { fillBaseTag } = requireFromApp('@quasar/app/lib/webpack/plugin.html-addons');
+  const { fillBaseTag } = requireFromApp('@quasar/app-webpack/lib/webpack/plugin.html-addons');
   const { fillPwaTags } = require('../build/pwa/plugin.html-pwa');
 
   const compiled = compileTemplate(template);

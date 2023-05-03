@@ -1,4 +1,4 @@
-const { requireFromApp, hasPackage } = require('./packages');
+const { requireFromApp } = require('./packages');
 const extendPrettyPageHandler = require('./extend-pretty-page-handler');
 const { log, warn } = require('./logger');
 
@@ -38,8 +38,7 @@ function createOuchInstance() {
 module.exports = function getDevErrorRenderer(server) {
   let ouchInstance;
 
-  // vite below v2.7.8 does not export "ErrorOverlay"
-  if (hasPackage('vite', '< 2.7.8') || server.config.server.hmr?.overlay === false) {
+  if (server.config.server.hmr?.overlay === false) {
     ouchInstance = createOuchInstance();
   }
 

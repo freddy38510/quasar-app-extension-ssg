@@ -29,7 +29,7 @@ function getModuleDirs() {
 const additionalModuleDirs = getModuleDirs();
 
 module.exports = function chainWebpackServer(chain, cfg, configName) {
-  requireFromApp('@quasar/app/lib/webpack/ssr/server')(chain, cfg);
+  requireFromApp('@quasar/app-webpack/lib/webpack/ssr/server')(chain, cfg);
 
   chain.name(configName);
 
@@ -78,8 +78,7 @@ module.exports = function chainWebpackServer(chain, cfg, configName) {
   });
 
   if (hasPackage('quasar', '>= 2.6.1 ')
-    && hasPackage('@quasar/extras', '>= 1.13.3')
-    && hasPackage('@quasar/app-webpack', '>= 3.4.2 ')) {
+    && hasPackage('@quasar/extras', '>= 1.13.3')) {
     chain.externals(nodeExternals({
       // do not externalize:
       //  1. vue files

@@ -24,9 +24,9 @@ module.exports = function extendPrettyPageHandler(PrettyPageHandler) {
        *
        * @see https://nodejs.org/api/modules.html#accessing-the-main-module
        *
-       * fallback to env variable then @quasar/app main script
+       * fallback to env variable then @quasar/app-webpack main script
        */
-      SCRIPT_FILE: require.main?.filename || process.env._ || appPaths.resolve.appNodeModule('@quasar/app/bin/quasar'),
+      SCRIPT_FILE: require.main?.filename || process.env._ || appPaths.resolve.appNodeModule('@quasar/app-webpack/bin/quasar'),
       PATH_INFO: url.parse(req.url).pathname,
       QUERY_STRING: url.parse(req.url).query,
       HTTP_HOST: req.headers.host,

@@ -12,8 +12,8 @@ const regenerateTypesFeatureFlags = require('../helpers/types-feature-flags');
 const { splitWebpackConfig } = require('./symbols');
 
 const webpack = requireFromApp('webpack');
-const { printWebpackErrors } = requireFromApp('@quasar/app/lib/helpers/print-webpack-issue');
-const artifacts = requireFromApp('@quasar/app/lib/artifacts');
+const { printWebpackErrors } = requireFromApp('@quasar/app-webpack/lib/helpers/print-webpack-issue');
+const artifacts = requireFromApp('@quasar/app-webpack/lib/artifacts');
 
 function parseWebpackConfig(cfg, mode) {
   const data = splitWebpackConfig(cfg, mode);
@@ -26,7 +26,7 @@ function parseWebpackConfig(cfg, mode) {
 }
 
 module.exports = async function build(quasarConfFile) {
-  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
+  const extensionRunner = requireFromApp('@quasar/app-webpack/lib/app-extension/extensions-runner');
 
   await quasarConfFile.addWebpackConf();
 
@@ -56,7 +56,7 @@ module.exports = async function build(quasarConfFile) {
   // because SSR might also have PWA enabled but we
   // can only know it after parsing the quasar.config.js file
   if (quasarConfFile.quasarConf.ctx.mode.pwa === true) {
-    const PwaRunner = requireFromApp('@quasar/app/lib/pwa');
+    const PwaRunner = requireFromApp('@quasar/app-webpack/lib/pwa');
 
     await PwaRunner.build(quasarConfFile);
   }
@@ -90,7 +90,7 @@ module.exports = async function build(quasarConfFile) {
     fatal(`for "${webpackData.name[index]}" with ${summary}. Please check the log above.`, 'COMPILATION FAILED');
   });
 
-  const printWebpackStats = requireFromApp('@quasar/app/lib/helpers/print-webpack-stats');
+  const printWebpackStats = requireFromApp('@quasar/app-webpack/lib/helpers/print-webpack-stats');
 
   console.log();
 

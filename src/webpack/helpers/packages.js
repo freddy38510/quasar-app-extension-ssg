@@ -3,15 +3,6 @@
 /* eslint-disable global-require */
 const appPaths = require('./app-paths');
 
-function getPackageName(packageName) {
-  if (packageName === '@quasar/app') {
-    return appPaths.hasNewQuasarPkg ? '@quasar/app-webpack'
-      : packageName;
-  }
-
-  return packageName;
-}
-
 const getPackageJson = (pkgName, folder = appPaths.appDir) => {
   try {
     return require(
@@ -33,8 +24,7 @@ module.exports.requireFromApp = (module) => require(appPaths.resolve.appNodeModu
 const semver = this.requireFromApp('semver');
 
 module.exports.hasPackage = function hasPackage(packageName, semverCondition) {
-  const name = getPackageName(packageName);
-  const json = getPackageJson(name);
+  const json = getPackageJson(packageName);
 
   if (json === void 0) {
     return false;
@@ -46,8 +36,7 @@ module.exports.hasPackage = function hasPackage(packageName, semverCondition) {
 };
 
 module.exports.getPackageVersion = function getPackageVersion(packageName) {
-  const name = getPackageName(packageName);
-  const json = getPackageJson(name);
+  const json = getPackageJson(packageName);
 
   return json !== void 0
     ? json.version

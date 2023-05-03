@@ -4,7 +4,7 @@ const { requireFromApp } = require('../../helpers/packages');
 const WebpackProgressPlugin = require('../plugin.progress');
 
 module.exports = function createCSW(cfg, configName) {
-  const chain = requireFromApp('@quasar/app/lib/webpack/pwa/create-custom-sw')(cfg, configName);
+  const chain = requireFromApp('@quasar/app-webpack/lib/webpack/pwa/create-custom-sw')(cfg, configName);
 
   chain.name(configName);
 

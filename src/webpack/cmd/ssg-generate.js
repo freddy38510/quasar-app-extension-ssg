@@ -43,15 +43,12 @@ const ensureBuild = require('../helpers/ensure-build');
 const getQuasarCtx = require('../helpers/get-quasar-ctx');
 const { fatal } = require('../helpers/logger');
 const { logBuildBanner } = require('../helpers/banner');
-const { hasPackage } = require('../helpers/packages');
 
 async function run() {
-  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
+  const extensionRunner = requireFromApp('@quasar/app-webpack/lib/app-extension/extensions-runner');
+  const ensureVueDeps = requireFromApp('@quasar/app-webpack/lib/helpers/ensure-vue-deps');
 
-  if (hasPackage('@quasar/app', '>=3.3.0')) {
-    const ensureVueDeps = requireFromApp('@quasar/app/lib/helpers/ensure-vue-deps');
-    ensureVueDeps();
-  }
+  ensureVueDeps();
 
   logBuildBanner(argv, 'build');
 
@@ -64,14 +61,6 @@ async function run() {
     prod: true,
     publish: undefined,
   });
-
-  if (hasPackage('@quasar/app', '< 3.4.0')) {
-    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
-
-    const directivesBuilder = new SSRDirectives();
-
-    await directivesBuilder.build();
-  }
 
   // do not run ssg extension again
   // TODO: extend ExtensionRunner class

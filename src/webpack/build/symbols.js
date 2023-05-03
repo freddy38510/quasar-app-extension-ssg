@@ -1,7 +1,7 @@
 /* eslint-disable no-void */
 const { requireFromApp } = require('../helpers/packages');
 
-const { webpackNames } = requireFromApp('@quasar/app/lib/webpack/symbols');
+const { webpackNames } = requireFromApp('@quasar/app-webpack/lib/webpack/symbols');
 
 webpackNames.ssg = {
   renderer: 'Renderer',

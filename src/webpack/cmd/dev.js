@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === void 0) {
 }
 
 const { log, warn, fatal } = require('../helpers/logger');
-const { requireFromApp, hasPackage } = require('../helpers/packages');
+const { requireFromApp } = require('../helpers/packages');
 
 const parseArgs = requireFromApp('minimist');
 
@@ -45,7 +45,7 @@ if (argv.help) {
   process.exit(0);
 }
 
-const ensureVueDeps = requireFromApp('@quasar/app/lib/helpers/ensure-vue-deps');
+const ensureVueDeps = requireFromApp('@quasar/app-webpack/lib/helpers/ensure-vue-deps');
 
 ensureVueDeps();
 
@@ -53,7 +53,7 @@ const banner = require('../helpers/banner').logBuildBanner;
 
 banner(argv, 'dev');
 
-const findPort = requireFromApp('@quasar/app/lib/helpers/net').findClosestOpenPort;
+const findPort = requireFromApp('@quasar/app-webpack/lib/helpers/net').findClosestOpenPort;
 
 async function parseAddress({ host, port }) {
   try {
@@ -91,8 +91,8 @@ async function parseAddress({ host, port }) {
 }
 
 function startVueDevtools() {
-  const { spawn } = requireFromApp('@quasar/app/lib/helpers/spawn');
-  const getPackagePath = requireFromApp('@quasar/app/lib/helpers/get-package-path');
+  const { spawn } = requireFromApp('@quasar/app-webpack/lib/helpers/spawn');
+  const getPackagePath = requireFromApp('@quasar/app-webpack/lib/helpers/get-package-path');
 
   let vueDevtoolsBin = getPackagePath('@vue/devtools/bin.js');
 
@@ -106,7 +106,7 @@ function startVueDevtools() {
     return undefined;
   }
 
-  const nodePackager = requireFromApp('@quasar/app/lib/helpers/node-packager');
+  const nodePackager = requireFromApp('@quasar/app-webpack/lib/helpers/node-packager');
 
   nodePackager.installPackage('@vue/devtools', { isDev: true });
 
@@ -126,7 +126,7 @@ async function goLive() {
   const getQuasarCtx = require('../helpers/get-quasar-ctx');
   const regenerateTypesFeatureFlags = require('../helpers/types-feature-flags');
 
-  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
+  const extensionRunner = requireFromApp('@quasar/app-webpack/lib/app-extension/extensions-runner');
 
   const ctx = getQuasarCtx({
     mode: 'ssg',
@@ -144,22 +144,6 @@ async function goLive() {
 
   // register app extensions
   await extensionRunner.registerExtensions(ctx);
-
-  if (hasPackage('@quasar/app', '< 3.4.0')) {
-    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
-
-    const directivesBuilder = new SSRDirectives(async () => {
-      log('Changes on the SSR directives detected. Rebuilding app...');
-
-      const result = await quasarConfFile.reboot();
-
-      if (result !== false) {
-        dev = dev.then(startDev);
-      }
-    });
-
-    await directivesBuilder.run();
-  }
 
   const quasarConfFile = new QuasarConfFile(ctx, {
     port: argv.port,
@@ -206,7 +190,7 @@ async function goLive() {
 
   const generator = new Generator(quasarConfFile);
 
-  const PwaRunner = requireFromApp('@quasar/app/lib/pwa');
+  const PwaRunner = requireFromApp('@quasar/app-webpack/lib/pwa');
   const runPwa = () => PwaRunner.run(quasarConfFile);
 
   function startDev(oldDevServer) {

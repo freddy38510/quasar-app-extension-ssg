@@ -47,19 +47,18 @@ if (argv.help) {
 }
 
 const { splitWebpackConfig } = require('../build/symbols');
-const { hasPackage } = require('../helpers/packages');
 
 async function inspect() {
-  requireFromApp('@quasar/app/lib/helpers/banner')(argv, 'production');
+  requireFromApp('@quasar/app-webpack/lib/helpers/banner')(argv, 'production');
 
-  const getMode = requireFromApp('@quasar/app/lib/mode/index');
+  const getMode = requireFromApp('@quasar/app-webpack/lib/mode/index');
   if (getMode('ssr').isInstalled !== true) {
     fatal('Requested mode for inspection is NOT installed.');
   }
 
   const depth = parseInt(argv.depth, 10) || Infinity;
 
-  const extensionRunner = requireFromApp('@quasar/app/lib/app-extension/extensions-runner');
+  const extensionRunner = requireFromApp('@quasar/app-webpack/lib/app-extension/extensions-runner');
 
   const ctx = getQuasarCtx({
     mode: 'ssg',
@@ -68,14 +67,6 @@ async function inspect() {
     dev: false,
     prod: true,
   });
-
-  if (hasPackage('@quasar/app', '< 3.4.0')) {
-    const SSRDirectives = requireFromApp('@quasar/app/lib/ssr/ssr-directives');
-
-    const directivesBuilder = new SSRDirectives();
-
-    await directivesBuilder.build();
-  }
 
   // do not run ssg extension again
   // TODO: extend ExtensionRunner class

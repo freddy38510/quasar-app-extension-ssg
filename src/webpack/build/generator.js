@@ -1,11 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { hasPackage } = require('../helpers/packages');
 const { requireFromApp } = require('../helpers/packages');
 
-const compileTemplate = requireFromApp(hasPackage('@quasar/app', '>= 3.5.7') ? 'lodash/template' : 'lodash.template');
-const appPaths = requireFromApp('@quasar/app/lib/app-paths');
-const QuasarGenerator = requireFromApp('@quasar/app/lib/generator');
+const compileTemplate = requireFromApp('lodash/template');
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
+const QuasarGenerator = requireFromApp('@quasar/app-webpack/lib/generator');
 
 const quasarFolder = appPaths.resolve.app('.quasar');
 

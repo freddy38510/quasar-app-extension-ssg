@@ -18,7 +18,7 @@ const { webpackNames } = require('../build/symbols');
 
 const appPaths = require('../helpers/app-paths');
 
-const openBrowser = requireFromApp('@quasar/app/lib/helpers/open-browser');
+const openBrowser = requireFromApp('@quasar/app-webpack/lib/helpers/open-browser');
 const Ouch = requireFromApp('ouch');
 
 const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin');

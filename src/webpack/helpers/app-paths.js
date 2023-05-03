@@ -35,35 +35,11 @@ function getAppInfo() {
 
 const { appDir, quasarConfigFilename } = getAppInfo();
 
-function tryToResolveNewQuasarPkg() {
-  let isResolved = true;
-
-  try {
-    require.resolve('@quasar/app-webpack/package.json', {
-      paths: [appDir],
-    });
-  } catch (e) {
-    isResolved = false;
-  }
-
-  return isResolved;
-}
-
-const hasNewQuasarPkg = tryToResolveNewQuasarPkg();
-
-function getModuleId(id) {
-  if (id.startsWith('@quasar/app/')) {
-    return hasNewQuasarPkg ? id.replace('@quasar/app/', '@quasar/app-webpack/') : id;
-  }
-
-  return id;
-}
-
 module.exports.appDir = appDir;
 module.exports.quasarConfigFilename = join(appDir, quasarConfigFilename);
 module.exports.resolve = {
   app: (dir) => join(appDir, dir),
-  appNodeModule: (id) => require.resolve(getModuleId(id), {
+  appNodeModule: (id) => require.resolve(id, {
     paths: [appDir],
   }),
 };

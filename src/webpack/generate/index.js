@@ -16,7 +16,7 @@ const fse = requireFromApp('fs-extra');
 requireFromApp('pretty-error').stop();
 
 module.exports = async function generate(quasarConf) {
-  const { add, clean } = requireFromApp('@quasar/app/lib/artifacts');
+  const { add, clean } = requireFromApp('@quasar/app-webpack/lib/artifacts');
 
   const renderToString = require(join(quasarConf.ssg.buildDir, './render-to-string.js'));
   const serverManifest = require(join(quasarConf.ssg.buildDir, './quasar.server-manifest.json'));

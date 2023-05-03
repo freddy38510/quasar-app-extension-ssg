@@ -3,10 +3,10 @@
 /* eslint-disable prefer-spread */
 /* eslint-disable no-void */
 /* eslint-disable no-underscore-dangle */
-const { requireFromApp, hasPackage } = require('../helpers/packages');
+const { requireFromApp } = require('../helpers/packages');
 
 const { ProgressPlugin } = requireFromApp('webpack');
-const throttle = requireFromApp(hasPackage('@quasar/app', '>= 3.5.7') ? 'lodash/throttle' : 'lodash.throttle');
+const throttle = requireFromApp('lodash/throttle');
 const chalk = requireFromApp('chalk');
 
 const appPaths = require('../helpers/app-paths');
@@ -15,9 +15,9 @@ const {
 } = require('../helpers/logger');
 const { quasarVersion, cliAppVersion, ssgVersion } = require('../helpers/banner');
 
-const isMinimalTerminal = requireFromApp('@quasar/app/lib/helpers/is-minimal-terminal');
-const { printWebpackWarnings, printWebpackErrors } = requireFromApp('@quasar/app/lib/helpers/print-webpack-issue');
-const progressLog = requireFromApp('@quasar/app/lib/helpers/progress-log');
+const isMinimalTerminal = requireFromApp('@quasar/app-webpack/lib/helpers/is-minimal-terminal');
+const { printWebpackWarnings, printWebpackErrors } = requireFromApp('@quasar/app-webpack/lib/helpers/print-webpack-issue');
+const progressLog = requireFromApp('@quasar/app-webpack/lib/helpers/progress-log');
 
 let maxLengthName = 0;
 let isDev = false;
@@ -36,7 +36,7 @@ function isExternalProgressIdle() {
 function getIPList() {
   // expensive operation, so cache the response
   if (ipList === void 0) {
-    const { getIPs } = requireFromApp('@quasar/app/lib/helpers/net');
+    const { getIPs } = requireFromApp('@quasar/app-webpack/lib/helpers/net');
     ipList = getIPs().map((ip) => (ip === '127.0.0.1' ? 'localhost' : ip));
   }
 
