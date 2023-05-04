@@ -23,7 +23,7 @@ const argv = parseArgs(process.argv.slice(2), {
   },
 });
 
-argv.mode = 'ssr';
+argv.mode = 'ssg';
 
 if (argv.help) {
   console.log(`
@@ -50,11 +50,6 @@ const { splitWebpackConfig } = require('../build/symbols');
 
 async function inspect() {
   requireFromApp('@quasar/app-webpack/lib/helpers/banner')(argv, 'production');
-
-  const getMode = requireFromApp('@quasar/app-webpack/lib/mode/index');
-  if (getMode('ssr').isInstalled !== true) {
-    fatal('Requested mode for inspection is NOT installed.');
-  }
 
   const depth = parseInt(argv.depth, 10) || Infinity;
 
