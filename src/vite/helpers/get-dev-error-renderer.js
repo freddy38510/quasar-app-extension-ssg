@@ -1,4 +1,4 @@
-const { requireFromApp } = require('./packages');
+const { requireFromApp } = require('../../api');
 const extendPrettyPageHandler = require('./extend-pretty-page-handler');
 const { log, warn } = require('./logger');
 

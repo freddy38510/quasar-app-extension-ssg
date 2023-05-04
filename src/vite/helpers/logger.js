@@ -1,7 +1,7 @@
 /* eslint-disable no-void */
 /* eslint-disable no-console */
 
-const { requireFromApp } = require('./packages');
+const { requireFromApp } = require('../../api');
 
 const logger = requireFromApp('@quasar/app-vite/lib/helpers/logger');
 const {

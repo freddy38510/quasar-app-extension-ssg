@@ -1,15 +1,11 @@
 /* eslint-disable no-void */
 
 const { join, isAbsolute } = require('path');
-const appPaths = require('./app-paths');
-const { requireFromApp, hasPackage } = require('./helpers/packages');
+const { requireFromApp, hasPackage } = require('../api');
 
-const QuasarConfFile = requireFromApp(
-  '@quasar/app-vite/lib/quasar-config-file',
-);
-
+const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
+const QuasarConfFile = requireFromApp('@quasar/app-vite/lib/quasar-config-file');
 const { searchForWorkspaceRoot } = requireFromApp('vite');
-
 const { merge } = requireFromApp('webpack-merge');
 
 function getUniqueArray(original) {

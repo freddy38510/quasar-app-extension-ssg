@@ -1,7 +1,8 @@
 const { join } = require('path');
-const appPaths = require('../../helpers/app-paths');
-const { requireFromApp } = require('../../helpers/packages');
+const { requireFromApp } = require('../../../api');
 const WebpackProgressPlugin = require('../plugin.progress');
+
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 
 module.exports = function createCSW(cfg, configName) {
   const chain = requireFromApp('@quasar/app-webpack/lib/webpack/pwa/create-custom-sw')(cfg, configName);

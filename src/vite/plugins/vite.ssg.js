@@ -4,9 +4,8 @@
 const path = require('path');
 const { default: MagicString } = require('magic-string');
 const { vite: autoImportPlugin } = require('unplugin-auto-import');
-const { requireFromApp } = require('../helpers/packages');
+const { requireFromApp } = require('../../api');
 const getHash = require('../helpers/get-hash');
-const appPaths = require('../app-paths');
 const parseViteRequest = require('../helpers/parse-vite-request');
 
 const { normalizePath } = requireFromApp('vite');
@@ -160,7 +159,7 @@ function getRobotoFontPlugin(fontDisplayValue) {
   const fontFaceRE = /@font-face\s*{/gi;
   const latinExtRE = /\/\* latin-ext \*\//i;
 
-  const resolvedId = appPaths.resolve.appNodeModule(
+  const resolvedId = requireFromApp.resolve(
     'quasar-app-extension-ssg/roboto-font/roboto-font.css',
   );
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const path = require('path');
-const { getPackageVersion, requireFromApp } = require('./packages');
+const { getPackageVersion, requireFromApp } = require('../../api');
 
 const { green, gray, underline } = requireFromApp('kolorist');
 const { getCompilationTarget } = requireFromApp('@quasar/app-vite/lib/helpers/banner-global');

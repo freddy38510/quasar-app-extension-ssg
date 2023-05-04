@@ -3,7 +3,7 @@
  * Forked from vue-server-renderer/client-plugin.js v2.6.14 NPM package
  */
 
-const { requireFromApp } = require('../../helpers/packages');
+const { requireFromApp } = require('../../../api');
 
 const jsCssRE = /\.(js|css)(\?[^.]+)?$/;
 const swRE = /\|\w+$/;

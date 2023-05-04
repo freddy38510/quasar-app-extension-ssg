@@ -6,7 +6,7 @@ const { join, dirname, relative } = require('path');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
 const { ErrorWithCause, stackWithCauses } = require('pony-cause');
-const { requireFromApp } = require('./helpers/packages');
+const { requireFromApp } = require('../api');
 const {
   info,
   warn,

@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-const { peerDependencies } = require('../package.json');
+const { requireFromApp, engine, ssgDeps } = require('./api');
 
 /**
  * Quasar App Extension install script
@@ -18,13 +18,7 @@ module.exports = function install(api) {
     api.compatibleWith('@quasar/app-webpack', '>= 3.7.0');
   }
 
-  let generateCommand = '$ quasar ssg generate';
-  let devCommand = '$ quasar ssg dev';
-
   if (api.prompts.scripts) {
-    generateCommand = '$ yarn build:ssg';
-    devCommand = '$ yarn dev:ssg';
-
     api.extendPackageJson({
       scripts: {
         'build:ssg': 'quasar ssg generate',
@@ -34,39 +28,36 @@ module.exports = function install(api) {
     });
   }
 
+  // feature flag
+  api.renderFile('./ssg-flag.d.ts', 'src/ssg-flag.d.ts');
+
+  // ssg config
   if (api.prompts.IDE) {
     api.renderFile(
       `./${api.hasVite ? 'vite' : 'webpack'}/types/quasar-wrappers.d.ts`,
       'src/ssg.d.ts',
       api.hasVite ? {} : {
-        quasarAppPkgName: '@quasar/app-webpack',
+        engine,
       },
     );
   }
 
-  const depsToInstall = !api.hasVite ? [
-    '@freddy38510/vue-loader',
-    '@freddy38510/vue-style-loader',
-  ] : ['@rollup/plugin-node-resolve'];
-
-  Object.keys(peerDependencies).forEach((peerDepName) => {
-    if (!depsToInstall.includes(peerDepName)) {
-      delete peerDependencies[peerDepName];
-    }
-  });
-
-  if (Object.keys(peerDependencies).length > 0) {
-    const { requireFromApp } = require(`./${api.hasVite ? 'vite' : 'webpack'}/helpers/packages`);
-
-    const nodePackager = requireFromApp(`@quasar/app-${api.hasVite ? 'vite' : 'webpack'}/lib/helpers/node-packager`);
+  if (ssgDeps.length > 0) {
+    const nodePackager = requireFromApp(`${engine}/lib/helpers/node-packager`);
+    const { peerDependencies } = require('../package.json');
 
     nodePackager.installPackage(
-      Object.entries(peerDependencies).map(([name, version]) => `${name}@${version}`),
-      { isDev: true, displayName: 'SSG dependencies' },
+      ssgDeps.map((name) => `${name}@${peerDependencies[name]}`),
+      {
+        isDevDependency: true, // new prop name
+        isDev: true, // old prop name
+        displayName: 'SSG dependencies',
+      },
     );
   }
 
-  api.renderFile('./ssg-flag.d.ts', 'src/ssg-flag.d.ts'); // feature flag
+  const generateCommand = '$ quasar ssg generate';
+  const devCommand = '$ quasar ssg dev';
 
   api.onExitLog(
     `See https://github.com/freddy38510/quasar-app-extension-ssg/#configuration to configure the extension then run "${generateCommand}" or "${devCommand}`,

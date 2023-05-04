@@ -2,14 +2,15 @@
 /* eslint-disable global-require */
 
 const { join } = require('path');
-
-const appPaths = require('./app-paths');
-const { requireFromApp, hasPackage } = require('./helpers/packages');
+const { requireFromApp, hasPackage } = require('../api');
 const { plugin: ssgVitePlugin } = require('./plugins/vite.ssg');
 
-const { createViteConfig, extendViteConfig, mergeViteConfig } = requireFromApp(
-  '@quasar/app-vite/lib/config-tools.js',
-);
+const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
+const {
+  createViteConfig,
+  extendViteConfig,
+  mergeViteConfig,
+} = requireFromApp('@quasar/app-vite/lib/config-tools.js');
 const pwaConfig = requireFromApp('@quasar/app-vite/lib/modes/pwa/pwa-config');
 const quasarVitePluginPwaResources = requireFromApp(
   '@quasar/app-vite/lib/modes/pwa/vite-plugin.pwa-resources',

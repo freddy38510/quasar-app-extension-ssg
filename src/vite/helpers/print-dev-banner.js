@@ -1,12 +1,15 @@
 /* eslint-disable no-void */
 /* eslint-disable no-console */
 
-const { requireFromApp } = require('./packages');
-const appPaths = require('../app-paths');
+const { requireFromApp } = require('../../api');
 const {
-  quasarVersion, cliAppVersion, ssgVersion, getCompilationTarget,
+  quasarVersion,
+  cliAppVersion,
+  ssgVersion,
+  getCompilationTarget,
 } = require('./banner-global');
 
+const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
 const { green, dim } = requireFromApp('kolorist');
 
 const greenBanner = green('»');

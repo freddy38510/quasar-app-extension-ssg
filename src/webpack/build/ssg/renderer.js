@@ -3,9 +3,9 @@
 /* eslint-disable import/no-dynamic-require */
 const { existsSync } = require('fs');
 const { join, sep, normalize } = require('path');
+const { requireFromApp } = require('../../../api');
 const RenderTemplatePlugin = require('./plugin.render-template');
 const WebpackProgressPlugin = require('../plugin.progress');
-const { requireFromApp } = require('../../helpers/packages');
 
 const webpack = requireFromApp('webpack');
 const WebpackChain = requireFromApp('webpack-chain');

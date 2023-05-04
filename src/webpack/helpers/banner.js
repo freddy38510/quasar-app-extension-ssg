@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 const path = require('path');
-const { requireFromApp, getPackageVersion } = require('./packages');
+const { requireFromApp, getPackageVersion } = require('../../api');
 
 const {
   green,

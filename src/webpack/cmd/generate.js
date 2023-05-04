@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'production';
 }
 
-const { requireFromApp } = require('../helpers/packages');
+const { requireFromApp } = require('../../api');
 
 const parseArgs = requireFromApp('minimist');
 
@@ -38,11 +38,12 @@ if (argv.help) {
 }
 
 const QuasarConfFile = require('../conf');
-const { quasarConfigFilename } = require('../helpers/app-paths');
 const ensureBuild = require('../helpers/ensure-build');
 const getQuasarCtx = require('../helpers/get-quasar-ctx');
 const { fatal } = require('../helpers/logger');
 const { logBuildBanner } = require('../helpers/banner');
+
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 
 async function run() {
   const extensionRunner = requireFromApp('@quasar/app-webpack/lib/app-extension/extensions-runner');
@@ -78,7 +79,7 @@ async function run() {
     await quasarConfFile.prepare();
   } catch (e) {
     console.error(e);
-    fatal(`${quasarConfigFilename} has JS errors`, 'FAIL');
+    fatal(`${appPaths.quasarConfigFilename} has JS errors`, 'FAIL');
   }
 
   await quasarConfFile.compile();

@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 
 const isUnicodeSupported = require('./is-unicode-supported');
-const { requireFromApp } = require('./packages');
+const { requireFromApp } = require('../../api');
 
 const readline = requireFromApp('readline');
 

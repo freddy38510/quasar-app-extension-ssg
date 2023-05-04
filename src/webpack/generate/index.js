@@ -3,8 +3,8 @@
 /* eslint-disable global-require */
 /* eslint-disable no-underscore-dangle */
 const { join } = require('path');
+const { requireFromApp } = require('../../api');
 const Generator = require('./generator');
-const { requireFromApp } = require('../helpers/packages');
 const { logGenerateBanner } = require('../helpers/banner');
 const {
   log, info, warn, error, warning, fatal, success,

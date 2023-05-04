@@ -9,8 +9,8 @@ if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'development';
 }
 
+const { requireFromApp } = require('../../api');
 const { log, warn, fatal } = require('../helpers/logger');
-const { requireFromApp } = require('../helpers/packages');
 
 const parseArgs = requireFromApp('minimist');
 

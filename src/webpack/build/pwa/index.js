@@ -1,9 +1,9 @@
 /* eslint-disable no-void */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-const { requireFromApp } = require('../../helpers/packages');
-const appPaths = require('../../helpers/app-paths');
+const { requireFromApp } = require('../../../api');
 
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 const PwaManifestPlugin = requireFromApp('@quasar/app-webpack/lib/webpack/pwa/plugin.pwa-manifest');
 const HtmlPwaPlugin = require('./plugin.html-pwa').plugin;
 

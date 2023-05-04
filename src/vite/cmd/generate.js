@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'production';
 }
 
-const { requireFromApp } = require('../helpers/packages');
+const { requireFromApp } = require('../../api');
 
 const parseArgs = requireFromApp('minimist');
 

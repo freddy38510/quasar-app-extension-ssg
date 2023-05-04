@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-const { requireFromApp } = require('../helpers/packages');
+const { requireFromApp } = require('../../api');
 const { log } = require('../helpers/logger');
 const { webpackNames } = require('./symbols');
 

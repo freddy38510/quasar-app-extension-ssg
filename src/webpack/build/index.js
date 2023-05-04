@@ -3,8 +3,8 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 const pify = require('pify');
+const { requireFromApp } = require('../../api');
 const Generator = require('./generator');
-const { requireFromApp } = require('../helpers/packages');
 const { logBuildBanner } = require('../helpers/banner');
 const { log, fatal } = require('../helpers/logger');
 const regenerateTypesFeatureFlags = require('../helpers/types-feature-flags');

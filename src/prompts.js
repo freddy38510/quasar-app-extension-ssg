@@ -39,40 +39,38 @@
 
  */
 
-const { hasPackage } = require('./webpack/helpers/packages');
+const { hasVite } = require('./api');
 
-const hasVite = hasPackage('@quasar/app-vite');
-
-module.exports = function prompts() {
-  return [
+module.exports = function getPrompts() {
+  const prompts = [
     {
       name: 'scripts',
       type: 'confirm',
-      message:
-        'Add scripts into your package.json ?',
+      message: 'Add scripts into your package.json ?',
       default: true,
     },
     {
       name: 'IDE',
       type: 'confirm',
-      message:
-      'Add auto-completion of ssg property of quasar.config.js file for IDE ?',
+      message: 'Add auto-completion of ssg property of quasar.config.js file for IDE ?',
       default: true,
     },
     {
       name: 'inlineCriticalCss',
       type: 'confirm',
-      message:
-        'Inline critical css and async load the rest ?',
+      message: 'Inline critical css and async load the rest ?',
       default: true,
     },
-    ...hasVite ? []
-      : [{
-        name: 'inlineCssFromSFC',
-        type: 'confirm',
-        message:
-          'Inline CSS from Vue SFC <style> blocks ?',
-        default: false,
-      }],
   ];
+
+  if (!hasVite) {
+    prompts.push({
+      name: 'inlineCssFromSFC',
+      type: 'confirm',
+      message: 'Inline CSS from Vue SFC <style> blocks ?',
+      default: false,
+    });
+  }
+
+  return prompts;
 };

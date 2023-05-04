@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-void */
 /* eslint-disable global-require */
-const { requireFromApp } = require('../helpers/packages');
+const { requireFromApp } = require('../../api');
 
 const parseArgs = requireFromApp('minimist');
 

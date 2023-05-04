@@ -1,5 +1,5 @@
 const { progress } = require('./logger');
-const { requireFromApp } = require('./packages');
+const { requireFromApp } = require('../../api');
 
 const workboxBuild = requireFromApp('workbox-build');
 

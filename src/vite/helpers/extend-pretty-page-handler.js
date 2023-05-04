@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const os = require('os');
 const url = require('url');
-const appPaths = require('../app-paths');
+const { requireFromApp } = require('../../api');
 
 module.exports = function extendPrettyPageHandler(PrettyPageHandler) {
   PrettyPageHandler.prototype.__getServerAndRequestInfo = function __getServerAndRequestInfo() {
@@ -26,7 +26,7 @@ module.exports = function extendPrettyPageHandler(PrettyPageHandler) {
        *
        * fallback to env variable then @quasar/app-vite main script
        */
-      SCRIPT_FILE: require.main?.filename || process.env._ || appPaths.resolve.appNodeModule('@quasar/app-vite/bin/quasar'),
+      SCRIPT_FILE: require.main?.filename || process.env._ || requireFromApp.resolve('@quasar/app-vite/bin/quasar'),
       PATH_INFO: url.parse(req.url).pathname,
       QUERY_STRING: url.parse(req.url).query,
       HTTP_HOST: req.headers.host,

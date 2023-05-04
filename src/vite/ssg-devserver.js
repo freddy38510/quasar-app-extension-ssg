@@ -4,20 +4,23 @@
 
 const { readFileSync } = require('fs');
 const path = require('path');
-const { requireFromApp } = require('./helpers/packages');
+const { requireFromApp } = require('../api');
 const {
-  log, warn, info, dot, progress,
+  log,
+  warn,
+  info,
+  dot,
+  progress,
 } = require('./helpers/logger');
 const collectCss = require('./helpers/collect-css-ssr');
-const appPaths = require('./app-paths');
 const config = require('./ssg-config');
 const AppDevserver = require('./app-devserver');
 const PagesGenerator = require('./PagesGenerator');
 const printDevBanner = require('./helpers/print-dev-banner');
 const getErrorRenderer = require('./helpers/get-dev-error-renderer');
 const ssgCreateRenderFn = require('./ssg-create-render-fn');
-const extendPrettyPageHandler = require('./helpers/extend-pretty-page-handler');
 
+const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
 const express = requireFromApp('express');
 const { createServer } = requireFromApp('vite');
 const chokidar = requireFromApp('chokidar');
@@ -144,10 +147,10 @@ class SsgDevServer extends AppDevserver {
       ? (url) => url || '/'
       : (url) => (url ? (publicPath + url).replace(doubleSlashRE, '/') : publicPath);
 
-    this.#renderError = getErrorRenderer(this.#viteDevServer);
-
     this.#viteClient = await createServer(await config.viteClient(quasarConf));
     this.#viteServer = await createServer(await config.viteServer(quasarConf));
+
+    this.#renderError = getErrorRenderer(this.#viteClient);
 
     if (quasarConf.ssr.pwa === true) {
       injectPwaManifest(quasarConf, true);

@@ -1,12 +1,11 @@
 const path = require('path');
 const fs = require('fs');
-
+const { requireFromApp } = require('../../api');
 const { log } = require('./logger');
-const { requireFromApp } = require('./packages');
 
 const fse = requireFromApp('fs-extra');
-const getMode = requireFromApp('@quasar/app-webpack/lib/mode/index');
 const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
+const getMode = requireFromApp('@quasar/app-webpack/lib/mode/index');
 
 function getStoreFlagPath(storeIndexPath) {
   return path.join(path.parse(storeIndexPath).dir, 'store-flag.d.ts');

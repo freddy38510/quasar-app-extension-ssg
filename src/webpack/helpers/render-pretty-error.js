@@ -1,4 +1,4 @@
-const { requireFromApp } = require('./packages');
+const { requireFromApp } = require('../../api');
 
 const PrettyError = requireFromApp('pretty-error');
 

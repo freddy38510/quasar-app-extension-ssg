@@ -1,7 +1,7 @@
 /*
 * Forked from Quasar to handle ssg entry files generation
 */
-const { requireFromApp } = require('./helpers/packages');
+const { requireFromApp } = require('../api');
 const createEntryFilesGenerator = require('./entry-files-generator');
 
 const AppTool = requireFromApp('@quasar/app-vite/lib/app-tool');

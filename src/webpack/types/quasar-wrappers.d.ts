@@ -2,11 +2,11 @@
 
 import type * as beastcss from 'beastcss';
 import type { Options as GlobbyOptions } from 'fast-glob';
-import type { QuasarConf } from '<%= quasarAppPkgName %>/types/configuration/conf';
+import type { QuasarConf } from '<%= engine %>/types/configuration/conf';
 import type {
   BaseQuasarContext,
   QuasarContext,
-} from '<%= quasarAppPkgName %>/types/configuration/context';
+} from '<%= engine %>/types/configuration/context';
 
 interface QuasarSsgConfiguration {
   /**

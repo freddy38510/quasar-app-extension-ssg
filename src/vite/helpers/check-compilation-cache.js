@@ -1,10 +1,10 @@
 const destr = require('destr');
 const path = require('path');
+const { getPackageVersion, requireFromApp } = require('../../api');
 const { info } = require('./logger');
 const { makeSnapshot, compareSnapshots } = require('./snapshot');
-const { appDir } = require('../app-paths');
-const { getPackageVersion, requireFromApp } = require('./packages');
 
+const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
 const fse = requireFromApp('fs-extra');
 
 module.exports = async function checkCompilationCache(argv, quasarConf) {
@@ -18,7 +18,7 @@ module.exports = async function checkCompilationCache(argv, quasarConf) {
 
   const cacheManifestFile = path.resolve(options.compilationDir, 'cache-manifest.json');
   const snapshotOptions = {
-    rootDir: appDir,
+    rootDir: appPaths.appDir,
     ignore: options.cache.ignore.map(path.posix.normalize),
     globbyOptions: options.cache.globbyOptions,
   };

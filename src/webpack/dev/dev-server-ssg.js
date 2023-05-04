@@ -4,7 +4,7 @@
 /* eslint-disable no-void */
 /* eslint-disable no-underscore-dangle */
 const { join } = require('path');
-const { requireFromApp } = require('../helpers/packages');
+const { requireFromApp } = require('../../api');
 
 const { green, grey } = requireFromApp('chalk');
 const webpack = requireFromApp('webpack');
@@ -16,7 +16,7 @@ const { getServerManifest } = require('../build/ssr/plugin.server-side');
 const { doneExternalWork } = require('../build/plugin.progress');
 const { webpackNames } = require('../build/symbols');
 
-const appPaths = require('../helpers/app-paths');
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 
 const openBrowser = requireFromApp('@quasar/app-webpack/lib/helpers/open-browser');
 const Ouch = requireFromApp('ouch');

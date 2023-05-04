@@ -3,13 +3,17 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable no-void */
 const path = require('path');
+const { requireFromApp } = require('../../api');
 const {
-  info, error, fatal, success, warn,
+  info,
+  error,
+  fatal,
+  success,
+  warn,
 } = require('../helpers/logger');
-const { resolve } = require('../helpers/app-paths');
 const renderPrettyError = require('../helpers/render-pretty-error');
-const { requireFromApp } = require('../helpers/packages');
 
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 const { generateSW, injectManifest } = requireFromApp('workbox-build');
 
 const getOptions = (quasarConf, mode) => {
@@ -18,7 +22,7 @@ const getOptions = (quasarConf, mode) => {
   };
 
   if (mode === 'GenerateSW') {
-    const pkg = require(resolve.app('package.json'));
+    const pkg = require(appPaths.resolve.app('package.json'));
 
     defaultOptions.cacheId = pkg.name || 'quasar-pwa-app';
     defaultOptions.directoryIndex = 'index.html';

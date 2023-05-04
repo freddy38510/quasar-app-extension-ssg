@@ -3,7 +3,7 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 // eslint-disable-next-line import/order
-const { requireFromApp } = require('../helpers/packages');
+const { requireFromApp } = require('../../api');
 
 const parseArgs = requireFromApp('minimist');
 

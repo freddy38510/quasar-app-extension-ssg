@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { requireFromApp } = require('../helpers/packages');
+const { requireFromApp } = require('../../api');
 
 const compileTemplate = requireFromApp('lodash/template');
 const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');

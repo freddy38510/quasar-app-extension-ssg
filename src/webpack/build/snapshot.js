@@ -1,7 +1,7 @@
 const { crc32 } = require('crc');
 const path = require('path');
 const esmRequire = require('jiti')(__filename);
-const { requireFromApp } = require('../helpers/packages');
+const { requireFromApp } = require('../../api');
 
 const fse = requireFromApp('fs-extra');
 

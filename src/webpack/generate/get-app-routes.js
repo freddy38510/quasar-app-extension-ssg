@@ -1,4 +1,4 @@
-const { requireFromApp } = require('../helpers/packages');
+const { requireFromApp } = require('../../api');
 
 module.exports = async function getAppRoutes(serverManifest) {
   const createBundle = requireFromApp('@quasar/ssr-helpers/lib/create-bundle');

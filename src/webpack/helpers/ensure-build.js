@@ -1,11 +1,11 @@
 /* eslint-disable global-require */
 const destr = require('destr');
 const path = require('path');
+const { requireFromApp, getPackageVersion } = require('../../api');
 const { log } = require('./logger');
 const { makeSnapshot, compareSnapshots } = require('../build/snapshot');
-const { appDir } = require('./app-paths');
-const { requireFromApp, getPackageVersion } = require('./packages');
 
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 const fse = requireFromApp('fs-extra');
 
 module.exports = async function ensureBuild(quasarConfFile) {
@@ -20,7 +20,7 @@ module.exports = async function ensureBuild(quasarConfFile) {
 
   // Take a snapshot of current project
   const snapshotOptions = {
-    rootDir: appDir,
+    rootDir: appPaths.appDir,
     ignore: options.cache.ignore.map(path.posix.normalize),
     globbyOptions: options.cache.globbyOptions,
   };

@@ -5,6 +5,7 @@ const path = require('path');
 const Beastcss = require('beastcss');
 const { parse } = require('node-html-parser');
 const fastq = require('fastq');
+const { requireFromApp } = require('../../api');
 const { log, beastcssLog } = require('../helpers/logger');
 const promisifyRoutes = require('../helpers/promisify-routes');
 const isRouteValid = require('../helpers/is-route-valid');
@@ -13,11 +14,15 @@ const {
   withTrailingSlash,
   withoutTrailingSlash,
 } = require('../helpers/normalize-slash');
-const appPaths = require('../helpers/app-paths');
-const { requireFromApp } = require('../helpers/packages');
 
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 const {
-  cyanBright, green, bold, blue, yellow, red,
+  cyanBright,
+  green,
+  bold,
+  blue,
+  yellow,
+  red,
 } = requireFromApp('chalk');
 const { minify } = requireFromApp('html-minifier');
 

@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable global-require */
 
+const { requireFromApp } = require('../../api');
 const QuasarConfFile = require('../conf');
-const { requireFromApp } = require('../helpers/packages');
-const { quasarConfigFilename } = require('../helpers/app-paths');
 const getQuasarCtx = require('../helpers/get-quasar-ctx');
 const { log, fatal } = require('../helpers/logger');
 
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 const parseArgs = requireFromApp('minimist');
 
 const argv = parseArgs(process.argv.slice(2), {
@@ -85,7 +85,7 @@ async function inspect() {
     await quasarConfFile.prepare();
   } catch (e) {
     console.log(e);
-    fatal(`${quasarConfigFilename} has JS errors`, 'FAIL');
+    fatal(`${appPaths.quasarConfigFilename} has JS errors`, 'FAIL');
   }
 
   await quasarConfFile.compile();

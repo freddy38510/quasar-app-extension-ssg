@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
+const { requireFromApp } = require('../../api');
 const isRouteValid = require('../helpers/is-route-valid');
-const { requireFromApp } = require('../helpers/packages');
 
 const { green, grey } = requireFromApp('chalk');
 

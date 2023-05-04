@@ -1,5 +1,5 @@
-/* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 /**
  * Quasar App Extension uninstall script
  *
@@ -7,29 +7,26 @@
  * API: https://github.com/quasarframework/quasar/blob/master/app/lib/app-extension/UninstallAPI.js
  */
 
-module.exports = async function uninstall(api) {
-  const appPaths = require(api.hasVite ? './vite/app-paths' : './webpack/helpers/app-paths');
-  const { requireFromApp } = require(`./${api.hasVite ? 'vite' : 'webpack'}/helpers/packages`);
+const { requireFromApp, engine, ssgDeps } = require('./api');
 
+module.exports = async function uninstall(api) {
   api.removePath('src/ssg-flag.d.ts');
 
-  if (api.prompts.IDE) {
-    api.removePath('src/ssg.d.ts');
+  if (ssgDeps.length === 0) {
+    return;
   }
+
+  const appPaths = requireFromApp(`${engine}/lib/app-paths`);
 
   const { devDependencies } = require(appPaths.resolve.app('package.json'));
 
-  const depsToUninstall = (!api.hasVite ? [
-    '@freddy38510/vue-loader',
-    '@freddy38510/vue-style-loader',
-  ] : ['@rollup/plugin-node-resolve'])
-    .filter((dep) => Object.keys(devDependencies).includes(dep));
+  const depsToUninstall = ssgDeps.filter((dep) => Object.keys(devDependencies).includes(dep));
 
   if (depsToUninstall.length === 0) {
     return;
   }
 
-  const nodePackager = requireFromApp(`@quasar/app-${api.hasVite ? 'vite' : 'webpack'}/lib/helpers/node-packager`);
+  const nodePackager = requireFromApp(`${engine}/lib/helpers/node-packager`);
 
   nodePackager.uninstallPackage(depsToUninstall, {
     displayName: 'SSG dependencies',

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
 /**
  * Quasar App Extension index/runner script
@@ -17,35 +18,21 @@ module.exports = function run(api) {
     api.compatibleWith('@quasar/app-webpack', '>= 3.7.0');
   }
 
+  const basePath = `./${api.hasVite ? 'vite' : 'webpack'}/cmd/`;
+
   api.registerCommand('generate', () => {
-    if (api.hasVite) {
-      require('./vite/cmd/generate');
-    } else {
-      require('./webpack/cmd/ssg-generate');
-    }
+    require(`${basePath}generate`);
   });
 
   api.registerCommand('dev', () => {
-    if (api.hasVite) {
-      require('./vite/cmd/dev');
-    } else {
-      require('./webpack/cmd/dev');
-    }
+    require(`${basePath}dev`);
   });
 
   api.registerCommand('inspect', () => {
-    if (api.hasVite) {
-      require('./vite/cmd/inspect');
-    } else {
-      require('./webpack/cmd/inspect');
-    }
+    require(`${basePath}inspect`);
   });
 
   api.registerCommand('serve', () => {
-    if (api.hasVite) {
-      require('./vite/cmd/serve');
-    } else {
-      require('./webpack/cmd/serve');
-    }
+    require(`${basePath}serve`);
   });
 };

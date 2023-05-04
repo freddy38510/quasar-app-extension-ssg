@@ -3,7 +3,7 @@
 
 const { join } = require('path');
 const { writeFileSync } = require('fs');
-const { requireFromApp } = require('./helpers/packages');
+const { requireFromApp } = require('../api');
 const config = require('./ssg-config');
 const PagesGenerator = require('./PagesGenerator');
 

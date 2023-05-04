@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 const { join } = require('path');
-const { requireFromApp } = require('../../helpers/packages');
+const { requireFromApp } = require('../../../api');
 const { QuasarSSRClientPlugin } = require('./plugin.client-side');
 const WebpackProgressPlugin = require('../plugin.progress');
 

@@ -1,17 +1,15 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-const path = require('path');
 const fs = require('fs');
-const { resolve } = require('path');
-
+const { resolve, join, parse } = require('path');
+const { requireFromApp } = require('../../api');
 const { log } = require('./logger');
-const { requireFromApp } = require('./packages');
 
-const fse = requireFromApp('fs-extra');
 const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
+const fse = requireFromApp('fs-extra');
 
 function getStoreFlagPath(storeIndexPath) {
-  return path.join(path.parse(storeIndexPath).dir, 'store-flag.d.ts');
+  return join(parse(storeIndexPath).dir, 'store-flag.d.ts');
 }
 
 function isInstalled(mode) {

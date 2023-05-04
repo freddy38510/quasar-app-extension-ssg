@@ -1,17 +1,17 @@
 /* eslint-disable global-require */
-const path = require('path');
-const { requireFromApp } = require('../helpers/packages');
-const { resolve } = require('../helpers/app-paths');
+const { join, win32 } = require('path');
+const { requireFromApp } = require('../../api');
 
+const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 const { merge } = requireFromApp('webpack-merge');
 const cssVariables = requireFromApp('@quasar/app-webpack/lib/helpers/css-variables');
 
-const postCssConfigFile = resolve.app('.postcssrc.js');
+const postCssConfigFile = appPaths.resolve.app('.postcssrc.js');
 
 const quasarCssPaths = [
-  path.join('node_modules', 'quasar', 'dist'),
-  path.join('node_modules', 'quasar', 'src'),
-  path.join('node_modules', '@quasar'),
+  join('node_modules', 'quasar', 'dist'),
+  join('node_modules', 'quasar', 'src'),
+  join('node_modules', '@quasar'),
 ];
 
 const absoluteUrlRE = /^[a-z][a-z0-9+.-]*:/i;
@@ -26,7 +26,7 @@ const rootRelativeUrlRE = /^\//;
 function shouldRequireUrl(url) {
   return (
     // an absolute url and it is not `windows` path like `C:\dir\file`:
-    (absoluteUrlRE.test(url) === true && path.win32.isAbsolute(url) === false)
+    (absoluteUrlRE.test(url) === true && win32.isAbsolute(url) === false)
     // a protocol-relative:
     || protocolRelativeRE.test(url) === true
     // some kind of url for a template:
