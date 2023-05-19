@@ -2,7 +2,7 @@
   "extends": ["config:base", "schedule:weekly", "group:allNonMajor"],
   "labels": ["dependencies"],
   "baseBranches": ["master", "2.x"],
-  "ignorePaths": ["**/node_modules/**", "**/demos/**"],
+  "ignorePaths": ["**/node_modules/**", "**/playground/**"],
   "packageRules": [
     {
       "matchPackageNames": ["chalk"],

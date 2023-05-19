@@ -1,6 +1,6 @@
-# [Demo Quasar-app-extension-ssg with vite](https://quasar-app-extension-ssg-vite.netlify.app/)
+# [Quasar-app-extension-ssg with Vite](https://quasar-app-extension-ssg-vite.netlify.app/)
 
-A demo for Quasar project with quasar-app-extension-ssg for vite.
+A Quasar CLI project with Vite and quasar-app-extension-ssg.
 
 ## PageSpeed Insights reports
 

@@ -1,4 +1,4 @@
-name: Update demos deps
+name: Update playground deps
 on:
   push:
     branches: [master]
@@ -6,7 +6,7 @@ on:
 
 jobs:
   run:
-    name: Update demos dependencies
+    name: Update playground dependencies
     if: ${{ (github.event_name == 'workflow_dispatch') || (contains(github.event.head_commit.message, 'chore(release)')) }}
     runs-on: ubuntu-latest
     steps:
@@ -22,12 +22,12 @@ jobs:
           cache: "yarn"
 
       - name: Update dependencies
-        run: yarn --cwd demos/quasar-ssg-vite upgrade
+        run: yarn workspace quasar-cli-with-vite upgrade
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          add-paths: demos/quasar-ssg-vite
-          commit-message: "chore(demos-deps): bump dependencies"
-          branch: demos/update-deps
-          title: update demos deps
+          add-paths: playground/quasar-cli-with-vite
+          commit-message: "chore(playground): bump dependencies"
+          branch: playground/update-deps
+          title: update playground deps

@@ -22,16 +22,16 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['src/vite/**'],
+      files: ['**/src/vite/**'],
       parserOptions: {
         ecmaVersion: 2022,
       },
     },
     {
       files: [
-        'src/boot/**',
-        'src/**/WebSocketClient.js',
-        'src/**/SockJSClient.js',
+        '**/src/boot/**',
+        '**/src/**/WebSocketClient.js',
+        '**/src/**/SockJSClient.js',
       ],
       rules: {
         'import/no-unresolved': 'off',
@@ -40,8 +40,8 @@ module.exports = {
     },
     {
       files: [
-        'src/vite/entry/**',
-        'src/webpack/build/templates/**',
+        '**/src/vite/entry/**',
+        '**/src/webpack/build/templates/**',
       ],
       parserOptions: {
         ecmaVersion: 2022,
