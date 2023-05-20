@@ -96,38 +96,40 @@ quasar ext add ssg
 
 ## Developing
 
-To develop the extension start by cloning this repository:
+The cleanest way to develop the extension taking into account possible problems with peer dependencies is to use [yalc](https://github.com/wclr/yalc).
+
+Start by cloning this repository:
 
 ```bash
 git clone https://github.com/freddy38510/quasar-app-extension-ssg.git && cd quasar-app-extension-ssg
 ```
 
-Register the App Extension through yarn:
+Install the dependencies and watch for changes:
 
 ```bash
-yarn link
+pnpm i
+
+pnpm watch:ssg
 ```
 
-Install dependencies:
-
-```bash
-yarn
-```
-
-Create a new Quasar project then install the App Extension:
+Create a new Quasar project then install the App Extension with yalc:
 
 ```bash
 yarn create quasar
+# or:
+npm init quasar
+# or:
+pnpm create quasar # experimental support
 
 cd <project-name>
 
-quasar ext add ssg
+npx --yes yalc add --dev quasar-app-extension-ssg
 ```
 
-Finally link the locally developed App Extension:
+Finally invoke the App Extension installation:
 
 ```bash
-yarn link quasar-app-extension-ssg
+quasar ext invoke ssg
 ```
 
 Now the app extension can be developed without uninstalling/installing it every time something changes in it.
