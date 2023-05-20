@@ -1,3 +1,5 @@
+const { dirname, join } = require('path');
+
 module.exports = {
   root: true,
   parserOptions: {
@@ -16,7 +18,12 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: true,
+        devDependencies: ['**/src/**/entry/**/*.js', '**/src/boot/**/*.js'],
+        packageDir: [
+          dirname(require.resolve('@quasar/app-vite/package.json')),
+          dirname(require.resolve('@quasar/app-webpack/package.json')),
+          join(__dirname, 'packages/quasar-app-extension-ssg'),
+        ],
       },
     ],
   },
@@ -28,21 +35,7 @@ module.exports = {
       },
     },
     {
-      files: [
-        '**/src/boot/**',
-        '**/src/**/WebSocketClient.js',
-        '**/src/**/SockJSClient.js',
-      ],
-      rules: {
-        'import/no-unresolved': 'off',
-        'import/no-extraneous-dependencies': 'off',
-      },
-    },
-    {
-      files: [
-        '**/src/vite/entry/**',
-        '**/src/webpack/build/templates/**',
-      ],
+      files: ['**/src/**/entry/**/*.js'],
       parserOptions: {
         ecmaVersion: 2022,
       },
@@ -76,8 +69,7 @@ module.exports = {
       },
       rules: {
         'max-len': ['error', 120],
-        'import/no-unresolved': 'off',
-        'import/no-extraneous-dependencies': 'off',
+        'import/no-unresolved': ['error', { ignore: ['\\./*'] }],
       },
     },
     {

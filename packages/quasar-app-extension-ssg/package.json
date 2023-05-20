@@ -17,9 +17,7 @@
     "roboto-font/"
   ],
   "engines": {
-    "node": ">= 12.22.1",
-    "npm": ">= 6.13.4",
-    "yarn": ">= 1.21.1"
+    "node": ">= 12.22.1"
   },
   "repository": {
     "type": "git",
@@ -60,9 +58,17 @@
   "peerDependencies": {
     "@freddy38510/vue-loader": "^17.1.1",
     "@freddy38510/vue-style-loader": "^4.2.0",
+    "@quasar/app-vite": "^1.0.0",
+    "@quasar/app-webpack": "^3.7.0",
     "@rollup/plugin-node-resolve": "^13.3.0"
   },
   "peerDependenciesMeta": {
+    "@quasar/app-vite": {
+      "optional": true
+    },
+    "@quasar/app-webpack": {
+      "optional": true
+    },
     "@freddy38510/vue-loader": {
       "optional": true
     },

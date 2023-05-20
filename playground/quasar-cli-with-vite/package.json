@@ -19,12 +19,13 @@
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.0.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "autoprefixer": "^10.4.2",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
     "prettier": "^2.5.1",
-    "quasar-app-extension-ssg": "^4.7.0"
+    "quasar-app-extension-ssg": "workspace:^4.7.0"
   },
   "engines": {
     "node": "^18 || ^16 || ^14.19",

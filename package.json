@@ -1,17 +1,17 @@
 {
   "name": "quasar-app-extension-ssg-monorepo",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "playground/*"
-  ],
   "homepage": "https://github.com/freddy38510/quasar-app-extension-ssg",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freddy38510/quasar-app-extension-ssg.git"
   },
+  "engines": {
+    "node": ">= 16.14"
+  },
   "scripts": {
-    "release:ssg": "HUSKY=0 yarn workspace quasar-app-extension-ssg release",
+    "release:ssg": "HUSKY=0 pnpm --filter quasar-app-extension-ssg run release",
+    "generate:playground-vite": "pnpm -c --filter quasar-app-extension-ssg-test-vite exec quasar ssg generate",
     "prepare": "husky install"
   },
   "devDependencies": {
@@ -43,6 +43,12 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "packageManager": "pnpm@8.5.1",
+  "pnpm": {
+    "overrides": {
+      "quasar-app-extension-ssg": "workspace:*"
     }
   }
 }

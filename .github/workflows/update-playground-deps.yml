@@ -15,14 +15,17 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 14
-          cache: "yarn"
+          cache: "pnpm"
 
       - name: Update dependencies
-        run: yarn workspace quasar-cli-with-vite upgrade
+        run: pnpm --filter quasar-app-extension-ssg-test-vite update
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4

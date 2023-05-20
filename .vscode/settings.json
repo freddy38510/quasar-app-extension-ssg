@@ -18,7 +18,7 @@
     "javascript",
     "typescript"
   ],
-  "eslint.packageManager": "yarn",
+  "eslint.packageManager": "pnpm",
   "eslint.format.enable": true,
   "javascript.validate.enable": false,
 }

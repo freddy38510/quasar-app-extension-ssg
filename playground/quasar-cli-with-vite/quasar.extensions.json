@@ -1,6 +1,7 @@
 {
   "ssg": {
     "scripts": true,
+    "IDE": true,
     "inlineCriticalCss": true
   }
 }
