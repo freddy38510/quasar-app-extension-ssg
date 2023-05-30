@@ -62,13 +62,6 @@ if (ssrIsRunningOnClientPWA === true) {
 }
 <% } %>
 
-<% if (ctx.mode.pwa) { %>
-// Needed only for iOS PWAs
-if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && window.navigator.standalone) {
-  import(/* webpackChunkName: "fastclick"  */ '@quasar/fastclick');
-}
-<% } %>
-
 const publicPath = `<%= build.publicPath %>`;
 <% if (build.publicPath.length > 1 && bootEntries.length > 0) { %>
 const doubleSlashRE = /\/\//;

@@ -62,13 +62,6 @@ if (ssrIsRunningOnClientPWA === true) {
 }
 <% } %>
 
-<% if (ctx.mode.pwa) { %>
-// Needed only for iOS PWAs
-if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && window.navigator.standalone) {
-  import('@quasar/fastclick');
-}
-<% } %>
-
 const publicPath = `<%= build.publicPath %>`;
 
 async function start({
