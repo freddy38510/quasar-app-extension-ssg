@@ -6,7 +6,7 @@ const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 const { merge } = requireFromApp('webpack-merge');
 const cssVariables = requireFromApp('@quasar/app-webpack/lib/helpers/css-variables');
 
-const postCssConfigFile = appPaths.resolve.app('.postcssrc.js');
+const postcssConfigFilename = appPaths.postcssConfigFilename || appPaths.resolve.app('.postcssrc.js');
 
 const quasarCssPaths = [
   join('node_modules', 'quasar', 'dist'),
@@ -135,9 +135,9 @@ function create(
   if (!rule.uses.has('postcss-loader')) {
     // need a fresh copy, otherwise plugins
     // will keep on adding making N duplicates for each one
-    delete require.cache[postCssConfigFile];
+    delete require.cache[postcssConfigFilename];
     // eslint-disable-next-line import/no-dynamic-require
-    const postCssConfig = require(postCssConfigFile);
+    const postCssConfig = require(postcssConfigFilename);
     let postCssOpts = { sourceMap: pref.sourceMap, ...postCssConfig };
 
     if (pref.rtl) {
