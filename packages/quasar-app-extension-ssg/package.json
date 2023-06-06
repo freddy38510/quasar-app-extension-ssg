@@ -35,6 +35,7 @@
     "release": "commit-and-tag-version"
   },
   "dependencies": {
+    "@quasar/render-ssr-error": "^1.0.1",
     "beastcss": "2.1.1",
     "cors": "2.8.5",
     "crc": "4.3.2",

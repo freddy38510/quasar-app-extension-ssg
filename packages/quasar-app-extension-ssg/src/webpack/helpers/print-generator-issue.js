@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 
 const { getError, getWarning } = require('./logger');
-const renderPrettyError = require('./render-pretty-error');
 
 function display(errors, severity, titleFn) {
   const summary = `${errors.length} ${severity}${errors.length > 1 ? 's' : ''}`;
@@ -11,7 +10,7 @@ function display(errors, severity, titleFn) {
     printLog(titleFn(err.hint));
     printLog();
 
-    printLog(renderPrettyError(err));
+    printLog(err);
   });
 
   printLog();

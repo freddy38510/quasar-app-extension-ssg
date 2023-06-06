@@ -10,10 +10,8 @@ const {
   log, info, warn, error, warning, fatal, success,
 } = require('../helpers/logger');
 const { printGeneratorErrors, printGeneratorWarnings } = require('../helpers/print-generator-issue');
-const renderPrettyError = require('../helpers/render-pretty-error');
 
 const fse = requireFromApp('fs-extra');
-requireFromApp('pretty-error').stop();
 
 module.exports = async function generate(quasarConf) {
   const { add, clean } = requireFromApp('@quasar/app-webpack/lib/artifacts');
@@ -44,7 +42,7 @@ module.exports = async function generate(quasarConf) {
       quasarConf.ssg.distDir,
     );
   } catch (err) {
-    renderPrettyError(err);
+    console.error(err);
 
     process.exit(1);
   }
@@ -64,7 +62,7 @@ module.exports = async function generate(quasarConf) {
 
     state.errors = errors;
   } catch (err) {
-    renderPrettyError(err);
+    console.error(err);
 
     process.exit(1);
   }

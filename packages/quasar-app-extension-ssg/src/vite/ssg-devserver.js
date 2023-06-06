@@ -17,7 +17,6 @@ const config = require('./ssg-config');
 const AppDevserver = require('./app-devserver');
 const PagesGenerator = require('./PagesGenerator');
 const printDevBanner = require('./helpers/print-dev-banner');
-const getErrorRenderer = require('./helpers/get-dev-error-renderer');
 const ssgCreateRenderFn = require('./ssg-create-render-fn');
 
 const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
@@ -44,6 +43,14 @@ function logServerMessage(title, msg, additional) {
   info(`${msg}${additional !== void 0 ? ` ${dot} ${additional}` : ''}`, title);
 }
 
+let renderSSRError;
+function renderError({ err, req, res }) {
+  log();
+  warn(req.url, 'Render failed');
+
+  renderSSRError({ err, req, res });
+}
+
 class SsgDevServer extends AppDevserver {
   #closeDevserver;
 
@@ -54,8 +61,6 @@ class SsgDevServer extends AppDevserver {
   #htmlWatcher;
 
   #renderTemplate;
-
-  #renderError;
 
   #fallbackHtml;
 
@@ -150,8 +155,6 @@ class SsgDevServer extends AppDevserver {
     this.#viteClient = await createServer(await config.viteClient(quasarConf));
     this.#viteServer = await createServer(await config.viteServer(quasarConf));
 
-    this.#renderError = getErrorRenderer(this.#viteClient);
-
     if (quasarConf.ssr.pwa === true) {
       injectPwaManifest(quasarConf, true);
     }
@@ -189,6 +192,10 @@ class SsgDevServer extends AppDevserver {
 
   async #warmupServer() {
     const done = progress('Warming up...');
+
+    if (renderSSRError === void 0) {
+      renderSSRError = (await import('@quasar/render-ssr-error')).default;
+    }
 
     try {
       await this.#viteServer.ssrLoadModule(serverEntryFile);
@@ -237,7 +244,7 @@ class SsgDevServer extends AppDevserver {
 
           return html;
         } catch (err) {
-          this.#viteServer.ssrFixStacktrace(err);
+          this.#viteServer.ssrFixStacktrace(err.cause || err);
           throw err;
         }
       },
@@ -304,7 +311,7 @@ class SsgDevServer extends AppDevserver {
 
         res.send(html);
       } catch (err) {
-        this.#renderError({ err, req, res });
+        renderError({ err: err.cause || err, req, res });
       }
     });
 

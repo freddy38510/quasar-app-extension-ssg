@@ -17,10 +17,7 @@ const { doneExternalWork } = require('../build/plugin.progress');
 const { webpackNames } = require('../build/symbols');
 
 const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
-
 const openBrowser = requireFromApp('@quasar/app-webpack/lib/helpers/open-browser');
-const Ouch = requireFromApp('ouch');
-
 const HtmlWebpackPlugin = requireFromApp('html-webpack-plugin');
 
 const banner = ' [Quasar Dev Webserver]';
@@ -28,22 +25,15 @@ const createRendererFile = appPaths.resolve.app('.quasar/ssg/create-renderer.js'
 const renderTemplateFile = appPaths.resolve.app('.quasar/ssg/render-template.js');
 const Generator = require('../generate/generator');
 const ssgMiddleware = require('./ssg-middleware');
-const { log, warning, error } = require('../helpers/logger');
-const extendPrettyPageHandler = require('../helpers/extend-pretty-page-handler');
+const { log, warning } = require('../helpers/logger');
 
-Ouch.handlers.PrettyPageHandler = extendPrettyPageHandler(Ouch.handlers.PrettyPageHandler);
-
-const ouchInstance = new Ouch().pushHandler(
-  new Ouch.handlers.PrettyPageHandler('orange', null, 'sublime'),
-);
-
+let renderSSRError;
 const renderError = ({ err, req, res }) => {
-  ouchInstance.handleException(err, req, res, () => {
-    console.error();
-    error(err.hint || `${req.url} -> error during pre-render`);
-    console.error();
-    console.error(err.stack || err);
-  });
+  console.log();
+  console.error(`${banner} ${req.url} -> error during render`);
+  console.error(err.stack);
+
+  renderSSRError({ err, req, res });
 };
 
 const doubleSlashRE = /\/\//g;
@@ -72,6 +62,10 @@ module.exports = class DevServer {
     const clientCompiler = webpack(webpackConf.clientSide);
     const rendererCompiler = webpack(webpackConf.renderer);
     const serverCompiler = webpack(webpackConf.serverSide);
+
+    if (renderSSRError === void 0) {
+      renderSSRError = (await import('@quasar/render-ssr-error')).default;
+    }
 
     let serverManifest;
     let clientManifest;

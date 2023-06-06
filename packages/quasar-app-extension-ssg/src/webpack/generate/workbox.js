@@ -11,7 +11,6 @@ const {
   success,
   warn,
 } = require('../helpers/logger');
-const renderPrettyError = require('../helpers/render-pretty-error');
 
 const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
 const { generateSW, injectManifest } = requireFromApp('workbox-build');
@@ -75,7 +74,7 @@ const handleError = (e, isGenerateSW, pill) => {
 
   console.error();
 
-  renderPrettyError(e);
+  console.error(e);
 
   fatal('Please check the log above.', `${pill} FAILED`);
 };
