@@ -34,30 +34,27 @@ module.exports = function parseViteRequest(id) {
   const [filename, rawQuery] = id.split('?', 2);
   const query = Object.fromEntries(new URLSearchParams(rawQuery));
 
-  const is = query.vue !== void 0 // is vue query?
-    ? {
-      // Almost all code might get merged into a single request with no 'type' (App.vue?vue)
-      // or stay with their original 'type's (App.vue?vue&type=script&lang.ts)
-      vue: () => true,
-      /*
-      template: () => query.type === void 0
-          || query.type === 'template'
-          // On prod, TS code turns into a separate 'script' request.
-          // See: https://github.com/vitejs/vite/pull/7909
-          || (query.type === 'script' && query['lang.ts'] !== void 0),
-          */
-      script: (extensions = scriptExt) => (query.type === void 0 || query.type === 'script')
-          && isOfExt({ query, extensions }) === true,
-      style: (extensions = styleExt.concat(cssModuleExt)) => query.type === 'style' && isOfExt({ query, extensions }) === true,
-      cssModule: (extensions = cssModuleExt) => query.type === 'style' && isOfExt({ query, extensions }) === true,
-    }
-    : {
-      vue: () => isOfExt({ extensions: vueExt, filename }),
-      // template: () => isOfExt({ filename, extensions: vueExt }),
-      script: (extensions = scriptExt) => isOfExt({ filename, extensions }),
-      style: (extensions = styleExt) => isOfExt({ filename, extensions }),
-      cssModule: (extensions = cssModuleExt) => isOfExt({ filename, extensions }) === true,
-    };
+  const is = {};
+
+  if (query.raw !== void 0) {
+    // if it's a ?raw request, then don't touch it at all
+    is.vue = () => false;
+    is.script = () => false;
+    is.style = () => false;
+    is.cssModule = () => false;
+  } else if (query.vue !== void 0) { // is vue query ?
+    // Almost all code might get merged into a single request with no 'type' (App.vue?vue)
+    // or stay with their original 'type's (App.vue?vue&type=script&lang.ts)
+    is.vue = () => true;
+    is.script = (extensions = scriptExt) => (query.type === void 0 || query.type === 'script') && isOfExt({ query, extensions }) === true;
+    is.style = (extensions = styleExt.concat(cssModuleExt)) => query.type === 'style' && isOfExt({ query, extensions }) === true;
+    is.cssModule = (extensions = cssModuleExt) => query.type === 'style' && isOfExt({ query, extensions }) === true;
+  } else {
+    is.vue = () => isOfExt({ extensions: vueExt, filename });
+    is.script = (extensions = scriptExt) => isOfExt({ filename, extensions });
+    is.style = (extensions = styleExt) => isOfExt({ filename, extensions });
+    is.cssModule = (extensions = cssModuleExt) => isOfExt({ filename, extensions }) === true;
+  }
 
   return {
     filename,
