@@ -91,48 +91,10 @@ quasar ext remove ssg
 This is done with the same command used for installation:
 
 ```bash
-quasar ext add ssg
+echo y | quasar ext add ssg
 ```
 
-## Developing
-
-The cleanest way to develop the extension taking into account possible problems with peer dependencies is to use [yalc](https://github.com/wclr/yalc).
-
-Start by cloning this repository:
-
-```bash
-git clone https://github.com/freddy38510/quasar-app-extension-ssg.git && cd quasar-app-extension-ssg
-```
-
-Install the dependencies and watch for changes:
-
-```bash
-pnpm i
-
-pnpm watch:ssg
-```
-
-Create a new Quasar project then install the App Extension with yalc:
-
-```bash
-yarn create quasar
-# or:
-npm init quasar
-# or:
-pnpm create quasar # experimental support
-
-cd <project-name>
-
-npx --yes yalc add --dev quasar-app-extension-ssg
-```
-
-Finally invoke the App Extension installation:
-
-```bash
-quasar ext invoke ssg
-```
-
-Now the app extension can be developed without uninstalling/installing it every time something changes in it.
+> Note: It is recommended to overwrite files when requested, so as not to miss any updates.
 
 ## Usage
 
@@ -1113,3 +1075,41 @@ Therefore, [workbox-build](https://developers.google.com/web/tools/workbox/modul
 
 The cache mechanism to avoid recompiling the app when it is not necessary is strongly inspired by [Nuxt](https://nuxtjs.org).
 See the Nuxt [blog post](https://fr.nuxtjs.org/blog/nuxt-static-improvements#faster-static-deployments) about this feature.
+
+## Contributing
+
+The quasar-app-extension-ssg repository is a monorepo using pnpm workspaces. The package manager used to install and link dependencies must be [pnpm](https://pnpm.io/).
+
+The monorepo contains the extension package inside the `packages` folder.
+It also contains private packages in the `playground` folder for testing the extension with quasar CLI with vite or webpack.
+
+To develop locally, fork the repository then:
+
+1. Clone it in your local machine.
+
+2. Run `pnpm i` in the root folder.
+
+3. Change the code in the `packages/quasar-app-extension-ssg` folder.
+
+4. Run `pnpm -w run command:vite` or `pnpm -w run command:webpack` to test the extension [commands](#usage) against private packages in the playground folder.
+
+:warning: If you intend to directly run Quasar commands in any playground folders, it's advisable to first run in background the `pnpm -w run watch` command in the root folder.
+
+### Testing against external packages
+
+You may wish to test your locally modified copy against an external quasar project that is using the extension. To do this you must specify [`pnpm.overrides`](https://pnpm.io/package_json#pnpmoverrides) and list the package as a dependency in the root package.json:
+
+```json
+{
+  "dependencies": {
+    "quasar-app-extension-ssg": "^4.7.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "quasar-app-extension-ssg": "link:../path/to/forked-repo/packages/quasar-app-extension-ssg"
+    }
+  }
+}
+```
+
+:warning: If not using `pnpm` as a package manager it is mandatory to use [yalc](https://github.com/wclr/yalc) to avoid possible issues with unresolved dependencies.
