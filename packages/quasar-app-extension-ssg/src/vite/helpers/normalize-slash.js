@@ -8,7 +8,7 @@ function hasTrailingSlash(input = '', queryParams = false) {
   return TRAILING_SLASH_RE.test(input);
 }
 
-const withTrailingSlash = function withTrailingSlash(input = '', queryParams = false) {
+module.exports.withTrailingSlash = function withTrailingSlash(input = '', queryParams = false) {
   if (!queryParams) {
     return input.endsWith('/') ? input : (`${input}/`);
   }
@@ -22,7 +22,7 @@ const withTrailingSlash = function withTrailingSlash(input = '', queryParams = f
   return `${s0}/${s.length ? `?${s.join('?')}` : ''}`;
 };
 
-const withoutTrailingSlash = function withoutTrailingSlash(input = '', queryParams = false) {
+module.exports.withoutTrailingSlash = function withoutTrailingSlash(input = '', queryParams = false) {
   if (!queryParams) {
     return (hasTrailingSlash(input) ? input.slice(0, -1) : input) || '/';
   }
@@ -35,5 +35,3 @@ const withoutTrailingSlash = function withoutTrailingSlash(input = '', queryPara
 
   return (s0.slice(0, -1) || '/') + (s.length ? `?${s.join('?')}` : '');
 };
-
-module.exports = { withTrailingSlash, withoutTrailingSlash };

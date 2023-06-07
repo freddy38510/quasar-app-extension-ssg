@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const { getError, getWarning } = require('./logger');
 
 function display(errors, severity, titleFn) {

@@ -10,28 +10,38 @@
     "node": ">= 16.14"
   },
   "scripts": {
-    "release:ssg": "HUSKY=0 pnpm --filter quasar-app-extension-ssg run release",
-    "watch:ssg": "pnpm -c --filter quasar-app-extension-ssg exec pnpm watch",
-    "generate:playground-vite": "pnpm -c --filter quasar-app-extension-ssg-test-vite exec quasar ssg generate",
+    "watch": "pnpm --parallel -r run sync --watch",
+    "generate:vite": "pnpm --filter test-vite run build:ssg",
+    "generate:webpack": "pnpm --filter test-webpack run build:ssg",
+    "dev:vite": "pnpm --filter test-vite run dev:ssg",
+    "dev:webpack": "pnpm --filter test-webpack run dev:ssg",
+    "serve:vite": "pnpm --filter test-vite run serve:ssg",
+    "serve:webpack": "pnpm --filter test-webpack run serve:ssg",
+    "inspect:vite": "pnpm --filter test-vite run inspect:ssg",
+    "inspect:webpack": "pnpm --filter test-webpack run inspect:ssg",
+    "release": "HUSKY=0 pnpm --filter quasar-app-extension-ssg run release",
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.4.3",
-    "@commitlint/config-conventional": "17.4.3",
-    "@typescript-eslint/eslint-plugin": "5.52.0",
-    "@typescript-eslint/parser": "5.52.0",
-    "commit-and-tag-version": "11.1.0",
-    "commitizen": "4.3.0",
-    "cz-conventional-changelog": "3.3.0",
-    "eslint": "8.34.0",
-    "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-airbnb-typescript": "17.0.0",
-    "eslint-plugin-import": "2.27.5",
-    "eslint-plugin-lodash-template": "0.21.0",
-    "husky": "8.0.3",
-    "nodemon": "^2.0.22",
-    "typescript": "4.9.5",
-    "yalc": "1.0.0-pre.53"
+    "@commitlint/cli": "^17.4.3",
+    "@commitlint/config-conventional": "^17.4.3",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "commit-and-tag-version": "^11.1.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.34.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-define-config": "^1.20.0",
+    "eslint-import-resolver-exports": "1.0.0-beta.5",
+    "eslint-plugin-ecmascript-compat": "^3.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-lodash-template": "^0.21.0",
+    "eslint-plugin-n": "^16.0.0",
+    "husky": "^8.0.3",
+    "pnpm-sync-dependencies-meta-injected": "^0.0.6",
+    "typescript": "^4.9.5"
   },
   "config": {
     "commitizen": {
@@ -51,7 +61,16 @@
   "packageManager": "pnpm@8.5.1",
   "pnpm": {
     "overrides": {
-      "quasar-app-extension-ssg": "workspace:*"
+      "magic-string": "^0.30.0",
+      "quasar-app-extension-ssg": "workspace:*",
+      "svgo": "^3.0.0"
+    },
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@babel/core",
+        "postcss",
+        "webpack"
+      ]
     }
   }
 }

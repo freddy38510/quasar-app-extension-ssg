@@ -1,15 +1,8 @@
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable no-void */
-/* eslint-disable no-console */
-/* eslint-disable global-require */
-
 if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'production';
 }
 
-const { requireFromApp } = require('../../api');
-
-const parseArgs = requireFromApp('minimist');
+const parseArgs = require('minimist');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -40,12 +33,12 @@ if (argv.help) {
 argv.mode = 'ssg';
 
 const { log, fatal } = require('../helpers/logger');
-const banner = require('../helpers/banner-global');
+const displayBanner = require('../helpers/banner-global');
 const checkCompilationCache = require('../helpers/check-compilation-cache');
 const getQuasarCtx = require('../helpers/get-quasar-ctx');
 
 async function run() {
-  banner(argv, 'generate');
+  displayBanner(argv, 'generate');
 
   const ctx = getQuasarCtx({
     mode: 'ssg',
@@ -58,7 +51,7 @@ async function run() {
   });
 
   // register app extensions
-  const extensionRunner = requireFromApp('@quasar/app-vite/lib/app-extension/extensions-runner');
+  const extensionRunner = require('@quasar/app-vite/lib/app-extension/extensions-runner');
   extensionRunner.extensions.splice(
     extensionRunner.extensions
       .findIndex((extension) => extension.extId === 'ssg'),
@@ -84,7 +77,7 @@ async function run() {
   const AppProdBuilder = require('../ssg-builder');
   const appBuilder = new AppProdBuilder({ argv, quasarConf });
 
-  const artifacts = requireFromApp('@quasar/app-vite/lib/artifacts');
+  const artifacts = require('@quasar/app-vite/lib/artifacts');
   artifacts.clean(quasarConf.ssg.distDir);
 
   const { needCompilation, writeCacheManifest } = await checkCompilationCache(argv, quasarConf);
@@ -126,7 +119,7 @@ async function run() {
   await appBuilder.generatePages();
   artifacts.add(quasarConf.ssg.distDir);
 
-  banner(argv, 'generate', {
+  displayBanner(argv, 'generate', {
     outputFolder: quasarConf.ssg.distDir,
     compilationFolder: quasarConf.ssg.compilationDir,
     target: quasarConf.build.target,
@@ -135,11 +128,9 @@ async function run() {
   });
 
   if (typeof quasarConf.ssg.afterGenerate === 'function') {
-    const esmRequire = require('jiti')(__filename);
+    const { globby } = await import('globby');
 
-    const { globbySync } = esmRequire('globby');
-
-    const files = globbySync('**/*.html', {
+    const files = await globby('**/*.html', {
       cwd: quasarConf.ssg.distDir,
       absolute: true,
     });

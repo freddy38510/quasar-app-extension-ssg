@@ -1,9 +1,4 @@
-/* eslint-disable no-console */
-/* eslint-disable no-void */
-/* eslint-disable global-require */
-const { requireFromApp } = require('../../api');
-
-const parseArgs = requireFromApp('minimist');
+const parseArgs = require('minimist');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -51,13 +46,14 @@ if (argv.help) {
 
 argv.mode = 'ssg';
 
-require('../helpers/banner-global')(argv, argv.cmd);
-
 const { log, fatal } = require('../helpers/logger');
+const displayBanner = require('../helpers/banner-global');
+
+displayBanner(argv, argv.cmd);
 
 const depth = parseInt(argv.depth, 10) || Infinity;
 
-async function inspect() {
+(async () => {
   const getQuasarCtx = require('../helpers/get-quasar-ctx');
   const ctx = getQuasarCtx({
     mode: 'ssg',
@@ -67,7 +63,7 @@ async function inspect() {
     prod: argv.cmd === 'generate',
   });
 
-  const extensionRunner = requireFromApp('@quasar/app-vite/lib/app-extension/extensions-runner');
+  const extensionRunner = require('@quasar/app-vite/lib/app-extension/extensions-runner');
   extensionRunner.extensions.splice(
     extensionRunner.extensions
       .findIndex((extension) => extension.extId === 'ssg'),
@@ -108,13 +104,14 @@ async function inspect() {
   }));
 
   if (argv.path) {
-    const dot = requireFromApp('dot-prop');
+    const { getProperty } = await import('dot-prop');
+
     cfgEntries.forEach((cfgEntry) => {
-      cfgEntry.object = dot.get(cfgEntry.object, argv.path);
+      cfgEntry.object = getProperty(cfgEntry.object, argv.path);
     });
   }
 
-  const util = require('util');
+  const { inspect } = require('util');
 
   cfgEntries.forEach((cfgEntry) => {
     const tool = cfgEntry.object.configFile !== void 0
@@ -125,7 +122,7 @@ async function inspect() {
     log(`Showing "${cfgEntry.name}" config (for ${tool}) with depth of ${depth}`);
     console.log();
     console.log(
-      util.inspect(cfgEntry.object, {
+      inspect(cfgEntry.object, {
         showHidden: true,
         depth,
         colors: argv.colors,
@@ -135,6 +132,4 @@ async function inspect() {
   });
 
   console.log(`\n  Depth used: ${depth}. You can change it with "-d" / "--depth" parameter.\n`);
-}
-
-inspect();
+})();

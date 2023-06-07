@@ -1,3 +1,4 @@
+const { resolve, join, basename } = require('path');
 const {
   existsSync,
   mkdirSync,
@@ -5,12 +6,9 @@ const {
   writeFileSync,
   lstatSync,
 } = require('fs');
-const { resolve, join, basename } = require('path');
-const { requireFromApp } = require('../api');
-
-const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
-const { removeSync } = requireFromApp('fs-extra');
-const compileTemplate = requireFromApp('lodash/template');
+const { removeSync } = require('fs-extra');
+const compileTemplate = require('lodash/template');
+const appPaths = require('@quasar/app-vite/lib/app-paths');
 
 const quasarFolder = appPaths.resolve.app('.quasar');
 
@@ -22,7 +20,7 @@ class EntryFilesGenerator {
       resolve(__dirname, './entry/app.js'),
       resolve(__dirname, './entry/client-entry.js'),
       resolve(__dirname, './entry/client-prefetch.js'),
-      requireFromApp.resolve('@quasar/app-vite/templates/entry/quasar-user-options.js'),
+      require.resolve('@quasar/app-vite/templates/entry/quasar-user-options.js'),
       resolve(__dirname, './entry/server-entry.js'),
     ];
 

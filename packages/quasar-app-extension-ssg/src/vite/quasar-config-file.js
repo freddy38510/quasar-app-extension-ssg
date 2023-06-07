@@ -1,12 +1,8 @@
-/* eslint-disable no-void */
-
 const { join, isAbsolute } = require('path');
-const { requireFromApp, hasPackage } = require('../api');
-
-const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
-const QuasarConfFile = requireFromApp('@quasar/app-vite/lib/quasar-config-file');
-const { searchForWorkspaceRoot } = requireFromApp('vite');
-const { merge } = requireFromApp('webpack-merge');
+const { merge } = require('webpack-merge');
+const appPaths = require('@quasar/app-vite/lib/app-paths');
+const QuasarConfFile = require('@quasar/app-vite/lib/quasar-config-file');
+const { hasPackage } = require('../api');
 
 function getUniqueArray(original) {
   return Array.from(new Set(original));
@@ -57,7 +53,7 @@ function extendQuasarConf(conf) {
   }
 
   if (conf.ssg.inlineCriticalCss === void 0) {
-    const extensionJson = requireFromApp(
+    const extensionJson = require(
       '@quasar/app-vite/lib/app-extension/extension-json',
     );
 
@@ -88,15 +84,6 @@ function extendQuasarConf(conf) {
 
   // Replace pwa html file by fallback html file
   conf.ssr.ssrPwaHtmlFilename = conf.ssg.fallback;
-
-  // In case if the app extension package is linked (yarn link) while developing it
-  // make sure to allow to serve roboto font files and ssg-corrections boot file.
-  // @see https://v2.vitejs.dev/config/#server-fs-allow
-  conf.devServer.fs.allow = conf.devServer.fs.allow || [];
-  conf.devServer.fs.allow.push(
-    searchForWorkspaceRoot(process.cwd()),
-    join(__dirname, '../../'),
-  );
 }
 
 module.exports = class ExtendedQuasarConfFile extends QuasarConfFile {

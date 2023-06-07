@@ -1,5 +1,4 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable no-underscore-dangle */
+import { useSSRContext, getCurrentInstance } from 'vue';
 
 /**
  * Quasar ssg runtime at server-side.
@@ -8,11 +7,8 @@
  * In this way, it is possible to avoid preloading these components in production.
  *
  * @see https://github.com/freddy38510/vue3-lazy-hydration
- * @param {id} String representing the module id
+ * @param { string } id representing the module id
  */
-
-import { useSSRContext, getCurrentInstance } from 'vue';
-
 export default (id) => {
   const componentInstance = getCurrentInstance();
 

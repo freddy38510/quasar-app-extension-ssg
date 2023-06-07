@@ -1,18 +1,11 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-use-before-define */
-/* eslint-disable global-require */
-/* eslint-disable no-console */
-/* eslint-disable no-void */
 
 if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'development';
 }
 
-const { requireFromApp } = require('../../api');
-const { log, warn, fatal } = require('../helpers/logger');
-
-const parseArgs = requireFromApp('minimist');
+const parseArgs = require('minimist');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -45,17 +38,16 @@ if (argv.help) {
   process.exit(0);
 }
 
-const ensureVueDeps = requireFromApp('@quasar/app-webpack/lib/helpers/ensure-vue-deps');
+const ensureVueDeps = require('@quasar/app-webpack/lib/helpers/ensure-vue-deps');
+const { displayBuildBanner } = require('../helpers/banner');
+const { log, warn, fatal } = require('../helpers/logger');
 
 ensureVueDeps();
-
-const banner = require('../helpers/banner').logBuildBanner;
-
-banner(argv, 'dev');
-
-const findPort = requireFromApp('@quasar/app-webpack/lib/helpers/net').findClosestOpenPort;
+displayBuildBanner(argv, 'dev');
 
 async function parseAddress({ host, port }) {
+  const findPort = require('@quasar/app-webpack/lib/helpers/net').findClosestOpenPort;
+
   try {
     const openPort = await findPort(port, host);
     if (port !== openPort) {
@@ -91,8 +83,8 @@ async function parseAddress({ host, port }) {
 }
 
 function startVueDevtools() {
-  const { spawn } = requireFromApp('@quasar/app-webpack/lib/helpers/spawn');
-  const getPackagePath = requireFromApp('@quasar/app-webpack/lib/helpers/get-package-path');
+  const { spawn } = require('@quasar/app-webpack/lib/helpers/spawn');
+  const getPackagePath = require('@quasar/app-webpack/lib/helpers/get-package-path');
 
   let vueDevtoolsBin = getPackagePath('@vue/devtools/bin.js');
 
@@ -106,9 +98,9 @@ function startVueDevtools() {
     return undefined;
   }
 
-  const nodePackager = requireFromApp('@quasar/app-webpack/lib/helpers/node-packager');
+  const nodePackager = require('@quasar/app-webpack/lib/helpers/node-packager');
 
-  nodePackager.installPackage('@vue/devtools', { isDev: true });
+  nodePackager.installPackage('@vue/devtools', { isDev: true, isDevDependency: true });
 
   // a small delay is a must, otherwise require.resolve
   // after a yarn/npm install will fail
@@ -119,14 +111,13 @@ function startVueDevtools() {
   });
 }
 
-async function goLive() {
-  const DevServer = require('../dev/dev-server-ssg');
-  const QuasarConfFile = require('../conf');
-  const Generator = require('../build/generator');
+(async () => {
+  const extensionRunner = require('@quasar/app-webpack/lib/app-extension/extensions-runner');
+  const DevServer = require('../dev-server-ssg');
+  const QuasarConfFile = require('../quasar-config-file');
+  const EntryFilesGenerator = require('../EntryFilesGenerator');
   const getQuasarCtx = require('../helpers/get-quasar-ctx');
   const regenerateTypesFeatureFlags = require('../helpers/types-feature-flags');
-
-  const extensionRunner = requireFromApp('@quasar/app-webpack/lib/app-extension/extensions-runner');
 
   const ctx = getQuasarCtx({
     mode: 'ssg',
@@ -134,8 +125,7 @@ async function goLive() {
     vueDevtools: argv.devtools,
   });
 
-  // do not run ssg extension again
-  // TODO: extend ExtensionRunner class
+  // remove ssg extension (otherwise the ext will be run again)
   extensionRunner.extensions.splice(
     extensionRunner.extensions
       .findIndex((extension) => extension.extId === 'ssg'),
@@ -188,9 +178,9 @@ async function goLive() {
     await hook.fn(hook.api, { quasarConf });
   });
 
-  const generator = new Generator(quasarConfFile);
+  const generator = new EntryFilesGenerator(quasarConfFile);
 
-  const PwaRunner = requireFromApp('@quasar/app-webpack/lib/pwa');
+  const PwaRunner = require('@quasar/app-webpack/lib/pwa');
   const runPwa = () => PwaRunner.run(quasarConfFile);
 
   function startDev(oldDevServer) {
@@ -233,6 +223,4 @@ async function goLive() {
 
     return payload;
   });
-}
-
-goLive();
+})();

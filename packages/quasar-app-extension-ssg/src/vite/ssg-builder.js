@@ -1,17 +1,12 @@
-/* eslint-disable global-require */
-/* eslint-disable no-void */
-
 const { join } = require('path');
 const { writeFileSync } = require('fs');
-const { requireFromApp } = require('../api');
-const config = require('./ssg-config');
-const PagesGenerator = require('./PagesGenerator');
-
-const AppBuilder = requireFromApp('@quasar/app-vite/lib/app-builder');
+const AppBuilder = require('@quasar/app-vite/lib/app-builder');
 const {
   getProdSsrTemplateFn,
   transformProdSsrPwaOfflineHtml: transformProdSsgFallbackHtml,
-} = requireFromApp('@quasar/app-vite/lib/helpers/html-template');
+} = require('@quasar/app-vite/lib/helpers/html-template');
+const config = require('./ssg-config');
+const PagesGenerator = require('./PagesGenerator');
 
 class SsgBuilder extends AppBuilder {
   quasarConf;
@@ -29,7 +24,7 @@ class SsgBuilder extends AppBuilder {
 
   async compile() {
     if (this.quasarConf.ssr.pwa === true) {
-      const { injectPwaManifest } = requireFromApp(
+      const { injectPwaManifest } = require(
         '@quasar/app-vite/lib/modes/pwa/utils',
       );
 

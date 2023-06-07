@@ -1,20 +1,27 @@
-/* eslint-disable no-void */
-/* eslint-disable no-console */
-
-const { requireFromApp } = require('../../api');
-
-const logger = requireFromApp('@quasar/app-vite/lib/helpers/logger');
 const {
   cyan, yellow, bgYellow, black,
-} = requireFromApp('kolorist');
+} = require('kolorist');
+const logger = require('@quasar/app-vite/lib/helpers/logger');
 
-const dot = '•';
-const banner = `App ${dot}`;
-const yellowBanner = yellow(banner);
+module.exports.dot = logger.dot;
+module.exports.clearConsole = logger.clearConsole;
+module.exports.log = logger.log;
+module.exports.fatal = logger.fatal;
+module.exports.info = logger.info;
+module.exports.progress = logger.progress;
+
+/**
+ * Pills
+ */
 
 const warningPill = (msg) => bgYellow(black(` ${msg} `));
 
-module.exports = { ...logger };
+/**
+ * Main approach - App CLI related
+ */
+
+const banner = `App ${logger.dot}`;
+const yellowBanner = yellow(banner);
 
 module.exports.beastcssLog = function beastcssLog(messages, level) {
   if (!Array.isArray(messages)) {

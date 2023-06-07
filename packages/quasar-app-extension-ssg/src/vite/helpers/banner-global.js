@@ -1,16 +1,15 @@
-/* eslint-disable no-console */
-const path = require('path');
-const { getPackageVersion, requireFromApp } = require('../../api');
-
-const { green, gray, underline } = requireFromApp('kolorist');
-const { getCompilationTarget } = requireFromApp('@quasar/app-vite/lib/helpers/banner-global');
+const { posix } = require('path');
+const { green, gray, underline } = require('kolorist');
+const { getCompilationTarget } = require('@quasar/app-vite/lib/helpers/banner-global');
+const { getPackageVersion } = require('../../api');
 
 const quasarVersion = getPackageVersion('quasar');
 const cliAppVersion = getPackageVersion('@quasar/app-vite');
+const quasarExtrasVersion = getPackageVersion('@quasar/extras');
 const viteVersion = getPackageVersion('vite');
-const ssgVersion = getPackageVersion('quasar-app-extension-ssg');
+const ssgVersion = require('../../../package.json').version;
 
-module.exports = (argv, cmd, details) => {
+module.exports = function displayBanner(argv, cmd, details) {
   let banner = '';
 
   if (details && details.outputFolder) {
@@ -30,7 +29,7 @@ module.exports = (argv, cmd, details) => {
     return;
   }
 
-  const relativeOutputFolder = path.posix.relative('', details.outputFolder);
+  const relativeOutputFolder = posix.relative('', details.outputFolder);
 
   banner += `\n Cache.................. ${cmd === 'generate' && details.cache ? green('enabled') : gray('no')}`;
   banner += `\n SPA fallback........... ${green(details.fallback)}`;
@@ -52,5 +51,7 @@ module.exports = (argv, cmd, details) => {
 
 module.exports.quasarVersion = quasarVersion;
 module.exports.cliAppVersion = cliAppVersion;
-module.exports.getCompilationTarget = getCompilationTarget;
+module.exports.quasarExtrasVersion = quasarExtrasVersion;
+module.exports.viteVersion = viteVersion;
 module.exports.ssgVersion = ssgVersion;
+module.exports.getCompilationTarget = getCompilationTarget;

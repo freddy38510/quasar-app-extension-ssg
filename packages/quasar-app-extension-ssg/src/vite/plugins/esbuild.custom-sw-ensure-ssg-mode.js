@@ -1,16 +1,15 @@
+const { extname } = require('path');
+const { readFileSync } = require('fs');
+
 /**
  * By default Quasar custom-service-worker.js template file use process.env.MODE
  * to conditionnaly fallback to offline.html in production only
  *
  * Ensure to not fallback to offline.html in dev with SSG mode
  */
-
-const { readFileSync } = require('fs');
-const { extname } = require('path');
-
-module.exports = function customSWVitePlugin(quasarConf) {
+module.exports = function customSWEnsureSsgMode(quasarConf) {
   return {
-    name: 'quasar:ssg-custom-sw-ensure-ssg-mode',
+    name: 'quasar:ssg:custom-sw-ensure-ssg-mode',
 
     setup(build) {
       build.onLoad(

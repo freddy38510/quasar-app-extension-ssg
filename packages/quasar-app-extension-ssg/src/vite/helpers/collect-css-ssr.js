@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 const parseViteRequest = require('./parse-vite-request');
 
 const getHash = require('./get-hash');

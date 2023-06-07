@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-void */
 /**
  * THIS FILE IS GENERATED AUTOMATICALLY.
  * DO NOT EDIT.
@@ -133,7 +131,6 @@ export function addPreFetchHooks({
     )
       .then(proceed)
       .catch((e) => {
-        // eslint-disable-next-line no-console
         console.error(e);
         proceed();
       });

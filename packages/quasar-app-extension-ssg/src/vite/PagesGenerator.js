@@ -1,12 +1,6 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
-
-const fs = require('fs').promises;
 const { join, dirname, relative } = require('path');
-const { parse } = require('node-html-parser');
-const fastq = require('fastq');
 const { ErrorWithCause, stackWithCauses } = require('pony-cause');
-const { requireFromApp } = require('../api');
+const { underline, green } = require('kolorist');
 const {
   info,
   warn,
@@ -24,14 +18,14 @@ const {
   withoutTrailingSlash,
 } = require('./helpers/normalize-slash');
 
-const { underline, green } = requireFromApp('kolorist');
-
 class PagesGenerator {
   #opts;
 
   #render;
 
   #enqueuedPages = new Set();
+
+  #parseHtml;
 
   #beastcss;
 
@@ -48,6 +42,10 @@ class PagesGenerator {
     };
 
     this.#initQueue();
+
+    if (quasarConf.ssg.crawler) {
+      this.#parseHtml = require('node-html-parser').parse;
+    }
 
     if (quasarConf.ssg.inlineCriticalCss) {
       this.#initBeastcss();
@@ -66,6 +64,9 @@ class PagesGenerator {
       return;
     }
 
+    const { mkdir, writeFile } = require('fs/promises');
+    const fastq = require('fastq');
+
     this.queue = fastq.promise(
       this,
       async (route) => {
@@ -76,9 +77,9 @@ class PagesGenerator {
             return;
           }
 
-          await fs.mkdir(dirname(filepath), { recursive: true });
+          await mkdir(dirname(filepath), { recursive: true });
 
-          await fs.writeFile(filepath, html, 'utf8');
+          await writeFile(filepath, html, 'utf8');
 
           info(
             `Generated page: "${underline(
@@ -333,7 +334,7 @@ class PagesGenerator {
   }
 
   #crawl(html) {
-    parse(html)
+    this.#parseHtml(html)
       .querySelectorAll('a')
       .forEach((el) => {
         const foundRoute = this.normalizeRoute(decodeURI(el.getAttribute('href') || ''));

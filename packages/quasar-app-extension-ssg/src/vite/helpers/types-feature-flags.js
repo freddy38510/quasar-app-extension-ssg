@@ -1,12 +1,8 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
-const fs = require('fs');
 const { resolve, join, parse } = require('path');
-const { requireFromApp } = require('../../api');
+const { existsSync } = require('fs');
+const { copySync } = require('fs-extra');
+const appPaths = require('@quasar/app-vite/lib/app-paths');
 const { log } = require('./logger');
-
-const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
-const fse = requireFromApp('fs-extra');
 
 function getStoreFlagPath(storeIndexPath) {
   return join(parse(storeIndexPath).dir, 'store-flag.d.ts');
@@ -17,7 +13,7 @@ function isInstalled(mode) {
     return true;
   }
 
-  const quasarMode = requireFromApp(`@quasar/app-vite/lib/modes/${mode}/${mode}-installation`);
+  const quasarMode = require(`@quasar/app-vite/lib/modes/${mode}/${mode}-installation`);
 
   return quasarMode.isInstalled();
 }
@@ -50,8 +46,8 @@ module.exports = function regenerateTypesFeatureFlags(quasarConf) {
         feature === 'ssg' ? appPaths.resolve.src('ssg-flag.d.ts') : appPaths.resolve[feature](`${feature}-flag.d.ts`),
       ];
 
-    if (isFeatureInstalled && !fs.existsSync(destFlagPath)) {
-      fse.copySync(sourceFlagPath, destFlagPath);
+    if (isFeatureInstalled && !existsSync(destFlagPath)) {
+      copySync(sourceFlagPath, destFlagPath);
       log(`'${feature}' feature flag was missing and has been regenerated`);
     }
   });

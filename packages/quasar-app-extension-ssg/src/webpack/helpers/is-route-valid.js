@@ -1,11 +1,9 @@
-const path = require('path');
+const { extname } = require('path');
 
-const isRouteValid = function isRouteValid(route) {
-  if (route.startsWith('/') && !route.startsWith('//') && !path.extname(route)) {
+module.exports = function isRouteValid(route) {
+  if (route.startsWith('/') && !route.startsWith('//') && !extname(route)) {
     return true;
   }
 
   return false;
 };
-
-module.exports = isRouteValid;

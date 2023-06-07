@@ -1,13 +1,4 @@
-/* eslint-disable no-console */
-/* eslint-disable global-require */
-
-const { requireFromApp } = require('../../api');
-const QuasarConfFile = require('../conf');
-const getQuasarCtx = require('../helpers/get-quasar-ctx');
-const { log, fatal } = require('../helpers/logger');
-
-const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
-const parseArgs = requireFromApp('minimist');
+const parseArgs = require('minimist');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -46,14 +37,17 @@ if (argv.help) {
   process.exit(0);
 }
 
-const { splitWebpackConfig } = require('../build/symbols');
+const appPaths = require('@quasar/app-webpack/lib/app-paths');
+const { log, fatal } = require('../helpers/logger');
+const { splitWebpackConfig } = require('../helpers/symbols');
 
-async function inspect() {
-  requireFromApp('@quasar/app-webpack/lib/helpers/banner')(argv, 'production');
+const depth = parseInt(argv.depth, 10) || Infinity;
 
-  const depth = parseInt(argv.depth, 10) || Infinity;
+(async () => {
+  require('@quasar/app-webpack/lib/helpers/banner')(argv, 'production');
 
-  const extensionRunner = requireFromApp('@quasar/app-webpack/lib/app-extension/extensions-runner');
+  const QuasarConfFile = require('../quasar-config-file');
+  const getQuasarCtx = require('../helpers/get-quasar-ctx');
 
   const ctx = getQuasarCtx({
     mode: 'ssg',
@@ -63,8 +57,9 @@ async function inspect() {
     prod: true,
   });
 
-  // do not run ssg extension again
-  // TODO: extend ExtensionRunner class
+  const extensionRunner = require('@quasar/app-webpack/lib/app-extension/extensions-runner');
+
+  // remove ssg extension (otherwise the ext will be run again)
   extensionRunner.extensions.splice(
     extensionRunner.extensions
       .findIndex((extension) => extension.extId === 'ssg'),
@@ -87,23 +82,24 @@ async function inspect() {
 
   await quasarConfFile.addWebpackConf();
 
-  const util = require('util');
-
   const cfgEntries = splitWebpackConfig(quasarConfFile.webpackConf, 'ssg');
 
   if (argv.path) {
-    const dot = requireFromApp('dot-prop');
+    const { getProperty } = await import('dot-prop');
+
     cfgEntries.forEach((entry) => {
-      entry.webpack = dot.get(entry.webpack, argv.path);
+      entry.webpack = getProperty(entry.webpack, argv.path);
     });
   }
+
+  const { inspect } = require('util');
 
   cfgEntries.forEach((cfgEntry) => {
     console.log();
     log(`Showing Webpack config for "${cfgEntry.name}" with depth of ${depth}`);
     console.log();
     console.log(
-      util.inspect(cfgEntry.webpack, {
+      inspect(cfgEntry.webpack, {
         showHidden: true,
         depth,
         colors: argv.colors,
@@ -113,6 +109,4 @@ async function inspect() {
   });
 
   console.log(`\n  Depth used: ${depth}. You can change it with "-d" parameter.\n`);
-}
-
-inspect();
+})();

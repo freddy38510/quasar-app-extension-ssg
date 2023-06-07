@@ -1,7 +1,5 @@
+const workboxBuild = require('workbox-build');
 const { progress } = require('./logger');
-const { requireFromApp } = require('../../api');
-
-const workboxBuild = requireFromApp('workbox-build');
 
 module.exports.buildPwaServiceWorker = async function buildPwaServiceWorker(
   workboxMode,

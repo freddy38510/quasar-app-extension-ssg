@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-void */
 /**
  * THIS FILE IS GENERATED AUTOMATICALLY.
  * DO NOT EDIT.
@@ -40,9 +38,8 @@ import '<%= asset.path %>';
 <% }) %>
 <% } %>
 
-import { createQuasarApp } from './app';
-// eslint-disable-next-line import/extensions
-import quasarUserOptions from './quasar-user-options';
+import { createQuasarApp } from './app.js';
+import quasarUserOptions from './quasar-user-options.js';
 
 <% if (preFetch) { %>
 import App from 'app/<%= sourceFiles.rootComponent %>';
@@ -100,7 +97,7 @@ const bootFiles = Promise.all([
   .filter((entry) => typeof entry === 'function'));
 <% } %>
 
-export { getRoutesFromRouter } from './app';
+export { getRoutesFromRouter } from './app.js';
 
 // This is where we perform data-prefetching to determine the
 // state of our application before actually rendering it.

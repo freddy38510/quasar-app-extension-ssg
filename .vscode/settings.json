@@ -21,4 +21,5 @@
   "eslint.packageManager": "pnpm",
   "eslint.format.enable": true,
   "javascript.validate.enable": false,
+  "javascript.preferences.importModuleSpecifier": "project-relative",
 }

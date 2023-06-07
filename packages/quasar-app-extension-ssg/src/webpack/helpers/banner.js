@@ -1,21 +1,20 @@
-/* eslint-disable no-console */
-
-const path = require('path');
-const { requireFromApp, getPackageVersion } = require('../../api');
-
+const { posix } = require('path');
 const {
   green,
   grey,
   bgBlue,
   underline,
   bold,
-} = requireFromApp('chalk');
+} = require('chalk');
+const { getPackageVersion } = require('../../api');
+const ssgVersion = require('../../../package.json').version;
 
 const quasarVersion = getPackageVersion('quasar');
 const cliAppVersion = getPackageVersion('@quasar/app-webpack');
-const ssgVersion = getPackageVersion('quasar-app-extension-ssg');
+const quasarExtrasVersion = getPackageVersion('@quasar/extras');
+const webpackVersion = getPackageVersion('webpack');
 
-module.exports.logBuildBanner = function logBuildBanner(argv, cmd, details) {
+module.exports.displayBuildBanner = function displayBuildBanner(argv, cmd, details) {
   let banner = '';
 
   if (details) {
@@ -29,11 +28,11 @@ module.exports.logBuildBanner = function logBuildBanner(argv, cmd, details) {
  Pkg ssg................... ${green(`v${ssgVersion}`)}
  Pkg quasar................ ${green(`v${quasarVersion}`)}
  Pkg @quasar/app-webpack... ${green(`v${cliAppVersion}`)}
- Pkg webpack............... ${green('v5')}
+ Pkg webpack............... ${green(`v${webpackVersion}`)}
  Debugging................. ${cmd === 'dev' || argv.debug ? green('enabled') : grey('no')}`;
 
   if (details) {
-    banner += `\n 'Transpiled JS............. ${details.transpileBanner}`;
+    banner += `\n Transpiled JS............. ${details.transpileBanner}`;
     banner += `
  ==========================
  Output folder............. ${green(details.outputFolder)}`;
@@ -44,16 +43,16 @@ module.exports.logBuildBanner = function logBuildBanner(argv, cmd, details) {
   console.log(`${banner}`);
 
   if (!details) {
-    const { getBrowsersBanner } = requireFromApp('@quasar/app-webpack/lib/helpers/browsers-support');
+    const { getBrowsersBanner } = require('@quasar/app-webpack/lib/helpers/browsers-support');
     console.log(getBrowsersBanner());
   }
 };
 
-module.exports.logGenerateBanner = function logGenerateBanner(ctx, details) {
+module.exports.displayGenerateBanner = function displayGenerateBanner(ctx, details) {
   let banner = '';
 
   if (details) {
-    const relativeOutputFolder = path.posix.relative('', details.outputFolder);
+    const relativeOutputFolder = posix.relative('', details.outputFolder);
 
     banner += `\n ${underline('Generate succeeded')}\n`;
 
@@ -80,3 +79,4 @@ module.exports.logGenerateBanner = function logGenerateBanner(ctx, details) {
 module.exports.quasarVersion = quasarVersion;
 module.exports.cliAppVersion = cliAppVersion;
 module.exports.ssgVersion = ssgVersion;
+module.exports.quasarExtrasVersion = quasarExtrasVersion;

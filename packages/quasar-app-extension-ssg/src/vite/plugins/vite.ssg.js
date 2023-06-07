@@ -1,14 +1,8 @@
-/* eslint-disable no-void */
-/* eslint-disable no-underscore-dangle */
-
-const path = require('path');
-const { default: MagicString } = require('magic-string');
-const { vite: autoImportPlugin } = require('unplugin-auto-import');
-const { requireFromApp } = require('../../api');
+const { join, relative } = require('path');
+const MagicString = require('magic-string');
+const { normalizePath } = require('vite');
 const getHash = require('../helpers/get-hash');
 const parseViteRequest = require('../helpers/parse-vite-request');
-
-const { normalizePath } = requireFromApp('vite');
 
 /**
  * In production at server-side,
@@ -18,6 +12,8 @@ const { normalizePath } = requireFromApp('vite');
  * lazily hydrated components that have been instantiated during this render call.
  *
  * In this way, it is possible to avoid preloading these components in production.
+ *
+ * @type { () => import('vite').Plugin }
  */
 function getLazyHydrationPlugin() {
   let root;
@@ -45,7 +41,7 @@ function getLazyHydrationPlugin() {
 
       if (is.script() && setupRE.test(code)) {
         const magicString = new MagicString(
-          generateCode(code, normalizePath(path.relative(root, filename))),
+          generateCode(code, normalizePath(relative(root, filename))),
         );
 
         return {
@@ -63,6 +59,8 @@ function getLazyHydrationPlugin() {
  * In development at client-side right after Vite injects the style,
  * remove the corresponding style injected by the server (initially to avoid FOUC)
  * to avoid duplicated styles.
+ *
+ * @type { () => import('vite').Plugin }
  */
 function getRemoveSSRStylesPlugin() {
   const updateStyleRE = /__vite__updateStyle\(.*\)/;
@@ -103,6 +101,8 @@ function getRemoveSSRStylesPlugin() {
  *
  * This way the css can be collected and injected in the head tag
  * to avoid FOUC.
+ *
+ * @type { () => import('vite').Plugin }
  */
 function getCSSModulesPlugin() {
   const importName = '__module_css';
@@ -153,15 +153,15 @@ function getCSSModulesPlugin() {
  *
  * The browser downloads latin and/or latin-ext fonts depending on the characters used in the page.
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/unicode-range
+ *
+ * @type { (fontDisplayValue: FontFaceDescriptors['display']) => import('vite').Plugin }
  */
 function getRobotoFontPlugin(fontDisplayValue) {
   const quasarRobotoCssRE = /@quasar\/extras\/roboto-font.*\.css$/;
   const fontFaceRE = /@font-face\s*{/gi;
   const latinExtRE = /\/\* latin-ext \*\//i;
 
-  const resolvedId = requireFromApp.resolve(
-    'quasar-app-extension-ssg/roboto-font/roboto-font.css',
-  );
+  const resolvedId = require.resolve('quasar-app-extension-ssg/roboto-font.css');
 
   function generateCode(code, idx) {
     return (
@@ -210,26 +210,22 @@ function getRobotoFontPlugin(fontDisplayValue) {
  *
  * For better performance only icons from the configured Quasar Icon Set are auto imported.
  * @see https://quasar.dev/vue-components/icon#svg-usage
+ *
+ * @type { (iconSet: import('quasar').QuasarIconSets) => import('vite').Plugin }
  */
 function getAutoImportSvgIconsPlugin(iconSet) {
   if (!iconSet || !iconSet.startsWith('svg')) {
-    return {};
+    return null;
   }
+
+  const autoImportPlugin = require('unplugin-auto-import/vite');
 
   const idx = 'svg-'.length;
   const iconSetPath = `@quasar/extras/${iconSet.substring(idx)}`;
 
-  const { dir, name } = path.parse(iconSetPath);
-
-  const quasarIconSetPath = path.join(dir, name);
-
   return autoImportPlugin({
     imports: [
-      {
-        [quasarIconSetPath]: requireFromApp(
-          path.join(quasarIconSetPath, 'icons.json'),
-        ),
-      },
+      { [iconSetPath]: require(join(iconSetPath, 'icons.json')) },
     ],
     vueTemplate: true,
     dts: false,

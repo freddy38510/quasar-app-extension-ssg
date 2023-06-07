@@ -14,11 +14,10 @@
   "main": "src/index.js",
   "files": [
     "src/",
-    "roboto-font/"
+    "roboto-font/",
+    "types/",
+    "!roboto-font/update.sh"
   ],
-  "engines": {
-    "node": ">= 12.22.1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freddy38510/quasar-app-extension-ssg.git",
@@ -30,39 +29,83 @@
   "homepage": "https://github.com/freddy38510/quasar-app-extension-ssg/tree/master/#readme",
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
-    "build:roboto-font": "node build-roboto-font.js",
-    "watch": "nodemon -x yalc push",
+    "build:roboto-font": "node scripts/build-roboto-font.js",
     "release": "commit-and-tag-version"
   },
+  "exports": {
+    ".": "./src/index.js",
+    "./src/*": "./src/*.js",
+    "./src/*.js": "./src/*.js",
+    "./roboto-font.css": "./roboto-font/roboto-font.css",
+    "./package.json": "./package.json"
+  },
   "dependencies": {
+    "@freddy38510/vue-loader": "^17.2.0",
+    "@freddy38510/vue-style-loader": "^4.2.0",
     "@quasar/render-ssr-error": "^1.0.1",
-    "beastcss": "2.1.1",
-    "cors": "2.8.5",
-    "crc": "4.3.2",
-    "destr": "1.2.2",
-    "fastq": "1.15.0",
-    "globby": "13.1.3",
-    "jiti": "1.17.0",
-    "magic-string": "0.29.0",
-    "node-html-parser": "6.1.4",
-    "open": "8.4.1",
-    "pify": "5.0.0",
-    "pony-cause": "2.1.8",
-    "route-cache": "0.4.7",
-    "selfsigned": "2.1.1",
-    "unplugin-auto-import": "0.14.2"
+    "@quasar/ssr-helpers": "^2.2.2",
+    "beastcss": "^2.1.1",
+    "chalk": "^4.1.2",
+    "chokidar": "^3.5.3",
+    "ci-info": "^3.8.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "crc": "^4.3.2",
+    "cssnano": "^6.0.1",
+    "destr": "^1.2.2",
+    "dot-prop": "^7.2.0",
+    "express": "^4.18.2",
+    "fastq": "^1.15.0",
+    "fs-extra": "^11.1.1",
+    "globby": "^13.1.3",
+    "hash-sum": "^2.0.0",
+    "html-minifier": "^4.0.0",
+    "html-webpack-plugin": "^5.5.1",
+    "http-proxy-middleware": "^2.0.6",
+    "lodash": "^4.17.21",
+    "kolorist": "^1.8.0",
+    "magic-string": "^0.30.0",
+    "minimist": "^1.2.8",
+    "node-html-parser": "^6.1.4",
+    "open": "^8.4.1",
+    "pony-cause": "^2.1.8",
+    "postcss-rtlcss": "^4.0.6",
+    "route-cache": "^0.4.7",
+    "selfsigned": "^2.1.1",
+    "serialize-javascript": "^6.0.1",
+    "semver": "^7.5.1",
+    "unplugin-auto-import": "^0.14.2",
+    "vite": "^2.9.13",
+    "webpack": "^5.58.1",
+    "webpack-chain": "^6.5.1",
+    "webpack-dev-server": "^4.15.0",
+    "webpack-merge": "^5.9.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.0.0",
     "@quasar/app-webpack": "^3.7.0",
-    "cross-spawn": "7.0.3"
+    "@quasar/extras": "^1.13.1",
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^14.15.0",
+    "@vue/devtools": "^6.5.0",
+    "cross-spawn": "7.0.3",
+    "quasar": "^2.6.0",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0",
+    "workbox-build": "^6.5.0",
+    "workbox-webpack-plugin": "^6.5.0"
   },
   "peerDependencies": {
-    "@freddy38510/vue-loader": "^17.1.1",
-    "@freddy38510/vue-style-loader": "^4.2.0",
     "@quasar/app-vite": "^1.0.0",
     "@quasar/app-webpack": "^3.7.0",
-    "@rollup/plugin-node-resolve": "^13.3.0"
+    "@quasar/extras": "^1.13.1",
+    "@vue/devtools": "^6.5.0",
+    "quasar": "^2.6.0",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0",
+    "workbox-build": "^6.5.0",
+    "workbox-webpack-plugin": "^6.5.0"
   },
   "peerDependenciesMeta": {
     "@quasar/app-vite": {
@@ -71,13 +114,19 @@
     "@quasar/app-webpack": {
       "optional": true
     },
-    "@freddy38510/vue-loader": {
+    "@vue/devtools": {
       "optional": true
     },
-    "@freddy38510/vue-style-loader": {
+    "html-webpack-plugin": {
       "optional": true
     },
-    "@rollup/plugin-node-resolve": {
+    "webpack": {
+      "optional": true
+    },
+    "workbox-build": {
+      "optional": true
+    },
+    "workbox-webpack-plugin": {
       "optional": true
     }
   }

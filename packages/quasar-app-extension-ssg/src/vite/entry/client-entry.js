@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-void */
-/* eslint-disable no-underscore-dangle */
 /**
  * THIS FILE IS GENERATED AUTOMATICALLY.
  * DO NOT EDIT.
@@ -43,16 +40,15 @@ import '<%= asset.path %>';
 <% }) %>
 <% } %>
 
-import { createQuasarApp, ssrIsRunningOnClientPWA } from './app';
-// eslint-disable-next-line import/extensions
-import quasarUserOptions from './quasar-user-options';
+import { createQuasarApp, ssrIsRunningOnClientPWA } from './app.js';
+import quasarUserOptions from './quasar-user-options.js';
 
 <% if (ctx.mode.pwa) { %>
 import 'app/<%= sourceFiles.pwaRegisterServiceWorker %>';
 <% } %>
 
 <% if (preFetch) { %>
-import { addPreFetchHooks } from './client-prefetch';
+import { addPreFetchHooks } from './client-prefetch.js';
 <% } %>
 
 <% if (ctx.dev) { %>
@@ -133,7 +129,6 @@ async function start({
         return;
       }
 
-      // eslint-disable-next-line no-console
       console.error('[Quasar] boot error:', err);
       return;
     }

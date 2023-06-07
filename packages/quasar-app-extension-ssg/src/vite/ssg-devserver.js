@@ -1,10 +1,17 @@
-/* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-void */
-
+const { resolve } = require('path');
 const { readFileSync } = require('fs');
-const path = require('path');
-const { requireFromApp } = require('../api');
+const express = require('express');
+const chokidar = require('chokidar');
+const debounce = require('lodash/debounce');
+const { createServer } = require('vite');
+const appPaths = require('@quasar/app-vite/lib/app-paths');
+const openBrowser = require('@quasar/app-vite/lib/helpers/open-browser');
+const {
+  entryPointMarkup, getDevSsrTemplateFn, attachMarkup, transformHtml,
+} = require('@quasar/app-vite/lib/helpers/html-template');
+const { injectPwaManifest } = require(
+  '@quasar/app-vite/lib/modes/pwa/utils',
+);
 const {
   log,
   warn,
@@ -19,25 +26,10 @@ const PagesGenerator = require('./PagesGenerator');
 const printDevBanner = require('./helpers/print-dev-banner');
 const ssgCreateRenderFn = require('./ssg-create-render-fn');
 
-const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
-const express = requireFromApp('express');
-const { createServer } = requireFromApp('vite');
-const chokidar = requireFromApp('chokidar');
-const debounce = requireFromApp('lodash/debounce');
-
-const openBrowser = requireFromApp('@quasar/app-vite/lib/helpers/open-browser');
-const {
-  entryPointMarkup, getDevSsrTemplateFn, attachMarkup, transformHtml,
-} = requireFromApp('@quasar/app-vite/lib/helpers/html-template');
-
 const templatePath = appPaths.resolve.app('index.html');
 const serverEntryFile = appPaths.resolve.app('.quasar/server-entry.js');
-
-const { injectPwaManifest } = requireFromApp(
-  '@quasar/app-vite/lib/modes/pwa/utils',
-);
-
 const doubleSlashRE = /\/\//g;
+
 function logServerMessage(title, msg, additional) {
   log();
   info(`${msg}${additional !== void 0 ? ` ${dot} ${additional}` : ''}`, title);
@@ -68,11 +60,10 @@ class SsgDevServer extends AppDevserver {
    * @type {{
    *  port: number;
    *  publicPath: string;
-   *  resolveUrlPath: import('../../../types').SsrMiddlewareResolve['urlPath'];
-   *  render: (ssrContext: import('../../../types').QSsrContext) => Promise<string>;
+   *  resolveUrlPath: import('@quasar/app-vite').SsrMiddlewareResolve['urlPath'];
    * }}
    */
-  #appOptions = {};
+  #appOptions;
 
   #pagesGenerator;
 
@@ -115,24 +106,27 @@ class SsgDevServer extends AppDevserver {
     ]);
   }
 
-  run(quasarConf, __isRetry) {
-    const { diff, queue } = super.run(quasarConf, __isRetry);
+  async run(quasarConf, __isRetry) {
+    const { diff, queue } = await super.run(quasarConf, __isRetry);
 
     if (quasarConf.ssr.pwa === true) {
       if (diff('pwaManifest', quasarConf) === true) {
-        return queue(() => this.#compilePwaManifest(quasarConf));
+        await queue(() => this.#compilePwaManifest(quasarConf));
+        return { diff, queue };
       }
 
       if (diff('pwaServiceWorker', quasarConf) === true) {
-        return queue(() => this.#compilePwaServiceWorker(quasarConf, queue));
+        await queue(() => this.#compilePwaServiceWorker(quasarConf, queue));
+        return { diff, queue };
       }
     }
 
     if (diff(['vite', 'ssg', 'pwaSsr'], quasarConf) === true) {
-      return queue(() => this.#runVite(quasarConf, diff('viteUrl', quasarConf)));
+      await queue(() => this.#runVite(quasarConf, diff('viteUrl', quasarConf)));
+      return { diff, queue };
     }
 
-    return undefined;
+    return { diff, queue };
   }
 
   async #runVite(quasarConf, urlDiffers) {
@@ -145,12 +139,13 @@ class SsgDevServer extends AppDevserver {
 
     const { publicPath } = quasarConf.build;
 
-    this.#appOptions.port = quasarConf.devServer.port;
-    this.#appOptions.publicPath = publicPath;
-
-    this.#appOptions.resolveUrlPath = publicPath === '/'
-      ? (url) => url || '/'
-      : (url) => (url ? (publicPath + url).replace(doubleSlashRE, '/') : publicPath);
+    this.#appOptions = {
+      port: quasarConf.devServer.port,
+      publicPath,
+      resolveUrlPath: publicPath === '/'
+        ? (url) => url || '/'
+        : (url) => (url ? (publicPath + url).replace(doubleSlashRE, '/') : publicPath),
+    };
 
     this.#viteClient = await createServer(await config.viteClient(quasarConf));
     this.#viteServer = await createServer(await config.viteServer(quasarConf));
@@ -233,7 +228,7 @@ class SsgDevServer extends AppDevserver {
                 this.#viteServer.moduleGraph.getModuleById(serverEntryFile),
                 [...ssrContext.modules]
                   .map((componentPath) => this.#viteServer.moduleGraph.getModuleById(
-                    path.resolve(componentPath),
+                    resolve(componentPath),
                   )),
               )}</head>`,
             )
@@ -400,7 +395,6 @@ class SsgDevServer extends AppDevserver {
 
   // also update pwa-devserver.js when changing here
   async #compilePwaServiceWorker(quasarConf, queue) {
-    // eslint-disable-next-line global-require
     const { buildPwaServiceWorker } = require('./helpers/pwa-utils');
 
     if (this.#pwaServiceWorkerWatcher) {

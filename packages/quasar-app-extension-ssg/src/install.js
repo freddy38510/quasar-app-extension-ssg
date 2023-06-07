@@ -1,6 +1,4 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
-const { requireFromApp, engine, ssgDeps } = require('./api');
+const { engine, ssgDeps } = require('./api');
 
 /**
  * Quasar App Extension install script
@@ -13,7 +11,6 @@ module.exports = function install(api) {
 
   if (api.hasVite) {
     api.compatibleWith('@quasar/app-vite', '^1.0.0');
-    api.compatibleWith('vite', '>= 2.9.1');
   } else {
     api.compatibleWith('@quasar/app-webpack', '>= 3.7.0');
   }
@@ -34,16 +31,35 @@ module.exports = function install(api) {
   // ssg config
   if (api.prompts.IDE) {
     api.renderFile(
-      `./${api.hasVite ? 'vite' : 'webpack'}/types/quasar-wrappers.d.ts`,
+      './ssg.d.ts',
       'src/ssg.d.ts',
-      api.hasVite ? {} : {
-        engine,
+      {
+        engine: api.hasVite ? 'vite' : 'webpack',
       },
     );
   }
 
-  if (ssgDeps.length > 0) {
-    const nodePackager = requireFromApp(`${engine}/lib/helpers/node-packager`);
+  let nodePackager;
+
+  if (api.hasVite) {
+    nodePackager = require('@quasar/app-vite/lib/helpers/node-packager');
+  } else {
+    nodePackager = require('@quasar/app-webpack/lib/helpers/node-packager');
+  }
+
+  if (ssgDeps.previous.length > 0) {
+    const appPaths = require(`${engine}/lib/app-paths`);
+    const appDevDependencies = Object.keys(require(appPaths.resolve.app('package.json')).devDependencies);
+
+    const depsToUninstall = ssgDeps.previous
+      .filter((dep) => appDevDependencies.includes(dep));
+
+    if (depsToUninstall.length > 0) {
+      nodePackager.uninstallPackage(depsToUninstall, { displayName: 'SSG dependencies no longer required', cwd: appPaths.appDir });
+    }
+  }
+
+  if (ssgDeps.current.length > 0) {
     const { peerDependencies } = require('../package.json');
 
     nodePackager.installPackage(

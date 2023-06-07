@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "CommonJS",
+    "target": "ES2021",
+    "checkJs": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "strictBindCallApply": true,
+    "paths": {
+      "<%= engine %>/*": [
+        "node_modules/@quasar/app-vite/*",
+        "node_modules/@quasar/app-webpack/*",
+      ],
+      "quasar-app-extension-ssg/*": [
+        "./*"
+      ]
+    },
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

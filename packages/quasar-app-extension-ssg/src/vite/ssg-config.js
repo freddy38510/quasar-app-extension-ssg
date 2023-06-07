@@ -1,20 +1,16 @@
-/* eslint-disable no-void */
-/* eslint-disable global-require */
-
 const { join } = require('path');
-const { requireFromApp, hasPackage } = require('../api');
-const { plugin: ssgVitePlugin } = require('./plugins/vite.ssg');
-
-const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
+const appPaths = require('@quasar/app-vite/lib/app-paths');
 const {
   createViteConfig,
   extendViteConfig,
   mergeViteConfig,
-} = requireFromApp('@quasar/app-vite/lib/config-tools.js');
-const pwaConfig = requireFromApp('@quasar/app-vite/lib/modes/pwa/pwa-config');
-const quasarVitePluginPwaResources = requireFromApp(
+} = require('@quasar/app-vite/lib/config-tools');
+const pwaConfig = require('@quasar/app-vite/lib/modes/pwa/pwa-config');
+const quasarVitePluginPwaResources = require(
   '@quasar/app-vite/lib/modes/pwa/vite-plugin.pwa-resources',
 );
+const { plugin: ssgVitePlugin } = require('./plugins/vite.ssg');
+const { viteVersion } = require('./helpers/banner-global');
 
 module.exports = {
   viteClient: (quasarConf) => {
@@ -35,18 +31,6 @@ module.exports = {
       },
     });
 
-    // In case if the app extension package is linked (yarn link) while developing it
-    // make sure to resolve modules correctly.
-    const { nodeResolve } = requireFromApp('@rollup/plugin-node-resolve');
-
-    cfg.plugins.unshift(nodeResolve({
-      moduleDirectories: [
-        'node_modules',
-        join(__dirname, '../../node_modules'),
-        appPaths.resolve.app('node_modules'),
-      ],
-    }));
-
     if (quasarConf.ssr.pwa === true) {
       cfg.plugins.push(quasarVitePluginPwaResources(quasarConf));
     }
@@ -61,7 +45,7 @@ module.exports = {
 
     cfg.plugins.push(ssgVitePlugin(quasarConf, 'ssr-client'));
 
-    if (hasPackage('vite', '>= 3.0.0')) {
+    if (viteVersion.startsWith('3')) {
       cfg.appType = 'custom';
       cfg.build.modulePreload = { polyfill: quasarConf.build.polyfillModulePreload };
       cfg.server.middlewareMode = true;
@@ -106,7 +90,7 @@ module.exports = {
 
     cfg.plugins.push(ssgVitePlugin(quasarConf, 'ssr-server'));
 
-    if (hasPackage('vite', '>= 3.0.0')) {
+    if (viteVersion.startsWith('3')) {
       if (!cfg.legacy) {
         cfg.legacy = {};
       }

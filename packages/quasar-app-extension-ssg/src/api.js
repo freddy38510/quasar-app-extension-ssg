@@ -1,84 +1,51 @@
-/* eslint-disable no-void */
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable global-require */
+const semver = require('semver');
 
-const { existsSync } = require('fs');
-const {
-  normalize,
-  join,
-  sep,
-} = require('path');
+const viteDeps = {
+  current: [],
+  previous: [
+    '@rollup/plugin-node-resolve',
+  ],
+  pwa: [],
+};
 
-const quasarConfigFilenameList = [
-  'quasar.config.js',
-  'quasar.config.cjs',
-  'quasar.conf.js', // legacy
-];
+const webpackDeps = {
+  current: [],
+  previous: [
+    '@freddy38510/vue-loader',
+    '@freddy38510/vue-style-loader',
+  ],
+  pwa: [
+    'workbox-build',
+    'workbox-core',
+    'workbox-routing',
+    'workbox-strategies',
+    'workbox-expiration',
+    'workbox-precaching',
+    'workbox-cacheable-response',
+  ],
+};
 
-const webpackDeps = [
-  '@freddy38510/vue-loader',
-  '@freddy38510/vue-style-loader',
-];
-
-const viteDeps = [
-  '@rollup/plugin-node-resolve',
-];
-
-function getAppInfo() {
-  let appDir = process.cwd();
-
-  while (appDir.length && appDir[appDir.length - 1] !== sep) {
-    const dir = appDir;
-    const quasarConfigFilename = quasarConfigFilenameList.find(
-      (name) => existsSync(join(dir, name)),
-    );
-
-    if (quasarConfigFilename) {
-      return { appDir, quasarConfigFilename };
-    }
-
-    appDir = normalize(join(appDir, '..'));
-  }
-
-  // eslint-disable-next-line no-console
-  console.error('\n App • ⚠️  Error. This command must be executed inside a Quasar project folder.\n');
-
-  return process.exit(1);
-}
-
-const { appDir, quasarConfigFilename } = getAppInfo();
-
-const { createRequire } = require('module');
-
-const requireFromApp = createRequire(join(appDir, quasarConfigFilename));
-
-const semver = requireFromApp('semver');
-
-const getPackageJson = (pkgName) => {
+function getPackageJson(pkgName) {
   try {
-    return require(
-      requireFromApp.resolve(`${pkgName}/package.json`),
-    );
+    return require(`${pkgName}/package.json`);
   } catch (e) {
-    // console.log(e); // uncomment to debug false positive
-
     if (e.code === 'ERR_PACKAGE_PATH_NOT_EXPORTED') {
       return {};
     }
 
     return void 0;
   }
-};
+}
 
-function getPackageVersion(pkgName) {
+module.exports.getPackageVersion = function getPackageVersion(pkgName) {
   const json = getPackageJson(pkgName);
 
   return json !== void 0
     ? json.version
     : void 0;
-}
+};
 
-function hasPackage(pkgName, semverCondition) {
+module.exports.hasPackage = function hasPackage(pkgName, semverCondition) {
   const json = getPackageJson(pkgName);
 
   if (json === void 0) {
@@ -88,18 +55,10 @@ function hasPackage(pkgName, semverCondition) {
   return semverCondition !== void 0
     ? semver.satisfies(json.version, semverCondition)
     : true;
-}
+};
 
-const hasVite = hasPackage('@quasar/app-vite');
+module.exports.hasVite = this.hasPackage('@quasar/app-vite');
 
-module.exports.requireFromApp = requireFromApp;
+module.exports.engine = `@quasar/app-${this.hasVite ? 'vite' : 'webpack'}`;
 
-module.exports.hasPackage = hasPackage;
-
-module.exports.getPackageVersion = getPackageVersion;
-
-module.exports.engine = `@quasar/app-${hasVite ? 'vite' : 'webpack'}`;
-
-module.exports.hasVite = hasVite;
-
-module.exports.ssgDeps = hasVite ? viteDeps : webpackDeps;
+module.exports.ssgDeps = this.hasVite ? viteDeps : webpackDeps;

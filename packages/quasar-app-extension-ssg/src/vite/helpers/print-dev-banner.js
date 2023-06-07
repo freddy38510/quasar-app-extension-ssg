@@ -1,7 +1,5 @@
-/* eslint-disable no-void */
-/* eslint-disable no-console */
-
-const { requireFromApp } = require('../../api');
+const { green, dim } = require('kolorist');
+const appPaths = require('@quasar/app-vite/lib/app-paths');
 const {
   quasarVersion,
   cliAppVersion,
@@ -9,16 +7,13 @@ const {
   getCompilationTarget,
 } = require('./banner-global');
 
-const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
-const { green, dim } = requireFromApp('kolorist');
-
 const greenBanner = green('»');
 const cache = {};
 
 function getIPList() {
   // expensive operation, so cache the response
   if (cache.ipList === void 0) {
-    const { getIPs } = requireFromApp('@quasar/app-vite/lib/helpers/net');
+    const { getIPs } = require('@quasar/app-vite/lib/helpers/net');
     cache.ipList = getIPs().map((ip) => (ip === '127.0.0.1' ? 'localhost' : ip));
   }
 

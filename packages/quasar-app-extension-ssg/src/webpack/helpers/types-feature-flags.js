@@ -1,14 +1,12 @@
-const path = require('path');
-const fs = require('fs');
-const { requireFromApp } = require('../../api');
+const { dirname, join, resolve } = require('path');
+const { existsSync } = require('fs');
+const { copySync } = require('fs-extra');
+const appPaths = require('@quasar/app-webpack/lib/app-paths');
+const getMode = require('@quasar/app-webpack/lib/mode/index');
 const { log } = require('./logger');
 
-const fse = requireFromApp('fs-extra');
-const appPaths = requireFromApp('@quasar/app-webpack/lib/app-paths');
-const getMode = requireFromApp('@quasar/app-webpack/lib/mode/index');
-
 function getStoreFlagPath(storeIndexPath) {
-  return path.join(path.parse(storeIndexPath).dir, 'store-flag.d.ts');
+  return join(dirname(storeIndexPath), 'store-flag.d.ts');
 }
 
 module.exports = function regenerateTypesFeatureFlags(quasarConf) {
@@ -35,12 +33,12 @@ module.exports = function regenerateTypesFeatureFlags(quasarConf) {
       ]
       : [
         feature === 'ssg' ? true : getMode(feature).isInstalled,
-        feature === 'ssg' ? path.resolve(__dirname, '../../ssg-flag.d.ts') : appPaths.resolve.cli(`templates/${feature}/${feature}-flag.d.ts`),
+        feature === 'ssg' ? resolve(__dirname, '../../ssg-flag.d.ts') : appPaths.resolve.cli(`templates/${feature}/${feature}-flag.d.ts`),
         feature === 'ssg' ? appPaths.resolve.src('ssg-flag.d.ts') : appPaths.resolve[feature](`${feature}-flag.d.ts`),
       ];
 
-    if (isFeatureInstalled && !fs.existsSync(destFlagPath)) {
-      fse.copySync(sourceFlagPath, destFlagPath);
+    if (isFeatureInstalled && !existsSync(destFlagPath)) {
+      copySync(sourceFlagPath, destFlagPath);
       log(`'${feature}' feature flag was missing and has been regenerated`);
     }
   });

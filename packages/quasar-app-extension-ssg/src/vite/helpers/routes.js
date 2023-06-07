@@ -1,4 +1,4 @@
-const path = require('path');
+const { extname } = require('path');
 
 module.exports.flatRoutes = function flatRoutes(routes) {
   return routes
@@ -7,7 +7,7 @@ module.exports.flatRoutes = function flatRoutes(routes) {
 };
 
 module.exports.isRouteValid = function isRouteValid(route) {
-  if (route.startsWith('/') && !route.startsWith('//') && !path.extname(route)) {
+  if (route.startsWith('/') && !route.startsWith('//') && !extname(route)) {
     return true;
   }
 

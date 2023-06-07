@@ -1,16 +1,9 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable no-void */
-
 const { basename, join } = require('path');
-const { requireFromApp } = require('../api');
-const createRenderHintTag = require('./create-render-hint-tag');
-
 // needed before loading "vue/server-renderer" package to let Vue throw errors at build time
 delete process.env.NODE_ENV;
-const appPaths = requireFromApp('@quasar/app-vite/lib/app-paths');
-const { renderToString } = requireFromApp('vue/server-renderer');
+const { renderToString } = require('vue/server-renderer');
+const appPaths = require('@quasar/app-vite/lib/app-paths');
+const createRenderHintTag = require('./create-render-hint-tag');
 
 module.exports = function createRenderFn(quasarConf, viteDevServer) {
   const serverEntryFile = viteDevServer
@@ -71,7 +64,7 @@ module.exports = function createRenderFn(quasarConf, viteDevServer) {
   }
 
   function renderStoreState(ssrContext) {
-    const serialize = requireFromApp('serialize-javascript');
+    const serialize = require('serialize-javascript');
 
     const autoRemove = 'document.currentScript.remove()';
 

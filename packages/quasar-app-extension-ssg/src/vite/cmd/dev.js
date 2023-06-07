@@ -1,14 +1,8 @@
-/* eslint-disable no-console */
-/* eslint-disable global-require */
-/* eslint-disable no-void */
 if (process.env.NODE_ENV === void 0) {
   process.env.NODE_ENV = 'development';
 }
 
-const { requireFromApp } = require('../../api');
-const { log, fatal } = require('../helpers/logger');
-
-const parseArgs = requireFromApp('minimist');
+const parseArgs = require('minimist');
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -40,9 +34,11 @@ if (argv.help) {
   process.exit(0);
 }
 
+const { log, fatal } = require('../helpers/logger');
+
 function startVueDevtools() {
-  const { spawn } = requireFromApp('@quasar/app-vite/lib/helpers/spawn');
-  const getPackagePath = requireFromApp('@quasar/app-vite/lib/helpers/get-package-path');
+  const { spawn } = require('@quasar/app-vite/lib/helpers/spawn');
+  const getPackagePath = require('@quasar/app-vite/lib/helpers/get-package-path');
 
   let vueDevtoolsBin = getPackagePath('@vue/devtools/bin.js');
 
@@ -56,9 +52,9 @@ function startVueDevtools() {
     return undefined;
   }
 
-  const nodePackager = requireFromApp('@quasar/app-vite/lib/helpers/node-packager');
+  const nodePackager = require('@quasar/app-vite/lib/helpers/node-packager');
 
-  nodePackager.installPackage('@vue/devtools', { isDev: true });
+  nodePackager.installPackage('@vue/devtools', { isDevDependency: true, isDev: true });
 
   // a small delay is a must, otherwise require.resolve
   // after a yarn/npm install will fail
@@ -69,7 +65,7 @@ function startVueDevtools() {
   });
 }
 
-async function goLive() {
+(async () => {
   const getQuasarCtx = require('../helpers/get-quasar-ctx');
   const ctx = getQuasarCtx({
     mode: 'ssg',
@@ -80,7 +76,7 @@ async function goLive() {
   });
 
   // register app extensions
-  const extensionRunner = requireFromApp('@quasar/app-vite/lib/app-extension/extensions-runner');
+  const extensionRunner = require('@quasar/app-vite/lib/app-extension/extensions-runner');
   extensionRunner.extensions.splice(
     extensionRunner.extensions
       .findIndex((extension) => extension.extId === 'ssg'),
@@ -108,7 +104,7 @@ async function goLive() {
   }
 
   const AppDevServer = require('../ssg-devserver');
-  const devServer = new AppDevServer({ argv, ctx });
+  const devServer = new AppDevServer({ argv });
 
   if (typeof quasarConf.build.beforeDev === 'function') {
     await quasarConf.build.beforeDev({ quasarConf });
@@ -120,21 +116,18 @@ async function goLive() {
     await hook.fn(hook.api, { quasarConf });
   });
 
-  devServer.run(quasarConf)
-    .then(async () => {
-      if (typeof quasarConf.build.afterDev === 'function') {
-        await quasarConf.build.afterDev({ quasarConf });
-      }
-      // run possible afterDev hooks
-      await extensionRunner.runHook('afterDev', async (hook) => {
-        log(`Extension(${hook.api.extId}): Running afterDev hook...`);
-        await hook.fn(hook.api, { quasarConf });
-      });
-    });
+  await devServer.run(quasarConf);
+
+  if (typeof quasarConf.build.afterDev === 'function') {
+    await quasarConf.build.afterDev({ quasarConf });
+  }
+  // run possible afterDev hooks
+  await extensionRunner.runHook('afterDev', async (hook) => {
+    log(`Extension(${hook.api.extId}): Running afterDev hook...`);
+    await hook.fn(hook.api, { quasarConf });
+  });
 
   quasarConfFile.watch((_quasarConf) => {
     devServer.run(_quasarConf);
   });
-}
-
-goLive();
+})();
