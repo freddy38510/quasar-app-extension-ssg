@@ -14,21 +14,21 @@ This project was created to fill this [Feature Request](https://github.com/quasa
 
 ## Live Demo
 
-A live demo built from a fresh new [Quasar CLI project (with Vite)](playground/quasar-cli-with-vite) is available at [https://quasar-app-extension-ssg-vite.netlify.app](https://quasar-app-extension-ssg-vite.netlify.app/).
+A live demo built from a fresh new [Quasar CLI project (with Vite)](playground/vite) is available at [https://quasar-app-extension-ssg-vite.netlify.app](https://quasar-app-extension-ssg-vite.netlify.app/).
 
 The demo achieves a [Google PageSpeed ​​Insights](https://pagespeed.web.dev) score of **100** for mobile and desktop platforms.
 
 <details>
   <summary>View mobile report</summary>
 
-[![mobile report](playground/quasar-cli-with-vite/pagespeed-report-mobile.png)](https://pagespeed.web.dev/report?url=https%3A%2F%2Fquasar-app-extension-ssg-vite.netlify.app%2F&form_factor=mobile)
+[![mobile report](playground/vite/pagespeed-report-mobile.png)](https://pagespeed.web.dev/report?url=https%3A%2F%2Fquasar-app-extension-ssg-vite.netlify.app%2F&form_factor=mobile)
 
 </details>
 
 <details>
   <summary>View desktop report</summary>
 
-[![desktop report](playground/quasar-cli-with-vite/pagespeed-report-desktop.png)](https://pagespeed.web.dev/report?url=https%3A%2F%2Fquasar-app-extension-ssg-vite.netlify.app%2F&form_factor=desktop)
+[![desktop report](playground/vite/pagespeed-report-desktop.png)](https://pagespeed.web.dev/report?url=https%3A%2F%2Fquasar-app-extension-ssg-vite.netlify.app%2F&form_factor=desktop)
 
 </details>
 
