@@ -10,6 +10,7 @@ const argv = parseArgs(process.argv.slice(4), {
     colors: 'colors',
     o: 'open',
     c: 'cache',
+    B: ['base-url', 'prefix-path'],
     cors: 'cors',
     m: 'micro',
     https: 'https',
@@ -19,15 +20,15 @@ const argv = parseArgs(process.argv.slice(4), {
     h: 'help',
   },
   boolean: ['g', 'https', 'colors', 'h', 'cors'],
-  string: ['H', 'C', 'K', 'prefix-path'],
+  string: ['H', 'C', 'K', 'B'],
   default: {
     p: process.env.PORT || 4000,
     H: process.env.HOSTNAME || '0.0.0.0',
     g: true,
     c: 24 * 60 * 60,
     m: 1,
+    B: '/',
     colors: true,
-    'prefix-path': '/',
   },
 });
 
@@ -43,7 +44,7 @@ if (argv.help) {
   Options
     --port, -p              Port to use (default: 4000)
     --hostname, -H          Address to use (default: 0.0.0.0)
-    --prefix-path           Create a virtual path prefix (default: /)
+    --base-url, -B          Serve at base public path (default: /)
     --gzip, -g              Compress content (default: true)
     --silent, -s            Suppress log message
     --colors                Log messages with colors (default: true)
@@ -93,7 +94,7 @@ if (argv.help) {
 
   const root = getAbsolutePath(argv._[0] || '.');
   const resolveUrlPath = (url) => resolve(root, url);
-  const prefixPath = posix.join('/', argv['prefix-path']);
+  const baseUrl = posix.join('/', argv['base-url']); // enforce Posix path
 
   if (!argv.colors) {
     process.env.FORCE_COLOR = '0';
@@ -145,7 +146,7 @@ if (argv.help) {
 
   const serviceWorkerFile = resolveUrlPath('service-worker.js');
   if (existsSync(serviceWorkerFile)) {
-    app.use(posix.join(prefixPath, 'service-worker.js'), serve('service-worker.js'));
+    app.use(posix.join(baseUrl, 'service-worker.js'), serve('service-worker.js'));
   }
 
   if (argv.proxy) {
@@ -164,13 +165,13 @@ if (argv.help) {
     });
   }
 
-  app.use(prefixPath, serve('.', true));
+  app.use(baseUrl, serve('.', true));
 
   const { globby } = await import('globby');
   const [fallbackFile] = await globby(resolveUrlPath('./*.html'), { ignore: [resolveUrlPath('./index.html')] });
 
   if (fallbackFile) {
-    app.use(prefixPath, (req, res, next) => {
+    app.use(baseUrl, (req, res, next) => {
       const ext = posix.extname(req.url) || '.html';
 
       if (ext !== '.html') {
@@ -210,12 +211,6 @@ if (argv.help) {
       console.log(red(`  404 on ${req.url}`));
     }
   });
-
-  function getHostname(host) {
-    return host === '0.0.0.0'
-      ? 'localhost'
-      : host;
-  }
 
   async function getServer() {
     if (!argv.https) {
@@ -338,17 +333,42 @@ if (argv.help) {
     }, app);
   }
 
-  (await getServer()).listen(argv.port, argv.hostname, async () => {
-    const url = `http${argv.https ? 's' : ''}://${getHostname(argv.hostname)}:${argv.port}`;
-    const fullUrl = url + prefixPath;
+  const server = await getServer();
 
+  /** @type { import('<%= engine %>/lib/helpers/net')} */
+  const { getIPs } = require(`${engine}/lib/helpers/net`);
+
+  const getListeningUrl = (hostname) => `http${argv.https ? 's' : ''}://${hostname}:${argv.port}`;
+
+  const getListeningBanner = () => {
+    let { hostname } = argv;
+
+    if (hostname === '0.0.0.0') {
+      const acc = getIPs().map((ip) => (['', getListeningUrl(ip)]));
+
+      if (acc.length !== 0) {
+        acc[0][0] = 'Listening at';
+        return acc;
+      }
+
+      hostname = 'localhost';
+    }
+
+    return [
+      ['Listening at', getListeningUrl(hostname)],
+    ];
+  };
+
+  server.listen(argv.port, argv.hostname, async () => {
     const ssgPkg = require('../../package.json');
+    const filler = ''.padEnd(20, ' ');
+    const listeningBanner = getListeningBanner();
 
     const info = [
-      process.env.QUASAR_CLI_VERSION ? ['Quasar CLI', `v${process.env.QUASAR_CLI_VERSION}`] : undefined,
-      [ssgPkg.name, `v${ssgPkg.version}`],
-      ['Listening at', url],
-      prefixPath !== '/' ? ['Served at sub path', fullUrl] : '',
+      ['SSG Extension', `v${ssgPkg.version}`],
+      process.env.QUASAR_CLI_VERSION ? ['Quasar CLI', `v${process.env.QUASAR_CLI_VERSION}`] : '',
+      ...listeningBanner,
+      ['Base url', baseUrl],
       ['Web server root', root],
       fallbackFile ? ['SPA fallback', basename(fallbackFile)] : '',
       argv.https ? ['HTTPS', 'enabled'] : '',
@@ -359,16 +379,17 @@ if (argv.help) {
       argv.proxy ? ['Proxy definitions', argv.proxy] : '',
     ]
       .filter((msg) => msg)
-      .map((msg) => ` ${msg[0].padEnd(28, '.')} ${green(msg[1])}`);
+      .map((msg) => ` ${msg[0] !== '' ? msg[0].padEnd(20, '.') : filler} ${green(msg[1])}`);
 
     console.log(`\n${info.join('\n')}\n`);
 
     if (argv.open) {
+      /** @type { import('<%= engine %>/lib/helpers/is-minimal-terminal')} */
       const isMinimalTerminal = require(`${engine}/lib/helpers/is-minimal-terminal`);
 
       if (!isMinimalTerminal) {
         const open = (await import('open')).default;
-        await open(url);
+        await open(listeningBanner[0][1] + baseUrl);
       }
     }
   });

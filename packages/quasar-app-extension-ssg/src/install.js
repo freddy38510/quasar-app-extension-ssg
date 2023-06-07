@@ -39,15 +39,11 @@ module.exports = function install(api) {
     );
   }
 
-  let nodePackager;
-
-  if (api.hasVite) {
-    nodePackager = require('@quasar/app-vite/lib/helpers/node-packager');
-  } else {
-    nodePackager = require('@quasar/app-webpack/lib/helpers/node-packager');
-  }
+  /** @type { import('<%= engine %>/lib/helpers/node-packager')} */
+  const nodePackager = require(`${engine}/lib/helpers/node-packager`);
 
   if (ssgDeps.previous.length > 0) {
+    /** @type { import('<%= engine %>/lib/app-paths')} */
     const appPaths = require(`${engine}/lib/app-paths`);
     const appDevDependencies = Object.keys(require(appPaths.resolve.app('package.json')).devDependencies);
 

@@ -1,5 +1,6 @@
 const { engine, ssgDeps } = require('./api');
 
+/** @type { import('<%= engine %>/lib/app-paths')} */
 const appPaths = require(`${engine}/lib/app-paths`);
 const appDevDependencies = Object.keys(require(appPaths.resolve.app('package.json')).devDependencies);
 
@@ -17,6 +18,7 @@ module.exports = async function uninstall(api) {
     .filter((dep) => appDevDependencies.includes(dep));
 
   if (depsToUninstall.length > 0) {
+    /** @type { import('<%= engine %>/lib/helpers/node-packager')} */
     const nodePackager = require(`${engine}/lib/helpers/node-packager`);
 
     nodePackager.uninstallPackage(depsToUninstall, {
