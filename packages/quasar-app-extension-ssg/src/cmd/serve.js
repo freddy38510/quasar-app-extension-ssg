@@ -80,11 +80,11 @@ if (argv.help) {
   const {
     join, resolve, isAbsolute, basename, posix,
   } = require('path');
+  const { format } = require('util');
   const { existsSync } = require('fs');
-  const {
-    readFile, stat, writeFile, rm,
-  } = require('fs/promises');
+  const { readFile } = require('fs/promises');
   const express = require('express');
+  const ssgPkg = require('../../package.json');
 
   function getAbsolutePath(p) {
     return isAbsolute(p)
@@ -160,6 +160,7 @@ if (argv.help) {
     file = require(file);
 
     const { createProxyMiddleware } = require('http-proxy-middleware');
+
     file.forEach((entry) => {
       app.use(entry.path, createProxyMiddleware(entry.rule));
     });
@@ -217,8 +218,9 @@ if (argv.help) {
       return app;
     }
 
-    let fakeCert; let key; let
-      cert;
+    let fakeCert;
+    let key;
+    let cert;
 
     if (argv.key && argv.cert) {
       key = getAbsolutePath(argv.key);
@@ -238,93 +240,16 @@ if (argv.help) {
         process.exit(1);
       }
     } else {
-    // Use a self-signed certificate if no certificate was configured.
-    // Cycle certs every 24 hours
-      const certPath = join(__dirname, '../ssl-server.pem');
-      let certExists = existsSync(certPath);
-
-      if (certExists) {
-        const certStat = await stat(certPath);
-        const certTtl = 1000 * 60 * 60 * 24;
-        const now = new Date();
-
-        // cert is more than 30 days old
-        if ((now - certStat.ctime) / certTtl > 30) {
-          console.log(' SSL Certificate is more than 30 days old. Removing.');
-          await rm(certPath);
-          certExists = false;
-        }
-      }
-
-      if (!certExists) {
-        console.log(' Generating self signed SSL Certificate...');
-        console.log(' DO NOT use this self-signed certificate in production!');
-
-        const selfsigned = require('selfsigned');
-        const pems = selfsigned.generate(
-          [{ name: 'commonName', value: 'localhost' }],
-          {
-            algorithm: 'sha256',
-            days: 30,
-            keySize: 2048,
-            extensions: [{
-              name: 'basicConstraints',
-              cA: true,
-            }, {
-              name: 'keyUsage',
-              keyCertSign: true,
-              digitalSignature: true,
-              nonRepudiation: true,
-              keyEncipherment: true,
-              dataEncipherment: true,
-            }, {
-              name: 'subjectAltName',
-              altNames: [
-                {
-                // type 2 is DNS
-                  type: 2,
-                  value: 'localhost',
-                },
-                {
-                  type: 2,
-                  value: 'localhost.localdomain',
-                },
-                {
-                  type: 2,
-                  value: 'lvh.me',
-                },
-                {
-                  type: 2,
-                  value: '*.lvh.me',
-                },
-                {
-                  type: 2,
-                  value: '[::1]',
-                },
-                {
-                // type 7 is IP
-                  type: 7,
-                  ip: '127.0.0.1',
-                },
-                {
-                  type: 7,
-                  ip: 'fe80::1',
-                },
-              ],
-            }],
-          },
-        );
-
-        try {
-          await writeFile(certPath, pems.private + pems.cert, { encoding: 'utf-8' });
-        } catch (err) {
-          console.error(` Cannot write certificate file ${certPath}`);
-          console.error(' Aborting...');
+      const { getCertificate } = await import('@quasar/ssl-certificate');
+      fakeCert = getCertificate({
+        log: (msg) => {
+          console.log(msg ? ` ${format(msg)}` : '');
+        },
+        fatal: (msg) => {
+          console.error(msg ? `\n ⚠️  ${format(msg)}\n` : '');
           process.exit(1);
-        }
-      }
-
-      fakeCert = await readFile(certPath);
+        },
+      });
     }
 
     return require('https').createServer({
@@ -360,7 +285,6 @@ if (argv.help) {
   };
 
   server.listen(argv.port, argv.hostname, async () => {
-    const ssgPkg = require('../../package.json');
     const filler = ''.padEnd(20, ' ');
     const listeningBanner = getListeningBanner();
 
