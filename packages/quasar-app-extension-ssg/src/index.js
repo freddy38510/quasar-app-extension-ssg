@@ -29,6 +29,6 @@ module.exports = function run(api) {
   });
 
   api.registerCommand('serve', () => {
-    require(`${basePath}serve`);
+    require('./cmd/serve');
   });
 };

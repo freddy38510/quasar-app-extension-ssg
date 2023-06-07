@@ -1,4 +1,5 @@
 const parseArgs = require('minimist');
+const { engine } = require('../api');
 
 const argv = parseArgs(process.argv.slice(4), {
   alias: {
@@ -29,6 +30,7 @@ const argv = parseArgs(process.argv.slice(4), {
     'prefix-path': '/',
   },
 });
+
 if (argv.help) {
   console.log(`
   Description
@@ -75,7 +77,7 @@ if (argv.help) {
 
 (async () => {
   const {
-    isAbsolute, join, posix, basename, resolve,
+    join, resolve, isAbsolute, basename, posix,
   } = require('path');
   const { existsSync } = require('fs');
   const {
@@ -93,20 +95,11 @@ if (argv.help) {
   const resolveUrlPath = (url) => resolve(root, url);
   const prefixPath = posix.join('/', argv['prefix-path']);
 
-  let green;
-  let grey;
-  let red;
-
-  if (argv.colors) {
-    const chalk = require('chalk');
-    green = chalk.green;
-    grey = chalk.grey;
-    red = chalk.red;
-  } else {
-    red = (text) => text;
-    grey = red;
-    green = grey;
+  if (!argv.colors) {
+    process.env.FORCE_COLOR = '0';
   }
+
+  const { green, gray, red } = require('kolorist');
 
   const microCacheSeconds = argv.micro
     ? parseInt(argv.micro, 10)
@@ -139,7 +132,7 @@ if (argv.help) {
   if (!argv.silent) {
     app.get('*', (req, _, next) => {
       console.log(
-        `GET ${green(req.url)} ${grey(`[${req.ip}]`)} ${new Date()}`,
+        ` GET ${green(req.url)} ${gray(`[${req.ip}]`)} ${new Date()}`,
       );
       next();
     });
@@ -349,7 +342,7 @@ if (argv.help) {
     const url = `http${argv.https ? 's' : ''}://${getHostname(argv.hostname)}:${argv.port}`;
     const fullUrl = url + prefixPath;
 
-    const ssgPkg = require('../../../package.json');
+    const ssgPkg = require('../../package.json');
 
     const info = [
       process.env.QUASAR_CLI_VERSION ? ['Quasar CLI', `v${process.env.QUASAR_CLI_VERSION}`] : undefined,
@@ -371,13 +364,8 @@ if (argv.help) {
     console.log(`\n${info.join('\n')}\n`);
 
     if (argv.open) {
-      const ci = require('ci-info');
+      const isMinimalTerminal = require(`${engine}/lib/helpers/is-minimal-terminal`);
 
-      const isMinimalTerminal = (
-        ci.isCI
-      || process.env.NODE_ENV === 'test'
-      || !process.stdout.isTTY
-      );
       if (!isMinimalTerminal) {
         const open = (await import('open')).default;
         await open(url);
