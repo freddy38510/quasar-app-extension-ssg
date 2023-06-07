@@ -10,9 +10,9 @@
     "sync": "sync-dependencies-meta-injected",
     "dev": "quasar dev",
     "build": "quasar build",
-    "build:ssg": "quasar ssg generate",
-    "dev:ssg": "quasar ssg dev",
-    "serve:ssg": "quasar ssg serve dist/ssg",
+    "build:ssg": "pnpm run sync && quasar ssg generate",
+    "dev:ssg": "pnpm run sync && quasar ssg dev",
+    "serve:ssg": "pnpm run sync && quasar ssg serve dist/ssg",
     "inspect:ssg": "pnpm run sync && quasar ssg inspect"
   },
   "dependencies": {
