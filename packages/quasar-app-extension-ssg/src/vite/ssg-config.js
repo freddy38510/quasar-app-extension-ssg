@@ -92,6 +92,7 @@ module.exports = {
           input: appPaths.resolve.app('.quasar/server-entry.js'),
         },
       },
+      publicDir: false, // No need to copy public files to SSR directory
     });
 
     cfg.plugins.push(ssgVitePlugin(quasarConf, 'ssr-server'));
