@@ -39,6 +39,7 @@ module.exports = async function checkCompilationCache(argv, quasarConf) {
 
   if (argv['force-build']) {
     info('Force Compilation');
+    console.info();
 
     return {
       needCompilation,
@@ -61,6 +62,7 @@ module.exports = async function checkCompilationCache(argv, quasarConf) {
     if (JSON.stringify(previousManifest[field])
       !== JSON.stringify(currentManifest[field])) {
       info(`Start Compilation because ${field} changed`);
+      console.info();
 
       return true;
     }
@@ -83,11 +85,13 @@ module.exports = async function checkCompilationCache(argv, quasarConf) {
 
   if (!changed) {
     info('Skip Compilation as no changes detected');
+    console.info();
 
     return { needCompilation };
   }
 
   info(`Start Compilation because ${changed} modified`);
+  console.info();
 
   return {
     needCompilation: true,

@@ -1,5 +1,5 @@
 const { join, dirname, relative } = require('path');
-const { ErrorWithCause, stackWithCauses } = require('pony-cause');
+const { ErrorWithCause } = require('pony-cause');
 const { underline, green } = require('kolorist');
 const {
   info,
@@ -7,6 +7,7 @@ const {
   fatal,
   progress,
   beastcssLog,
+  warning,
 } = require('./helpers/logger');
 const {
   promisifyRoutes,
@@ -82,7 +83,7 @@ class PagesGenerator {
           await writeFile(filepath, html, 'utf8');
 
           info(
-            `Generated page: "${underline(
+            `Page generated: "${underline(
               green(relative(this.#opts.distDir, filepath)),
             )}"`,
           );
@@ -92,7 +93,7 @@ class PagesGenerator {
             beastcssLog(this.#beastcssLogs[route], 'info');
           }
         } catch (e) {
-          fatal(stackWithCauses(e));
+          fatal(e.cause?.stack || e.stack || e, e.cause ? e.message : undefined);
         }
       },
       this.#opts.concurrency,
@@ -144,38 +145,35 @@ class PagesGenerator {
   }
 
   async generate() {
-    try {
-      await this.initRoutes();
+    await this.initRoutes();
 
-      this.queue.resume();
+    this.queue.resume();
 
-      const done = progress('Generating ___ in progress...', 'Pages');
+    const done = progress('Generating ___ in progress...', 'Pages');
 
-      // waiting for queue to be fully processed
-      await this.queue.drained();
+    // waiting for queue to be fully processed
+    await this.queue.drained();
 
-      if (this.#opts.inlineCriticalCss) {
-        this.#beastcss.clear();
-      }
-
-      // is no longer necessary, as pre-rendering is now carried out
-      process.setSourceMapsEnabled?.(false);
-
-      done('___ generated with success');
-    } catch (err) {
-      fatal(stackWithCauses(err));
+    if (this.#opts.inlineCriticalCss) {
+      this.#beastcss.clear();
     }
+
+    // is no longer necessary, as pre-rendering is now carried out
+    process.setSourceMapsEnabled?.(false);
+
+    done('All ___ generated with success');
   }
 
   async initRoutes() {
     let userRoutes = ['/'];
     let staticRoutes = ['/'];
+    let warningCount = 0;
 
     const done = progress('Initializing ___ in progress...', 'route(s)');
 
     if (this.#opts.crawler) {
       info(
-        'The crawler feature will find dynamic routes in the generated html',
+        'The crawler feature will attempt to find dynamic routes',
       );
     }
 
@@ -183,13 +181,14 @@ class PagesGenerator {
       userRoutes = await promisifyRoutes(this.#opts.routes);
       userRoutes = userRoutes.map((route) => this.normalizeRoute(route));
     } catch (err) {
-      warn(
-        stackWithCauses(
-          new ErrorWithCause('Failed to resolve provided routes', {
-            cause: err,
-          }),
-        ),
-      );
+      const errWithCause = new ErrorWithCause('Failed to resolve provided routes', {
+        cause: err,
+      });
+
+      warningCount += 1;
+
+      warn();
+      warn(errWithCause.cause.stack || errWithCause.cause, errWithCause.message);
     }
 
     if (this.#opts.includeStaticRoutes !== false) {
@@ -203,13 +202,14 @@ class PagesGenerator {
       try {
         staticRoutes = flatRoutes(await this.getRoutesFromRouter());
       } catch (err) {
-        warn(
-          stackWithCauses(
-            new ErrorWithCause('Failed to get static routes from router', {
-              cause: err,
-            }),
-          ),
-        );
+        const errWithCause = new ErrorWithCause('Failed to get static routes', {
+          cause: err,
+        });
+
+        warningCount += 1;
+
+        warn();
+        warn(errWithCause.cause.stack || errWithCause.cause, errWithCause.message);
       }
     }
 
@@ -226,7 +226,14 @@ class PagesGenerator {
 
     routes.forEach((route) => this.queue.enqueue(route));
 
-    done(`Initialized ${routes.length} ___ with success`);
+    if (warningCount > 0) {
+      warn();
+      warning(`${routes.length} route(s) initialized with ${warningCount} warning(s)`);
+
+      return;
+    }
+
+    done(`${routes.length} ___ initialized with success`);
   }
 
   async generatePage(route) {
@@ -255,9 +262,7 @@ class PagesGenerator {
         }));
       } catch (e) {
         throw new ErrorWithCause(
-          `Failed to execute "onPageGenerated" hook when generating page: "${underline(
-            green(relative(this.#opts.distDir, filepath)),
-          )}"`,
+          `onPageGenerated hook failed: "${relative(this.#opts.distDir, filepath)}"`,
           { cause: e },
         );
       }
@@ -308,9 +313,7 @@ class PagesGenerator {
       }
 
       throw new ErrorWithCause(
-        `Failed to pre-render page for route: "${underline(
-          green(route),
-        )}"`,
+        `Failed to pre-render: "${route}"`,
         { cause: e },
       );
     }
@@ -359,9 +362,7 @@ class PagesGenerator {
       return await this.#beastcss.process(html, route);
     } catch (e) {
       throw new ErrorWithCause(
-        `Failed to inline critical css when generating page for route: "${underline(
-          green(route),
-        )}"`,
+        `Failed to inline critical css: "${route}"`,
         { cause: e },
       );
     }

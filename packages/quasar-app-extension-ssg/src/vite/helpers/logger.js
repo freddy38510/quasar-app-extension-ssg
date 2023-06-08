@@ -8,6 +8,7 @@ module.exports.clearConsole = logger.clearConsole;
 module.exports.log = logger.log;
 module.exports.fatal = logger.fatal;
 module.exports.info = logger.info;
+module.exports.warning = logger.warning;
 module.exports.progress = logger.progress;
 
 /**

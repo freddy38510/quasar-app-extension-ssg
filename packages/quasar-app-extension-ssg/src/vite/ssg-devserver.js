@@ -210,38 +210,33 @@ class SsgDevServer extends AppDevserver {
     this.#pagesGenerator = new PagesGenerator(
       quasarConf,
       async (ssrContext) => {
-        try {
-          const runtimePageContent = await renderFn(ssrContext);
+        const runtimePageContent = await renderFn(ssrContext);
 
-          let html = this.#renderTemplate(ssrContext);
+        let html = this.#renderTemplate(ssrContext);
 
-          html = await this.#viteClient.transformIndexHtml(
-            ssrContext.req.url,
-            html,
-            ssrContext.req.url,
+        html = await this.#viteClient.transformIndexHtml(
+          ssrContext.req.url,
+          html,
+          ssrContext.req.url,
+        );
+
+        html = html
+          .replace(
+            '</head>',
+            `${collectCss(
+              this.#viteServer.moduleGraph.getModuleById(serverEntryFile),
+              [...ssrContext.modules]
+                .map((componentPath) => this.#viteServer.moduleGraph.getModuleById(
+                  resolve(componentPath),
+                )),
+            )}</head>`,
+          )
+          .replace(
+            entryPointMarkup,
+            `<div id="q-app">${runtimePageContent}</div>`,
           );
 
-          html = html
-            .replace(
-              '</head>',
-              `${collectCss(
-                this.#viteServer.moduleGraph.getModuleById(serverEntryFile),
-                [...ssrContext.modules]
-                  .map((componentPath) => this.#viteServer.moduleGraph.getModuleById(
-                    resolve(componentPath),
-                  )),
-              )}</head>`,
-            )
-            .replace(
-              entryPointMarkup,
-              `<div id="q-app">${runtimePageContent}</div>`,
-            );
-
-          return html;
-        } catch (err) {
-          this.#viteServer.ssrFixStacktrace(err.cause || err);
-          throw err;
-        }
+        return html;
       },
     );
 
@@ -306,6 +301,7 @@ class SsgDevServer extends AppDevserver {
 
         res.send(html);
       } catch (err) {
+        this.#viteServer.ssrFixStacktrace(err.cause || err);
         renderError({ err: err.cause || err, req, res });
       }
     });
