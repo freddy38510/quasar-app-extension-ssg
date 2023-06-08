@@ -4,6 +4,12 @@ const appPaths = require('@quasar/app-vite/lib/app-paths');
 const createRenderHintTag = require('./create-render-hint-tag');
 
 module.exports = function createRenderFn(quasarConf, viteDevServer) {
+  // enable source map support for stack traces
+  // https://nodejs.org/api/process.html#processsetsourcemapsenabledval
+  if (quasarConf.ctx.prod) {
+    process.setSourceMapsEnabled?.(true);
+  }
+
   const serverEntryFile = viteDevServer
     ? appPaths.resolve.app('.quasar/server-entry.js')
     : join(quasarConf.ssg.compilationDir, 'server/server-entry.js');

@@ -61,6 +61,9 @@ module.exports = {
   },
 
   viteServer: (quasarConf) => {
+    // https://nodejs.org/api/process.html#processsetsourcemapsenabledval
+    const isSourceMapSupported = 'setSourceMapsEnabled' in process;
+
     let cfg = createViteConfig(quasarConf, 'ssr-server');
 
     cfg = mergeViteConfig(cfg, {
@@ -82,6 +85,9 @@ module.exports = {
       build: {
         ssr: true,
         outDir: join(quasarConf.ssg.compilationDir, 'server'),
+        // keep stack traces readable in any cases
+        minify: isSourceMapSupported ? !quasarConf.ctx.debug : false,
+        sourcemap: isSourceMapSupported,
         rollupOptions: {
           input: appPaths.resolve.app('.quasar/server-entry.js'),
         },

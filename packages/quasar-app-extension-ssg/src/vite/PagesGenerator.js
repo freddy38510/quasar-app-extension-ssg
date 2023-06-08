@@ -158,6 +158,9 @@ class PagesGenerator {
         this.#beastcss.clear();
       }
 
+      // is no longer necessary, as pre-rendering is now carried out
+      process.setSourceMapsEnabled?.(false);
+
       done('___ generated with success');
     } catch (err) {
       fatal(stackWithCauses(err));
