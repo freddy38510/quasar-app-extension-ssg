@@ -323,7 +323,15 @@ module.exports = function createRenderer(opts) {
       });
 
       const app = await runApp(ssrContext);
+
+      let catchedVueError;
+      app.config.errorHandler = (err) => {
+        catchedVueError = err;
+      };
+
       const resourceApp = await opts.vueRenderToString(app, ssrContext);
+
+      if (catchedVueError) { throw catchedVueError; }
 
       const usedAsyncFiles = renderContext
         .mapFiles(Array.from(ssrContext._modules))

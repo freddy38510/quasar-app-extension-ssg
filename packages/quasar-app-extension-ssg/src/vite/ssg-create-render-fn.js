@@ -1,6 +1,4 @@
 const { basename, join } = require('path');
-// needed before loading "vue/server-renderer" package to let Vue throw errors at build time
-delete process.env.NODE_ENV;
 const { renderToString } = require('vue/server-renderer');
 const appPaths = require('@quasar/app-vite/lib/app-paths');
 const createRenderHintTag = require('./create-render-hint-tag');
@@ -91,7 +89,15 @@ module.exports = function createRenderFn(quasarConf, viteDevServer) {
     }
 
     const app = await renderApp(ssrContext);
+
+    let catchedVueError;
+    app.config.errorHandler = (err) => {
+      catchedVueError = err;
+    };
+
     const runtimePageContent = await renderToString(app, ssrContext);
+
+    if (catchedVueError) { throw catchedVueError; }
 
     onRenderedList.forEach((fn) => {
       fn();
