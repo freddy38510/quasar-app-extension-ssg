@@ -57,8 +57,10 @@ module.exports = async function checkCompilationCache(argv, quasarConf) {
   const { destr } = require('destr');
   const previousManifest = destr(await readFile(cacheManifestFile, 'utf-8')) || {};
 
+  const fields = Object.keys(currentManifest).filter((field) => field !== 'snapshot');
+
   // Quick diff
-  needCompilation = ['quasarVersion', 'quasarCliVersion', 'quasarExtrasVersion', 'ssr'].some((field) => {
+  needCompilation = fields.some((field) => {
     if (JSON.stringify(previousManifest[field])
       !== JSON.stringify(currentManifest[field])) {
       info(`Start Compilation because ${field} changed`);

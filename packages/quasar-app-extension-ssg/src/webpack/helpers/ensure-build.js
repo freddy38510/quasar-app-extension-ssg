@@ -48,10 +48,10 @@ module.exports = async function ensureBuild(quasarConfFile) {
     // Quick diff
     let needBuild = false;
 
-    ['quasarVersion', 'quasarAppVersion', 'quasarExtrasVersion', 'ssr'].some((field) => {
-      if (JSON.stringify(previousBuild[field]) !== JSON.stringify(currentBuild[field])) {
-        needBuild = true;
+    const fields = Object.keys(currentBuild).filter((field) => field !== 'snapshot');
 
+    needBuild = fields.some((field) => {
+      if (JSON.stringify(previousBuild[field]) !== JSON.stringify(currentBuild[field])) {
         log(`Doing webpack rebuild because ${field} changed`);
 
         return true;
