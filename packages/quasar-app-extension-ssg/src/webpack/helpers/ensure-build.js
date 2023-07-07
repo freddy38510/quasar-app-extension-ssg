@@ -42,7 +42,7 @@ module.exports = async function ensureBuild(quasarConfFile) {
 
   if (existsSync(quasarBuildFile)) {
     // fast alternative to JSON.parse()
-    const destr = require('destr');
+    const { destr } = require('destr');
     const previousBuild = destr(await readFile(quasarBuildFile, 'utf-8')) || {};
 
     // Quick diff

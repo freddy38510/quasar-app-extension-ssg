@@ -54,7 +54,7 @@ module.exports = async function checkCompilationCache(argv, quasarConf) {
     };
   }
 
-  const destr = require('destr');
+  const { destr } = require('destr');
   const previousManifest = destr(await readFile(cacheManifestFile, 'utf-8')) || {};
 
   // Quick diff
