@@ -268,7 +268,13 @@ class SsgDevServer extends AppDevserver {
       });
     });
 
-    app.get(this.#appOptions.resolveUrlPath('*'), async (req, res) => {
+    app.get(this.#appOptions.resolveUrlPath('*'), async (req, res, next) => {
+      if (!req.headers.accept?.includes('text/html')) {
+        next();
+
+        return;
+      }
+
       let html = null;
       let isFallback = false;
 

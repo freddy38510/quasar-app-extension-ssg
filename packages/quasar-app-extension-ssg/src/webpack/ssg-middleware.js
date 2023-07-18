@@ -7,7 +7,7 @@ module.exports = ({
   app.get(resolve.urlPath('*'), (req, res, next) => {
     const route = resolve.route(req.url);
 
-    if (!isRouteValid(route) || req.method !== 'GET') {
+    if (!req.headers.accept?.includes('text/html') || !isRouteValid(route)) {
       next();
 
       return;
