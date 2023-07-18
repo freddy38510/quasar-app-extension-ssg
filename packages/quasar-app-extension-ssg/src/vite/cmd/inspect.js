@@ -35,7 +35,7 @@ if (argv.help) {
     --depth, -d      Number of levels deep (default: 2)
     --path, -p       Path of config in dot notation
                         Examples:
-                          -p module.rules
+                          -p build.outDir
                           -p plugins
     --thread, -t     Display only one specific app mode config thread
     --colors,        Style output with ANSI color codes (default: true)
@@ -69,6 +69,7 @@ const depth = parseInt(argv.depth, 10) || Infinity;
       .findIndex((extension) => extension.extId === 'ssg'),
     1,
   );
+
   await extensionRunner.registerExtensions(ctx);
 
   const QuasarConfFile = require('../quasar-config-file');
@@ -83,10 +84,10 @@ const depth = parseInt(argv.depth, 10) || Infinity;
     fatal(quasarConf.error, 'FAIL');
   }
 
-  const generateConfig = require('../ssg-config');
+  const configs = require('../ssg-config');
 
   const cfgEntries = [];
-  let threadList = Object.keys(generateConfig);
+  let threadList = Object.keys(configs);
 
   if (argv.thread) {
     if (threadList.includes(argv.thread) === false) {
@@ -99,24 +100,28 @@ const depth = parseInt(argv.depth, 10) || Infinity;
   await Promise.all(threadList.map(async (name) => {
     cfgEntries.push({
       name,
-      object: await generateConfig[name](quasarConf),
+      object: await configs[name](quasarConf),
     });
   }));
 
-  if (argv.path) {
-    const { getProperty } = await import('dot-prop');
-
-    cfgEntries.forEach((cfgEntry) => {
-      cfgEntry.object = getProperty(cfgEntry.object, argv.path);
-    });
-  }
+  const getProperty = argv.path ? (await import('dot-prop')).getProperty : undefined;
 
   const { inspect } = require('util');
 
   cfgEntries.forEach((cfgEntry) => {
-    const tool = cfgEntry.object.configFile !== void 0
-      ? 'Vite'
-      : 'esbuild';
+    let tool;
+
+    if ('configFile' in cfgEntry.object) {
+      tool = 'Vite';
+    } else if ('swDest' in cfgEntry.object) {
+      tool = 'workbox-build';
+    } else {
+      tool = 'esbuild';
+    }
+
+    if (getProperty) {
+      cfgEntry.object = getProperty(cfgEntry.object, argv.path) || {};
+    }
 
     console.log();
     log(`Showing "${cfgEntry.name}" config (for ${tool}) with depth of ${depth}`);
