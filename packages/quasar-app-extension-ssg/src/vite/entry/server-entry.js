@@ -103,7 +103,7 @@ export { getRoutesFromRouter } from './app.js';
 // state of our application before actually rendering it.
 // Since data fetching is async, this function is expected to
 // return a Promise that resolves to the app instance.
-export const renderApp = async (ssrContext) => {
+export async function renderApp(ssrContext) {
   <% if (bootEntries.length !== 0) { %>
   const bootFunctions = await bootFiles;
   <% } %>
@@ -145,17 +145,30 @@ export const renderApp = async (ssrContext) => {
   app.use(router);
   <% if (store && metaConf.storePackage === 'vuex') { %>app.use(store, storeKey)<% } %>
 
+  <% if (build.publicPath !== '/') { %>
   const url = ssrContext.req.url.replace(publicPath, '/');
-  const { fullPath } = router.resolve(url);
+  <% } else { %>
+  const { url } = ssrContext.req;
+  <% } %>
+  const routeLocation = router.resolve(url);
 
-  if (fullPath !== url) {
+  if (routeLocation.fullPath !== url) {
+    const redirectErr = {
+      url: <%= build.publicPath === '/' ? 'routeLocation.fullPath' : 'addPublicPath(routeLocation.fullPath)' %>,
+    };
+
+    throw redirectErr;
+  }
+
+  // "catch-all" route
+  if (routeLocation.matched.some(({ path }) => /^\/:\w*\(\.\*\)\*?$/.test(path))) {
     const err = new Error();
-    err.url = <%= build.publicPath === '/' ? 'fullPath' : 'addPublicPath(fullPath)' %>;
+    err.code = 404;
     throw err;
   }
 
   // set router's location
-  router.push(url).catch(() => {});
+  await router.push(url);
 
   // wait until router has resolved possible async hooks
   await router.isReady();
@@ -204,4 +217,4 @@ export const renderApp = async (ssrContext) => {
   <% if (store && ssr.manualStoreSsrContextInjection !== true) { %>ssrContext.state = unref(store.state);<% } %>
 
   return app;
-};
+}

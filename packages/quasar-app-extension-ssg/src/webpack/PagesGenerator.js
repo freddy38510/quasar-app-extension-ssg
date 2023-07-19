@@ -9,7 +9,7 @@ const {
 } = require('chalk');
 const { parse: parseHtml } = require('node-html-parser');
 const appPaths = require('@quasar/app-webpack/lib/app-paths');
-const { log, beastcssLog } = require('./helpers/logger');
+const { log, beastcssLog, warning } = require('./helpers/logger');
 const promisifyRoutes = require('./helpers/promisify-routes');
 const isRouteValid = require('./helpers/is-route-valid');
 const {
@@ -250,10 +250,7 @@ module.exports = class PagesGenerator {
       }
 
       if (e.code === 404) {
-        // hmm, Vue Router could not find the requested route
-
-        // Should reach here only if no "catch-all" route
-        // is defined in /src/routes
+        warning(`Route not found: "${bold(route)}".`, 'WARN');
 
         return null;
       }

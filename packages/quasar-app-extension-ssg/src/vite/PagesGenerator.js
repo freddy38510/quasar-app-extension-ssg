@@ -306,8 +306,7 @@ class PagesGenerator {
       }
 
       if (e.code === 404) {
-        // Should reach here only if no "catch-all" route
-        // is defined in /src/routes
+        warning(`Route not found: "${underline(route)}".`, 'WARN');
 
         return null;
       }
