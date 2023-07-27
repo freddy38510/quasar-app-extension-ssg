@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.7.0...v5.0.0) (2023-07-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **webpack:** drop support for @quasar/app-webpack below v3.7.0
+
+### Features
+
+* **serve:** show all network interface IPs by default ([1842341](https://github.com/freddy38510/quasar-app-extension-ssg/commit/1842341bb4b46a80f3d94b3a329365a651a645ef))
+* **serve:** use @quasar/ssl-certificate ([323d834](https://github.com/freddy38510/quasar-app-extension-ssg/commit/323d834dbb7cc3ddebbfcc3406a06f85daf44451))
+* throw a 404 error and warn when pre-rendering a route not found ([1fd0364](https://github.com/freddy38510/quasar-app-extension-ssg/commit/1fd03645b4f7b6a22a96bbb34cba2b1b5458a713))
+* **vite, dev:** use the vite error overlay for errors catched during ssr ([675b7fd](https://github.com/freddy38510/quasar-app-extension-ssg/commit/675b7fda8e11da8a1ae0b5ad841d5a51f368977d))
+* **vite, webpack:** add support for quasar.config.cjs file ([4c4d8bc](https://github.com/freddy38510/quasar-app-extension-ssg/commit/4c4d8bcab18c60b417e1255edbc5679033e3e341))
+* **vite, webpack:** use the new Quasar SSR error handling package ([bdb9669](https://github.com/freddy38510/quasar-app-extension-ssg/commit/bdb9669cba395f54b45092f22e0e61b3b8e2eb12))
+* **vite,webpack:** remove the usage of @quasar/fastclick ([c3f16c4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c3f16c4db0492bbc09640dba97918e84b1108e15))
+* **vite,webpack:** throw errors swallowed by vue/server-renderer ([c4d1662](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c4d1662d2652284564a104f7cf51e163710997e0))
+* **vite:generate:** improve stack trace readability ([491bd9d](https://github.com/freddy38510/quasar-app-extension-ssg/commit/491bd9d0faea28153df92e49ae10ba944f5bf7d6))
+* **vite:** improve the meaning of errors, warnings and displayed information ([aa41c85](https://github.com/freddy38510/quasar-app-extension-ssg/commit/aa41c85d76d662f02d3d3291578d7ed9dacffaee))
+* **vite:** update roboto font stylesheet ([c03eea5](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c03eea5f681ed20f2e281c9b59f4cb5f6e6392ff))
+* **webpack:** support more postcss config filenames ([814644f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/814644f87b0659830be4cabb809b875b22e46733))
+
+
+### Bug Fixes
+
+* avoid circular dependencies ([d990643](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d9906431ec7ae9bea07d1279aa58515ec95ba080))
+* **cache:** compare existing manifest keys ([5a86269](https://github.com/freddy38510/quasar-app-extension-ssg/commit/5a8626921aa9496be39611614f35cd6701d2c206))
+* **deps:** update dependency destr to v2 ([#352](https://github.com/freddy38510/quasar-app-extension-ssg/issues/352)) ([4b665f4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/4b665f4ab56921f3d1170c58a3977f07d5118fa9))
+* **deps:** update dependency open to v9 ([#343](https://github.com/freddy38510/quasar-app-extension-ssg/issues/343)) ([a7ee8d1](https://github.com/freddy38510/quasar-app-extension-ssg/commit/a7ee8d1973eae825b480d84dc0996cb217a9153f))
+* **dev:** ensure the "ouch" page handler correctly accesses the main module that may be missing ([993655d](https://github.com/freddy38510/quasar-app-extension-ssg/commit/993655d4299600cc78b884271e201ffceda48588))
+* **dev:** ensure to not pre-render non-html requests ([ee797ef](https://github.com/freddy38510/quasar-app-extension-ssg/commit/ee797ef57af45fe82e4d3508429387f430c4d379))
+* **dev:** make the server listen the connections on the specified host ([482ae3d](https://github.com/freddy38510/quasar-app-extension-ssg/commit/482ae3de0665440cb6e1b52f5de73927e4a5a1ec))
+* do not require quasar deps when the command is not executed inside a quasar project folder ([c183539](https://github.com/freddy38510/quasar-app-extension-ssg/commit/c183539013275d6ec56d0020a8be5c39c2798290))
+* don't rely on transitive dependencies ([0599a2b](https://github.com/freddy38510/quasar-app-extension-ssg/commit/0599a2b031b57f2fc8bd8088de9f5c461abf8f45))
+* **vite,webpack:** use named destr export ([0d4172d](https://github.com/freddy38510/quasar-app-extension-ssg/commit/0d4172d6fc3fcf21d1d9de240f64e069edd369d9))
+* **vite:dev:** resolve the @vue/devtools executable correctly ([760c550](https://github.com/freddy38510/quasar-app-extension-ssg/commit/760c550f900112c514fb84803dd40811e2a5f10f))
+* **vite:inspect:** determine tool name from unmodified config object ([60db790](https://github.com/freddy38510/quasar-app-extension-ssg/commit/60db790d5a33422de0846307c62917c2af082c91))
+* **vite:** add the application URL to the printed dev banner ([e42e802](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e42e8024c4b0091dcf7caa45f7e40d6effd28777))
+* **vite:** do not tamper with ?raw requests ([e5608d9](https://github.com/freddy38510/quasar-app-extension-ssg/commit/e5608d9644d8c328f0946f16d97ddbac8097f253))
+* **vite:** restrict the compatibility to the minimum version 2.9.1 of the vite package ([50d610e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/50d610eee90e5f2aa62b813f4bdec1c6975655cd))
+* **vite:** support vite version below 2.6.0 ([63bf147](https://github.com/freddy38510/quasar-app-extension-ssg/commit/63bf147e7445c5650ceeac38f2993a5ac2c9702e)), closes [#340](https://github.com/freddy38510/quasar-app-extension-ssg/issues/340)
+* **webpack:** do not check if ssr mode is installed when running inspect command ([74c1d79](https://github.com/freddy38510/quasar-app-extension-ssg/commit/74c1d792cfc0b8743c71a25ddaefff7b6443cfaf))
+
+
+* **webpack:** drop support for @quasar/app-webpack below v3.7.0 ([8794eea](https://github.com/freddy38510/quasar-app-extension-ssg/commit/8794eea4f8ca4ef27c9f247f01e1d59c9327096d))
+
 ## [4.7.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.6.0...v4.7.0) (2023-02-14)
 
 
