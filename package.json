@@ -40,7 +40,7 @@
     "eslint-plugin-lodash-template": "^0.22.0",
     "eslint-plugin-n": "^16.0.0",
     "husky": "^8.0.3",
-    "pnpm-sync-dependencies-meta-injected": "^0.0.6",
+    "pnpm-sync-dependencies-meta-injected": "^0.0.9",
     "typescript": "^4.9.5"
   },
   "config": {
@@ -58,7 +58,7 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "packageManager": "pnpm@8.6.1",
+  "packageManager": "pnpm@8.7.1",
   "pnpm": {
     "overrides": {
       "magic-string": "^0.30.0",
