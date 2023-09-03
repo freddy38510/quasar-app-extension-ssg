@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.0.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v5.0.0...v5.0.1) (2023-09-03)
+
+
+### Bug Fixes
+
+* **webpack:** escape unescaped backslashes in compiled lodash template ([d56ad2e](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d56ad2e9cc4c6cddf39bf3502f0e0e615781b2ec)), closes [#358](https://github.com/freddy38510/quasar-app-extension-ssg/issues/358)
+
 ## [5.0.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v4.7.0...v5.0.0) (2023-07-27)
 
 
