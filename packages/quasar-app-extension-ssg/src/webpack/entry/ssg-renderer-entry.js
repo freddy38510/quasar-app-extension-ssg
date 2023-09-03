@@ -13,7 +13,7 @@ import clientManifest from './quasar.client-manifest.json';
 
 const opts = {
   vueRenderToString,
-  basedir: '<%= ssg.buildDir %>',
+  basedir: '<%= ssg.buildDir.replace(/\\/g, '\\\\') %>',
   <% if (ctx.prod) { %>
   serverManifest,
   clientManifest,
