@@ -16,19 +16,19 @@
     "inspect:ssg": "pnpm run sync && quasar ssg inspect"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
-    "quasar": "^2.6.0",
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.0"
+    "@quasar/extras": "^1.16.6",
+    "quasar": "^2.12.6",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
-    "@quasar/app-vite": "^1.0.0",
-    "autoprefixer": "^10.4.2",
-    "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-vue": "^9.0.0",
-    "postcss": "^8.4.14",
-    "prettier": "^2.5.1",
+    "@quasar/app-vite": "^1.5.0",
+    "autoprefixer": "^10.4.15",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "postcss": "^8.4.29",
+    "prettier": "^2.8.8",
     "quasar-app-extension-ssg": "workspace:*"
   },
   "dependenciesMeta": {
