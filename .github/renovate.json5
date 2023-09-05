@@ -1,21 +1,23 @@
 {
-  extends: ["config:base", "schedule:weekly", "group:allNonMajor"],
-  labels: ["dependencies"],
-  baseBranches: ["master", "2.x"],
-  ignorePaths: ["**/node_modules/**"],
-  packageRules: [
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", "schedule:weekly", "group:allNonMajor"],
+  "labels": ["dependencies"],
+  "baseBranches": ["master", "2.x"],
+  "ignorePaths": ["**/node_modules/**"],
+  "rangeStrategy": "bump",
+  "packageRules": [
     {
-      matchPackageNames: ["chalk"],
-      allowedVersions: "<5.0.0", // only esm
+      "matchPackageNames": ["chalk"],
+      "allowedVersions": "<5.0.0" // only esm
     },
     {
-      matchBaseBranches: ["2.x"],
-      matchPackageNames: ["pify"],
-      allowedVersions: "<6.0.0", // only esm
+      "matchBaseBranches": ["2.x"],
+      "matchPackageNames": ["pify"],
+      "allowedVersions": "<6.0.0" // only esm
     },
     {
-      matchPackageNames: ["dot-prop"],
-      allowedVersions: "<8.0.0", // Require Node.js 16
-    },
-  ],
+      "matchPackageNames": ["dot-prop"],
+      "allowedVersions": "<8.0.0" // Require Node.js 16
+    }
+  ]
 }
