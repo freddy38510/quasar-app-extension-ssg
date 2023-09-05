@@ -16,20 +16,20 @@
     "inspect:ssg": "pnpm run sync && quasar ssg inspect"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
-    "core-js": "^3.6.5",
-    "quasar": "^2.6.0",
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.0"
+    "@quasar/extras": "^1.16.6",
+    "core-js": "^3.32.1",
+    "quasar": "^2.12.6",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.13.14",
-    "@quasar/app-webpack": "^3.7.0",
-    "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-vue": "^9.0.0",
-    "eslint-webpack-plugin": "^3.1.1",
-    "prettier": "^2.5.1",
+    "@babel/eslint-parser": "^7.22.15",
+    "@quasar/app-webpack": "^3.10.0",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "eslint-webpack-plugin": "^3.2.0",
+    "prettier": "^2.8.8",
     "quasar-app-extension-ssg": "workspace:*"
   },
   "dependenciesMeta": {
@@ -49,6 +49,6 @@
     "last 5 Opera versions"
   ],
   "engines": {
-    "node": ">= 14.15.0"
+    "node": ">= v14.21.3"
   }
 }
