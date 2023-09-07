@@ -65,8 +65,8 @@ importers:
         specifier: ^8.0.3
         version: 8.0.3
       pnpm-sync-dependencies-meta-injected:
-        specifier: ^0.0.9
-        version: 0.0.9
+        specifier: ^0.0.10
+        version: 0.0.10
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -74,8 +74,8 @@ importers:
   packages/quasar-app-extension-ssg:
     dependencies:
       '@freddy38510/vue-loader':
-        specifier: ^17.2.1
-        version: 17.2.1(vue@3.3.4)(webpack@5.88.2)
+        specifier: ^17.3.0
+        version: 17.3.0(vue@3.3.4)(webpack@5.88.2)
       '@freddy38510/vue-style-loader':
         specifier: ^4.2.0
         version: 4.2.0
@@ -198,11 +198,11 @@ importers:
         version: 3.0.0
     devDependencies:
       '@quasar/app-vite':
-        specifier: ^1.5.0
-        version: 1.5.0(eslint@8.48.0)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)(workbox-build@6.6.1)
+        specifier: ^1.5.1
+        version: 1.5.1(eslint@8.48.0)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)(workbox-build@6.6.1)
       '@quasar/app-webpack':
-        specifier: ^3.10.0
-        version: 3.10.0(eslint@8.48.0)(vue-router@4.2.4)(vue@3.3.4)(workbox-webpack-plugin@6.6.1)
+        specifier: ^3.10.1
+        version: 3.10.1(eslint@8.48.0)(vue-router@4.2.4)(vue@3.3.4)(workbox-webpack-plugin@6.6.1)
       '@quasar/extras':
         specifier: ^1.16.6
         version: 1.16.6
@@ -250,8 +250,8 @@ importers:
         version: 4.2.4(vue@3.3.4)
     devDependencies:
       '@quasar/app-vite':
-        specifier: ^1.5.0
-        version: 1.5.0(eslint@8.48.0)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)(workbox-build@6.6.1)
+        specifier: ^1.5.1
+        version: 1.5.1(eslint@8.48.0)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)(workbox-build@6.6.1)
       autoprefixer:
         specifier: ^10.4.15
         version: 10.4.15(postcss@8.4.29)
@@ -272,7 +272,7 @@ importers:
         version: 3.0.3
       quasar-app-extension-ssg:
         specifier: workspace:*
-        version: file:packages/quasar-app-extension-ssg(@quasar/app-vite@1.5.0)(@quasar/extras@1.16.6)(postcss@8.4.29)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)
+        version: file:packages/quasar-app-extension-ssg(@quasar/app-vite@1.5.1)(@quasar/extras@1.16.6)(postcss@8.4.29)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)
     dependenciesMeta:
       quasar-app-extension-ssg:
         injected: true
@@ -283,8 +283,8 @@ importers:
         specifier: ^1.16.6
         version: 1.16.6
       core-js:
-        specifier: ^3.32.1
-        version: 3.32.1
+        specifier: ^3.32.2
+        version: 3.32.2
       quasar:
         specifier: ^2.12.6
         version: 2.12.6
@@ -299,8 +299,8 @@ importers:
         specifier: ^7.22.15
         version: 7.22.15(eslint@8.48.0)
       '@quasar/app-webpack':
-        specifier: ^3.10.0
-        version: 3.10.0(eslint@8.48.0)(vue-router@4.2.4)(vue@3.3.4)(workbox-webpack-plugin@6.6.1)
+        specifier: ^3.10.1
+        version: 3.10.1(eslint@8.48.0)(vue-router@4.2.4)(vue@3.3.4)(workbox-webpack-plugin@6.6.1)
       eslint:
         specifier: ^8.48.0
         version: 8.48.0
@@ -318,7 +318,7 @@ importers:
         version: 3.0.3
       quasar-app-extension-ssg:
         specifier: workspace:*
-        version: file:packages/quasar-app-extension-ssg(@quasar/app-webpack@3.10.0)(@quasar/extras@1.16.6)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)
+        version: file:packages/quasar-app-extension-ssg(@quasar/app-webpack@3.10.1)(@quasar/extras@1.16.6)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)
     dependenciesMeta:
       quasar-app-extension-ssg:
         injected: true
@@ -383,7 +383,7 @@ packages:
       debug: 4.3.4(supports-color@9.4.0)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -440,9 +440,9 @@ packages:
       '@babel/compat-data': 7.22.3
       '@babel/core': 7.22.1
       '@babel/helper-validator-option': 7.21.0
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       lru-cache: 5.1.1
-      semver: 6.3.0
+      semver: 6.3.1
     dev: true
 
   /@babel/helper-create-class-features-plugin@7.22.1(@babel/core@7.22.1):
@@ -463,7 +463,7 @@ packages:
       '@babel/helper-replace-supers': 7.22.1
       '@babel/helper-skip-transparent-expression-wrappers': 7.20.0
       '@babel/helper-split-export-declaration': 7.18.6
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -480,7 +480,7 @@ packages:
       '@babel/core': 7.22.1
       '@babel/helper-annotate-as-pure': 7.18.6
       regexpu-core: 5.3.2
-      semver: 6.3.0
+      semver: 6.3.1
     dev: true
 
   /@babel/helper-define-polyfill-provider@0.4.0(@babel/core@7.22.1):
@@ -497,7 +497,7 @@ packages:
       debug: 4.3.4(supports-color@9.4.0)
       lodash.debounce: 4.0.8
       resolve: 1.22.2
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1699,7 +1699,7 @@ packages:
       babel-plugin-polyfill-corejs2: 0.4.3(@babel/core@7.22.1)
       babel-plugin-polyfill-corejs3: 0.8.1(@babel/core@7.22.1)
       babel-plugin-polyfill-regenerator: 0.5.0(@babel/core@7.22.1)
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1914,7 +1914,7 @@ packages:
       babel-plugin-polyfill-corejs3: 0.8.1(@babel/core@7.22.1)
       babel-plugin-polyfill-regenerator: 0.5.0(@babel/core@7.22.1)
       core-js-compat: 3.30.2
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2170,7 +2170,7 @@ packages:
       fs-extra: 8.1.0
       got: 9.6.0
       progress: 2.0.3
-      semver: 6.3.0
+      semver: 6.3.1
       sumchecker: 3.0.1
     optionalDependencies:
       global-agent: 3.0.0
@@ -2232,8 +2232,8 @@ packages:
   /@freddy38510/dropcss@2.5.0:
     resolution: {integrity: sha512-gzFIpGpXX4QpSYLl/DVYiKkE8cmLvcQBvD7lNuoXXtztz31/da+3eZCeuw91FrA4fQwq8/JchOteufymze+XZQ==}
 
-  /@freddy38510/vue-loader@17.2.1(vue@3.3.4)(webpack@5.88.2):
-    resolution: {integrity: sha512-t9NQCKtBmCtGpHCBXS4K/PdqoHwcKhvEWiD4w4LHHZwEkQhl7ucLvoYWIrJu8a+hs1DuFLBWW/X6nEfZ01VQsA==}
+  /@freddy38510/vue-loader@17.3.0(vue@3.3.4)(webpack@5.88.2):
+    resolution: {integrity: sha512-tPNQHrrr1wV1L6yy12r5ae9EP/f6Y+9/lsiQp1LqLLrI3hL2dCvLY0hvHNoX85+Bt7kntKINTZFG0ZTrpDutjw==}
     peerDependencies:
       '@vue/compiler-sfc': '*'
       vue: '*'
@@ -2562,7 +2562,7 @@ packages:
       '@pnpm/read-project-manifest': 5.0.1
       '@pnpm/types': 9.1.0
       '@pnpm/util.lex-comparator': 1.0.0
-      fast-glob: 3.2.12
+      fast-glob: 3.3.1
       p-filter: 2.1.0
     dev: true
 
@@ -2796,8 +2796,8 @@ packages:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
     dev: true
 
-  /@quasar/app-vite@1.5.0(eslint@8.48.0)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)(workbox-build@6.6.1):
-    resolution: {integrity: sha512-iopq5UFtXHXrSlPoWj3dmlpnQ79c/dc5FCspAr07V3bLbICNTOEAPzxTuxja8W/bGXGBkQp2IY7k86W3iNuOVw==}
+  /@quasar/app-vite@1.5.1(eslint@8.48.0)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)(workbox-build@6.6.1):
+    resolution: {integrity: sha512-OjD5fL1oSdLH+wSYsvfoEkahub9c13Gfccvu1cvGwiisICo/MvwAab08T1y31YnvsQVAlBmjGOo8BsFehNlxYg==}
     engines: {node: ^24 || ^22 || ^20 || ^18 || ^16 || ^14.19, npm: '>= 6.14.12', yarn: '>= 1.17.3'}
     hasBin: true
     peerDependencies:
@@ -2870,8 +2870,8 @@ packages:
       - supports-color
     dev: true
 
-  /@quasar/app-webpack@3.10.0(eslint@8.48.0)(vue-router@4.2.4)(vue@3.3.4)(workbox-webpack-plugin@6.6.1):
-    resolution: {integrity: sha512-wRbApdSDA2DIgRVIHz20x6lg6v80O8XG7YusrbHbmLNlmrDHjcYY/DM9Y/og3QMS+i08za1yZevminy1h49CSA==}
+  /@quasar/app-webpack@3.10.1(eslint@8.48.0)(vue-router@4.2.4)(vue@3.3.4)(workbox-webpack-plugin@6.6.1):
+    resolution: {integrity: sha512-4QbACD38jdI+3sbwecR86QaDeoAp8MsHBOhVfmb5nflyxHaJr/0tLfB21uBBkm+50kqedElrcggqXmKIubshig==}
     engines: {node: '>= 14.15', npm: '>= 6.14.12', yarn: '>= 1.17.3'}
     hasBin: true
     peerDependencies:
@@ -2904,7 +2904,7 @@ packages:
       '@types/webpack-bundle-analyzer': 4.6.0
       archiver: 5.3.1
       autoprefixer: 10.4.13(postcss@8.4.29)
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       chalk: 4.1.2
       chokidar: 3.5.3
       ci-info: 3.7.1
@@ -3002,7 +3002,7 @@ packages:
       babel-loader: 9.1.2(@babel/core@7.22.1)(webpack@5.88.2)
       babel-plugin-dynamic-import-node: 2.3.3
       babel-plugin-module-resolver: 5.0.0
-      core-js: 3.32.1
+      core-js: 3.32.2
       core-js-compat: 3.30.2
     transitivePeerDependencies:
       - supports-color
@@ -3444,12 +3444,6 @@ packages:
       - esbuild
       - uglify-js
       - webpack-cli
-    dev: true
-
-  /@types/ws@8.5.4:
-    resolution: {integrity: sha512-zdQDHKUgcX/zBc4GrwsE/7dVdAD8JR4EuiAXiiUhhfyIJXXb2+PrGshFyeXWQPMmmZ2XxgaqclgpIC7eTXc1mg==}
-    dependencies:
-      '@types/node': 14.18.58
     dev: true
 
   /@types/ws@8.5.5:
@@ -4121,8 +4115,8 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
-      caniuse-lite: 1.0.30001495
+      browserslist: 4.21.10
+      caniuse-lite: 1.0.30001527
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -4200,7 +4194,7 @@ packages:
       '@babel/compat-data': 7.22.3
       '@babel/core': 7.22.1
       '@babel/helper-define-polyfill-provider': 0.4.0(@babel/core@7.22.1)
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4375,14 +4369,13 @@ packages:
       electron-to-chromium: 1.4.508
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11(browserslist@4.21.10)
-    dev: true
 
   /browserslist@4.21.7:
     resolution: {integrity: sha512-BauCXrQ7I2ftSqd2mvKHGo85XR0u7Ru3C/Hxsy/0TkfCtjrmAbPdzLGasmoiBxplpDXlPvdjX9u7srIMfgasNA==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001495
+      caniuse-lite: 1.0.30001527
       electron-to-chromium: 1.4.425
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11(browserslist@4.21.7)
@@ -4496,17 +4489,13 @@ packages:
   /caniuse-api@3.0.0:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
-      browserslist: 4.21.7
-      caniuse-lite: 1.0.30001495
+      browserslist: 4.21.10
+      caniuse-lite: 1.0.30001527
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
 
-  /caniuse-lite@1.0.30001495:
-    resolution: {integrity: sha512-F6x5IEuigtUfU5ZMQK2jsy5JqUUlEFRVZq8bO2a+ysq5K7jD6PPc9YXZj78xDNS3uNchesp1Jw47YXEqr+Viyg==}
-
   /caniuse-lite@1.0.30001527:
     resolution: {integrity: sha512-YkJi7RwPgWtXVSgK4lG9AHH57nSzvvOp9MesgXmw4Q7n0C3H04L0foHqfxcmSAm5AcWb8dW9AYj2tR7/5GnddQ==}
-    dev: true
 
   /chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -4943,7 +4932,7 @@ packages:
       json-stringify-safe: 5.0.1
       lodash: 4.17.21
       meow: 8.1.2
-      semver: 6.3.0
+      semver: 6.3.1
       split: 1.0.1
       through2: 4.0.2
     dev: true
@@ -5048,7 +5037,7 @@ packages:
       webpack:
         optional: true
     dependencies:
-      fast-glob: 3.2.12
+      fast-glob: 3.3.1
       glob-parent: 6.0.2
       globby: 13.2.2
       normalize-path: 3.0.0
@@ -5060,11 +5049,11 @@ packages:
   /core-js-compat@3.30.2:
     resolution: {integrity: sha512-nriW1nuJjUgvkEjIot1Spwakz52V9YkYHZAQG6A1eCgC8AA1p0zngrQEP9R0+V6hji5XilWKG1Bd0YRppmGimA==}
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
     dev: true
 
-  /core-js@3.32.1:
-    resolution: {integrity: sha512-lqufgNn9NLnESg5mQeYsxQP5w7wrViSj0jr/kv6ECQiByzQkrn1MKvV0L3acttpDqfQrHLwr2KCMgX5b8X+lyQ==}
+  /core-js@3.32.2:
+    resolution: {integrity: sha512-pxXSw1mYZPDGvTQqEc5vgIb83jGQKFGYWY76z4a7weZXUolw3G+OvpZqSRcfYOoOVUQJYEPsWeQK8pKEnUtWxQ==}
     requiresBuild: true
 
   /core-util-is@1.0.3:
@@ -5762,7 +5751,6 @@ packages:
 
   /electron-to-chromium@1.4.508:
     resolution: {integrity: sha512-FFa8QKjQK/A5QuFr2167myhMesGrhlOBD+3cYNxO9/S4XzHEXesyTD/1/xF644gC8buFPz3ca6G1LOQD0tZrrg==}
-    dev: true
 
   /electron@21.4.4:
     resolution: {integrity: sha512-N5O7y7Gtt7mDgkJLkW49ETiT8M3myZ9tNIEvGTKhpBduX4WdgMj6c3hYeYBD6XW7SvbRkWEQaTl25RNday8Xpw==}
@@ -5840,14 +5828,6 @@ packages:
       - bufferutil
       - supports-color
       - utf-8-validate
-    dev: true
-
-  /enhanced-resolve@5.14.1:
-    resolution: {integrity: sha512-Vklwq2vDKtl0y/vtwjSesgJ5MYS7Etuk5txS8VdKL4AOS1aUlD96zqIfsOSLQsdv3xgMRbtkWM8eG9XDfKUPow==}
-    engines: {node: '>=10.13.0'}
-    dependencies:
-      graceful-fs: 4.2.11
-      tapable: 2.2.1
     dev: true
 
   /enhanced-resolve@5.15.0:
@@ -7304,7 +7284,7 @@ packages:
     hasBin: true
     dependencies:
       meow: 8.1.2
-      semver: 6.3.0
+      semver: 6.3.1
     dev: true
 
   /git-semver-tags@5.0.1:
@@ -7437,7 +7417,7 @@ packages:
     dependencies:
       array-union: 2.1.0
       dir-glob: 3.0.1
-      fast-glob: 3.2.12
+      fast-glob: 3.3.1
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 3.0.0
@@ -8642,7 +8622,7 @@ packages:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
     engines: {node: '>=8'}
     dependencies:
-      semver: 6.3.0
+      semver: 6.3.1
     dev: true
 
   /make-error@1.3.6:
@@ -8950,7 +8930,6 @@ packages:
 
   /node-releases@2.0.13:
     resolution: {integrity: sha512-uYr7J37ae/ORWdZeQ1xxMJe3NtdmqMC/JZK+geofDrkLUApKRHPd18/TxtBOJ4A0/+uUIliorNrfYV6s1b02eQ==}
-    dev: true
 
   /normalize-package-data@2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
@@ -9446,8 +9425,8 @@ packages:
       find-up: 3.0.0
     dev: true
 
-  /pnpm-sync-dependencies-meta-injected@0.0.9:
-    resolution: {integrity: sha512-XOWpiQQAPP4ATYx7VhTCOaMW5efprpwCAbajj1o2ly8Dnf8BHOyreIQH/IZhvtiYIlx7736wB8zJq7DV+xzwgQ==}
+  /pnpm-sync-dependencies-meta-injected@0.0.10:
+    resolution: {integrity: sha512-kPcYZLaLgo5WhlgWciCJFqdxprIqaR52cY1C8KH3RGdia1YwT1wO/AOKyvOydNBJmpdcLxka2a0La9CaStxG/A==}
     engines: {node: '>=16.0.0'}
     hasBin: true
     dependencies:
@@ -9504,7 +9483,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       caniuse-api: 3.0.0
       colord: 2.9.3
       postcss: 8.4.29
@@ -9520,7 +9499,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       caniuse-api: 3.0.0
       colord: 2.9.3
       postcss: 8.4.29
@@ -9535,7 +9514,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       postcss: 8.4.29
       postcss-value-parser: 4.2.0
     dev: true
@@ -9549,7 +9528,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       postcss: 8.4.29
       postcss-value-parser: 4.2.0
 
@@ -9700,7 +9679,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       caniuse-api: 3.0.0
       cssnano-utils: 3.1.0(postcss@8.4.29)
       postcss: 8.4.29
@@ -9716,7 +9695,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       caniuse-api: 3.0.0
       cssnano-utils: 4.0.0(postcss@8.4.29)
       postcss: 8.4.29
@@ -9785,7 +9764,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       cssnano-utils: 3.1.0(postcss@8.4.29)
       postcss: 8.4.29
       postcss-value-parser: 4.2.0
@@ -9800,7 +9779,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       cssnano-utils: 4.0.0(postcss@8.4.29)
       postcss: 8.4.29
       postcss-value-parser: 4.2.0
@@ -10040,7 +10019,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       postcss: 8.4.29
       postcss-value-parser: 4.2.0
     dev: true
@@ -10054,7 +10033,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       postcss: 8.4.29
       postcss-value-parser: 4.2.0
 
@@ -10145,7 +10124,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       caniuse-api: 3.0.0
       postcss: 8.4.29
     dev: true
@@ -10159,7 +10138,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       caniuse-api: 3.0.0
       postcss: 8.4.29
 
@@ -11368,7 +11347,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       postcss: 8.4.29
       postcss-selector-parser: 6.0.13
     dev: true
@@ -11382,7 +11361,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.7
+      browserslist: 4.21.10
       postcss: 8.4.29
       postcss-selector-parser: 6.0.13
 
@@ -11631,7 +11610,7 @@ packages:
         optional: true
     dependencies:
       chalk: 4.1.2
-      enhanced-resolve: 5.14.1
+      enhanced-resolve: 5.15.0
       micromatch: 4.0.5
       semver: 7.5.4
       typescript: 4.9.4
@@ -11659,7 +11638,7 @@ packages:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
       '@types/node': 20.4.7
-      acorn: 8.8.2
+      acorn: 8.10.0
       acorn-walk: 8.2.0
       arg: 4.1.3
       create-require: 1.1.1
@@ -11938,7 +11917,6 @@ packages:
       browserslist: 4.21.10
       escalade: 3.1.1
       picocolors: 1.0.0
-    dev: true
 
   /update-browserslist-db@1.0.11(browserslist@4.21.7):
     resolution: {integrity: sha512-dCwEFf0/oT85M1fHBg4F0jtLwJrutGoHSQXCh7u4o2t1drG+c0a9Flnqww6XUKSfQMPpJBRjU8d4RXB09qtvaA==}
@@ -12144,7 +12122,7 @@ packages:
     engines: {node: '>= 10.13.0'}
     hasBin: true
     dependencies:
-      acorn: 8.8.2
+      acorn: 8.10.0
       acorn-walk: 8.2.0
       chalk: 4.1.2
       commander: 7.2.0
@@ -12200,7 +12178,7 @@ packages:
       '@types/serve-index': 1.9.1
       '@types/serve-static': 1.15.1
       '@types/sockjs': 0.3.33
-      '@types/ws': 8.5.4
+      '@types/ws': 8.5.5
       ansi-html-community: 0.0.8
       bonjour-service: 1.1.1
       chokidar: 3.5.3
@@ -12805,13 +12783,13 @@ packages:
       readable-stream: 3.6.2
     dev: true
 
-  file:packages/quasar-app-extension-ssg(@quasar/app-vite@1.5.0)(@quasar/extras@1.16.6)(postcss@8.4.29)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4):
+  file:packages/quasar-app-extension-ssg(@quasar/app-vite@1.5.1)(@quasar/extras@1.16.6)(postcss@8.4.29)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4):
     resolution: {directory: packages/quasar-app-extension-ssg, type: directory}
     id: file:packages/quasar-app-extension-ssg
     name: quasar-app-extension-ssg
     peerDependencies:
-      '@quasar/app-vite': ^1.5.0
-      '@quasar/app-webpack': ^3.10.0
+      '@quasar/app-vite': ^1.5.1
+      '@quasar/app-webpack': ^3.10.1
       '@quasar/extras': ^1.16.6
       '@vue/devtools': ^6.5.0
       quasar: ^2.12.6
@@ -12835,9 +12813,9 @@ packages:
       workbox-webpack-plugin:
         optional: true
     dependencies:
-      '@freddy38510/vue-loader': 17.2.1(vue@3.3.4)(webpack@5.88.2)
+      '@freddy38510/vue-loader': 17.3.0(vue@3.3.4)(webpack@5.88.2)
       '@freddy38510/vue-style-loader': 4.2.0
-      '@quasar/app-vite': 1.5.0(eslint@8.48.0)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)(workbox-build@6.6.1)
+      '@quasar/app-vite': 1.5.1(eslint@8.48.0)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4)(workbox-build@6.6.1)
       '@quasar/extras': 1.16.6
       '@quasar/render-ssr-error': 1.0.2
       '@quasar/ssl-certificate': 1.0.0
@@ -12902,13 +12880,13 @@ packages:
       - webpack-cli
     dev: true
 
-  file:packages/quasar-app-extension-ssg(@quasar/app-webpack@3.10.0)(@quasar/extras@1.16.6)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4):
+  file:packages/quasar-app-extension-ssg(@quasar/app-webpack@3.10.1)(@quasar/extras@1.16.6)(quasar@2.12.6)(vue-router@4.2.4)(vue@3.3.4):
     resolution: {directory: packages/quasar-app-extension-ssg, type: directory}
     id: file:packages/quasar-app-extension-ssg
     name: quasar-app-extension-ssg
     peerDependencies:
-      '@quasar/app-vite': ^1.5.0
-      '@quasar/app-webpack': ^3.10.0
+      '@quasar/app-vite': ^1.5.1
+      '@quasar/app-webpack': ^3.10.1
       '@quasar/extras': ^1.16.6
       '@vue/devtools': ^6.5.0
       quasar: ^2.12.6
@@ -12932,9 +12910,9 @@ packages:
       workbox-webpack-plugin:
         optional: true
     dependencies:
-      '@freddy38510/vue-loader': 17.2.1(vue@3.3.4)(webpack@5.88.2)
+      '@freddy38510/vue-loader': 17.3.0(vue@3.3.4)(webpack@5.88.2)
       '@freddy38510/vue-style-loader': 4.2.0
-      '@quasar/app-webpack': 3.10.0(eslint@8.48.0)(vue-router@4.2.4)(vue@3.3.4)(workbox-webpack-plugin@6.6.1)
+      '@quasar/app-webpack': 3.10.1(eslint@8.48.0)(vue-router@4.2.4)(vue@3.3.4)(workbox-webpack-plugin@6.6.1)
       '@quasar/extras': 1.16.6
       '@quasar/render-ssr-error': 1.0.2
       '@quasar/ssl-certificate': 1.0.0

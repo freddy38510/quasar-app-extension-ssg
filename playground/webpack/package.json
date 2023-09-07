@@ -17,14 +17,14 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.6",
-    "core-js": "^3.32.1",
+    "core-js": "^3.32.2",
     "quasar": "^2.12.6",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.15",
-    "@quasar/app-webpack": "^3.10.0",
+    "@quasar/app-webpack": "^3.10.1",
     "eslint": "^8.48.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-vue": "^9.17.0",
