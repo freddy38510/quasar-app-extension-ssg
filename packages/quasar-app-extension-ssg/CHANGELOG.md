@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.0.2](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v5.0.1...v5.0.2) (2023-09-28)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#361](https://github.com/freddy38510/quasar-app-extension-ssg/issues/361)) ([023514b](https://github.com/freddy38510/quasar-app-extension-ssg/commit/023514bf4f9f705f0ae638d93cb71c4eb72b5a76))
+* **webpack:** support @quasar/app-webpack v3.11.0 and above ([6830dd1](https://github.com/freddy38510/quasar-app-extension-ssg/commit/6830dd1e2f9eed711799bff272e433d294cd9bc6)), closes [#366](https://github.com/freddy38510/quasar-app-extension-ssg/issues/366)
+
 ## [5.0.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v5.0.0...v5.0.1) (2023-09-03)
 
 
