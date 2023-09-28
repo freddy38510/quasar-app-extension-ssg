@@ -16,6 +16,7 @@ const {
   withTrailingSlash,
   withoutTrailingSlash,
 } = require('./helpers/normalize-slash');
+const { hasPackage } = require('../api');
 
 module.exports = class PagesGenerator {
   constructor(quasarConf, renderToString, fs) {
@@ -26,11 +27,13 @@ module.exports = class PagesGenerator {
     this.renderToString = renderToString;
     this.fs = fs || require('fs').promises;
 
+    const minifyOptions = hasPackage('@quasar/app-webpack', '>= 3.11.0') ? quasarConf.build.htmlMinifyOptions : quasarConf.__html.minifyOptions;
+
     this.options = {
       ...quasarConf.ssg,
       vueRouterBase: quasarConf.build.vueRouterBase,
-      minifyOptions: quasarConf.__html.minifyOptions ? {
-        ...quasarConf.__html.minifyOptions,
+      minifyOptions: minifyOptions ? {
+        ...minifyOptions,
         ignoreCustomComments: [/^(\]?|\[?)$/], // avoid client-side hydration error
         conservativeCollapse: true, // avoid client-side hydration error
         minifyCSS: true,

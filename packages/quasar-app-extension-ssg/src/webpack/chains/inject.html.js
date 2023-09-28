@@ -1,6 +1,7 @@
 const { join } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const appPaths = require('@quasar/app-webpack/lib/app-paths');
+const { hasPackage } = require('../../api');
 const HtmlAddonsPlugin = require('../plugins/html-addons').plugin;
 
 function getHtmlFilename(cfg) {
@@ -33,7 +34,7 @@ module.exports = function injectHtml(chain, cfg) {
     .use(HtmlWebpackPlugin, [{
       filename: getHtmlFilename(cfg),
       template: appPaths.resolve.app(cfg.sourceFiles.indexHtmlTemplate),
-      minify: cfg.__html.minifyOptions,
+      minify: hasPackage('@quasar/app-webpack', '>= 3.11.0') ? cfg.build.htmlMinifyOptions : cfg.__html.minifyOptions,
       templateParameters: templateParam || cfg.htmlVariables,
       chunksSortMode: 'none',
       // inject script tags for bundle
