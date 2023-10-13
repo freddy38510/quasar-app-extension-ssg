@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/freddy38510/quasar-app-extension-ssg",
   "engines": {
-    "node": ">= 10.18.1",
+    "node": ">= 18.18.2",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   },
