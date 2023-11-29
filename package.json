@@ -23,25 +23,25 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.7.2",
-    "@commitlint/config-conventional": "^17.7.0",
+    "@commitlint/cli": "^17.8.1",
+    "@commitlint/config-conventional": "^17.8.1",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",
-    "commit-and-tag-version": "^11.2.3",
+    "commit-and-tag-version": "^11.3.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.50.0",
+    "eslint": "^8.54.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
-    "eslint-define-config": "^1.23.0",
+    "eslint-define-config": "^1.24.1",
     "eslint-import-resolver-exports": "1.0.0-beta.5",
-    "eslint-plugin-ecmascript-compat": "^3.0.0",
-    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-ecmascript-compat": "^3.1.0",
+    "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-lodash-template": "^0.22.1",
-    "eslint-plugin-n": "^16.1.0",
+    "eslint-plugin-n": "^16.3.1",
     "husky": "^8.0.3",
     "pnpm-sync-dependencies-meta-injected": "^0.0.10",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.2"
   },
   "config": {
     "commitizen": {
@@ -58,7 +58,7 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "packageManager": "pnpm@8.8.0",
+  "packageManager": "pnpm@8.11.0",
   "pnpm": {
     "overrides": {
       "magic-string": "^0.30.0",
