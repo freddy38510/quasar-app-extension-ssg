@@ -89,8 +89,12 @@ function extendQuasarConf(conf) {
 module.exports = class ExtendedQuasarConfFile extends QuasarConfFile {
   #ctx;
 
-  constructor({ ctx, host, port }) {
-    super({ ctx, host, port });
+  constructor({
+    ctx, host, port, verifyAddress,
+  }) {
+    super({
+      ctx, host, port, verifyAddress,
+    });
 
     this.#ctx = ctx;
   }

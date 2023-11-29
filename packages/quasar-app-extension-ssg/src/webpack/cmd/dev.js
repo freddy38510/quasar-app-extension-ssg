@@ -40,49 +40,12 @@ if (argv.help) {
 
 const ensureVueDeps = require('@quasar/app-webpack/lib/helpers/ensure-vue-deps');
 const { displayBuildBanner } = require('../helpers/banner');
-const { log, warn, fatal } = require('../helpers/logger');
+const { log, fatal } = require('../helpers/logger');
 
 ensureVueDeps();
 displayBuildBanner(argv, 'dev');
 
-async function parseAddress({ host, port }) {
-  const findPort = require('@quasar/app-webpack/lib/helpers/net').findClosestOpenPort;
-
-  try {
-    const openPort = await findPort(port, host);
-    if (port !== openPort) {
-      warn();
-      warn(`️️Setting port to closest one available: ${openPort}`);
-      warn();
-
-      port = openPort;
-    }
-  } catch (e) {
-    warn();
-
-    if (e.message === 'ERROR_NETWORK_PORT_NOT_AVAIL') {
-      warn('Could not find an open port. Please configure a lower one to start searching with.');
-    } else if (e.message === 'ERROR_NETWORK_ADDRESS_NOT_AVAIL') {
-      warn('Invalid host specified. No network address matches. Please specify another one.');
-    } else {
-      warn('Unknown network error occurred');
-      console.log(e);
-    }
-
-    warn();
-
-    if (!this.running) {
-      process.exit(1);
-    }
-
-    return null;
-  }
-
-  this.running = true;
-  return { host, port };
-}
-
-function startVueDevtools() {
+async function startVueDevtools(devtoolsPort) {
   const { spawn } = require('@quasar/app-webpack/lib/helpers/spawn');
   const getPackagePath = require('@quasar/app-webpack/lib/helpers/get-package-path');
 
@@ -90,11 +53,21 @@ function startVueDevtools() {
 
   function run() {
     log('Booting up remote Vue Devtools...');
-    spawn(vueDevtoolsBin, [], {});
+    spawn(vueDevtoolsBin, [], {
+      env: {
+        ...process.env,
+        PORT: devtoolsPort,
+      },
+    });
+
+    log('Waiting for remote Vue Devtools to initialize...');
+    return new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
   }
 
   if (vueDevtoolsBin !== void 0) {
-    run();
+    await run();
     return undefined;
   }
 
@@ -106,8 +79,7 @@ function startVueDevtools() {
   // after a yarn/npm install will fail
   return new Promise((resolve) => {
     vueDevtoolsBin = getPackagePath('@vue/devtools/bin.js');
-    run();
-    resolve();
+    run().then(resolve);
   });
 }
 
@@ -138,7 +110,7 @@ function startVueDevtools() {
   const quasarConfFile = new QuasarConfFile(ctx, {
     port: argv.port,
     host: argv.hostname,
-    onAddress: parseAddress,
+    verifyAddress: true,
     onBuildChange() {
       log('Rebuilding app...');
       dev = dev.then(startDev);
@@ -165,7 +137,7 @@ function startVueDevtools() {
   regenerateTypesFeatureFlags(quasarConf);
 
   if (quasarConf.__vueDevtools !== false) {
-    await startVueDevtools();
+    await startVueDevtools(quasarConf.__vueDevtools.port);
   }
 
   if (typeof quasarConf.build.beforeDev === 'function') {

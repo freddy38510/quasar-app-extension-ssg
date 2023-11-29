@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 const compileTemplate = require('lodash/template');
 
-function injectSsrInterpolation(html) {
+function injectSsrRuntimeInterpolation(html) {
   return html
     .replace(
       /(<html[^>]*)(>)/i,
@@ -69,6 +69,18 @@ function htmlTagObjectToString(tagDefinition) {
 ${tagDefinition.innerHTML || ''}${tagDefinition.voidTag ? '' : `</${tagDefinition.tagName}>`}`;
 }
 
+function injectVueDevtools(html, { host, port }, nonce = '') {
+  const scripts = (
+    `<script${nonce}>window.__VUE_DEVTOOLS_HOST__='${host}';window.__VUE_DEVTOOLS_PORT__='${port}';</script>`
+    + `<script src="http://${host}:${port}"></script>`
+  );
+
+  return html.replace(
+    /(<\/head>)/i,
+    (_, tag) => `${scripts}${tag}`,
+  );
+}
+
 const htmlRegExp = /(<html[^>]*>)/i;
 const headRegExp = /(<\/head\s*>)/i;
 const bodyRegExp = /(<\/body\s*>)/i;
@@ -131,7 +143,12 @@ module.exports.getIndexHtml = function getIndexHtml(template, cfg) {
     html = fillBaseTag(html, cfg.build.appBase);
   }
 
-  html = injectSsrInterpolation(html);
+  html = injectSsrRuntimeInterpolation(html);
+
+  // should be dev only
+  if (cfg.__vueDevtools !== false) {
+    html = injectVueDevtools(html, cfg.__vueDevtools, '{{ typeof nonce !== \'undefined\' ? \' nonce="\' + nonce + \'"\' : \'\' }}');
+  }
 
   return compileTemplate(html, { interpolate: /{{([\s\S]+?)}}/g });
 };

@@ -89,6 +89,7 @@ function startVueDevtools() {
     ctx,
     port: argv.port,
     host: argv.hostname,
+    verifyAddress: true,
   });
 
   const quasarConf = await quasarConfFile.read();

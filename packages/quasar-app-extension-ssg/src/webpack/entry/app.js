@@ -10,10 +10,6 @@
  * Boot files are your "main.js"
  */
 
-<% if (__vueDevtools !== false && __needsAppMountHook === true) { %>
-import vueDevtools from '@vue/devtools';
-<% } %>
-
 import { Quasar } from 'quasar';
 import {
   markRaw,
@@ -40,10 +36,6 @@ const RootComponent = defineComponent({
   name: 'AppWrapper',
   setup(props) {
     onMounted(() => {
-      <% if (__vueDevtools !== false) { %>
-      vueDevtools.connect('<%= __vueDevtools.host %>', <%= __vueDevtools.port %>);
-      <% } %>
-
       <% if (ssr.manualPostHydrationTrigger !== true) { %>
       const { proxy: { $q } } = getCurrentInstance();
       if ($q.onSSRHydrated !== void 0) {

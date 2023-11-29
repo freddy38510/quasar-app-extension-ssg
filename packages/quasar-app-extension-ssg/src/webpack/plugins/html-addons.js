@@ -1,5 +1,21 @@
 const { getHooks } = require('html-webpack-plugin');
 
+function makeTag(tagName, attributes, closeTag = false) {
+  return {
+    tagName,
+    attributes,
+    closeTag,
+  };
+}
+
+function makeScriptTag(innerHTML) {
+  return {
+    tagName: 'script',
+    closeTag: true,
+    innerHTML,
+  };
+}
+
 function fillBaseTag(html, base) {
   return html.replace(
     /(<head[^>]*)(>)/i,
@@ -21,6 +37,14 @@ module.exports.plugin = class HtmlAddonsPlugin {
       hooks.afterTemplateExecution.tapPromise('webpack-plugin-html-addons', async (data) => {
         if (this.cfg.build.appBase) {
           data.html = fillBaseTag(data.html, this.cfg.build.appBase);
+        }
+
+        if (this.cfg.__vueDevtools !== false) {
+          const { host, port } = this.cfg.__vueDevtools;
+          data.headTags.push(
+            makeScriptTag(`window.__VUE_DEVTOOLS_HOST__ = '${host}';window.__VUE_DEVTOOLS_PORT__ = '${port}';`),
+            makeTag('script', { src: `http://${host}:${port}` }, true),
+          );
         }
 
         return data;
