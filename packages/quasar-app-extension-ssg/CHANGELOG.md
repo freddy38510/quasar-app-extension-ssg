@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v5.0.2...v5.1.0) (2023-11-29)
+
+
+### Features
+
+* **webpack:** use vue devtools management logic from q/appwebpack's next major version ([cae9301](https://github.com/freddy38510/quasar-app-extension-ssg/commit/cae9301e670b685fb318d08f400e9a89c2fb1697))
+
+
+### Bug Fixes
+
+* **package:** add workbox v7 support ([1634b55](https://github.com/freddy38510/quasar-app-extension-ssg/commit/1634b55eda712e6a355851f021c670914f67914d)), closes [#372](https://github.com/freddy38510/quasar-app-extension-ssg/issues/372)
+* **webpack:** use workbox v7 by default ([55c5cb4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/55c5cb4ce599a540c3074c00bc854fc71914e6f9))
+
 ## [5.0.2](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v5.0.1...v5.0.2) (2023-09-28)
 
 
