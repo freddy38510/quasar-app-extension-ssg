@@ -93,8 +93,8 @@
     "quasar": "^2.14.1",
     "vue": "^3.3.9",
     "vue-router": "^4.2.5",
-    "workbox-build": "^6.6.0",
-    "workbox-webpack-plugin": "^6.6.0"
+    "workbox-build": "^7.0.0",
+    "workbox-webpack-plugin": "^7.0.0"
   },
   "peerDependencies": {
     "@quasar/app-vite": "^1.7.0",
