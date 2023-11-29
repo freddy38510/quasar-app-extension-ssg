@@ -104,8 +104,8 @@
     "quasar": "^2.12.7",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5",
-    "workbox-build": "^6.6.0",
-    "workbox-webpack-plugin": "^6.6.0"
+    "workbox-build": ">= 6",
+    "workbox-webpack-plugin": ">= 6"
   },
   "peerDependenciesMeta": {
     "@quasar/app-vite": {
