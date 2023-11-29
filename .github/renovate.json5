@@ -11,6 +11,14 @@
       "allowedVersions": "<5.0.0" // only esm
     },
     {
+      "matchPackageNames": ["workbox-build"],
+      "allowedVersions": ">=6"
+    },
+    {
+      "matchPackageNames": ["workbox-webpack-plugin"],
+      "allowedVersions": ">=6"
+    },
+    {
       "matchBaseBranches": ["2.x"],
       "matchPackageNames": ["pify"],
       "allowedVersions": "<6.0.0" // only esm
