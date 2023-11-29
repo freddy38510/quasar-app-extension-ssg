@@ -218,7 +218,7 @@ function getAutoImportSvgIconsPlugin(iconSet) {
     return null;
   }
 
-  const autoImportPlugin = require('unplugin-auto-import/vite');
+  const { default: autoImportPlugin } = require('unplugin-auto-import/vite');
 
   const idx = 'svg-'.length;
   const iconSetPath = `@quasar/extras/${iconSet.substring(idx)}`;
