@@ -166,7 +166,7 @@ module.exports = class ExtendedQuasarConfFile extends QuasarConfFile {
 
       if (ssgDeps.pwa.some((dep) => !appDevDependencies.includes(dep))) {
         const nodePackager = require('@quasar/app-webpack/lib/helpers/node-packager');
-        const defaultVersion = '^6.5.0';
+        const defaultVersion = '^7.0.0';
 
         nodePackager.installPackage(
           ssgDeps.pwa.map((name) => `${name}@${defaultVersion}`),
