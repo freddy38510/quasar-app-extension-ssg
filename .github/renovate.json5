@@ -11,12 +11,11 @@
       "allowedVersions": "<5.0.0" // only esm
     },
     {
-      "matchPackageNames": ["workbox-build"],
-      "allowedVersions": ">=6"
-    },
-    {
-      "matchPackageNames": ["workbox-webpack-plugin"],
-      "allowedVersions": ">=6"
+      "matchPackageNames": ["workbox-build", "workbox-webpack-plugin"],
+      "enabled": false,
+      "matchDepTypes": [
+        "peerDependencies"
+      ]
     },
     {
       "matchBaseBranches": ["2.x"],
