@@ -45,7 +45,7 @@ module.exports = {
 
     cfg.plugins.push(ssgVitePlugin(quasarConf, 'ssr-client'));
 
-    if (viteVersion.startsWith('3')) {
+    if (viteVersion.charAt(0) > 2) {
       cfg.appType = 'custom';
       cfg.build.modulePreload = { polyfill: quasarConf.build.polyfillModulePreload };
       cfg.server.middlewareMode = true;
@@ -97,7 +97,7 @@ module.exports = {
 
     cfg.plugins.push(ssgVitePlugin(quasarConf, 'ssr-server'));
 
-    if (viteVersion.startsWith('3')) {
+    if (viteVersion.charAt(0) > 2) {
       if (!cfg.legacy) {
         cfg.legacy = {};
       }
