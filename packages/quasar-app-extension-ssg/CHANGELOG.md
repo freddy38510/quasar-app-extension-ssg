@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.1.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v5.1.0...v5.1.1) (2023-11-30)
+
+
+### Bug Fixes
+
+* **vite:** add support for vite v4 ([a2d58d4](https://github.com/freddy38510/quasar-app-extension-ssg/commit/a2d58d45d0c0b61bf51f6f294897a3797b01b29b)), closes [#374](https://github.com/freddy38510/quasar-app-extension-ssg/issues/374)
+
 ## [5.1.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v5.0.2...v5.1.0) (2023-11-29)
 
 
