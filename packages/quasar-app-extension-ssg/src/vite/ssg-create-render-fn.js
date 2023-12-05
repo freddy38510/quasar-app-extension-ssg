@@ -91,6 +91,9 @@ module.exports = function createRenderFn(quasarConf, viteDevServer) {
     if (viteDevServer) {
       ({ renderApp } = await viteDevServer.ssrLoadModule(
         serverEntryFile,
+        {
+          fixStacktrace: false, // stacktrace will be fixed in ssg-devserver.js file
+        },
       ));
     }
 

@@ -193,7 +193,9 @@ class SsgDevServer extends AppDevserver {
     }
 
     try {
-      await this.#viteServer.ssrLoadModule(serverEntryFile);
+      await this.#viteServer.ssrLoadModule(serverEntryFile, {
+        fixStacktrace: true,
+      });
       await this.#viteClient.transformRequest('.quasar/client-entry.js');
     } catch (err) {
       warn('Warmup failed!', 'FAIL');
@@ -243,6 +245,9 @@ class SsgDevServer extends AppDevserver {
     if (quasarConf.ssg.includeStaticRoutes !== false) {
       const { getRoutesFromRouter } = await this.#viteServer.ssrLoadModule(
         serverEntryFile,
+        {
+          fixStacktrace: true,
+        },
       );
 
       this.#pagesGenerator.getRoutesFromRouter = getRoutesFromRouter;
