@@ -57,7 +57,7 @@
     "express": "^4.18.2",
     "fastq": "^1.15.0",
     "fs-extra": "^11.2.0",
-    "globby": "^13.2.2",
+    "globby": "^14.0.1",
     "hash-sum": "^2.0.0",
     "html-minifier": "^4.0.0",
     "html-webpack-plugin": "^5.5.3",
