@@ -67,7 +67,7 @@
     "magic-string": "^0.30.5",
     "minimist": "^1.2.8",
     "node-html-parser": "^6.1.11",
-    "open": "^9.1.0",
+    "open": "^10.1.0",
     "pony-cause": "^2.1.10",
     "postcss-rtlcss": "^4.0.9",
     "route-cache": "^0.6.1",
