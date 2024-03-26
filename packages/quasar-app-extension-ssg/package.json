@@ -87,7 +87,7 @@
     "@quasar/app-webpack": "^3.12.0",
     "@quasar/extras": "^1.16.9",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^14.18.63",
+    "@types/node": "^20.11.30",
     "@vue/devtools": "^6.5.1",
     "cross-spawn": "7.0.3",
     "quasar": "^2.14.1",
