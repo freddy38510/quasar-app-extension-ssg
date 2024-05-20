@@ -21,7 +21,7 @@ function getLazyHydrationPlugin() {
   const setupRE = /setup.*\(.*\).*{/i;
 
   const importName = '__quasar_ssg_vue3_lazy_hydration';
-  const importCode = `import ${importName} from 'quasar-app-extension-ssg/src/vite/runtime.server.vue3-lazy-hydration';\n`;
+  const importCode = `import ${importName} from 'quasar-app-extension-ssg/src/vite/runtime.server.vue3-lazy-hydration.esm';\n`;
 
   function generateCode(code, filename) {
     return (
@@ -39,7 +39,7 @@ function getLazyHydrationPlugin() {
     transform(code, id) {
       const { is, filename } = parseViteRequest(id);
 
-      if (is.script() && setupRE.test(code)) {
+      if (is.script() && setupRE.test(code) && !filename.endsWith('quasar.server.prod.js')) {
         const magicString = new MagicString(
           generateCode(code, normalizePath(relative(root, filename))),
         );
@@ -214,14 +214,20 @@ function getRobotoFontPlugin(fontDisplayValue) {
  * @type { (iconSet: import('quasar').QuasarIconSets) => import('vite').Plugin }
  */
 function getAutoImportSvgIconsPlugin(iconSet) {
-  if (!iconSet || !iconSet.startsWith('svg')) {
+  if (!iconSet) {
     return null;
   }
 
-  const { default: autoImportPlugin } = require('unplugin-auto-import/vite');
+  const iconSetName = iconSet.match(/(svg-.*?)(?:\.[cm]?js)?$/)[1];
+
+  if (!iconSetName) {
+    return null;
+  }
 
   const idx = 'svg-'.length;
-  const iconSetPath = `@quasar/extras/${iconSet.substring(idx)}`;
+  const iconSetPath = `@quasar/extras/${iconSetName.substring(idx)}`;
+
+  const { default: autoImportPlugin } = require('unplugin-auto-import/vite');
 
   return autoImportPlugin({
     imports: [

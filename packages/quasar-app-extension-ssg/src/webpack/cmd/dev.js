@@ -30,10 +30,10 @@ if (argv.help) {
 
   Options
     --port, -p       A port number on which to start the application
+    --devtools, -d   Open remote Vue Devtools
     --hostname, -H   A hostname to use for serving the application
     --help, -h       Displays this message
 
-    --devtools, -d   Open remote Vue Devtools
   `);
   process.exit(0);
 }
