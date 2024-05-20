@@ -112,13 +112,13 @@ class SsgBuilder extends AppBuilder {
     const htmlFile = join(clientDir, 'index.html');
     const html = this.readFile(htmlFile);
 
-    const templateFn = getProdSsrTemplateFn(html, this.quasarConf);
+    const templateFn = await getProdSsrTemplateFn(html, this.quasarConf);
 
     this.writeFile('render-template.js', `module.exports=${templateFn.source}`);
 
     this.writeFile(
       `client/${this.quasarConf.ssg.fallback}`,
-      transformProdSsgFallbackHtml(html, this.quasarConf),
+      await transformProdSsgFallbackHtml(html, this.quasarConf),
     );
 
     this.removeFile(htmlFile);

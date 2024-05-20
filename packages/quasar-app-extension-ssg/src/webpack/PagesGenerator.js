@@ -209,10 +209,10 @@ module.exports = class PagesGenerator {
     }
 
     if (this.options.minify !== false) {
-      const { minify } = require('html-minifier');
+      const { minify } = require('html-minifier-terser');
 
       try {
-        html = minify(html, this.options.minifyOptions);
+        html = await minify(html, this.options.minifyOptions);
       } catch (e) {
         e.hint = `Could not minify html string of pre-rendered page for route "${green(route)}"`;
 

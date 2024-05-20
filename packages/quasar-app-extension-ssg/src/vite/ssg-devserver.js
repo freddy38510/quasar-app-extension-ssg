@@ -154,17 +154,17 @@ class SsgDevServer extends AppDevserver {
       injectPwaManifest(quasarConf, true);
     }
 
-    const updateTemplate = () => {
+    const updateTemplate = async () => {
       const template = readFileSync(templatePath, 'utf-8');
       this.#renderTemplate = getDevSsrTemplateFn(template, quasarConf);
 
-      this.#fallbackHtml = transformHtml(template, quasarConf).replace(
+      this.#fallbackHtml = await transformHtml(template, quasarConf).replace(
         entryPointMarkup,
         attachMarkup,
       );
     };
 
-    updateTemplate();
+    await updateTemplate();
 
     this.#htmlWatcher = chokidar
       .watch(templatePath)
