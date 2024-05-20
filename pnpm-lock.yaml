@@ -116,7 +116,7 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       express:
-        specifier: ^4.18.2
+        specifier: ^4.19.2
         version: 4.19.2
       fastq:
         specifier: ^1.17.1
