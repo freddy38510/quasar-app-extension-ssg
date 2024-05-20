@@ -38,7 +38,7 @@
     "eslint-plugin-ecmascript-compat": "^3.2.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-lodash-template": "^1.0.0",
-    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-n": "^17.7.0",
     "husky": "^8.0.3",
     "pnpm-sync-dependencies-meta-injected": "^0.0.14",
     "typescript": "^5.4.5"
