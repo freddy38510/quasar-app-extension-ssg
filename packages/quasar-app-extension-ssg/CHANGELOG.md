@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.2.0](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v5.1.1...v5.2.0) (2024-05-20)
+
+
+### Features
+
+* **vite, webpack:** update to Quasar v2.16 specs ([7f7681a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/7f7681a857caa774d65df4e2e858baad766e87f3))
+* **vite:** ensure potential mode build error is printed to the terminal ([9bf7590](https://github.com/freddy38510/quasar-app-extension-ssg/commit/9bf7590537b86f97f76a4c9f187861de4a5dd56c))
+* **vite:** support @vue/devtools v7 ([8c6c277](https://github.com/freddy38510/quasar-app-extension-ssg/commit/8c6c277cba85d58e1aab0a55e33c81c43806d627))
+* **vite:** use vue devtools management logic from q/app-vite 1.4.4 ([9bcb26f](https://github.com/freddy38510/quasar-app-extension-ssg/commit/9bcb26f74412af76680907ca8b6d3d0eb5631754))
+
+
+### Bug Fixes
+
+* **deps:** update dependency express to ^4.19.2 ([#395](https://github.com/freddy38510/quasar-app-extension-ssg/issues/395)) ([41a4d21](https://github.com/freddy38510/quasar-app-extension-ssg/commit/41a4d21eb9cf03defa85612d6b404cd3c744aa57))
+* **deps:** update dependency express to v4.19.2 [security] ([#387](https://github.com/freddy38510/quasar-app-extension-ssg/issues/387)) ([d4fafce](https://github.com/freddy38510/quasar-app-extension-ssg/commit/d4fafce9a8307a2f8095a21745bb246e8fc81aab))
+* **vite, webpack:** avoid duplicate public path with boot & preFetch redirect fn ([77b2a5a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/77b2a5a9e817f0858511fc184339026d4d4b0ccf))
+* **vite:dev:** await on transformHtml ([681b86c](https://github.com/freddy38510/quasar-app-extension-ssg/commit/681b86cbb32647b0ec115c78d813d8ade551173b))
+* **vite:** avoid fixing stack traces twice ([4788807](https://github.com/freddy38510/quasar-app-extension-ssg/commit/4788807d8e013c8c3ae0118582c1886506f8308b))
+* **vite:** support q/app-vite v1.8.3 ([79c1fa3](https://github.com/freddy38510/quasar-app-extension-ssg/commit/79c1fa3af66d21b29c3a570173fe6f84ad70563c)), closes [#390](https://github.com/freddy38510/quasar-app-extension-ssg/issues/390)
+* **vite:** update internal vite plugins to support quasar v2.16 ([9769c6a](https://github.com/freddy38510/quasar-app-extension-ssg/commit/9769c6a0ab64afb3a349edb9c61b444be35ba361))
+
 ## [5.1.1](https://github.com/freddy38510/quasar-app-extension-ssg/compare/v5.1.0...v5.1.1) (2023-11-30)
 
 
