@@ -137,8 +137,8 @@ importers:
         specifier: ^5.6.0
         version: 5.6.0(webpack@5.91.0)
       http-proxy-middleware:
-        specifier: ^2.0.6
-        version: 2.0.6(@types/express@4.17.21)
+        specifier: ^3.0.0
+        version: 3.0.0
       kolorist:
         specifier: ^1.8.0
         version: 1.8.0
@@ -272,7 +272,7 @@ importers:
         version: 3.2.5
       quasar-app-extension-ssg:
         specifier: workspace:*
-        version: file:packages/quasar-app-extension-ssg(@quasar/app-vite@1.9.3(eslint@8.57.0)(quasar@2.16.4)(rollup@2.79.1)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0))(@quasar/app-webpack@3.13.2(eslint@8.57.0)(quasar@2.16.4)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-webpack-plugin@7.1.0(webpack@5.91.0)))(@quasar/extras@1.16.11)(@types/express@4.17.21)(@vue/devtools@7.2.1(vue@3.4.27(typescript@5.4.5)))(postcss@8.4.38)(quasar@2.16.4)(rollup@2.79.1)(sass@1.69.5)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0)(workbox-webpack-plugin@7.1.0(webpack@5.91.0))
+        version: file:packages/quasar-app-extension-ssg(@quasar/app-vite@1.9.3(eslint@8.57.0)(quasar@2.16.4)(rollup@2.79.1)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0))(@quasar/app-webpack@3.13.2(eslint@8.57.0)(quasar@2.16.4)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-webpack-plugin@7.1.0(webpack@5.91.0)))(@quasar/extras@1.16.11)(@vue/devtools@7.2.1(vue@3.4.27(typescript@5.4.5)))(postcss@8.4.38)(quasar@2.16.4)(rollup@2.79.1)(sass@1.69.5)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0)(workbox-webpack-plugin@7.1.0(webpack@5.91.0))
     dependenciesMeta:
       quasar-app-extension-ssg:
         injected: true
@@ -318,7 +318,7 @@ importers:
         version: 3.2.5
       quasar-app-extension-ssg:
         specifier: workspace:*
-        version: file:packages/quasar-app-extension-ssg(@quasar/app-vite@1.9.3(eslint@8.57.0)(quasar@2.16.4)(rollup@2.79.1)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0))(@quasar/app-webpack@3.13.2(eslint@8.57.0)(quasar@2.16.4)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-webpack-plugin@7.1.0(webpack@5.91.0)))(@quasar/extras@1.16.11)(@types/express@4.17.21)(@vue/devtools@7.2.1(vue@3.4.27(typescript@5.4.5)))(postcss@8.4.38)(quasar@2.16.4)(rollup@2.79.1)(sass@1.69.5)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0)(workbox-webpack-plugin@7.1.0(webpack@5.91.0))
+        version: file:packages/quasar-app-extension-ssg(@quasar/app-vite@1.9.3(eslint@8.57.0)(quasar@2.16.4)(rollup@2.79.1)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0))(@quasar/app-webpack@3.13.2(eslint@8.57.0)(quasar@2.16.4)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-webpack-plugin@7.1.0(webpack@5.91.0)))(@quasar/extras@1.16.11)(@vue/devtools@7.2.1(vue@3.4.27(typescript@5.4.5)))(postcss@8.4.38)(quasar@2.16.4)(rollup@2.79.1)(sass@1.69.5)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0)(workbox-webpack-plugin@7.1.0(webpack@5.91.0))
     dependenciesMeta:
       quasar-app-extension-ssg:
         injected: true
@@ -4167,6 +4167,10 @@ packages:
     peerDependenciesMeta:
       '@types/express':
         optional: true
+
+  http-proxy-middleware@3.0.0:
+    resolution: {integrity: sha512-36AV1fIaI2cWRzHo+rbcxhe3M3jUDCNzc4D5zRl57sEWRAxdXYtw7FSQKYY6PDKssiAKjLYypbssHk+xs/kMXw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
   http-proxy@1.18.1:
     resolution: {integrity: sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==}
@@ -12237,7 +12241,9 @@ snapshots:
 
   flatted@3.3.1: {}
 
-  follow-redirects@1.15.2: {}
+  follow-redirects@1.15.2(debug@4.3.4):
+    optionalDependencies:
+      debug: 4.3.4(supports-color@9.4.0)
 
   for-each@0.3.3:
     dependencies:
@@ -12671,7 +12677,7 @@ snapshots:
   http-proxy-middleware@2.0.6(@types/express@4.17.17):
     dependencies:
       '@types/http-proxy': 1.17.11
-      http-proxy: 1.18.1
+      http-proxy: 1.18.1(debug@4.3.4)
       is-glob: 4.0.3
       is-plain-obj: 3.0.0
       micromatch: 4.0.5
@@ -12683,7 +12689,7 @@ snapshots:
   http-proxy-middleware@2.0.6(@types/express@4.17.21):
     dependencies:
       '@types/http-proxy': 1.17.11
-      http-proxy: 1.18.1
+      http-proxy: 1.18.1(debug@4.3.4)
       is-glob: 4.0.3
       is-plain-obj: 3.0.0
       micromatch: 4.0.5
@@ -12692,10 +12698,21 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  http-proxy@1.18.1:
+  http-proxy-middleware@3.0.0:
+    dependencies:
+      '@types/http-proxy': 1.17.11
+      debug: 4.3.4(supports-color@9.4.0)
+      http-proxy: 1.18.1(debug@4.3.4)
+      is-glob: 4.0.3
+      is-plain-obj: 3.0.0
+      micromatch: 4.0.5
+    transitivePeerDependencies:
+      - supports-color
+
+  http-proxy@1.18.1(debug@4.3.4):
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2(debug@4.3.4)
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -14218,7 +14235,7 @@ snapshots:
     dependencies:
       side-channel: 1.0.6
 
-  quasar-app-extension-ssg@file:packages/quasar-app-extension-ssg(@quasar/app-vite@1.9.3(eslint@8.57.0)(quasar@2.16.4)(rollup@2.79.1)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0))(@quasar/app-webpack@3.13.2(eslint@8.57.0)(quasar@2.16.4)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-webpack-plugin@7.1.0(webpack@5.91.0)))(@quasar/extras@1.16.11)(@types/express@4.17.21)(@vue/devtools@7.2.1(vue@3.4.27(typescript@5.4.5)))(postcss@8.4.38)(quasar@2.16.4)(rollup@2.79.1)(sass@1.69.5)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0)(workbox-webpack-plugin@7.1.0(webpack@5.91.0)):
+  quasar-app-extension-ssg@file:packages/quasar-app-extension-ssg(@quasar/app-vite@1.9.3(eslint@8.57.0)(quasar@2.16.4)(rollup@2.79.1)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0))(@quasar/app-webpack@3.13.2(eslint@8.57.0)(quasar@2.16.4)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-webpack-plugin@7.1.0(webpack@5.91.0)))(@quasar/extras@1.16.11)(@vue/devtools@7.2.1(vue@3.4.27(typescript@5.4.5)))(postcss@8.4.38)(quasar@2.16.4)(rollup@2.79.1)(sass@1.69.5)(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))(workbox-build@7.1.0)(workbox-webpack-plugin@7.1.0(webpack@5.91.0)):
     dependencies:
       '@freddy38510/vue-loader': 17.3.0(vue@3.4.27(typescript@5.4.5))(webpack@5.91.0)
       '@freddy38510/vue-style-loader': 4.2.0
@@ -14242,7 +14259,7 @@ snapshots:
       hash-sum: 2.0.0
       html-minifier-terser: 7.2.0
       html-webpack-plugin: 5.6.0(webpack@5.91.0)
-      http-proxy-middleware: 2.0.6(@types/express@4.17.21)
+      http-proxy-middleware: 3.0.0
       kolorist: 1.8.0
       lodash: 4.17.21
       magic-string: 0.30.10
@@ -14275,7 +14292,6 @@ snapshots:
       - '@nuxt/kit'
       - '@rspack/core'
       - '@swc/core'
-      - '@types/express'
       - '@vue/compiler-sfc'
       - '@vueuse/core'
       - buffer
