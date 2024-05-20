@@ -70,11 +70,7 @@ function getRedirectUrl(url, router) {
   }
 
   try {
-    <% if (build.publicPath === '/') { %>
     return router.resolve(url).href;
-    <% } else { %>
-    return addPublicPath(router.resolve(url).href);
-    <% } %>
   } catch (err) {
     // continue regardless of error
   }
@@ -153,9 +149,15 @@ export async function renderApp(ssrContext) {
   const routeLocation = router.resolve(url);
 
   if (routeLocation.fullPath !== url) {
+    <% if (build.publicPath === '/') { %>
     const redirectErr = {
-      url: <%= build.publicPath === '/' ? 'routeLocation.fullPath' : 'addPublicPath(routeLocation.fullPath)' %>,
+      url: routeLocation.fullPath,
     };
+    <% } else { %>
+    const redirectErr = {
+      url: addPublicPath(routeLocation.fullPath),
+    };
+    <% } %>
 
     throw redirectErr;
   }
