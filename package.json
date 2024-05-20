@@ -25,23 +25,23 @@
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
     "@commitlint/config-conventional": "^17.8.1",
-    "@typescript-eslint/eslint-plugin": "^6.13.1",
-    "@typescript-eslint/parser": "^6.13.1",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "commit-and-tag-version": "^11.3.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.54.0",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-define-config": "^1.24.1",
     "eslint-import-resolver-exports": "1.0.0-beta.5",
-    "eslint-plugin-ecmascript-compat": "^3.1.0",
-    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-ecmascript-compat": "^3.2.1",
+    "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-lodash-template": "^0.22.1",
-    "eslint-plugin-n": "^16.3.1",
+    "eslint-plugin-n": "^16.6.2",
     "husky": "^8.0.3",
-    "pnpm-sync-dependencies-meta-injected": "^0.0.10",
-    "typescript": "^5.3.2"
+    "pnpm-sync-dependencies-meta-injected": "^0.0.14",
+    "typescript": "^5.4.5"
   },
   "config": {
     "commitizen": {
@@ -58,12 +58,12 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "packageManager": "pnpm@8.11.0",
+  "packageManager": "pnpm@8.15.8",
   "pnpm": {
     "overrides": {
-      "magic-string": "^0.30.0",
+      "magic-string": "^0.30.10",
       "quasar-app-extension-ssg": "workspace:*",
-      "svgo": "^3.0.0"
+      "svgo": "^3.3.2"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
