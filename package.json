@@ -39,7 +39,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-lodash-template": "^1.0.0",
     "eslint-plugin-n": "^17.7.0",
-    "husky": "^8.0.3",
+    "husky": "^9.0.11",
     "pnpm-sync-dependencies-meta-injected": "^0.0.14",
     "typescript": "^5.4.5"
   },
