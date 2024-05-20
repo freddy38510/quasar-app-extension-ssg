@@ -36,7 +36,7 @@ if (argv.help) {
 
 const { log, fatal } = require('../helpers/logger');
 
-function startVueDevtools() {
+async function startVueDevtools(devtoolsPort) {
   const { spawn } = require('@quasar/app-vite/lib/helpers/spawn');
   const getPackagePath = require('@quasar/app-vite/lib/helpers/get-package-path');
 
@@ -44,11 +44,21 @@ function startVueDevtools() {
 
   function run() {
     log('Booting up remote Vue Devtools...');
-    spawn(vueDevtoolsBin, [], {});
+    spawn(vueDevtoolsBin, [], {
+      env: {
+        ...process.env,
+        PORT: devtoolsPort,
+      },
+    });
+
+    log('Waiting for remote Vue Devtools to initialize...');
+    return new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
   }
 
   if (vueDevtoolsBin !== void 0) {
-    run();
+    await run();
     return undefined;
   }
 
@@ -60,8 +70,7 @@ function startVueDevtools() {
   // after a yarn/npm install will fail
   return new Promise((resolve) => {
     vueDevtoolsBin = getPackagePath('@vue/devtools/bin.js');
-    run();
-    resolve();
+    run().then(resolve);
   });
 }
 
@@ -101,7 +110,7 @@ function startVueDevtools() {
   regenerateTypesFeatureFlags(quasarConf);
 
   if (quasarConf.metaConf.vueDevtools !== false) {
-    await startVueDevtools();
+    await startVueDevtools(quasarConf.metaConf.vueDevtools.port);
   }
 
   const AppDevServer = require('../ssg-devserver');
