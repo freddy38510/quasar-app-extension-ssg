@@ -179,8 +179,8 @@ importers:
         specifier: ^0.17.6
         version: 0.17.6
       vite:
-        specifier: ^2.9.16
-        version: 2.9.16(sass@1.69.5)
+        specifier: ^2.9.18
+        version: 2.9.18(sass@1.69.5)
       webpack:
         specifier: ^5.91.0
         version: 5.91.0
@@ -3456,6 +3456,7 @@ packages:
   /@commitlint/config-validator@17.8.1:
     resolution: {integrity: sha512-UUgUC+sNiiMwkyiuIFR7JG2cfd9t/7MV8VB4TZ+q02ZFkHoduUS4tJGsCBWvBOGD9Btev6IecPMvlWUfJorkEA==}
     engines: {node: '>=v14'}
+    requiresBuild: true
     dependencies:
       '@commitlint/types': 17.8.1
       ajv: 8.12.0
@@ -3476,6 +3477,7 @@ packages:
   /@commitlint/execute-rule@17.8.1:
     resolution: {integrity: sha512-JHVupQeSdNI6xzA9SqMF+p/JjrHTcrJdI02PwesQIDCIGUrv04hicJgCcws5nzaoZbROapPs0s6zeVHoxpMwFQ==}
     engines: {node: '>=v14'}
+    requiresBuild: true
     dev: true
 
   /@commitlint/format@17.8.1:
@@ -3555,6 +3557,7 @@ packages:
   /@commitlint/resolve-extends@17.8.1:
     resolution: {integrity: sha512-W/ryRoQ0TSVXqJrx5SGkaYuAaE/BUontL1j1HsKckvM6e5ZaG0M9126zcwL6peKSuIetJi7E87PRQF8O86EW0Q==}
     engines: {node: '>=v14'}
+    requiresBuild: true
     dependencies:
       '@commitlint/config-validator': 17.8.1
       '@commitlint/types': 17.8.1
@@ -4307,13 +4310,13 @@ packages:
         optional: true
     dependencies:
       '@quasar/render-ssr-error': 1.0.3
-      '@quasar/vite-plugin': 1.7.0(@vitejs/plugin-vue@2.3.4)(quasar@2.16.4)(vite@2.9.16)(vue@3.4.27)
+      '@quasar/vite-plugin': 1.7.0(@vitejs/plugin-vue@2.3.4)(quasar@2.16.4)(vite@2.9.18)(vue@3.4.27)
       '@rollup/pluginutils': 4.2.1
       '@types/chrome': 0.0.208
       '@types/compression': 1.7.2
       '@types/cordova': 0.0.34
       '@types/express': 4.17.17
-      '@vitejs/plugin-vue': 2.3.4(vite@2.9.16)(vue@3.4.27)
+      '@vitejs/plugin-vue': 2.3.4(vite@2.9.18)(vue@3.4.27)
       archiver: 5.3.1
       chokidar: 3.6.0
       ci-info: 3.8.0
@@ -4340,7 +4343,7 @@ packages:
       semver: 7.6.2
       serialize-javascript: 6.0.2
       table: 6.8.1
-      vite: 2.9.16(sass@1.69.5)
+      vite: 2.9.18(sass@1.69.5)
       vue: 3.4.27(typescript@5.4.5)
       vue-router: 4.3.2(vue@3.4.27)
       webpack-merge: 5.10.0
@@ -4519,7 +4522,7 @@ packages:
     dependencies:
       serialize-javascript: 6.0.2
 
-  /@quasar/vite-plugin@1.7.0(@vitejs/plugin-vue@2.3.4)(quasar@2.16.4)(vite@2.9.16)(vue@3.4.27):
+  /@quasar/vite-plugin@1.7.0(@vitejs/plugin-vue@2.3.4)(quasar@2.16.4)(vite@2.9.18)(vue@3.4.27):
     resolution: {integrity: sha512-ia4w1n4DuPYm92MQLPNpMqLJID1WGGRyVGxkVeg8V+V25Vh3p9QBo++iuXR4sW/bCmzzx66Ko6VStsr1zp90GQ==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -4528,9 +4531,9 @@ packages:
       vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
       vue: ^3.0.0
     dependencies:
-      '@vitejs/plugin-vue': 2.3.4(vite@2.9.16)(vue@3.4.27)
+      '@vitejs/plugin-vue': 2.3.4(vite@2.9.18)(vue@3.4.27)
       quasar: 2.16.4
-      vite: 2.9.16(sass@1.69.5)
+      vite: 2.9.18(sass@1.69.5)
       vue: 3.4.27(typescript@5.4.5)
     dev: true
 
@@ -5122,14 +5125,14 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@vitejs/plugin-vue@2.3.4(vite@2.9.16)(vue@3.4.27):
+  /@vitejs/plugin-vue@2.3.4(vite@2.9.18)(vue@3.4.27):
     resolution: {integrity: sha512-IfFNbtkbIm36O9KB8QodlwwYvTEsJb4Lll4c2IwB3VHc2gie2mSPtSzL0eYay7X2jd/2WX02FjSGTWR6OPr/zg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       vite: ^2.5.10
       vue: ^3.2.25
     dependencies:
-      vite: 2.9.16(sass@1.69.5)
+      vite: 2.9.18(sass@1.69.5)
       vue: 3.4.27(typescript@5.4.5)
     dev: true
 
@@ -5989,7 +5992,7 @@ packages:
   /call-bind@1.0.2:
     resolution: {integrity: sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA==}
     dependencies:
-      function-bind: 1.1.1
+      function-bind: 1.1.2
       get-intrinsic: 1.2.1
 
   /callsites@3.1.0:
@@ -8792,9 +8795,6 @@ packages:
     requiresBuild: true
     optional: true
 
-  /function-bind@1.1.1:
-    resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
-
   /function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
 
@@ -8825,7 +8825,7 @@ packages:
   /get-intrinsic@1.2.1:
     resolution: {integrity: sha512-2DcsyfABl+gVHEfCOaTrWgyt+tb6MSEGmKq+kI5HwLbIYgjgmMcV8KQ41uaKz1xxUcn9tJtgFbQUEVcEbd0FYw==}
     dependencies:
-      function-bind: 1.1.1
+      function-bind: 1.1.2
       has: 1.0.3
       has-proto: 1.0.1
       has-symbols: 1.0.3
@@ -10565,11 +10565,6 @@ packages:
     resolution: {integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==}
     dev: true
 
-  /nanoid@3.3.6:
-    resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-
   /nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -11979,14 +11974,6 @@ packages:
   /postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  /postcss@8.4.30:
-    resolution: {integrity: sha512-7ZEao1g4kd68l97aWG/etQKPKq07us0ieSZ2TnFDk11i0ZfDW2AwKHYU8qv4MZKqN2fdBfg+7q0ES06UA73C1g==}
-    engines: {node: ^10 || ^12 || >=14}
-    dependencies:
-      nanoid: 3.3.6
-      picocolors: 1.0.0
-      source-map-js: 1.0.2
-
   /postcss@8.4.38:
     resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
     engines: {node: ^10 || ^12 || >=14}
@@ -12345,14 +12332,6 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /resolve@1.22.2:
-    resolution: {integrity: sha512-Sb+mjNHOULsBv818T40qSPeRiuWLyaGMa5ewydRLFimneixmVy2zdivRl+AF6jaYPC8ERxGDmFSiqui6SfPd+g==}
-    hasBin: true
-    dependencies:
-      is-core-module: 2.13.1
-      path-parse: 1.0.7
-      supports-preserve-symlinks-flag: 1.0.0
-
   /resolve@1.22.8:
     resolution: {integrity: sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==}
     hasBin: true
@@ -12360,7 +12339,6 @@ packages:
       is-core-module: 2.13.1
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
-    dev: true
 
   /responselike@1.0.2:
     resolution: {integrity: sha512-/Fpe5guzJk1gPqdJLJR5u7eG/gNY4nImjbRDaVWVMRhne55TCmj2i9Q+54PBRfatRC8v/rIiv9BN0pMd9OV5EQ==}
@@ -13384,6 +13362,7 @@ packages:
   /ts-node@10.9.1(@types/node@20.5.1)(typescript@5.4.5):
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
+    requiresBuild: true
     peerDependencies:
       '@swc/core': '>=1.2.50'
       '@swc/wasm': '>=1.2.50'
@@ -13751,8 +13730,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  /vite@2.9.16(sass@1.69.5):
-    resolution: {integrity: sha512-X+6q8KPyeuBvTQV8AVSnKDvXoBMnTx8zxh54sOwmmuOdxkjMmEJXH2UEchA+vTMps1xw9vL64uwJOWryULg7nA==}
+  /vite@2.9.18(sass@1.69.5):
+    resolution: {integrity: sha512-sAOqI5wNM9QvSEE70W3UGMdT8cyEn0+PmJMTFvTB8wB0YbYUWw3gUbY62AOyrXosGieF2htmeLATvNxpv/zNyQ==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
@@ -13768,8 +13747,8 @@ packages:
         optional: true
     dependencies:
       esbuild: 0.14.54
-      postcss: 8.4.30
-      resolve: 1.22.2
+      postcss: 8.4.38
+      resolve: 1.22.8
       rollup: 2.77.3
       sass: 1.69.5
     optionalDependencies:
@@ -14608,7 +14587,7 @@ packages:
       semver: 7.6.2
       serialize-javascript: 6.0.2
       unplugin-auto-import: 0.17.6
-      vite: 2.9.16(sass@1.69.5)
+      vite: 2.9.18(sass@1.69.5)
       vue: 3.4.27(typescript@5.4.5)
       vue-router: 4.3.2(vue@3.4.27)
       webpack: 5.91.0
@@ -14702,7 +14681,7 @@ packages:
       semver: 7.6.2
       serialize-javascript: 6.0.2
       unplugin-auto-import: 0.17.6
-      vite: 2.9.16(sass@1.69.5)
+      vite: 2.9.18(sass@1.69.5)
       vue: 3.4.27(typescript@5.4.5)
       vue-router: 4.3.2(vue@3.4.27)
       webpack: 5.91.0

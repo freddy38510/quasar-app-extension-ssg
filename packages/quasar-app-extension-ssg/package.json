@@ -75,7 +75,7 @@
     "semver": "^7.6.2",
     "serialize-javascript": "^6.0.2",
     "unplugin-auto-import": "^0.17.6",
-    "vite": "^2.9.16",
+    "vite": "^2.9.18",
     "webpack": "^5.91.0",
     "webpack-chain": "^6.5.1",
     "webpack-dev-server": "^4.15.2",
