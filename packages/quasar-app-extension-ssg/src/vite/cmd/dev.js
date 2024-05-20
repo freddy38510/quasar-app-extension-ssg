@@ -40,7 +40,7 @@ async function startVueDevtools(devtoolsPort) {
   const { spawn } = require('@quasar/app-vite/lib/helpers/spawn');
   const getPackagePath = require('@quasar/app-vite/lib/helpers/get-package-path');
 
-  let vueDevtoolsBin = getPackagePath('@vue/devtools/bin.js');
+  let vueDevtoolsBin = getPackagePath('.bin/vue-devtools');
 
   function run() {
     log('Booting up remote Vue Devtools...');
@@ -69,7 +69,7 @@ async function startVueDevtools(devtoolsPort) {
   // a small delay is a must, otherwise require.resolve
   // after a yarn/npm install will fail
   return new Promise((resolve) => {
-    vueDevtoolsBin = getPackagePath('@vue/devtools/bin.js');
+    vueDevtoolsBin = getPackagePath('.bin/vue-devtools');
     run().then(resolve);
   });
 }
