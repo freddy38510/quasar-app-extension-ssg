@@ -56,8 +56,8 @@ importers:
         specifier: ^2.29.1
         version: 2.29.1(@typescript-eslint/parser@6.21.0)(eslint@9.3.0)
       eslint-plugin-lodash-template:
-        specifier: ^0.22.1
-        version: 0.22.1(eslint@9.3.0)
+        specifier: ^1.0.0
+        version: 1.0.0(eslint@9.3.0)
       eslint-plugin-n:
         specifier: ^16.6.2
         version: 16.6.2(eslint@9.3.0)
@@ -8120,6 +8120,16 @@ packages:
     resolution: {integrity: sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw==}
     engines: {node: '>=12'}
 
+  /eslint-compat-utils@0.4.1(eslint@9.3.0):
+    resolution: {integrity: sha512-5N7ZaJG5pZxUeNNJfUchurLVrunD1xJvyg5kYOIVF8kg1f3ajTikmAu/5fZ9w100omNPOoMjngRszh/Q/uFGMg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      eslint: '>=6.0.0'
+    dependencies:
+      eslint: 9.3.0
+      semver: 7.6.2
+    dev: true
+
   /eslint-compat-utils@0.5.0(eslint@9.3.0):
     resolution: {integrity: sha512-dc6Y8tzEcSYZMHa+CMPLi/hyo1FzNeonbhJL7Ol0ccuKQkwopJcJBA9YL/xmMTLU1eKigXo9vj9nALElWYSowg==}
     engines: {node: '>=12'}
@@ -8284,15 +8294,16 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-lodash-template@0.22.1(eslint@9.3.0):
-    resolution: {integrity: sha512-I4peWq7x985wGWyW6zzyqnjutKsr7PTz8vu2n9KADz/q9o7OzsXgOVikZo9lT+HOpRw1SXWTS1siCJg696li+A==}
-    engines: {node: ^8.10.0 || ^10.13.0 || ^12.13.0 || ^13.0.0 || >=14.0.0}
+  /eslint-plugin-lodash-template@1.0.0(eslint@9.3.0):
+    resolution: {integrity: sha512-ntQf58ncgND4gLX4TV5+2yKb5BQfQGjkoOT4Le9rbjA3lfbxJ2jvPgLMA/ohwlJfW6QMrCb7RJrdSfHsgVwZrQ==}
+    engines: {node: '>=18.0.0'}
     peerDependencies:
-      eslint: '>=6.0.0'
+      eslint: '>=8.0.0'
     dependencies:
       eslint: 9.3.0
+      eslint-compat-utils: 0.4.1(eslint@9.3.0)
       esquery: 1.5.0
-      parse5: 6.0.1
+      parse5: 7.1.2
     dev: true
 
   /eslint-plugin-n@16.6.2(eslint@9.3.0):
@@ -11315,10 +11326,6 @@ packages:
   /parse-passwd@1.0.0:
     resolution: {integrity: sha512-1Y1A//QUXEZK7YKz+rD9WydcE1+EuPr6ZBgKecAB8tmoW6UFv0NREVJe1p+jRxtThkcbbKkfwIbWJe/IeE6m2Q==}
     engines: {node: '>=0.10.0'}
-    dev: true
-
-  /parse5@6.0.1:
-    resolution: {integrity: sha512-Ofn/CTFzRGTTxwpNEs9PP93gXShHcTq255nzRYSKe8AkVpZY7e1fpmTfOyoIvjP5HG7Z2ZM7VS9PPhQGW2pOpw==}
     dev: true
 
   /parse5@7.1.2:
