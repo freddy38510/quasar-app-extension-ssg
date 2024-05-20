@@ -98,7 +98,13 @@ async function run() {
       await hook.fn(hook.api, { quasarConf });
     });
 
-    await appBuilder.compile();
+    try {
+      await appBuilder.compile();
+    } catch (err) {
+      console.error(err);
+      fatal('App build failed (check the log above)', 'FAIL');
+    }
+
     artifacts.add(quasarConf.ssg.compilationDir);
 
     if (writeCacheManifest) {
