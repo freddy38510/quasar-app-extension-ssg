@@ -159,7 +159,7 @@ class SsgDevServer extends AppDevserver {
       const template = readFileSync(templatePath, 'utf-8');
       this.#renderTemplate = getDevSsrTemplateFn(template, quasarConf);
 
-      this.#fallbackHtml = await transformHtml(template, quasarConf).replace(
+      this.#fallbackHtml = (await transformHtml(template, quasarConf)).replace(
         entryPointMarkup,
         attachMarkup,
       );
