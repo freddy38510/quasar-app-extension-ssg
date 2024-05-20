@@ -58,7 +58,7 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "packageManager": "pnpm@8.15.8",
+  "packageManager": "pnpm@9.1.1",
   "pnpm": {
     "overrides": {
       "magic-string": "^0.30.10",
