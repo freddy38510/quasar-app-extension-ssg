@@ -7,7 +7,7 @@
     "url": "git+https://github.com/freddy38510/quasar-app-extension-ssg.git"
   },
   "engines": {
-    "node": ">= v16.20.2"
+    "node": "^30 || ^28 || ^26 || ^24 || ^22 || ^20 || ^18"
   },
   "scripts": {
     "watch": "pnpm --parallel -r run sync --watch",
