@@ -4,6 +4,7 @@ const express = require('express');
 const chokidar = require('chokidar');
 const debounce = require('lodash/debounce');
 const { createServer } = require('vite');
+const { green } = require('kolorist');
 const appPaths = require('@quasar/app-vite/lib/app-paths');
 const openBrowser = require('@quasar/app-vite/lib/helpers/open-browser');
 const {
@@ -32,7 +33,7 @@ const doubleSlashRE = /\/\//g;
 
 function logServerMessage(title, msg, additional) {
   log();
-  info(`${msg}${additional !== void 0 ? ` ${dot} ${additional}` : ''}`, title);
+  info(`${msg}${additional !== void 0 ? ` ${green(dot)} ${additional}` : ''}`, title);
 }
 
 let renderSSRError;

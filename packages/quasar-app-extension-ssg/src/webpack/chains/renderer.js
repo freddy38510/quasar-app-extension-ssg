@@ -54,8 +54,6 @@ module.exports = function createRendererChain(cfg, configName) {
   chain.target('node');
   chain.mode(cfg.ctx.prod ? 'production' : 'development');
 
-  chain.resolve.alias.set('quasar$', 'quasar/dist/quasar.cjs.prod.js');
-
   chain.entry('renderer')
     .add(appPaths.resolve.app('.quasar/ssg-renderer-entry.js'));
 

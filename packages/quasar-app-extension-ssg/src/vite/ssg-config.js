@@ -78,8 +78,9 @@ module.exports = {
       },
       ssr: {
         noExternal: [
+          'quasar', // unfortunately needed for quasar/lang and quasar/icon-set
           /\/esm\/.*\.js$/,
-          /\.(es|esm|esm-browser|esm-bundler).js$/,
+          /\.(es|esm|esm-browser|esm-bundler)\.js$/,
         ],
       },
       build: {
