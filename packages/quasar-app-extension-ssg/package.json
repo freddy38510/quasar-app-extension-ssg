@@ -78,7 +78,7 @@
     "vite": "^2.9.18",
     "webpack": "^5.91.0",
     "webpack-chain": "^6.5.1",
-    "webpack-dev-server": "^4.15.2",
+    "webpack-dev-server": "^5.1.0",
     "webpack-merge": "^5.10.0",
     "webpack-node-externals": "^3.0.0"
   },
