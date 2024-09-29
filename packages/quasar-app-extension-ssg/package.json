@@ -69,7 +69,7 @@
     "node-html-parser": "^6.1.13",
     "open": "^9.1.0",
     "pony-cause": "^2.1.11",
-    "postcss-rtlcss": "^4.0.9",
+    "postcss-rtlcss": "^5.5.0",
     "route-cache": "^0.7.0",
     "selfsigned": "^2.4.1",
     "semver": "^7.6.2",
