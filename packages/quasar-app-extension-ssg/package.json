@@ -61,7 +61,7 @@
     "hash-sum": "^2.0.0",
     "html-minifier-terser": "^7.2.0",
     "html-webpack-plugin": "^5.6.0",
-    "http-proxy-middleware": "^2.0.6",
+    "http-proxy-middleware": "^3.0.3",
     "kolorist": "^1.8.0",
     "lodash": "^4.17.21",
     "magic-string": "^0.30.10",
