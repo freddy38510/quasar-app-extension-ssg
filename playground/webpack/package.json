@@ -49,6 +49,6 @@
     "last 5 Opera versions"
   ],
   "engines": {
-    "node": ">= v14.21.3"
+    "node": ">= 20.18.0"
   }
 }
