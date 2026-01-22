@@ -63,7 +63,7 @@
     "html-webpack-plugin": "^5.6.0",
     "http-proxy-middleware": "^2.0.6",
     "kolorist": "^1.8.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "magic-string": "^0.30.10",
     "minimist": "^1.2.8",
     "node-html-parser": "^6.1.13",
