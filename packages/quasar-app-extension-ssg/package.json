@@ -73,7 +73,7 @@
     "route-cache": "^0.7.0",
     "selfsigned": "^2.4.1",
     "semver": "^7.6.2",
-    "serialize-javascript": "^6.0.2",
+    "serialize-javascript": "^7.0.3",
     "unplugin-auto-import": "^0.17.6",
     "vite": "^2.9.18",
     "webpack": "^5.91.0",
