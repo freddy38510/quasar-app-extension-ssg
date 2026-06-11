@@ -83,7 +83,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
-    "@quasar/app-vite": "^1.9.3",
+    "@quasar/app-vite": "^2.6.2",
     "@quasar/app-webpack": "^3.13.2",
     "@quasar/extras": "^1.16.11",
     "@types/fs-extra": "^11.0.4",
@@ -97,7 +97,7 @@
     "workbox-webpack-plugin": "^7.1.0"
   },
   "peerDependencies": {
-    "@quasar/app-vite": "^1.9.3",
+    "@quasar/app-vite": "^2.6.2",
     "@quasar/app-webpack": "^3.13.2",
     "@quasar/extras": "^1.16.11",
     "@vue/devtools": "^7.2.1",

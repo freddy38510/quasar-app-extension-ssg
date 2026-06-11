@@ -22,7 +22,7 @@
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
-    "@quasar/app-vite": "^1.9.3",
+    "@quasar/app-vite": "^2.6.2",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
