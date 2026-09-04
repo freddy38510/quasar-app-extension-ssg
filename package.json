@@ -63,7 +63,7 @@
     "overrides": {
       "magic-string": "^0.30.10",
       "quasar-app-extension-ssg": "workspace:*",
-      "svgo": "^3.3.2"
+      "svgo": "^3.3.4"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
