@@ -43,7 +43,7 @@
     "@freddy38510/vue-loader": "^17.3.0",
     "@freddy38510/vue-style-loader": "^4.2.0",
     "@quasar/render-ssr-error": "^1.0.3",
-    "@quasar/ssl-certificate": "^1.0.0",
+    "@quasar/ssl-certificate": "^2.0.0",
     "@quasar/ssr-helpers": "^2.2.2",
     "beastcss": "^2.1.3",
     "chalk": "^4.1.2",
