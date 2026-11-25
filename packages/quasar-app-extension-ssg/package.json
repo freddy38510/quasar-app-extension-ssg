@@ -84,7 +84,7 @@
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.9.3",
-    "@quasar/app-webpack": "^3.13.2",
+    "@quasar/app-webpack": "^4.4.5",
     "@quasar/extras": "^1.16.11",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^14.18.63",
@@ -98,7 +98,7 @@
   },
   "peerDependencies": {
     "@quasar/app-vite": "^1.9.3",
-    "@quasar/app-webpack": "^3.13.2",
+    "@quasar/app-webpack": "^4.4.5",
     "@quasar/extras": "^1.16.11",
     "@vue/devtools": "^7.2.1",
     "quasar": "^2.16.4",
